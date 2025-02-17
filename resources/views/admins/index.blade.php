@@ -702,7 +702,7 @@
                     </div>
                 </div>
             </div>
-
+ 
             <div class="col-xl-4 col-sm-6">
                 <div class="card o-hidden small-widget">
                     <div class="card-body border-b-secondary border-2">
