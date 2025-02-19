@@ -36,7 +36,7 @@ class SanPhamController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view("admins.SanPham.chiTiet", compact("id"));
     }
 
     /**
