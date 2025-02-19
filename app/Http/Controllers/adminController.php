@@ -11,8 +11,9 @@ class adminController extends Controller
      */
     public function index()
     {
-        return view("admins.index");#ManhCon
+        return view("admins.index"); // Đã fix xung đột
     }
+
 
     /**
      * Show the form for creating a new resource.
