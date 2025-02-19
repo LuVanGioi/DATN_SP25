@@ -40,11 +40,11 @@
                                             <td></td>
                                             <td></td>
                                             <td>
-                                                <a href="/admin/products/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
+                                                <a href="/admin/sanPham/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
 
-                                                <a href="/admin/products/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
+                                                <a href="/admin/sanPham/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
 
-                                                <form action="/admin/products/{{ "1234" }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <form action="/admin/sanPham/{{ "1234" }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
