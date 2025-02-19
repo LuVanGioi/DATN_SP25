@@ -11,7 +11,7 @@ class adminController extends Controller
      */
     public function index()
     {
-        return view("admins.index");#lần cuối nè đức nam
+        return view("admins.index");#lần cuối nè đức nam 111
     }
 
     /**
