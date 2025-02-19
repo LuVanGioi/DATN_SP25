@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admins;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class adminController extends Controller
+class SanPhamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view("admins.index"); // Đã fix xung đột
+        return view("admins.SanPham.danhSach");
     }
-
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view("admins.SanPham.taoSanPham");
     }
 
     /**
