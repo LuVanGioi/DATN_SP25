@@ -1,8 +1,8 @@
 <?php
-
-use App\Http\Controllers\adminController;
-use App\Http\Controllers\ThanhVienController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admins\ThanhVienController;
+use App\Http\Controllers\admins\homeController;
+use App\Http\Controllers\admins\SanPhamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 
 #ADMIN
-Route::get('/admin/home', [adminController::class, "index"]);
-Route::resource('/admin/ThanhVien', ThanhVienController::class );
+Route::get('admin/thongKe', [homeController::class, "index"]);
 
+Route::resource('admin/sanPham', SanPhamController::class);
+Route::resource('/admin/ThanhVien', ThanhVienController::class );

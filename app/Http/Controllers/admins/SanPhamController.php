@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admins;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ThanhVienController extends Controller
+class SanPhamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admins.ThanhVien.DanhSach');
+        return view("admins.SanPham.danhSach");
     }
 
     /**
@@ -19,7 +20,7 @@ class ThanhVienController extends Controller
      */
     public function create()
     {
-        //
+        return view("admins.SanPham.taoSanPham");
     }
 
     /**
