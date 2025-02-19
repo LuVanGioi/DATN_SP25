@@ -38,7 +38,7 @@
       </li>
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/thanhVien">
+        <a class="sidebar-link" href="/admin/ThanhVien">
           <i class="fal fa-users"></i>
           <span>Thành Viên</span>
         </a>
