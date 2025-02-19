@@ -11,7 +11,7 @@ class adminController extends Controller
      */
     public function index()
     {
-        return view("admins.index");////////
+        return view("admins.index");#gigigi
     }
 
     /**
