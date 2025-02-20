@@ -69,8 +69,8 @@
           <i class="fa-light fa-newspaper"></i>
           <span>Bài Viết</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/baiViet">Danh Sách</a></li>
-          <li><a href="/admin/baiViet/create">Tạo Bài Viết</a></li>
+          <li><a href="/admin/BaiViet">Danh Sách</a></li>
+          <li><a href="/admin/BaiViet/create">Tạo Bài Viết</a></li>
         </ul>
       </li>
 

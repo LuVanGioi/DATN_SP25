@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admins\ThanhVienController;
 use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\admins\SanPhamController;
+use App\Http\Controllers\admins\BaiVietController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,4 @@ Route::get('admin/thongKe', [homeController::class, "index"]);
 
 Route::resource('admin/sanPham', SanPhamController::class);
 Route::resource('/admin/ThanhVien', ThanhVienController::class );
+Route::resource('/admin/BaiViet', BaiVietController::class);
