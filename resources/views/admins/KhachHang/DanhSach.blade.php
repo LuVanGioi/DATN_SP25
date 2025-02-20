@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-<title>DANH SÁCH THÀNH VIÊN - ADMIN</title>
+<title>DANH SÁCH KHÁCH HÀNG - ADMIN</title>
 @endsection
 
 
@@ -10,7 +10,7 @@
     <div class="container-fluid pt-3">
         <div class="card">
             <div class="card-header">
-                <h5>DANH SÁCH THÀNH VIÊN</h5>
+                <h5>DANH SÁCH KHÁCH HÀNG</h5>
             </div>
             <div class="card-body">
                 
@@ -23,7 +23,6 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Email</th>
-                                            <th>Chức Vụ</th>
                                             <th>Ngày Tham Gia</th>
                                             <th>Trạng Thái</th>
                                             <th>Thao Tác</th>
@@ -35,9 +34,8 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
                                             <td>
-                                               <a href="/admin/ThanhVien/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
+                                               <a href="/admin/KhachHang/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
                                             </td>
                                         </tr>
 

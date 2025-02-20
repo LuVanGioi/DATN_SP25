@@ -36,13 +36,7 @@
           <span>Thống Kê</span>
         </a>
       </li>
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/ThanhVien">
-          <i class="fal fa-users"></i>
-          <span>Thành Viên</span>
-        </a>
-      </li>
+     
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"></i>
         <a class="sidebar-link sidebar-title">
@@ -89,10 +83,10 @@
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"></i>
         <a class="sidebar-link sidebar-title">
-          <i class="fa-light fa-envelope"></i>
-          <span>Mail Khách Hàng</span></a>
+          <i class="fal fa-users"></i>
+          <span>Khách Hàng</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/mailKhachHang">Danh Sách</a></li>
+          <li><a href="/admin/KhachHang">Danh Sách</a></li>
           <li><a href="/admin/mailKhachHang/create">Gửi Mail</a></li>
         </ul>
       </li>
