@@ -3,55 +3,94 @@
 namespace App\Http\Controllers\admins;
 
 use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request; // Đảm bảo bạn đã import lớp Request
+use App\Models\MaGiamGia; // Import model MaGiamGia
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
+
 class CouponController extends Controller
 {
     public function index(Request $request)
+    {
+        // Lấy dữ liệu từ cơ sở dữ liệu
+        $coupons = MaGiamGia::all()->toArray(); // Chuyển đổi thành mảng
+
+        // Lấy số trang từ query string, mặc định là 1
+        $currentPage = $request->get('page', 1);
+        $perPage = 8; // Số lượng mã giảm giá mỗi trang
+
+        // Tạo một paginator
+        $currentItems = array_slice($coupons, ($currentPage - 1) * $perPage, $perPage);
+        $couponsPaginator = new LengthAwarePaginator($currentItems, count($coupons), $perPage, $currentPage, [
+            'path' => $request->url(),
+            'query' => $request->query()
+        ]);
+
+        return view('admins.coupons.index', compact('couponsPaginator'));
+    }
+
+    public function create()
+    {
+        return view('admins.coupons.create');
+    }
+
+    public function store(Request $request)
+    {
+        // Xử lý lưu mã giảm giá
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'value' => 'required|integer',
+            'min_value' => 'required|integer',
+            'max_value' => 'required|integer',
+            'condition' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'status' => 'required|string|max:50',
+        ]);
+
+        MaGiamGia::create($validatedData);
+
+        return redirect()->route('coupons.index')->with('success', 'Mã giảm giá đã được thêm.');
+    }
+
+    public function edit($id)
 {
-    $coupons = [
-        ['id' => 1, 'name' => 'Giảm 10%', 'value' => 10, 'min_value' => 100, 'max_value' => 500, 'condition' => 'Mua hàng từ 100k', 'start_date' => '2025-02-01', 'end_date' => '2025-02-28', 'status' => 'Hoạt động'],
-        ['id' => 2, 'name' => 'Giảm 20%', 'value' => 20, 'min_value' => 200, 'max_value' => 1000, 'condition' => 'Mua hàng từ 200k', 'start_date' => '2025-03-01', 'end_date' => '2025-03-31', 'status' => 'Ngừng hoạt động'],
-        ['id' => 3, 'name' => 'Giảm 10%', 'value' => 10, 'min_value' => 100, 'max_value' => 500, 'condition' => 'Mua hàng từ 100k', 'start_date' => '2025-02-01', 'end_date' => '2025-02-28', 'status' => 'Hoạt động'],
-        ['id' => 4, 'name' => 'Giảm 20%', 'value' => 20, 'min_value' => 200, 'max_value' => 1000, 'condition' => 'Mua hàng từ 200k', 'start_date' => '2025-03-01', 'end_date' => '2025-03-31', 'status' => 'Ngừng hoạt động'],
-        ['id' => 5, 'name' => 'Giảm 10%', 'value' => 10, 'min_value' => 100, 'max_value' => 500, 'condition' => 'Mua hàng từ 100k', 'start_date' => '2025-02-01', 'end_date' => '2025-02-28', 'status' => 'Hoạt động'],
-        ['id' => 6, 'name' => 'Giảm 20%', 'value' => 20, 'min_value' => 200, 'max_value' => 1000, 'condition' => 'Mua hàng từ 200k', 'start_date' => '2025-03-01', 'end_date' => '2025-03-31', 'status' => 'Ngừng hoạt động'],
-        ['id' => 7, 'name' => 'Giảm 10%', 'value' => 10, 'min_value' => 100, 'max_value' => 500, 'condition' => 'Mua hàng từ 100k', 'start_date' => '2025-02-01', 'end_date' => '2025-02-28', 'status' => 'Hoạt động'],
-        ['id' => 8, 'name' => 'Giảm 20%', 'value' => 20, 'min_value' => 200, 'max_value' => 1000, 'condition' => 'Mua hàng từ 200k', 'start_date' => '2025-03-01', 'end_date' => '2025-03-31', 'status' => 'Ngừng hoạt động'],
-        ['id' => 9, 'name' => 'Giảm 10%', 'value' => 10, 'min_value' => 100, 'max_value' => 500, 'condition' => 'Mua hàng từ 100k', 'start_date' => '2025-02-01', 'end_date' => '2025-02-28', 'status' => 'Hoạt động'],
-        ['id' => 10, 'name' => 'Giảm 20%', 'value' => 20, 'min_value' => 200, 'max_value' => 1000, 'condition' => 'Mua hàng từ 200k', 'start_date' => '2025-03-01', 'end_date' => '2025-03-31', 'status' => 'Ngừng hoạt động'],
-        ['id' => 11, 'name' => 'Giảm 10%', 'value' => 10, 'min_value' => 100, 'max_value' => 500, 'condition' => 'Mua hàng từ 100k', 'start_date' => '2025-02-01', 'end_date' => '2025-02-28', 'status' => 'Hoạt động'],
-        ['id' => 12, 'name' => 'Giảm 20%', 'value' => 20, 'min_value' => 200, 'max_value' => 1000, 'condition' => 'Mua hàng từ 200k', 'start_date' => '2025-03-01', 'end_date' => '2025-03-31', 'status' => 'Ngừng hoạt động'],
-        // Thêm dữ liệu cứng khác nếu cần
-    ];
-
-    // Lấy số trang từ query string, mặc định là 1
-    $currentPage = $request->get('page', 1);
-    $perPage = 8; // Số lượng mã giảm giá mỗi trang
-
-    // Tạo một paginator
-    $currentItems = array_slice($coupons, ($currentPage - 1) * $perPage, $perPage);
-    $couponsPaginator = new LengthAwarePaginator($currentItems, count($coupons), $perPage, $currentPage, [
-        'path' => $request->url(),
-        'query' => $request->query()
-    ]);
-
-    return view('admins.coupons.index', compact('couponsPaginator'));
+    // Log::info("Editing coupon with ID: {$id}");
+    $coupon = MaGiamGia::findOrFail($id); // Sử dụng findOrFail để lấy mã giảm giá
+    return view('admins.coupons.edit', compact('coupon'));
 }
 
-public function create()
-{
-    return view('admins.coupons.create');
-}
+    public function update(Request $request, $id)
+    {
+        // Xử lý cập nhật mã giảm giá
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'value' => 'required|integer',
+            'min_value' => 'required|integer',
+            'max_value' => 'required|integer',
+            'condition' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'status' => 'required|string|max:50',
+        ]);
 
-public function edit($id)
-{
-    return view('admins.coupons.edit', compact('id'));
-}
+        $coupon = MaGiamGia::findOrFail($id);
+        $coupon->update($validatedData);
 
-public function show($id)
-{
-    return view('admins.coupons.show', compact('id'));
-}
+        return redirect()->route('coupons.index')->with('success', 'Mã giảm giá đã được cập nhật.');
+    }
+
+    public function destroy($id)
+    {
+        $coupon = MaGiamGia::findOrFail($id);
+        $coupon->delete();
+
+        return redirect()->route('coupons.index')->with('success', 'Mã giảm giá đã được xóa.');
+    }
+
+    public function show($id)
+    {
+        $coupon = MaGiamGia::findOrFail($id);
+        return view('admins.coupons.show', compact('coupon'));
+    }
 }

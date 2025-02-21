@@ -40,7 +40,7 @@ Route::resource('/admin/ThanhVien', ThanhVienController::class );
 Route::resource('/admin/BaiViet', BaiVietController::class);
 
 Route::prefix('admin/maGiamGia')->group(function () {
-    Route::resource('/', CouponController::class)->names([
+    Route::resource('maGiamGia', CouponController::class)->names([
         'index' => 'coupons.index',
         'create' => 'coupons.create',
         'store' => 'coupons.store',
