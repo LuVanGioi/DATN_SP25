@@ -4,6 +4,7 @@ use App\Http\Controllers\admins\ThanhVienController;
 use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\BaiVietController;
+use App\Http\Controllers\admins\CouponController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
 use App\Http\Controllers\admins\ThungRacController;
@@ -37,6 +38,20 @@ Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]
 Route::resource('admin/SanPham', SanPhamController::class);
 Route::resource('/admin/ThanhVien', ThanhVienController::class );
 Route::resource('/admin/BaiViet', BaiVietController::class);
+
+Route::prefix('admin/maGiamGia')->group(function () {
+    Route::resource('/', CouponController::class)->names([
+        'index' => 'coupons.index',
+        'create' => 'coupons.create',
+        'store' => 'coupons.store',
+        'edit' => 'coupons.edit',
+        'update' => 'coupons.update',
+        'show' => 'coupons.show',
+        'destroy' => 'coupons.destroy',
+    ]);
+});
+
 Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('/admin/ChatLieu', ChatLieuController::class);
 Route::resource('/admin/ThuongHieu', ThuongHieuController::class);
+
