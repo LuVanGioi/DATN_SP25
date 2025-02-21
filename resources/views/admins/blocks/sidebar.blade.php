@@ -50,8 +50,8 @@
           <i class="fa-light fa-layer-group"></i>
           <span>Danh Mục</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/danhSach">Danh Sách</a></li>
-          <li><a href="/admin/danhSach/create">Tạo Danh Mục</a></li>
+          <li><a href="/admin/DanhMuc">Danh Sách</a></li>
+          <li><a href="/admin/DanhMuc/create">Tạo Danh Mục</a></li>
         </ul>
       </li>
       <li class="sidebar-list">
@@ -60,28 +60,20 @@
           <i class="fa-light fa-grid-2-plus"></i>
           <span>Sản Phẩm</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/sanPham">Danh Sách</a></li>
-          <li><a href="/admin/sanPham/create">Tạo Sản Phẩm</a></li>
+          <li><a href="/admin/ChatLieu">Chất Liệu</a></li>
+          <li><a href="/admin/ThuongHieu">Thương Hiệu</a></li>
+          <li><a href="/admin/SanPham">Sản Phẩm</a></li>
+          <li><a href="/admin/BienThe/create">Biến Thể</a></li>
         </ul>
       </li>
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"></i>
         <a class="sidebar-link sidebar-title">
-          <i class="fa-light fa-newspaper"></i>
-          <span>Danh Mục Bài Viết</span></a>
-        <ul class="sidebar-submenu">
-          <li><a href="/admin/DanhMucBaiViet">Danh Sách</a></li>
-          <li><a href="/admin/DanhMucBaiViet/create">Tạo Danh Mục Bài Viết</a></li>
-        </ul>
-      </li>
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"></i>
-        <a class="sidebar-link sidebar-title">
-          <i class="fa-solid fa-pen-fancy"></i>
+          <i class="fa-solid fa-newspaper"></i>
           <span>Bài Viết</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/BaiViet">Danh Sách</a></li>
-          <li><a href="/admin/BaiViet/create">Tạo Bài Viết</a></li>
+          <li><a href="/admin/DanhMucBaiViet">Danh Mục</a></li>
+          <li><a href="/admin/BaiViet">Bài Viết</a></li>
         </ul>
       </li>
 
@@ -91,8 +83,8 @@
           <i class="fa-light fa-envelope"></i>
           <span>Mã Giảm Giá</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/maGiamGia">Danh Sách</a></li>
-          <li><a href="/admin/maGiamGia/create">Tạo Mã</a></li>
+          <li><a href="/admin/MaGiamGia">Danh Sách</a></li>
+          <li><a href="/admin/MaGiamGia/create">Tạo Mã</a></li>
         </ul>
       </li>
 
@@ -103,14 +95,14 @@
           <i class="fa-light fa-envelope"></i>
           <span>Mail Khách Hàng</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/mailKhachHang">Danh Sách</a></li>
-          <li><a href="/admin/mailKhachHang/create">Gửi Mail</a></li>
+          <li><a href="/admin/MailKhachHang">Danh Sách</a></li>
+          <li><a href="/admin/MailKhachHang/create">Gửi Mail</a></li>
         </ul>
       </li>
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/donHang">
+        <a class="sidebar-link" href="/admin/DonHang">
           <i class="fa-light fa-bags-shopping"></i>
           <span>Đơn Hàng</span>
         </a>
@@ -118,7 +110,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/banners">
+        <a class="sidebar-link" href="/admin/Banners">
           <i class="fa-light fa-image"></i>
           <span>Banners</span>
         </a>
@@ -128,7 +120,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/baoCao">
+        <a class="sidebar-link" href="/admin/BaoCao">
           <i class="fa-light fa-bug"></i>
           <span>Báo Cáo</span>
         </a>
@@ -136,7 +128,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/thongTinLienHe">
+        <a class="sidebar-link" href="/admin/ThongTinLienHe">
           <i class="fa-light fa-headset"></i>
           <span>Thông Tin Liên Hệ</span>
         </a>
@@ -144,7 +136,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/caiDatWebsite">
+        <a class="sidebar-link" href="/admin/CaiDatWebsite">
           <i class="fa-light fa-cog"></i>
           <span>Cài Đặt Website</span>
         </a>

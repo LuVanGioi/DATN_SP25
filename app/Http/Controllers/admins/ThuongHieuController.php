@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers\admins;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\admins\ThuongHieuRequest;
+
+class ThuongHieuController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $danhSach = DB::table("thuonghieu")->where("Xoa", 0)->orderByDesc("id")->get();
+        return view("admins.ThuongHieu.DanhSach", compact("danhSach"));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view("admins.ThuongHieu.TaoThuongHieu");
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(ThuongHieuRequest $request)
+    {
+        DB::beginTransaction();
+
+        DB::table("thuonghieu")->insert([
+            "TenThuongHieu" => $request->input("TenThuongHieu"),
+            "create_at" => date("Y-m-d")
+        ]);
+
+        DB::commit();
+
+        return redirect()->route("ThuongHieu.index")->with("success", "Thêm Thương Hiệu Thành Công!");
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $thongTin = DB::table("thuonghieu")->find($id);
+        return view("admins.ThuongHieu.SuaThuongHieu", compact("thongTin"));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(ThuongHieuRequest $request, string $id)
+    {
+        DB::beginTransaction();
+
+        DB::table("thuonghieu")->where("id", $id)->update([
+            "TenThuongHieu" => $request->input("TenThuongHieu"),
+            "update_at" => date("Y-m-d")
+        ]);
+
+        DB::commit();
+
+        return redirect()->route("ThuongHieu.index")->with("success", "Cập Nhật Thương Hiệu Thành Công!");
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $thongTin = DB::table("thuonghieu")->find($id);
+
+        if(!$thongTin) {
+            return redirect()->route("ThuongHieu.index")->with("success", "Thương Hiệu Không Tồn Tại");
+        }
+
+        DB::table("thuonghieu")->where("id", $id)->update([
+            "Xoa" => 1,
+            "delete_at" => date("Y-m-d")
+        ]);
+
+        return redirect()->route("ThuongHieu.index")->with("success", "Xóa Thương Hiệu Thành Công!");
+    }
+}

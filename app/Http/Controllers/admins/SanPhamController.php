@@ -44,7 +44,7 @@ class SanPhamController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view("admins.SanPham.SuaSanPham", compact("id"));
     }
 
     /**
