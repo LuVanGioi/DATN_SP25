@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="text-end">
                     <a href="/admin/SanPham/create" class="btn btn-primary btn-sm">Thêm Sản Phẩm</a>
-                </div>
+                </div> 
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
                         <div class="row dt-row">

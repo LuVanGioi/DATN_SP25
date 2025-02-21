@@ -44,6 +44,10 @@
 
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
     <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+
+
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+    
     <link rel="stylesheet" href="/admins/css/system.css?m={{time()}}">
 
     @yield("css")
@@ -103,8 +107,12 @@
         $(document).ready(function() {
             $('.dataTable').DataTable();
         });
+
+        document.querySelectorAll('.note-DATN').forEach((el) => {
+            CKEDITOR.replace(el);
+        });
     </script>
-    
+
     @yield("js")
 </body>
 
