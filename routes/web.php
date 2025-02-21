@@ -4,6 +4,9 @@ use App\Http\Controllers\admins\ThanhVienController;
 use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\BaiVietController;
+use App\Http\Controllers\admins\CouponController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +34,15 @@ Route::get('admin/thongKe', [homeController::class, "index"]);
 Route::resource('admin/sanPham', SanPhamController::class);
 Route::resource('/admin/ThanhVien', ThanhVienController::class );
 Route::resource('/admin/BaiViet', BaiVietController::class);
+
+Route::prefix('admin/maGiamGia')->group(function () {
+    Route::resource('/', CouponController::class)->names([
+        'index' => 'coupons.index',
+        'create' => 'coupons.create',
+        'store' => 'coupons.store',
+        'edit' => 'coupons.edit',
+        'update' => 'coupons.update',
+        'show' => 'coupons.show',
+        'destroy' => 'coupons.destroy',
+    ]);
+});

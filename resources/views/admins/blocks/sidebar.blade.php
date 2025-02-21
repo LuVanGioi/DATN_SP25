@@ -79,10 +79,10 @@
         <a class="sidebar-link sidebar-title">
           <i class="fa-light fa-envelope"></i>
           <span>Mã Giảm Giá</span></a>
-        <ul class="sidebar-submenu">
-          <li><a href="/admin/maGiamGia">Danh Sách</a></li>
-          <li><a href="/admin/maGiamGia/create">Tạo Mã</a></li>
-        </ul>
+            <ul class="sidebar-submenu">
+             <li><a href="{{ route('coupons.index') }}">Danh Sách</a></li>
+             <li><a href="{{ route('coupons.create') }}">Tạo Mã</a></li>
+          </ul>
       </li>
 
 
