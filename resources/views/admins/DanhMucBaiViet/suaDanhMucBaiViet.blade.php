@@ -13,14 +13,14 @@
                         <h5>SỬA DANH MỤC BÀI VIẾT</h5>
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="card-header text-center">
-                                <h5>SỬA DANH MỤC BÀI VIẾT</h5>
-                            </div>
+                        <form action="{{ route('DanhMucBaiViet.update', $danhMuc->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
                             <div class="mb-3">
-                                <label for="title">Tên Danh Mục Bài Viết</label>
-                                <input class="form-control" type="text" name="title" id="title" placeholder="Tin thể thao"
-                                    required>
+                                <label for="TenDanhMucBaiViet">Tên Danh Mục Bài Viết</label>
+                                <input class="form-control" type="text" name="TenDanhMucBaiViet" id="TenDanhMucBaiViet"
+                                    value="{{ $danhMuc->TenDanhMucBaiViet }}" required>
                             </div>
                             <div class="text-end">
                                 <button class="btn btn-primary me-3" type="submit">Cập Nhật</button>

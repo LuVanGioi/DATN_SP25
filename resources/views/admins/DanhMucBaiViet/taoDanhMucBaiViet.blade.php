@@ -13,13 +13,11 @@
                         <h5>THÊM DANH MỤC BÀI VIẾT MỚI</h5>
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="card-header text-center">
-                                <h5>THÊM DANH MỤC BÀI VIẾT MỚI</h5>
-                            </div>
+                        <form action="{{ route('DanhMucBaiViet.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="mb-3">
-                                <label for="title">Tên Danh Mục Bài Viết</label>
-                                <input class="form-control" type="text" name="title" id="title"
+                                <label for="TenDanhMucBaiViet">Tên Danh Mục Bài Viết</label>
+                                <input class="form-control" type="text" name="TenDanhMucBaiViet" id="TenDanhMucBaiViet"
                                     placeholder="Tên Danh Mục Bài Viết" required>
                             </div>
                             <div class="text-end">
