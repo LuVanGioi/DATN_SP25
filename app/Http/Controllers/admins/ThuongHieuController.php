@@ -14,7 +14,7 @@ class ThuongHieuController extends Controller
      */
     public function index()
     {
-        $danhSach = DB::table("thuonghieu")->where("Xoa", 0)->orderByDesc("id")->get();
+        $danhSach = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
         return view("admins.ThuongHieu.DanhSach", compact("danhSach"));
     }
 
@@ -33,9 +33,9 @@ class ThuongHieuController extends Controller
     {
         DB::beginTransaction();
 
-        DB::table("thuonghieu")->insert([
+        DB::table("thuong_hieu")->insert([
             "TenThuongHieu" => $request->input("TenThuongHieu"),
-            "create_at" => date("Y-m-d")
+            "created_at" => date("Y-m-d H:i:s")
         ]);
 
         DB::commit();
@@ -56,7 +56,7 @@ class ThuongHieuController extends Controller
      */
     public function edit(string $id)
     {
-        $thongTin = DB::table("thuonghieu")->find($id);
+        $thongTin = DB::table("thuong_hieu")->find($id);
         return view("admins.ThuongHieu.SuaThuongHieu", compact("thongTin"));
     }
 
@@ -67,9 +67,9 @@ class ThuongHieuController extends Controller
     {
         DB::beginTransaction();
 
-        DB::table("thuonghieu")->where("id", $id)->update([
+        DB::table("thuong_hieu")->where("id", $id)->update([
             "TenThuongHieu" => $request->input("TenThuongHieu"),
-            "update_at" => date("Y-m-d")
+            "updated_at" => date("Y-m-d H:i:s")
         ]);
 
         DB::commit();
@@ -82,15 +82,15 @@ class ThuongHieuController extends Controller
      */
     public function destroy(string $id)
     {
-        $thongTin = DB::table("thuonghieu")->find($id);
+        $thongTin = DB::table("thuong_hieu")->find($id);
 
         if(!$thongTin) {
             return redirect()->route("ThuongHieu.index")->with("success", "Thương Hiệu Không Tồn Tại");
         }
 
-        DB::table("thuonghieu")->where("id", $id)->update([
+        DB::table("thuong_hieu")->where("id", $id)->update([
             "Xoa" => 1,
-            "delete_at" => date("Y-m-d")
+            "deleted_at" => date("Y-m-d H:i:s")
         ]);
 
         return redirect()->route("ThuongHieu.index")->with("success", "Xóa Thương Hiệu Thành Công!");

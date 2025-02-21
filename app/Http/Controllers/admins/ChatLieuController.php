@@ -15,7 +15,7 @@ class ChatLieuController extends Controller
      */
     public function index()
     {
-        $danhSach = DB::table("chatlieu")->where("Xoa", 0)->orderByDesc("id")->get();
+        $danhSach = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         return view("admins.ChatLieu.DanhSach", compact("danhSach"));
     }
 
@@ -34,10 +34,9 @@ class ChatLieuController extends Controller
     {
         DB::beginTransaction();
         
-        DB::table("chatlieu")->insert([
+        DB::table("chat_lieu")->insert([
             "TenChatLieu" => $request->input("TenChatLieu"),
-            "create_at" => date("Y-m-d"),
-            "update_at" => null
+            "created_at" => date("Y-m-d H:i:s")
         ]);
 
         DB::commit();
@@ -58,7 +57,7 @@ class ChatLieuController extends Controller
      */
     public function edit(string $id)
     {
-        $thongTin = DB::table("chatlieu")->find($id);
+        $thongTin = DB::table("chat_lieu")->find($id);
 
         if(!$thongTin) {
             return redirect()->route("ChatLieu.index")->with("error", "Chất Liệu Không Tồn Tại");
@@ -72,15 +71,15 @@ class ChatLieuController extends Controller
      */
     public function update(ChatLieuRequest $request, string $id)
     {
-        $thongTin = DB::table("chatlieu")->find($id);
+        $thongTin = DB::table("chat_lieu")->find($id);
 
         if(!$thongTin) {
             return redirect()->route("ChatLieu.index")->with("error", "Chất Liệu Không Tồn Tại");
         }
         
-        DB::table("chatlieu")->where("id", $id)->update([
+        DB::table(table: "chat_lieu")->where("id", $id)->update([
             "TenChatLieu" => $request->input("TenChatLieu"),
-            "update_at" => date("Y-m-d")
+            "updated_at" => date("Y-m-d H:i:s")
         ]);
 
         DB::commit();
@@ -93,14 +92,15 @@ class ChatLieuController extends Controller
      */
     public function destroy(string $id)
     {
-        $thongTin = DB::table("chatlieu")->find($id);
+        $thongTin = DB::table("chat_lieu")->find($id);
 
         if(!$thongTin) {
             return redirect()->route("ChatLieu.index")->with("error", "Chất Liệu Không Tồn Tại");
         }
 
-        DB::table("chatlieu")->where("id", $id)->update([
-            "Xoa" => 1
+        DB::table("chat_lieu")->where("id", $id)->update([
+            "Xoa" => 1,
+            "deleted_at" => date("Y-m-d H:i:s")
         ]);
 
         DB::commit();

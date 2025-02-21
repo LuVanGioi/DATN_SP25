@@ -9,8 +9,10 @@ use App\Http\Controllers\Controller;
 class ThungRacController extends Controller
 {
     public function index() {
-        $danhSachChatLieu = DB::table("chatlieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
-        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu"));
+        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
+        $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
+
+        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu"));
     }
 
     public function restore(Request $request, string $id)
@@ -24,7 +26,7 @@ class ThungRacController extends Controller
 
         DB::table($table)->where("id", $id)->update([
             "Xoa" => 0,
-            "delete_at" => date("Y-m-d")
+            "deleted_at" => date("Y-m-d")
         ]);
 
         DB::commit();

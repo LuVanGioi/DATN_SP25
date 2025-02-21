@@ -34,8 +34,8 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $row->TenChatLieu }}</td>
-                                            <td>{{ $row->create_at }}</td>
-                                            <td>{{ $row->update_at }}</td>
+                                            <td>{{ $row->created_at }}</td>
+                                            <td>{{ $row->updated_at }}</td>
                                             <td>
                                                 <a href="/admin/ChatLieu/{{ $row->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
 
