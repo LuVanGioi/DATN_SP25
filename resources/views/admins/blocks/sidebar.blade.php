@@ -17,7 +17,8 @@
         <a href="/admin/home">
           <img class="img-fluid" src="/admins/images/logo-icon.png" alt="">
         </a>
-        <div class="mobile-back text-end"> <span>Back </span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
+        <div class="mobile-back text-end"> <span>Back </span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i>
+        </div>
       </li>
       <li class="pin-title sidebar-main-title">
         <div>
@@ -67,10 +68,20 @@
         <i class="fa fa-thumb-tack"></i>
         <a class="sidebar-link sidebar-title">
           <i class="fa-light fa-newspaper"></i>
+          <span>Danh Mục Bài Viết</span></a>
+        <ul class="sidebar-submenu">
+          <li><a href="/admin/DanhMucBaiViet">Danh Sách</a></li>
+          <li><a href="/admin/DanhMucBaiViet/create">Tạo Danh Mục Bài Viết</a></li>
+        </ul>
+      </li>
+      <li class="sidebar-list">
+        <i class="fa fa-thumb-tack"></i>
+        <a class="sidebar-link sidebar-title">
+          <i class="fa-solid fa-pen-fancy"></i>
           <span>Bài Viết</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/baiViet">Danh Sách</a></li>
-          <li><a href="/admin/baiViet/create">Tạo Bài Viết</a></li>
+          <li><a href="/admin/BaiViet">Danh Sách</a></li>
+          <li><a href="/admin/BaiViet/create">Tạo Bài Viết</a></li>
         </ul>
       </li>
 
@@ -113,7 +124,7 @@
         </a>
       </li>
 
-      
+
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
