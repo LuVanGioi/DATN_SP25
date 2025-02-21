@@ -41,7 +41,7 @@
         <i class="fa fa-thumb-tack"> </i>
         <a class="sidebar-link" href="/admin/ThanhVien">
           <i class="fal fa-users"></i>
-          <span>Thành Viên</span>
+          <span>Khách Hàng</span>
         </a>
       </li>
       <li class="sidebar-list">
@@ -85,18 +85,6 @@
         <ul class="sidebar-submenu">
           <li><a href="/admin/MaGiamGia">Danh Sách</a></li>
           <li><a href="/admin/MaGiamGia/create">Tạo Mã</a></li>
-        </ul>
-      </li>
-
-
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"></i>
-        <a class="sidebar-link sidebar-title">
-          <i class="fa-light fa-envelope"></i>
-          <span>Mail Khách Hàng</span></a>
-        <ul class="sidebar-submenu">
-          <li><a href="/admin/MailKhachHang">Danh Sách</a></li>
-          <li><a href="/admin/MailKhachHang/create">Gửi Mail</a></li>
         </ul>
       </li>
 

@@ -34,14 +34,15 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $row->TenThuongHieu }}</td>
-                                            <td>{{ $row->create_at }}</td>
-                                            <td>{{ $row->update_at }}</td>
+                                            <td>{{ $row->created_at }}</td>
+                                            <td>{{ $row->updated_at }}</td>
                                             <td>
                                                 <a href="/admin/ThuongHieu/{{ $row->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
 
                                                 <form action="/admin/ThuongHieu/{{ $row->id }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
+                                                    <input type="hidden" name="table" value="thuong_hieu">
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                                 </form>
                                             </td>

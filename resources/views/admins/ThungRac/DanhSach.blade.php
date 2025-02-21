@@ -9,7 +9,7 @@
     <div class="container-fluid pt-3">
         <div class="card">
             <div class="card-header">
-                <h5>DANH SÁCH DỮ LIỆU</h5>
+                <h5>THÙNG RÁC</h5>
             </div>
             <div class="card-body">
                 <div class="table-responsive dt-responsive">
@@ -19,7 +19,7 @@
                                 <table class="table table-striped table-bordered nowrap dataTable">
                                     <thead>
                                         <tr>
-                                            <th>STT</th>
+                                            <th>Thể Loại</th>
                                             <th>Tên</th>
                                             <th>Ngày Xóa</th>
                                             <th>Thao Tác</th>
@@ -28,13 +28,28 @@
                                     <tbody>
                                         @foreach ($danhSachChatLieu as $index => $chatLieu)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
+                                            <td class="text-primary">Chất Liệu</td>
                                             <td>{{ $chatLieu->TenChatLieu }}</td>
-                                            <td>{{ $chatLieu->delete_at }}</td>
+                                            <td>{{ $chatLieu->deleted_at }}</td>
                                             <td>
                                                 <form action="/admin/ThungRac/{{ $chatLieu->id }}/restore" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
                                                     @csrf
-                                                    <input type="hidden" name="table" value="ChatLieu">
+                                                    <input type="hidden" name="table" value="chat_lieu">
+                                                    <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+
+                                        @foreach ($danhSachThuongHieu as $index => $thuongHieu)
+                                        <tr>
+                                            <td class="text-danger">Thương Hiệu</td>
+                                            <td>{{ $thuongHieu->TenThuongHieu }}</td>
+                                            <td>{{ $thuongHieu->deleted_at }}</td>
+                                            <td>
+                                                <form action="/admin/ThungRac/{{ $thuongHieu->id }}/restore" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                                    @csrf
+                                                    <input type="hidden" name="table" value="thuong_hieu">
                                                     <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
                                                 </form>
                                             </td>
