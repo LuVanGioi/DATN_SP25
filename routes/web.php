@@ -6,6 +6,7 @@ use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
 use App\Http\Controllers\admins\DanhMucController;
 use App\Http\Controllers\admins\SanPhamController;
+use App\Http\Controllers\admins\CouponController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\ThungRacController;
 use App\Http\Controllers\admins\ThanhVienController;
@@ -50,3 +51,21 @@ Route::resource('admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('admin/BienThe', BienTheController::class);
 Route::post('admin/GiaTriBienThe', [GiaTriBienTheController::class, "createValue"])->name('GiaTriBienThe.index');
 Route::get('admin/GiaTriBienThe/{id}/destroy', [GiaTriBienTheController::class, "destroy"])->name('GiaTriBienThe.destroy');
+
+
+Route::prefix('admin/maGiamGia')->group(function () {
+    Route::resource('/', CouponController::class)->names([
+        'index' => 'coupons.index',
+        'create' => 'coupons.create',
+        'store' => 'coupons.store',
+        'edit' => 'coupons.edit',
+        'update' => 'coupons.update',
+        'show' => 'coupons.show',
+        'destroy' => 'coupons.destroy',
+    ]);
+});
+
+Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
+Route::resource('/admin/ChatLieu', ChatLieuController::class);
+Route::resource('/admin/ThuongHieu', ThuongHieuController::class);
+
