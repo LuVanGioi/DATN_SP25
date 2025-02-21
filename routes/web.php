@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admins\ThanhVienController;
 use App\Http\Controllers\admins\homeController;
+use App\Http\Controllers\admins\DanhMucController;
 use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\ChatLieuController;
@@ -34,6 +35,7 @@ Route::get('admin/thongKe', [homeController::class, "index"]);
 Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
 Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
 
+Route::resource('admin/DanhMuc', DanhMucController::class);
 Route::resource('admin/SanPham', SanPhamController::class);
 Route::resource('/admin/ThanhVien', ThanhVienController::class );
 Route::resource('/admin/BaiViet', BaiVietController::class);
