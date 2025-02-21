@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\admins;
+namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SanPhamController extends Controller
+class DanhMucBaiVietController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view("admins.SanPham.DanhSach");
+        return view('admins.DanhMucBaiViet.danhSach');
     }
 
     /**
@@ -20,7 +20,7 @@ class SanPhamController extends Controller
      */
     public function create()
     {
-        return view("admins.SanPham.TaoSanPham");
+        return view('admins.DanhMucBaiViet.taoDanhMucBaiViet');
     }
 
     /**
@@ -36,7 +36,7 @@ class SanPhamController extends Controller
      */
     public function show(string $id)
     {
-        return view("admins.SanPham.ChiTiet", compact("id"));
+        //
     }
 
     /**
@@ -44,7 +44,7 @@ class SanPhamController extends Controller
      */
     public function edit(string $id)
     {
-        return view("admins.SanPham.SuaSanPham", compact("id"));
+        return view('admins.DanhMucBaiViet.suaDanhMucBaiViet', compact('id'));
     }
 
     /**
