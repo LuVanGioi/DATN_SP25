@@ -12,7 +12,7 @@
                     <h5>DANH MỤC BÀI VIẾT</h5>
                     <div class="d-flex">
                         <form action="{{ route('DanhMucBaiViet.index') }}" method="GET" class="d-flex">
-                            <input type="text" name="search" class="form-control me-2" placeholder="Tìm kiếm..."
+                            <input type="text" name="search" class="form-control me-2" placeholder="Tìm kiếm... 🔎"
                                 value="{{ request('search') }}" style="max-width: 300px;">
                             <button type="submit" class="btn btn-primary btn-sm">Tìm</button>
                         </form>
@@ -49,9 +49,33 @@
                         </table>
                     </div>
 
-                    {{-- <div class="d-flex justify-content-end mt-3">
-                        {{ $danhSach->appends(['search' => request('search')])->links() }}
-                    </div> --}}
+                    <div class="d-flex justify-content-end mt-3">
+                        <nav>
+                            <ul class="pagination">
+                                @if ($danhSach->onFirstPage())
+                                    <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
+                                @else
+                                    <li class="page-item"><a class="page-link"
+                                            href="{{ $danhSach->previousPageUrl() }}">Trước</a></li>
+                                @endif
+
+                                @for ($i = 1; $i <= $danhSach->lastPage(); $i++)
+                                    @if ($i == $danhSach->currentPage())
+                                        <li class="page-item active"><a class="page-link" href="#">{{ $i }}</a></li>
+                                    @else
+                                        <li class="page-item"><a class="page-link" href="{{ $danhSach->url($i) }}">{{ $i }}</a></li>
+                                    @endif
+                                @endfor
+
+                                @if ($danhSach->hasMorePages())
+                                    <li class="page-item"><a class="page-link" href="{{ $danhSach->nextPageUrl() }}">Sau</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled"><a class="page-link" href="#">Sau</a></li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
