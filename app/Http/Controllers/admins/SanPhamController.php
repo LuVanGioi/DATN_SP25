@@ -12,7 +12,7 @@ class SanPhamController extends Controller
      */
     public function index()
     {
-        return view("admins.SanPham.danhSach");
+        return view("admins.SanPham.DanhSach");
     }
 
     /**
@@ -20,7 +20,7 @@ class SanPhamController extends Controller
      */
     public function create()
     {
-        return view("admins.SanPham.taoSanPham");
+        return view("admins.SanPham.TaoSanPham");
     }
 
     /**
@@ -36,7 +36,7 @@ class SanPhamController extends Controller
      */
     public function show(string $id)
     {
-        return view("admins.SanPham.chiTiet", compact("id"));
+        return view("admins.SanPham.ChiTiet", compact("id"));
     }
 
     /**
@@ -44,7 +44,7 @@ class SanPhamController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view("admins.SanPham.SuaSanPham", compact("id"));
     }
 
     /**

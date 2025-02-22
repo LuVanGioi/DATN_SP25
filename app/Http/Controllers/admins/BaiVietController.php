@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\admins;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class KhachHangController extends Controller
+class BaiVietController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $khachHang = DB::table('khach_hang')->orderByDesc('id')->get();
-        return view('admins.KhachHang.DanhSach',compact('khachHang'));
+        return view('admins.BaiViet.danhSach');
     }
 
     /**
@@ -22,7 +20,7 @@ class KhachHangController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.BaiViet.taoBaiViet');
     }
 
     /**
@@ -38,8 +36,7 @@ class KhachHangController extends Controller
      */
     public function show(string $id)
     {
-        $chiTiet = DB::table('khach_hang')->find($id);
-        return view("admins.KhachHang.chiTiet", compact("chiTiet"));
+        return view('admins.BaiViet.chiTiet', compact('id'));
     }
 
     /**
@@ -47,7 +44,7 @@ class KhachHangController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admins.BaiViet.suaBaiViet', compact('id'));
     }
 
     /**

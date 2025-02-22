@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-<title>Danh Sách Sản Phẩm - ADMIN</title>
+<title>Danh Sách Thương Hiệu Sản Phẩm - ADMIN</title>
 @endsection
 
 @section("main")
@@ -9,11 +9,11 @@
     <div class="container-fluid pt-3">
         <div class="card">
             <div class="card-header">
-                <h5>DANH SÁCH SẢN PHẨM</h5>
+                <h5>DANH SÁCH THƯƠNG HIỆU</h5>
             </div>
             <div class="card-body">
                 <div class="text-end">
-                    <a href="/admin/SanPham/create" class="btn btn-primary btn-sm">Thêm Sản Phẩm</a>
+                    <a href="/admin/ThuongHieu/create" class="btn btn-primary btn-sm">Thêm Thương Hiệu</a> <a href="/admin/ThungRac" class="btn btn-dark btn-sm">Thùng Rác</a>
                 </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
@@ -23,35 +23,31 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
-                                            <th>Danh Mục</th>
                                             <th>Tên</th>
-                                            <th>Chất Liệu</th>
-                                            <th>Thương Hiệu</th>
-                                            <th>Trạng Thái</th>
+                                            <th>Ngày Thêm</th>
+                                            <th>Ngày Sửa</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($danhSach as $index => $row)
                                         <tr>
-                                            <td>1</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $row->TenThuongHieu }}</td>
+                                            <td>{{ $row->created_at }}</td>
+                                            <td>{{ $row->updated_at }}</td>
                                             <td>
-                                                <a href="/admin/SanPham/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
+                                                <a href="/admin/ThuongHieu/{{ $row->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
 
-                                                <a href="/admin/SanPham/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
-
-                                                <form action="/admin/SanPham/{{ "1234" }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <form action="/admin/ThuongHieu/{{ $row->id }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
+                                                    <input type="hidden" name="table" value="thuong_hieu">
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                                 </form>
                                             </td>
                                         </tr>
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
