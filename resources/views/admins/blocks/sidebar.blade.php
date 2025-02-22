@@ -22,7 +22,7 @@
       </li>
       <li class="pin-title sidebar-main-title">
         <div>
-          <h6>GHIM</h6>
+          <h6>PIN</h6>
         </div>
       </li>
       <li class="sidebar-main-title">

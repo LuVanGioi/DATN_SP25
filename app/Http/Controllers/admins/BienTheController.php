@@ -33,33 +33,7 @@ class BienTheController extends Controller
      */
     public function store(BienTheRequest $request)
     {
-        DB::beginTransaction();
-
-        $infoBienThe = DB::table("bien_the")->where("TenBienThe", $request->input("TenBienThe"))->first();
-
-        if (!$infoBienThe) {
-            DB::table("bien_the")->insert([
-                "TenBienThe" => $request->input("TenBienThe"),
-                "created_at" => date("Y/m/d H:i:s")
-            ]);
-
-            DB::commit();
-        }
-
-
-        foreach ($request->input("GiaTriBienThe") as $row) {
-            if ($row) {
-                DB::table("gia_tri_bien_the")->insert([
-                    "ID_BienThe" => $infoBienThe->id,
-                    "TenGiaTri" => $row,
-                    "created_at" => date("Y/m/d H:i:s")
-                ]);
-            }
-        }
-
-        DB::commit();
-
-        return redirect()->route("BienThe.index")->with("success", "Thêm Biến Thể Thành Công!");
+        //
     }
 
 
