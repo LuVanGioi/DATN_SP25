@@ -13,14 +13,16 @@
                         <h5>SỬA DANH MỤC</h5>
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('DanhMuc.update', $thongTin->id) }}" method="POST" enctype="multipart/form-data">
+                            @method("PUT")
+                            @csrf
                             <div class="card-header text-center">
                                 <h5>SỬA DANH MỤC</h5>
                             </div>
                             <div class="mb-3">
-                                <label for="title">Tên Danh Mục</label>
-                                <input class="form-control" type="text" name="title" id="title" placeholder="Quần dài thể thao"
-                                    required>
+                                <label for="TenDanhMucSanPham">Tên Danh Mục</label>
+                                <input class="form-control" type="text" name="TenDanhMucSanPham" id="TenDanhMucSanPham" placeholder="Quần dài thể thao"
+                                    value="{{ $thongTin->TenDanhMucSanPham }}" required>
                             </div>
                             <div class="text-end">
                                 <button class="btn btn-primary me-3" type="submit">Cập Nhật</button>
@@ -31,7 +33,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <a href="/admin/DanhMuc" class="btn btn-sm btn-light">Quay Lại</a>
+                                    <a href="{{ route('DanhMuc.index') }}" class="btn btn-sm btn-light">Quay Lại</a>
                                 </div>
                             </div>
                         </div>

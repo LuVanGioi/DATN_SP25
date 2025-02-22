@@ -9,69 +9,49 @@
         <div class="container-fluid pt-3">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5>DANH MỤC SẢN PHẨM</h5>
-                    <div class="text-end">
-                        <a href="{{ route("DanhMuc.create") }}" class="btn btn-success btn-sm">Thêm Danh Mục</a>
+                    <h5>DANH MỤC SẢn PHẨM</h5>
+                    <div class="d-flex">
+                        <form action="{{ route('DanhMuc.index') }}" method="GET" class="d-flex">
+                            <input type="text" name="search" class="form-control me-2" placeholder="Tìm kiếm..."
+                                value="{{ request('search') }}" style="max-width: 300px;">
+                            <button type="submit" class="btn btn-primary btn-sm">Tìm</button>
+                        </form>
+                        <a href="{{ route('DanhMuc.create') }}" class="btn btn-success btn-sm ms-2">Thêm</a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive dt-responsive">
-                        <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
-                            <table class="table table-striped table-bordered nowrap dataTable">
-                                <thead class="table-dark">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Danh Mục</th>
+                                    <th>Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($danhSach as $danhMuc)
                                     <tr>
-                                        <th>#</th>
-                                        <th>Danh Mục</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Quần dài thể thao</td>
+                                        <td>{{ $danhMuc->id }}</td>
+                                        <td>{{ $danhMuc->TenDanhMucSanPham }}</td>
                                         <td>
-                                            <a href="/admin/DanhMuc/{{ "1234" }}/edit"
+                                            <a href="{{ route('DanhMuc.edit', $danhMuc->id) }}"
                                                 class="btn btn-primary btn-sm">Sửa</a>
-                                            <form action="/admin/DanhMuc/{{ "1234" }}" method="POST" class="d-inline"
-                                                onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                                @csrf
-                                                @method("DELETE")
+                                            <form action="{{ route('DanhMuc.destroy', $danhMuc->id) }}" method="POST"
+                                                class="d-inline" onsubmit="return confirm('Xóa?');">
+                                                @csrf @method("DELETE")
                                                 <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                             </form>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Áo khoác thể thao</td>
-                                        <td>
-                                            <a href="/admin/DanhMuc/{{ "1234" }}/edit"
-                                                class="btn btn-primary btn-sm">Sửa</a>
-                                            <form action="/admin/DanhMuc/{{ "1234" }}" method="POST" class="d-inline"
-                                                onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Áo cộc thể thao</td>
-                                        <td>
-                                            <a href="/admin/DanhMuc/{{ "1234" }}/edit"
-                                                class="btn btn-primary btn-sm">Sửa</a>
-                                            <form action="/admin/DanhMuc/{{ "1234" }}" method="POST" class="d-inline"
-                                                onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                                @csrf
-                                                @method("DELETE")
-                                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
+
+                    {{-- <div class="d-flex justify-content-end mt-3">
+                        {{ $danhSach->appends(['search' => request('search')])->links() }}
+                    </div> --}}
                 </div>
             </div>
         </div>
