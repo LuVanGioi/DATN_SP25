@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('bai_viet', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-        });
-
-        Schema::table('bai_viet', function (Blueprint $table) {
             $table->string('hinh_anh')->nullable();
             $table->string('tieu_de');
             $table->foreignId('danh_muc_id')->constrained('danh_muc_bai_viet');
             $table->string('tac_gia');
             $table->text('noi_dung');
             $table->timestamp('ngay_dang')->useCurrent();
+            $table->string('Xoa')->default(0);
+            $table->string('deleted_at')->nullable();
+            $table->timestamps();
         });
     }
 
