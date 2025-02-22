@@ -13,43 +13,40 @@
                         <h5>SỬA BÀI VIẾT</h5>
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="card-header text-center">
-                                <h5>SỬA BÀI VIẾT</h5>
-                            </div>
+                        <form action="{{ route('BaiViet.update', $baiViet->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
                             <div class="mb-3">
                                 <label>Hình Ảnh</label>
                                 <div>
-                                    <img class="img-fluid"
-                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMzusCp2hUNtwjDEwynboK6kw2GyJejpeTgg&s"
-                                        alt="Hình ảnh bài viết">
+                                    <img class="img-fluid" src="{{ asset('storage/' . $baiViet->hinh_anh) }}" alt="Hình ảnh bài viết">
                                 </div>
+                                <input class="form-control mt-2" type="file" name="hinh_anh" id="hinh_anh">
                             </div>
                             <div class="mb-3">
-                                <label for="title">Tiêu Đề</label>
-                                <input class="form-control" type="text" name="title" id="title" placeholder="Bài viết mẫu"
-                                    required>
+                                <label for="tieu_de">Tiêu Đề</label>
+                                <input class="form-control" type="text" name="tieu_de" id="tieu_de" value="{{ $baiViet->tieu_de }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="category">Danh Mục</label>
-                                <select class="form-control" name="category" id="category" required>
+                                <label for="danh_muc_id">Danh Mục</label>
+                                <select class="form-control" name="danh_muc_id" id="danh_muc_id" required>
                                     <option value="">Chọn danh mục</option>
-                                    <option value="tin-tuc">Tin Tức</option>
-                                    <option value="su-kien">Sự Kiện</option>
-                                    <option value="cong-nghe">Công Nghệ</option>
-                                    <option value="giao-duc">Giáo Dục</option>
-                                    <option value="giao-duc">Kinh Tế</option>
-                                    <option value="giao-duc">Giao Thông</option>
+                                    @foreach($danhMuc as $dm)
+                                        <option value="{{ $dm->id }}" {{ $baiViet->danh_muc_id == $dm->id ? 'selected' : '' }}>{{ $dm->TenDanhMucBaiViet }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="author">Tác Giả</label>
-                                <input class="form-control" type="text" name="author" id="author" placeholder="Nguyễn Văn A"
-                                    required>
+                                <label for="tac_gia">Tác Giả</label>
+                                <input class="form-control" type="text" name="tac_gia" id="tac_gia" value="{{ $baiViet->tac_gia }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="publish_date">Ngày Đăng</label>
-                                <input class="form-control" type="date" name="publish_date" id="publish_date" required>
+                                <label for="ngay_dang">Ngày Đăng</label>
+                                <input class="form-control" type="date" name="ngay_dang" id="ngay_dang" value="{{ \Carbon\Carbon::parse($baiViet->ngay_dang)->format('Y-m-d') }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="noi_dung">Nội Dung</label>
+                                <textarea class="form-control" name="noi_dung" id="noi_dung" rows="5" required>{{ $baiViet->noi_dung }}</textarea>
                             </div>
                             <div class="text-end">
                                 <button class="btn btn-primary me-3" type="submit">Cập Nhật</button>
@@ -60,7 +57,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <a href="/admin/BaiViet" class="btn btn-sm btn-light">Quay Lại</a>
+                                    <a href="{{ route('BaiViet.index') }}" class="btn btn-sm btn-light">Quay Lại</a>
                                 </div>
                             </div>
                         </div>
