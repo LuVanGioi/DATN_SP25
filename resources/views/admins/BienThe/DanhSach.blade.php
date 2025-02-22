@@ -56,34 +56,6 @@
                                                 <a href="{{ route("BienThe.edit", $BienThe->id) }}" class="btn btn-primary btn-sm"><i class="fal fa-edit"></i> Sửa</a>
                                             </td>
                                         </tr>
-
-                                        <!-- <div class="modal fade" id="ModalGiaTri_{{ $BienThe->id }}" tabindex="-1" aria-labelledby="ModalGiaTri_{{ $BienThe->id }}" aria-modal="true" role="dialog">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <form action="{{ route("GiaTriBienThe.index") }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="ID_BienThe" value="{{ $BienThe->id }}">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLongTitle">Thêm Giá Trị Biến Thể</h5>
-                                                            <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label>Tên Giá Trị</label>
-                                                                <input class="form-control @error(" TenGiaTri") is-invalid border-danger @enderror" type="text" name="TenGiaTri" placeholder="Tên Giá Trị Biến Thể" value="{{ old("TenGiaTri") }}" required>
-                                                                @error("TenGiaTri")
-                                                                <p class="text-danger">{{ $message }}</p>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-sm btn-dark" data-bs-dismiss="modal">Đóng</button>
-                                                            <button class="btn btn-sm btn-primary" type="submit">Thêm Giá Trị</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div> -->
                                         @endforeach
                                     </tbody>
                                 </table>
