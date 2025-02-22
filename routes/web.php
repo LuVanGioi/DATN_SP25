@@ -5,13 +5,14 @@ use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\admins\DanhMucController;
 use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\BaiVietController;
-use App\Http\Controllers\admins\CouponController;
+use App\Http\Controllers\admins\MaGiamGiaMaController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\ThungRacController;
 use App\Http\Controllers\admins\ThanhVienController;
 use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\GiaTriBienTheController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
+use App\Http\Controllers\admins\MaGiamGiaController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 
 /*
