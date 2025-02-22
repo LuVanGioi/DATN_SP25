@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-    <title>Sửa Danh Mục Bài Viết - ADMIN</title>
+    <title>Thêm Danh Mục - ADMIN</title>
 @endsection
 
 @section("main")
@@ -10,20 +10,20 @@
             <div class="col-md-8 col-lg-6">
                 <div class="card shadow-sm">
                     <div class="card-header text-center">
-                        <h5>SỬA DANH MỤC BÀI VIẾT</h5>
+                        <h5>THÊM DANH MỤC MỚI</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('DanhMucBaiViet.update', $danhMuc->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <div class="card-header text-center">
+                                <h5>THÊM DANH MỤC MỚI</h5>
+                            </div>
                             <div class="mb-3">
-                                <label for="TenDanhMucBaiViet">Tên Danh Mục Bài Viết</label>
-                                <input class="form-control" type="text" name="TenDanhMucBaiViet" id="TenDanhMucBaiViet"
-                                    value="{{ $danhMuc->TenDanhMucBaiViet }}" required>
+                                <label for="title">Tên Danh Mục</label>
+                                <input class="form-control" type="text" name="title" id="title" placeholder="Tên Danh Mục"
+                                    required>
                             </div>
                             <div class="text-end">
-                                <button class="btn btn-primary me-3" type="submit">Cập Nhật</button>
+                                <button class="btn btn-primary me-3" type="submit">Thêm Ngay</button>
                                 <button class="btn btn-secondary" type="reset">Đặt Lại</button>
                             </div>
                         </form>
@@ -31,7 +31,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <a href="/admin/DanhMucBaiViet" class="btn btn-sm btn-light">Quay Lại</a>
+                                    <a href="/admin/DanhMuc" class="btn btn-sm btn-light">Quay Lại</a>
                                 </div>
                             </div>
                         </div>

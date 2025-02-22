@@ -32,14 +32,14 @@
       </li>
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/thongKe">
+        <a class="sidebar-link" href="{{ route(name: "home.index") }}">
           <i class="fa-light fa-objects-column"></i>
           <span>Thống Kê</span>
         </a>
       </li>
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/ThanhVien">
+        <a class="sidebar-link" href="{{ route("ThanhVien.index") }}">
           <i class="fal fa-users"></i>
           <span>Khách Hàng</span>
         </a>
@@ -50,8 +50,8 @@
           <i class="fa-light fa-layer-group"></i>
           <span>Danh Mục</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/DanhMuc">Danh Sách</a></li>
-          <li><a href="/admin/DanhMuc/create">Tạo Danh Mục</a></li>
+          <li><a href="{{ route("DanhMuc.index") }}">Danh Sách</a></li>
+          <li><a href="{{ route("DanhMuc.create") }}">Tạo Danh Mục</a></li>
         </ul>
       </li>
       <li class="sidebar-list">
@@ -60,10 +60,10 @@
           <i class="fa-light fa-grid-2-plus"></i>
           <span>Sản Phẩm</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/ChatLieu">Chất Liệu</a></li>
-          <li><a href="/admin/ThuongHieu">Thương Hiệu</a></li>
-          <li><a href="/admin/SanPham">Sản Phẩm</a></li>
-          <li><a href="/admin/BienThe/create">Biến Thể</a></li>
+          <li><a href="{{ route("ChatLieu.index") }}">Chất Liệu</a></li>
+          <li><a href="{{ route("ThuongHieu.index") }}">Thương Hiệu</a></li>
+          <li><a href="{{ route("BienThe.index") }}">Biến Thể</a></li>
+          <li><a href="{{ route("SanPham.index") }}">Sản Phẩm</a></li>
         </ul>
       </li>
       <li class="sidebar-list">
@@ -72,8 +72,8 @@
           <i class="fa-solid fa-newspaper"></i>
           <span>Bài Viết</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="/admin/DanhMucBaiViet">Danh Mục</a></li>
-          <li><a href="/admin/BaiViet">Bài Viết</a></li>
+          <li><a href="{{ route("DanhMucBaiViet.index") }}">Danh Mục</a></li>
+          <li><a href="{{ route("BaiViet.index") }}">Bài Viết</a></li>
         </ul>
       </li>
 
@@ -116,7 +116,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/ThongTinLienHe">
+        <a class="sidebar-link" href="{{ route("ThongTinLienHe.index") }}">
           <i class="fa-light fa-headset"></i>
           <span>Thông Tin Liên Hệ</span>
         </a>

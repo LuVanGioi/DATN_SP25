@@ -4,15 +4,25 @@ namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DanhMucBaiVietController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admins.DanhMucBaiViet.danhSach');
+        $search = $request->input('search');
+        $query = DB::table('danh_muc_bai_viet')->where('Xoa', 0);
+
+        if ($search) {
+            $query->where('TenDanhMucBaiViet', 'like', '%' . $search . '%');
+        }
+
+        $danhSach = $query->orderByDesc('id')->paginate(10);
+
+        return view('admins.DanhMucBaiViet.danhSach', compact('danhSach', 'search'));
     }
 
     /**
@@ -28,15 +38,23 @@ class DanhMucBaiVietController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'TenDanhMucBaiViet' => 'required|max:255',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        DB::beginTransaction();
+        try {
+            DB::table('danh_muc_bai_viet')->insert([
+                'TenDanhMucBaiViet' => $request->TenDanhMucBaiViet,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            DB::commit();
+            return redirect()->route('DanhMucBaiViet.index')->with('success', 'Thêm danh mục bài viết thành công');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
+        }
     }
 
     /**
@@ -44,7 +62,8 @@ class DanhMucBaiVietController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admins.DanhMucBaiViet.suaDanhMucBaiViet', compact('id'));
+        $danhMuc = DB::table('danh_muc_bai_viet')->where('id', $id)->first();
+        return view('admins.DanhMucBaiViet.suaDanhMucBaiViet', compact('danhMuc'));
     }
 
     /**
@@ -52,7 +71,22 @@ class DanhMucBaiVietController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'TenDanhMucBaiViet' => 'required|max:255',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            DB::table('danh_muc_bai_viet')->where('id', $id)->update([
+                'TenDanhMucBaiViet' => $request->TenDanhMucBaiViet,
+                'updated_at' => now(),
+            ]);
+            DB::commit();
+            return redirect()->route('DanhMucBaiViet.index')->with('success', 'Sửa danh mục bài viết thành công');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Sửa danh mục bài viết thất bại');
+        }
     }
 
     /**
@@ -60,6 +94,17 @@ class DanhMucBaiVietController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            DB::table('danh_muc_bai_viet')->where('id', $id)->update([
+                'Xoa' => 1,
+                'updated_at' => now(),
+            ]);
+            DB::commit();
+            return redirect()->route('DanhMucBaiViet.index')->with('success', 'Xóa danh mục bài viết thành công');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Xóa danh mục bài viết thất bại');
+        }
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\admins;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class SanPhamController extends Controller
 {
@@ -12,7 +13,8 @@ class SanPhamController extends Controller
      */
     public function index()
     {
-        return view("admins.SanPham.DanhSach");
+        $danhSach = DB::table("san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
+        return view("admins.SanPham.DanhSach", compact("danhSach"));
     }
 
     /**
@@ -20,7 +22,15 @@ class SanPhamController extends Controller
      */
     public function create()
     {
-        return view("admins.SanPham.TaoSanPham");
+        $danhSachDanhMuc = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
+        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
+        $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
+        $danhSachBienThe = DB::table("bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
+        $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
+        $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
+
+
+        return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo"));
     }
 
     /**

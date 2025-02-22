@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\admins;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
-class ThanhVienController extends Controller
+class DanhMucController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admins.ThanhVien.DanhSach');
-
+        return view('admins.DanhMuc.danhSach');
     }
 
     /**
@@ -21,7 +20,7 @@ class ThanhVienController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.DanhMuc.taoDanhMuc');
     }
 
     /**
@@ -32,13 +31,13 @@ class ThanhVienController extends Controller
         //
     }
 
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        return view('admins.ThanhVien.ChiTiet', compact('id'));
-
+        //
     }
 
     /**
@@ -46,7 +45,7 @@ class ThanhVienController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admins.DanhMuc.suaDanhMuc', compact('id'));
     }
 
     /**

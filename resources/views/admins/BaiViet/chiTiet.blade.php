@@ -11,13 +11,13 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">
-                            <h5>THÔNG TIN BÀI VIẾT: <b>{{ $id }}</b></h5>
+                            <h5>THÔNG TIN BÀI VIẾT: <b>{{ $baiViet->id }}</b></h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMzusCp2hUNtwjDEwynboK6kw2GyJejpeTgg&s" class="img-fluid rounded"
+                                        <img src="{{ asset('storage/' . $baiViet->hinh_anh) }}" class="img-fluid rounded"
                                             alt="">
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Tiêu Đề</label>
-                                        <input class="form-control" type="text" value="Tiêu Đề Bài Viết" readonly>
+                                        <input class="form-control" type="text" value="{{ $baiViet->tieu_de }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,8 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Danh Mục</label>
-                                        <input class="form-control" type="text" value="Danh Mục Bài Viết" readonly>
+                                        <input class="form-control" type="text" value="{{ $baiViet->danh_muc_id }}"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +46,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Tác Giả</label>
-                                        <input class="form-control" type="text" value="Tên Tác Giả" readonly>
+                                        <input class="form-control" type="text" value="{{ $baiViet->tac_gia }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +55,9 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Ngày Đăng</label>
-                                        <input class="form-control" type="text" value="DD/MM/YYYY" readonly>
+                                        <input class="form-control" type="text"
+                                            value="{{ \Carbon\Carbon::parse($baiViet->ngay_dang)->format('d/m/Y') }}"
+                                            readonly>
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +66,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Nội Dung</label>
-                                        <textarea class="form-control" name="" id=""></textarea>
+                                        <textarea class="form-control" rows="5" readonly>{{ $baiViet->noi_dung }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +74,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <a href="/admin/BaiViet" class="btn btn-sm btn-light">Quay Lại</a>
+                                        <a href="{{ route('BaiViet.index') }}" class="btn btn-sm btn-light">Quay Lại</a>
                                     </div>
                                 </div>
                             </div>
@@ -86,18 +89,13 @@
                         </div>
                         <div class="card-body">
                             <ul class="list-group">
-                                <a class="list-group-item list-group-item-action" href="javascript:void(0)">
-                                    <img class="rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtCGSaflZFXPpVcwAmxALZBL4pBejUAcTdzA&s" alt=""> Tiêu Đề
-                                    1
-                                </a>
-                                <a class="list-group-item list-group-item-action" href="javascript:void(0)">
-                                    <img class="rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbRShMUJbuh41tJZ5w-R7dXzAMKNlvTVZ0Qw&s" alt=""> Tiêu Đề
-                                    2
-                                </a>
-                                <a class="list-group-item list-group-item-action" href="javascript:void(0)">
-                                    <img class="rounded-circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_TkJs6TBd34pEwiQsX0vILY5e5IMnu3-0vQ&s" alt=""> Tiêu Đề
-                                    3
-                                </a>
+                                @foreach($baiVietLienQuan as $bai)
+                                    <a class="list-group-item list-group-item-action"
+                                        href="{{ route('baiViet.show', $bai->id) }}">
+                                        <img class="rounded-circle" src="{{ asset('storage/' . $bai->hinh_anh) }}" alt=""
+                                            style="width: 30px; height: 30px;"> {{ $bai->tieu_de }}
+                                    </a>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
