@@ -48,9 +48,6 @@ Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('admin/ChatLieu', ChatLieuController::class);
 Route::resource('admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('admin/BienThe', BienTheController::class);
-Route::post('admin/GiaTriBienThe', [GiaTriBienTheController::class, "createValue"])->name('GiaTriBienThe.index');
-Route::get('admin/GiaTriBienThe/{id}/destroy', [GiaTriBienTheController::class, "destroy"])->name('GiaTriBienThe.destroy');
-
 
 Route::prefix('admin/maGiamGia')->group(function () {
     Route::resource('/', CouponController::class)->names([
