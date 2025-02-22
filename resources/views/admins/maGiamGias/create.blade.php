@@ -9,7 +9,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2 class="text-left">Thêm Mã Giảm Giá</h2>
-            <form action="{{ route('coupons.store') }}" method="POST">
+            <form action="{{ route('maGiamGias.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Tên Mã</label>
@@ -55,7 +55,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-success">Thêm Mã Giảm Giá</button>
-                <a href="{{ route('coupons.index') }}" class="btn btn-secondary">Quay Lại</a>
+                <a href="{{ route('maGiamGias.index') }}" class="btn btn-secondary">Quay Lại</a>
             </form>
         </div>
     </div>
