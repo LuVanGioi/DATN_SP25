@@ -25,11 +25,12 @@ class SanPhamController extends Controller
         $danhSachDanhMuc = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
-
         $danhSachBienThe = DB::table("bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
+        $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
+        $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
 
-        $danhSachGiaTriBienThe = DB::table("gia_tri_bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
-        return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "danhSachGiaTriBienThe"));
+
+        return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo"));
     }
 
     /**

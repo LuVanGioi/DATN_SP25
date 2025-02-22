@@ -11,40 +11,38 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5>CHỈNH SỬA BIẾN THỂ</h5>
+                        <h5>CHỈNH SỬA BIẾN THỂ <b class="text-primary">{{ $thongTinBienThe->TenBienThe }}</b></h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route("BienThe.update", $thongTinBienThe->id) }}" class="form theme-form" method="POST">
                             @csrf
                             @method("PUT")
                             <div class="row">
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label>Tên Biến Thể</label>
-                                        <input class="form-control @error(" TenBienThe") is-invalid border-danger @enderror" type="text" name="TenBienThe" placeholder="Tên Biến Thể" value="{{ $thongTinBienThe->TenBienThe }}" required>
-                                        @error("TenBienThe")
-                                        <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
 
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Giá Trị Biến Thể</label>
-                                        @foreach($thongTinGiaTriBienThe as $GiaTriBienThe)
+                                        @if ($thongTinBienThe->id == 1)
+                                        @foreach($thongTinKichCo as $kichCo)
                                         <div class="mb-1">
-                                            <input type="hidden" name="ID_GiaTri[]" value="{{ $GiaTriBienThe->id }}">
-                                            <input class="form-control @error(" GiaTriBienThe[]") is-invalid border-danger @enderror" type="text" name="GiaTriBienThe[]" placeholder="Nhập Tên Giá Trị" value="{{ $GiaTriBienThe->TenGiaTri }}">
-                                            <!-- <form action="{{ route("GiaTriBienThe.destroy", $GiaTriBienThe->id) }}" method="GET" onsubmit="return confirm('Bạn có muốn xóa giá trị này không?'); ">
-                                                @csrf
-                                                <input type="hidden" name="ID_GiaTri" value="{{ $GiaTriBienThe->id }}">
-                                                <button class="btn btn-outline-danger" type="submit"><i class="fal fa-trash"></i></button>
-                                            </form> -->
+                                            <input type="hidden" name="ID_GiaTri[]" value="{{ $kichCo->id }}">
+                                            <input class="form-control @error(" GiaTriBienThe[]") is-invalid border-danger @enderror" type="text" name="GiaTriBienThe[]" placeholder="Nhập Tên Giá Trị" value="{{ $kichCo->TenKichCo }}">
                                             @error("GiaTriBienThe[]")
                                             <p class="text-danger">{{ $message }}</p>
                                             @enderror
                                         </div>
                                         @endforeach
+                                        @else
+                                        @foreach($thongTinMauSac as $MauSac)
+                                        <div class="mb-1">
+                                            <input type="hidden" name="ID_GiaTri[]" value="{{ $MauSac->id }}">
+                                            <input class="form-control @error(" GiaTriBienThe[]") is-invalid border-danger @enderror" type="text" name="GiaTriBienThe[]" placeholder="Nhập Tên Giá Trị" value="{{ $MauSac->TenMauSac }}">
+                                            @error("GiaTriBienThe[]")
+                                            <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        @endforeach
+                                        @endif
                                         <div id="danhSachNhapGiaTri"></div>
 
                                         <button type="button" onclick="themNhapGiaTriBienThe()" class="btn btn-sm btn-danger mt-2"><i class="fal fa-plus"></i> Thêm Giá Trị</button>

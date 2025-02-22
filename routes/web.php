@@ -13,6 +13,7 @@ use App\Http\Controllers\admins\ThanhVienController;
 use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\GiaTriBienTheController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
+use App\Http\Controllers\admins\ThongTinLienHeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,7 @@ Route::get('/', function () {
 
 #ADMIN
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
-Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
+Route::get('admin/ThungRac', [ThungRacController::class, "index"])->name('ThungRac.index');
 Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
 
 Route::resource('admin/DanhMuc', DanhMucController::class);
@@ -66,4 +67,4 @@ Route::prefix('admin/maGiamGia')->group(function () {
 Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('/admin/ChatLieu', ChatLieuController::class);
 Route::resource('/admin/ThuongHieu', ThuongHieuController::class);
-
+Route::resource('/admin/ThongTinLienHe', ThongTinLienHeController::class);
