@@ -142,42 +142,48 @@
                             <h5>BIẾN THỂ SẢN PHẨM</h5>
                         </div>
                         <div class="card-body">
-                            <ul class="danhSachBienTheNutBam">
-                                @foreach ($danhSachBienThe as $BienTheNutBam)
-                                <li class="nutBienThe" onclick="viewFormInputBienThe('textM{{ $BienTheNutBam->id }}', '{{ $BienTheNutBam->TenBienThe }}')" id="textM{{ $BienTheNutBam->id }}NutBam">{{ $BienTheNutBam->TenBienThe }}</li>
-                                @endforeach
-                            </ul>
-
                             <div class="card mt-3">
                                 <div class="card-body">
                                     <div class="row">
                                         @foreach ($danhSachBienThe as $BienTheNutBam1)
-                                        <div class="col-md-6 formViewBienThe" id="textM{{ $BienTheNutBam1->id }}">
-                                            @foreach ($danhSachGiaTriBienThe as $GiaTriBienThe)
-                                            @if ($GiaTriBienThe->ID_BienThe == $BienTheNutBam1->id)
+                                        <div class="col-md-12 view formViewBienThe" id="textM{{ $BienTheNutBam1->id }}">
+                                            @if ($BienTheNutBam1->id == 1)
+                                            @foreach ($thongTinKichCo as $KichCo)
                                             <div class="row">
                                                 <div class="col">
                                                     <small for="" class="label-control">{{ $BienTheNutBam1->TenBienThe }}</small>
-                                                    <div class="colorProducts">{{ $GiaTriBienThe->TenGiaTri }}</div>
+                                                    <div class="colorProducts">{{ $KichCo->TenKichCo }}</div>
                                                 </div>
 
-                                                <div class="col">
-                                                    <small for="" class="label-control">Giá Tiền</small>
-                                                    <input type="text" class="form-control form-control-sm" placeholder="Nhập Giá Tiền">
-                                                </div>
+                                                @foreach ($thongTinMauSac as $MauSacCon)
+                                                <div id="itemBienThe_{{ $MauSacCon->id }}" class="col">
+                                                    <div class="col">
+                                                        <small for="" class="label-control">Màu Sắc</small>
+                                                        <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
+                                                    </div>
 
-                                                <div class="col">
-                                                    <small for="" class="label-control">Số Lượng</small>
-                                                    <input type="text" class="form-control form-control-sm" placeholder="Nhập Số Lượng">
-                                                </div>
+                                                    <div class="col">
+                                                        <small for="" class="label-control">Giá Tiền</small>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Nhập Giá Tiền">
+                                                    </div>
 
-                                                <div class="col">
-                                                    <br>
-                                                    <button class="btn btn-danger btn-xs w-100"><i class="fal fa-trash"></i></button>
+                                                    <div class="col">
+                                                        <small for="" class="label-control">Số Lượng</small>
+                                                        <input type="text" class="form-control form-control-sm" placeholder="Nhập Số Lượng">
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <br>
+                                                        <button class="btn btn-danger btn-xs w-100" onclick="xoaGiaTriBienThe('itemBienThe_{{ $MauSacCon->id }}')"><i class="fal fa-trash"></i></button>
+                                                    </div>
                                                 </div>
+                                                @endforeach
+
+
                                             </div>
-                                            @endif
                                             @endforeach
+                                            @else
+                                            @endif
                                         </div>
                                         @endforeach
                                     </div>
@@ -219,6 +225,10 @@
             button.innerHTML = value;
             document.getElementById(id).classList.remove("view");
         }
+    }
+
+    function xoaGiaTriBienThe(id) {
+        document.getElementById(id).style.display = "none";
     }
 </script>
 @endsection

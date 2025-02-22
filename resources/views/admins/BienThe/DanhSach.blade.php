@@ -12,9 +12,6 @@
                 <h5>DANH SÁCH BIẾN THỂ</h5>
             </div>
             <div class="card-body">
-                <div class="text-end">
-                    <a href="/admin/BienThe/create" class="btn btn-primary btn-sm">Thêm Biến Thể</a>
-                </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
                         <div class="row dt-row">
@@ -34,19 +31,22 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $BienThe->TenBienThe }}</td>
                                             <td>
-                                                @foreach ($danhSachGiaTriBienThe as $index => $GiaTri)
-                                                @if ($GiaTri->ID_BienThe == $BienThe->id)
-                                                <span class="badge bg-dark">{{ $GiaTri->TenGiaTri }}</span>
-                                                @endif
+                                                @if ($BienThe->id == 1)
+                                                @foreach ($thongTinKichCo as $index => $KichCo)
+                                                <span class="badge bg-dark">{{ $KichCo->TenKichCo }}</span>
                                                 @endforeach
-                                                <span class="badge bg-danger cursor-p" data-bs-toggle="modal" data-original-title="test" data-bs-target="#ModalGiaTri_{{ $BienThe->id }}"><i class="fal fa-plus"></i></span>
+                                                @else
+                                                @foreach ($thongTinMauSac as $index => $MauSac)
+                                                <span class="badge bg-dark">{{ $MauSac->TenMauSac }}</span>
+                                                @endforeach
+                                                @endif
                                             </td>
                                             <td>
                                                 <a href="{{ route("BienThe.edit", $BienThe->id) }}" class="btn btn-primary btn-sm"><i class="fal fa-edit"></i> Sửa</a>
                                             </td>
                                         </tr>
 
-                                        <div class="modal fade" id="ModalGiaTri_{{ $BienThe->id }}" tabindex="-1" aria-labelledby="ModalGiaTri_{{ $BienThe->id }}" aria-modal="true" role="dialog">
+                                        <!-- <div class="modal fade" id="ModalGiaTri_{{ $BienThe->id }}" tabindex="-1" aria-labelledby="ModalGiaTri_{{ $BienThe->id }}" aria-modal="true" role="dialog">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <form action="{{ route("GiaTriBienThe.index") }}" method="POST">
@@ -59,7 +59,7 @@
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label>Tên Giá Trị</label>
-                                                                <input class="form-control @error("TenGiaTri") is-invalid border-danger @enderror" type="text" name="TenGiaTri" placeholder="Tên Giá Trị Biến Thể" value="{{ old("TenGiaTri") }}" required>
+                                                                <input class="form-control @error(" TenGiaTri") is-invalid border-danger @enderror" type="text" name="TenGiaTri" placeholder="Tên Giá Trị Biến Thể" value="{{ old("TenGiaTri") }}" required>
                                                                 @error("TenGiaTri")
                                                                 <p class="text-danger">{{ $message }}</p>
                                                                 @enderror
@@ -72,7 +72,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         @endforeach
                                     </tbody>
                                 </table>
