@@ -38,7 +38,6 @@ Route::get('/', function () {
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
 Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
 Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
-
 Route::resource('admin/DanhMuc', DanhMucController::class);
 Route::resource('admin/SanPham', SanPhamController::class);
 Route::resource('admin/ThanhVien', ThanhVienController::class );

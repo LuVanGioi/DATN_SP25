@@ -1,26 +1,25 @@
 @extends("admins.themes")
 
 @section("titleHead")
-    <title>Thêm Danh Mục - ADMIN</title>
+    <title>Thêm Danh Mục Sản Phẩm - ADMIN</title>
 @endsection
 
 @section("main")
+ <div class="page-body">
     <div class="container-fluid pt-3">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-md-8 col-lg-6">
                 <div class="card shadow-sm">
-                    <div class="card-header text-center">
+                    <div class="card-header">
                         <h5>THÊM DANH MỤC MỚI</h5>
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="card-header text-center">
-                                <h5>THÊM DANH MỤC MỚI</h5>
-                            </div>
+                        <form action="{{ route('DanhMuc.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="mb-3">
-                                <label for="title">Tên Danh Mục</label>
-                                <input class="form-control" type="text" name="title" id="title" placeholder="Tên Danh Mục"
-                                    required>
+                                <label for="TenDanhMucSanPham">Tên Danh Mục Sản Phẩm </label>
+                                <input class="form-control" type="text" name="TenDanhMucSanPham" id="TenDanhMucSanPham"
+                                    placeholder="Tên Danh Mục Sản Phẩm" required>
                             </div>
                             <div class="text-end">
                                 <button class="btn btn-primary me-3" type="submit">Thêm Ngay</button>
@@ -40,4 +39,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
