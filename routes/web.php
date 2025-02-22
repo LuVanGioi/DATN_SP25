@@ -51,7 +51,6 @@ Route::resource('maGiamGia', MaGiamGiaController::class)->names([
        'destroy' => 'maGiamGias.destroy',
     ]);
 });
-
 Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('/admin/ChatLieu', ChatLieuController::class);
 Route::resource('/admin/ThuongHieu', ThuongHieuController::class);
