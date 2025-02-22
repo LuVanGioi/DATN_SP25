@@ -59,7 +59,6 @@ Route::prefix('admin/maGiamGia')->group(function () {
         'destroy' => 'maGiamGias.destroy',
     ]);
 });
-
 Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('/admin/ChatLieu', ChatLieuController::class);
 Route::resource('/admin/ThuongHieu', ThuongHieuController::class);

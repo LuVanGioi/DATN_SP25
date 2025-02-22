@@ -71,22 +71,22 @@
                 <div class="d-flex justify-content-end mt-3">
                     <nav>
                         <ul class="pagination">
-                            @if ($couponsPaginator->onFirstPage())
+                            @if ($maGiamGiasPaginator->onFirstPage())
                                 <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
                             @else
-                                <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->previousPageUrl() }}">Trước</a></li>
+                                <li class="page-item"><a class="page-link" href="{{ $maGiamGiasPaginator->previousPageUrl() }}">Trước</a></li>
                             @endif
                             
-                            @for ($i = 1; $i <= $couponsPaginator->lastPage(); $i++)
-                                @if ($i == $couponsPaginator->currentPage())
+                            @for ($i = 1; $i <= $maGiamGiasPaginator->lastPage(); $i++)
+                                @if ($i == $maGiamGiasPaginator->currentPage())
                                     <li class="page-item active"><a class="page-link" href="#">{{ $i }}</a></li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->url($i) }}">{{ $i }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="{{ $maGiamGiasPaginator->url($i) }}">{{ $i }}</a></li>
                                 @endif
                             @endfor
                             
-                            @if ($couponsPaginator->hasMorePages())
-                                <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->nextPageUrl() }}">Sau</a></li>
+                            @if ($maGiamGiasPaginator->hasMorePages())
+                                <li class="page-item"><a class="page-link" href="{{ $maGiamGiansPaginator->nextPageUrl() }}">Sau</a></li>
                             @else
                                 <li class="page-item disabled"><a class="page-link" href="#">Sau</a></li>
                                 @endif
