@@ -41,6 +41,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+    <script src="//cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+
+
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+    
     <link rel="stylesheet" href="/admins/css/system.css?m={{time()}}">
 
     @yield("css")
@@ -60,18 +67,18 @@
         @include("admins.blocks.header")
 
         <div class="page-body-wrapper">
-        <div class="sidebar-wrapper" data-layout="stroke-svg">
-        @include("admins.blocks.sidebar")
-        </div>
+            <div class="sidebar-wrapper" data-layout="stroke-svg">
+                @include("admins.blocks.sidebar")
+            </div>
             @yield("main")
-            
+
             <footer class="footer">
-            @include("admins.blocks.foot")
+                @include("admins.blocks.foot")
             </footer>
         </div>
     </div>
 
-    <script src="/admins/js/jquery.min.js"></script>
+    <!-- <script src="/admins/js/jquery.min.js"></script> -->
     <script src="/admins/js/bootstrap.bundle.min.js"></script>
     <script src="/admins/js/feather.min.js"></script>
     <script src="/admins/js/feather-icon.js"></script>
@@ -95,8 +102,18 @@
     <script src="/admins/js/datepicker.js"></script>
     <script src="/admins/js/datepicker.en.js"></script>
     <script src="/admins/js/datepicker.custom.js"></script>
-    <script src="/admins/js/dashboard_3.js"></script>
     <script src="/admins/js/script.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.dataTable').DataTable();
+        });
+
+        document.querySelectorAll('.note-DATN').forEach((el) => {
+            CKEDITOR.replace(el);
+        });
+    </script>
+
     @yield("js")
 </body>
+
 </html>

@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admins;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
-class adminController extends Controller
+class ThanhVienController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view("admins.index"); //phat cuoi
+
+        return view('admins.ThanhVien.DanhSach');
+
+
     }
 
     /**
@@ -35,7 +39,8 @@ class adminController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('admins.ThanhVien.ChiTiet', compact('id'));
+
     }
 
     /**
