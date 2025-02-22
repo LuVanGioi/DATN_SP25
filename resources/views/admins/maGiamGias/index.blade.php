@@ -23,7 +23,7 @@
                 <h5>DANH SÁCH MÃ GIẢM GIÁ</h5>
                 <div class="d-flex">
                     <input type="text" class="form-control me-2" placeholder="Tìm kiếm mã... 🔎" style="max-width: 300px;">
-                    <a href="{{ route('coupons.create') }}" class="btn btn-success btn-sm">Thêm Mã Giảm Giá</a>
+                    <a href="{{ route('maGiamGias.create') }}" class="btn btn-success btn-sm">Thêm Mã Giảm Giá</a>
                 </div>
             </div>
             <div class="card-body">
@@ -44,20 +44,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($couponsPaginator as $coupon)
+                            @foreach($maGiamGiasPaginator as $maGiamGia)
                             <tr>
-                                <td>{{ $coupon['id'] }}</td> <!-- Sử dụng cú pháp mảng -->
-                                <td>{{ $coupon['name'] }}</td>
-                                <td>{{ $coupon['value'] }}%</td>
-                                <td>{{ $coupon['min_value'] }} VNĐ</td>
-                                <td>{{ $coupon['max_value'] }} VNĐ</td>
-                                <td>{{ $coupon['condition'] }}</td>
-                                <td>{{ $coupon['start_date'] }}</td>
-                                <td>{{ $coupon['end_date'] }}</td>
-                                <td>{{ $coupon['status'] }}</td>
+                                <td>{{ $maGiamGia['id'] }}</td> 
+                                <td>{{ $maGiamGia['name'] }}</td>
+                                <td>{{ $maGiamGia['value'] }}%</td>
+                                <td>{{ $maGiamGia['min_value'] }} VNĐ</td>
+                                <td>{{ $maGiamGia['max_value'] }} VNĐ</td>
+                                <td>{{ $maGiamGia['condition'] }}</td>
+                                <td>{{ $maGiamGia['start_date'] }}</td>
+                                <td>{{ $maGiamGia['end_date'] }}</td>
+                                <td>{{ $maGiamGia['status'] }}</td>
                                 <td>
-                                    <a href="{{ route('coupons.edit', $coupon['id']) }}" class="btn btn-primary btn-sm">Sửa</a>
-                                    <form action="{{ route('coupons.destroy', $coupon['id']) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có muốn xóa không?');">
+                                    <a href="{{ route('maGiamGias.edit', $maGiamGia['id']) }}" class="btn btn-primary btn-sm">Sửa</a>
+                                    <form action="{{ route('maGiamGias.destroy', $maGiamGia['id']) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có muốn xóa không?');">
                                         @csrf
                                         @method("DELETE")
                                         <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
@@ -72,22 +72,22 @@
                     <nav>
                         <ul class="pagination">
                             @if ($couponsPaginator->onFirstPage())
-                            <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
+                                <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
                             @else
-                            <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->previousPageUrl() }}">Trước</a></li>
+                                <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->previousPageUrl() }}">Trước</a></li>
                             @endif
-
+                            
                             @for ($i = 1; $i <= $couponsPaginator->lastPage(); $i++)
                                 @if ($i == $couponsPaginator->currentPage())
-                                <li class="page-item active"><a class="page-link" href="#">{{ $i }}</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">{{ $i }}</a></li>
                                 @else
-                                <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->url($i) }}">{{ $i }}</a></li>
+                                    <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->url($i) }}">{{ $i }}</a></li>
                                 @endif
-                                @endfor
-
-                                @if ($couponsPaginator->hasMorePages())
+                            @endfor
+                            
+                            @if ($couponsPaginator->hasMorePages())
                                 <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->nextPageUrl() }}">Sau</a></li>
-                                @else
+                            @else
                                 <li class="page-item disabled"><a class="page-link" href="#">Sau</a></li>
                                 @endif
                         </ul>

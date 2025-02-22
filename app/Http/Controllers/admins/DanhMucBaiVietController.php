@@ -20,7 +20,7 @@ class DanhMucBaiVietController extends Controller
             $query->where('TenDanhMucBaiViet', 'like', '%' . $search . '%');
         }
 
-        $danhSach = $query->orderByDesc('id')->paginate(5);
+        $danhSach = $query->orderByDesc('id')->paginate(10);
 
         return view('admins.DanhMucBaiViet.danhSach', compact('danhSach', 'search'));
     }
