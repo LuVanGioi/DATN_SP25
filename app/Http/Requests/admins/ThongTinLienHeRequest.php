@@ -23,7 +23,7 @@ class ThongTinLienHeRequest extends FormRequest
     {
         return [
             "TenPhuongThuc" => "required|max:255",
-            "DuongDan" => "required|url",
+            "DuongDan" => "required",
         ];
     }
 
@@ -33,8 +33,7 @@ class ThongTinLienHeRequest extends FormRequest
             "TenPhuongThuc.required" => "Vui Lòng Nhập Tên Phương Thức",
             "TenPhuongThuc.max" => "Tên Phương Thức Liên Hệ Quá Dài",
 
-            "DuongDan.required" => "Vui Lòng Nhập Liên Kết Của Phương Thức",
-            "DuongDan.url" => "Liên Kết Không Đúng Định Dạng",
+            "DuongDan.required" => "Vui Lòng Nhập Liên Kết Của Phương Thức"
         ];
     }
 }

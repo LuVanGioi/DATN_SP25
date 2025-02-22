@@ -30,7 +30,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Đường Dẫn</label>
-                                        <input class="form-control @error("DuongDan") is-invalid border-danger @enderror" type="url" name="DuongDan" placeholder="Liên Kết Đường Dẫn" value="{{ old("DuongDan") }}" required>
+                                        <input class="form-control @error("DuongDan") is-invalid border-danger @enderror" type="text" name="DuongDan" placeholder="Liên Kết Đường Dẫn" value="{{ old("DuongDan") }}" required>
                                         @error("DuongDan")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror

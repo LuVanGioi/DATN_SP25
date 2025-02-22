@@ -11,7 +11,9 @@
         <div class="alert alert-success fade show" role="alert">
             <p>{{ session('success') }}</p>
         </div>
-        @else
+        @endif
+
+        @if (session('error'))
         <div class="alert alert-danger fade show" role="alert">
             <p>{{ session('error') }}</p>
         </div>

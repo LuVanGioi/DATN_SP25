@@ -11,8 +11,8 @@ class ThungRacController extends Controller
     public function index() {
         $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
-
-        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu"));
+        $danhSachThongTinLienHe = DB::table("thong_tin_lien_he")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách thông tin liên hệ
+        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu", "danhSachThongTinLienHe"));
     }
 
     public function restore(Request $request, string $id)
