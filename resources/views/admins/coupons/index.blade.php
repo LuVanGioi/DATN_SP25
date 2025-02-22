@@ -1,12 +1,21 @@
 @extends("admins.themes")
 
 @section("titleHead")
-    <title>Danh Sách Mã Giảm Giá - ADMIN</title>
+<title>Danh Sách Mã Giảm Giá - ADMIN</title>
 @endsection
 
 @section("main")
 <div class="page-body">
     <div class="container-fluid pt-3">
+        @if (session('success'))
+        <div class="alert alert-success fade show" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+        @else
+        <div class="alert alert-danger fade show" role="alert">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5>DANH SÁCH MÃ GIẢM GIÁ</h5>
@@ -61,24 +70,24 @@
                     <nav>
                         <ul class="pagination">
                             @if ($couponsPaginator->onFirstPage())
-                                <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
                             @else
-                                <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->previousPageUrl() }}">Trước</a></li>
+                            <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->previousPageUrl() }}">Trước</a></li>
                             @endif
-                            
+
                             @for ($i = 1; $i <= $couponsPaginator->lastPage(); $i++)
                                 @if ($i == $couponsPaginator->currentPage())
-                                    <li class="page-item active"><a class="page-link" href="#">{{ $i }}</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">{{ $i }}</a></li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->url($i) }}">{{ $i }}</a></li>
+                                <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->url($i) }}">{{ $i }}</a></li>
                                 @endif
-                            @endfor
-                            
-                            @if ($couponsPaginator->hasMorePages())
+                                @endfor
+
+                                @if ($couponsPaginator->hasMorePages())
                                 <li class="page-item"><a class="page-link" href="{{ $couponsPaginator->nextPageUrl() }}">Sau</a></li>
-                            @else
+                                @else
                                 <li class="page-item disabled"><a class="page-link" href="#">Sau</a></li>
-                            @endif
+                                @endif
                         </ul>
                     </nav>
                 </div>

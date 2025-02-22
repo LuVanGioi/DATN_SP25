@@ -155,8 +155,10 @@
                                                     <div class="colorProducts">{{ $KichCo->TenKichCo }}</div>
                                                 </div>
 
+                                                
                                                 @foreach ($thongTinMauSac as $MauSacCon)
-                                                <div id="itemBienThe_{{ $MauSacCon->id }}" class="col">
+                                                <?php $randomId = rand(1000, 9999); ?>
+                                                <div id="itemBienThe_{{ $MauSacCon->id.$randomId }}" class="col">
                                                     <div class="col">
                                                         <small for="" class="label-control">Màu Sắc</small>
                                                         <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
@@ -174,7 +176,7 @@
 
                                                     <div class="col">
                                                         <br>
-                                                        <button class="btn btn-danger btn-xs w-100" onclick="xoaGiaTriBienThe('itemBienThe_{{ $MauSacCon->id }}')"><i class="fal fa-trash"></i></button>
+                                                        <button class="btn btn-danger btn-xs w-100" onclick="xoaGiaTriBienThe('itemBienThe_{{ $MauSacCon->id.$randomId }}')"><i class="fal fa-trash"></i></button>
                                                     </div>
                                                 </div>
                                                 @endforeach
@@ -228,7 +230,11 @@
     }
 
     function xoaGiaTriBienThe(id) {
-        document.getElementById(id).style.display = "none";
+        var item = document.getElementById(id).remove();
+        if (item) {
+            item.remove();
+        }
+
     }
 </script>
 @endsection

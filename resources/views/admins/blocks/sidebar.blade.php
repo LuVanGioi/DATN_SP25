@@ -116,7 +116,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/ThongTinLienHe">
+        <a class="sidebar-link" href="{{ route("ThongTinLienHe.index") }}">
           <i class="fa-light fa-headset"></i>
           <span>Thông Tin Liên Hệ</span>
         </a>
