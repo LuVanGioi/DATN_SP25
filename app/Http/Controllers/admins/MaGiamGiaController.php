@@ -32,6 +32,7 @@ class MaGiamGiaController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:0', 
             'value' => 'required|integer',
             'min_value' => 'required|integer',
             'max_value' => 'required|integer',
@@ -39,10 +40,11 @@ class MaGiamGiaController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'status' => 'required|string|max:50',
+           
         ]);
-
+    
         MaGiamGia::create($validatedData);
-
+    
         return redirect()->route('maGiamGias.index')->with('success', 'Mã giảm giá đã được thêm.');
     }
 
@@ -56,6 +58,7 @@ class MaGiamGiaController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:0', 
             'value' => 'required|integer',
             'min_value' => 'required|integer',
             'max_value' => 'required|integer',
@@ -63,11 +66,12 @@ class MaGiamGiaController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'status' => 'required|string|max:50',
+         
         ]);
-
+    
         $maGiamGia = MaGiamGia::findOrFail($id);
         $maGiamGia->update($validatedData);
-
+    
         return redirect()->route('maGiamGias.index')->with('success', 'Mã giảm giá đã được cập nhật.');
     }
 

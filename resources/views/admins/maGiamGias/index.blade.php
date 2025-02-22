@@ -31,8 +31,9 @@
                     <table class="table table-hover table-striped">
                         <thead class="table-dark">
                             <tr>
-                                <th>#</th>
+                                <th></th>
                                 <th>Tên Mã</th>
+                                <th>Số Lượng</th> 
                                 <th>Giá Trị</th>
                                 <th>Giá Trị Tối Thiểu</th>
                                 <th>Giá Trị Tối Đa</th>
@@ -48,6 +49,7 @@
                             <tr>
                                 <td>{{ $maGiamGia['id'] }}</td> 
                                 <td>{{ $maGiamGia['name'] }}</td>
+                                <td>{{ $maGiamGia['quantity'] }}</td> 
                                 <td>{{ $maGiamGia['value'] }}%</td>
                                 <td>{{ $maGiamGia['min_value'] }} VNĐ</td>
                                 <td>{{ $maGiamGia['max_value'] }} VNĐ</td>
@@ -86,10 +88,10 @@
                             @endfor
                             
                             @if ($maGiamGiasPaginator->hasMorePages())
-                                <li class="page-item"><a class="page-link" href="{{ $maGiamGiansPaginator->nextPageUrl() }}">Sau</a></li>
+                                <li class="page-item"><a class="page-link" href="{{ $maGiamGiasPaginator->nextPageUrl() }}">Sau</a></li>
                             @else
                                 <li class="page-item disabled"><a class="page-link" href="#">Sau</a></li>
-                                @endif
+                            @endif
                         </ul>
                     </nav>
                 </div>
