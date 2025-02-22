@@ -12,7 +12,7 @@ class DanhMucController extends Controller
      */
     public function index()
     {
-        //
+        return view('admins.DanhMuc.danhSach');
     }
 
     /**
@@ -20,7 +20,7 @@ class DanhMucController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.DanhMuc.taoDanhMuc');
     }
 
     /**
@@ -30,6 +30,7 @@ class DanhMucController extends Controller
     {
         //
     }
+
 
     /**
      * Display the specified resource.
@@ -44,7 +45,7 @@ class DanhMucController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admins.DanhMuc.suaDanhMuc', compact('id'));
     }
 
     /**

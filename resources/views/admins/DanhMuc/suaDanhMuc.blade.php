@@ -1,0 +1,43 @@
+@extends("admins.themes")
+
+@section("titleHead")
+    <title>Sửa Danh Mục - ADMIN</title>
+@endsection
+
+@section("main")
+    <div class="container-fluid pt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header text-center">
+                        <h5>SỬA DANH MỤC</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <div class="card-header text-center">
+                                <h5>SỬA DANH MỤC</h5>
+                            </div>
+                            <div class="mb-3">
+                                <label for="title">Tên Danh Mục</label>
+                                <input class="form-control" type="text" name="title" id="title" placeholder="Quần dài thể thao"
+                                    required>
+                            </div>
+                            <div class="text-end">
+                                <button class="btn btn-primary me-3" type="submit">Cập Nhật</button>
+                                <button class="btn btn-secondary" type="reset">Đặt Lại</button>
+                            </div>
+                        </form>
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <a href="/admin/DanhMuc" class="btn btn-sm btn-light">Quay Lại</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
