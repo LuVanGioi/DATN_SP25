@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('danh_muc_bai_viet', function (Blueprint $table) {
+        Schema::create('danh_muc_san_pham', function (Blueprint $table) {
             $table->id();
-            $table->string('TenDanhMucBaiViet', 255);
-            $table->boolean('Xoa')->default(false);
-            $table->string('deleted_at')->nullable();
+            $table->string("TenDanhMucSanPham");
+            $table->string("Xoa")->default(0);
+            $table->string("deleted_at")->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('danh_muc_bai_viet');
+        Schema::dropIfExists('danh_muc_san_pham');
     }
 };
