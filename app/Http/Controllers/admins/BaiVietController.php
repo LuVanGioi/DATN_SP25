@@ -61,7 +61,7 @@ class BaiVietController extends Controller
                 'danh_muc_id' => $request->danh_muc_id,
                 'tac_gia' => $request->tac_gia,
                 'noi_dung' => $request->noi_dung,
-                'ngay_dang' => $request->ngay_dang,
+                'ngay_dang' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -129,7 +129,6 @@ class BaiVietController extends Controller
                 'danh_muc_id' => $request->danh_muc_id,
                 'tac_gia' => $request->tac_gia,
                 'noi_dung' => $request->noi_dung,
-                'ngay_dang' => $request->ngay_dang,
                 'updated_at' => now(),
             ]);
             DB::commit();

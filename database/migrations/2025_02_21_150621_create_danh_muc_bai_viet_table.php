@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('TenDanhMucBaiViet', 255);
             $table->boolean('Xoa')->default(false);
+            $table->string('deleted_at')->nullable();
             $table->timestamps();
         });
     }

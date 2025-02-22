@@ -18,6 +18,8 @@ class CreateMaGiamGiaTable extends Migration
             $table->date('start_date'); // Ngày bắt đầu
             $table->date('end_date'); // Ngày kết thúc
             $table->string('status'); // Trạng thái
+            $table->string('Xoa')->default(0);
+            $table->string('deleted_at')->nullable();
             $table->timestamps();
         });
     }
