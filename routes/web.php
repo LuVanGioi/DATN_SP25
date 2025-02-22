@@ -6,8 +6,6 @@ use App\Http\Controllers\admins\DanhMucController;
 use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
-use App\Http\Controllers\admins\DanhMucController;
-use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\CouponController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\ThungRacController;
