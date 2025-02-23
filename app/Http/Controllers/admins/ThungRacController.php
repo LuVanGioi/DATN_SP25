@@ -12,7 +12,8 @@ class ThungRacController extends Controller
         $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
         $danhSachThongTinLienHe = DB::table("thong_tin_lien_he")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách thông tin liên hệ
-        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu", "danhSachThongTinLienHe"));
+        $danhSachSanPham = DB::table("san_pham")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách sản phẩm
+        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu", "danhSachThongTinLienHe", "danhSachSanPham"));
     }
 
     public function restore(Request $request, string $id)
@@ -26,7 +27,7 @@ class ThungRacController extends Controller
 
         DB::table($table)->where("id", $id)->update([
             "Xoa" => 0,
-            "deleted_at" => date("Y-m-d")
+            "deleted_at" => date("Y-m-d H:i:s")
         ]);
 
         DB::commit();

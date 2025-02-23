@@ -75,6 +75,24 @@
                                 </tr>
                                 @endforeach
 
+                                @foreach ($danhSachSanPham as $index => $sanPham)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" name="selectData[]" value="san_pham">
+                                    </td>
+                                    <td class="text-success">Sản Phẩm</td>
+                                    <td>{{ $sanPham->TenSanPham }}</td>
+                                    <td>{{ $sanPham->deleted_at }}</td>
+                                    <td>
+                                        <form action="/admin/ThungRac/{{ $sanPham->id }}/restore" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                            @csrf
+                                            <input type="hidden" name="table" value="san_pham">
+                                            <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+
                                 @foreach ($danhSachThongTinLienHe as $index => $phuongThuc)
                                 <tr>
                                     <td class="text-center">

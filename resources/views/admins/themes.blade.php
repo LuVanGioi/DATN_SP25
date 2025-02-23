@@ -23,12 +23,15 @@
     <link rel="stylesheet" type="text/css" href="/admins/css/slick-theme.css">
     <link rel="stylesheet" type="text/css" href="/admins/css/scrollbar.css">
     <link rel="stylesheet" type="text/css" href="/admins/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="/admins/css/owlcarousel.css">
+
     <link rel="stylesheet" type="text/css" href="/admins/css/echart.css">
     <link rel="stylesheet" type="text/css" href="/admins/css/date-picker.css">
     <link rel="stylesheet" type="text/css" href="/admins/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/admins/css/style.css">
     <link id="color" rel="stylesheet" href="/admins/css/color-1.css" media="screen">
     <link rel="stylesheet" type="text/css" href="/admins/css/responsive.css">
+    
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -90,6 +93,9 @@
     <script src="/admins/js/slick.min.js"></script>
     <script src="/admins/js/slick.js"></script>
     <script src="/admins/js/header-slick.js"></script>
+    <script src="/admins/js/owl.carousel.js"></script>
+    <script src="/admins/js/owl-custom.js"></script>
+    
     <script src="/admins/js/apex-chart.js"></script>
     <script src="/admins/js/stock-prices.js"></script>
     <script src="/admins/js/moment.min.js"></script>
