@@ -239,7 +239,7 @@
             button.innerHTML = ' ' + value;
             document.getElementById(id).classList.add("view");
         } else {
-            button.classList.remove("view"); //tắt
+            button.classList.remove("view");
             button.innerHTML = value;
             document.getElementById(id).classList.remove("view");
         }

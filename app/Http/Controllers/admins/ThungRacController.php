@@ -22,7 +22,7 @@ class ThungRacController extends Controller
         $thongTin = DB::table($table)->find($id);
 
         if(!$thongTin) {
-            return redirect()->route("ThungRac.index")->with("error", "Chất Liệu Không Tồn Tại");
+            return redirect()->route("ThungRac.index")->with("error", "Thông Tin Không Tồn Tại");
         }
 
         DB::table($table)->where("id", $id)->update([
@@ -33,5 +33,22 @@ class ThungRacController extends Controller
         DB::commit();
 
         return redirect()->route("ChatLieu.index")->with("success", "Khôi Phục Dữ Liệu Thành Công!");
+    }
+
+    public function destroy_images(string $id) {
+        $thongTin = DB::table("hinh_anh_san_pham")->find($id);
+
+        if(!$thongTin) {
+            return redirect()->route("SanPham.edit", $thongTin->ID_SanPham)->with("error", "Hình Ảnh Không Tồn Tại Hoặc Đã Được Xóa");
+        }
+
+        DB::table("hinh_anh_san_pham")->where("id", $id)->update([
+            "Xoa" => 1,
+            "deleted_at" => date("Y-m-d H:i:s")
+        ]);
+
+        DB::commit();
+
+        return redirect()->route("SanPham.edit", $thongTin->ID_SanPham)->with("success", "Xóa Hình Ảnh Thành Công!");
     }
 }

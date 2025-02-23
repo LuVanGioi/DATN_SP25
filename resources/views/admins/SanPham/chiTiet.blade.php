@@ -114,31 +114,33 @@
                             <div class="tab-pane fade list-behaviors" id="bienThe" role="tabpanel">
                                 <div class="disabled-container">
                                     <div class="treejs">
-                                        <ul class="treejs-nodes row">
+                                        <div class="treejs-nodes row">
                                             @foreach ($danhSachKichCo as $kichCo)
-                                            <li class="col-md-3 mb-3 mt-3 treejs-node treejs-node__halfchecked treejs-node__disabled">
-                                            <i class="fa-solid fa-circle-radiation"></i>
-                                                <b class="treejs-label text-primary">Size {{ $kichCo->TenKichCo }}</b>
-                                                <ul class="treejs-nodes">
-                                                    @foreach ($danhSachBienThe as $bienThe)
-                                                    @if ($bienThe->KichCo == $kichCo->TenKichCo)
-                                                    @foreach ($danhSachMauSac as $mauSac)
-                                                    @if ($mauSac->id == $bienThe->ID_MauSac)
-                                                    <li class="treejs-node treejs-node__halfchecked treejs-node__disabled">
-                                                        <span class="treejs-label title">{{ $mauSac->TenMauSac }}</span>
-                                                        <ul class="treejs-nodes">
-                                                            <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Số Lượng: <b>{{ number_format($bienThe->SoLuong) }}</b></li>
-                                                            <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Giá Tiền: <b class="text-primary">{{ number_format($bienThe->Gia) }}đ</b></li>
-                                                        </ul>
-                                                    </li>
-                                                    @endif
-                                                    @endforeach
-                                                    @endif
-                                                    @endforeach
-                                                </ul>
-                                            </li>
+                                            <div class="col-md-3 mb-3 mt-3">
+                                                <div class="treejs-node treejs-node__halfchecked treejs-node__disabled border border-1 border-r-7 p-2">
+                                                    <i class="fa-solid fa-circle-radiation"></i>
+                                                    <b class="treejs-label text-primary">Size {{ $kichCo->TenKichCo }}</b>
+                                                    <ul class="treejs-nodes">
+                                                        @foreach ($danhSachBienThe as $bienThe)
+                                                        @if ($bienThe->KichCo == $kichCo->TenKichCo)
+                                                        @foreach ($danhSachMauSac as $mauSac)
+                                                        @if ($mauSac->id == $bienThe->ID_MauSac)
+                                                        <li class="treejs-node treejs-node__halfchecked treejs-node__disabled">
+                                                            <span class="treejs-label title">{{ $mauSac->TenMauSac }}</span>
+                                                            <ul class="treejs-nodes">
+                                                                <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Số Lượng: <b>{{ number_format($bienThe->SoLuong) }}</b></li>
+                                                                <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Giá Tiền: <b class="text-primary">{{ number_format($bienThe->Gia) }}đ</b></li>
+                                                            </ul>
+                                                        </li>
+                                                        @endif
+                                                        @endforeach
+                                                        @endif
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
                                             @endforeach
-                                        </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +194,6 @@
     }
 
     .treejs i {
-        color: black;
         font-size: 12px;
         color: #1890ff;
     }
@@ -216,34 +217,8 @@
         position: relative;
     }
 
-    .treejs .treejs-checkbox:before {
-        -webkit-transition: all 0.3s;
-        -o-transition: all 0.3s;
-        transition: all 0.3s;
-        cursor: pointer;
-        position: absolute;
-        top: 2px;
-        content: ' ';
-        display: block;
-        width: 16px;
-        height: 16px;
-        border: 1px solid #d9d9d9;
-        border-radius: 2px;
-    }
-
-    .treejs .treejs-checkbox:hover:before {
-        -webkit-box-shadow: 0 0 2px 1px #1890ff;
-        box-shadow: 0 0 2px 1px #1890ff;
-    }
-
-    .treejs .treejs-node__disabled {
-        cursor: not-allowed;
-        color: rgba(0, 0, 0, 0.25);
-    }
-
     .treejs .treejs-label {
         vertical-align: middle;
-        color: black;
     }
 
     .treejs .treejs-label.title {
