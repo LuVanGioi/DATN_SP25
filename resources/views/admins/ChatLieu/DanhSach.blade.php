@@ -23,7 +23,7 @@
             </div>
             <div class="card-body">
                 <div class="text-end">
-                    <a href="/admin/ChatLieu/create" class="btn btn-primary btn-sm">Thêm Chất Liệu</a> <a href="/admin/ThungRac" class="btn btn-dark btn-sm">Thùng Rác</a>
+                    <a href="{{route('ChatLieu.create')}}" class="btn btn-primary btn-sm">Thêm Chất Liệu</a> <a href="{{route('ThungRac.index')}}" class="btn btn-dark btn-sm">Thùng Rác</a>
                 </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
@@ -47,9 +47,9 @@
                                             <td>{{ $row->created_at }}</td>
                                             <td>{{ $row->updated_at }}</td>
                                             <td>
-                                                <a href="/admin/ChatLieu/{{ $row->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
+                                                <a href="{{route('ChatLieu.edit',$row->id)}}" class="btn btn-primary btn-sm">Sửa</a>
 
-                                                <form action="/admin/ChatLieu/{{ $row->id }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <form action="{{route('ChatLieu.destroy',$row->id)}}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>

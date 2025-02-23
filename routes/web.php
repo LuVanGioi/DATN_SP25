@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admins\homeController;
+use App\Http\Controllers\admins\BannerController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
 use App\Http\Controllers\admins\BienTheSanPhamController;
@@ -52,6 +53,7 @@ Route::resource('admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('admin/BienThe', BienTheController::class);
 Route::resource('/admin/ThanhVien', ThanhVienController::class);
 Route::resource('/admin/BaiViet', BaiVietController::class);
+Route::resource('/admin/Banner', BannerController::class);
 
 Route::prefix('admin/maGiamGia')->group(function () {
 

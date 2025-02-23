@@ -12,7 +12,9 @@ class ThanhVienController extends Controller
      */
     public function index()
     {
+
         return view('admins.ThanhVien.DanhSach');
+
 
     }
 
@@ -21,7 +23,7 @@ class ThanhVienController extends Controller
      */
     public function create()
     {
-        //
+        //tesst git 
     }
 
     /**

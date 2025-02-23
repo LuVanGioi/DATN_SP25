@@ -128,6 +128,25 @@
                                     </td>
                                 </tr>
                                 @endforeach
+
+
+                                @foreach ($danhSachBanner as $index => $banner)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" name="selectData[]" value="banner">
+                                    </td>
+                                    <td class="text-info">Banner</td>
+                                    <td><img src="{{ Storage::url($banner->HinhAnh) }}" alt="{{ $banner->TenBanner }}" width="100px" class="img-fluid"></td>
+                                    <td>{{ $banner->deleted_at }}</td>
+                                    <td>
+                                        <form action="{{ route("ThungRac.restore", $banner->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                            @csrf
+                                            <input type="hidden" name="table" value="banner">
+                                            <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
