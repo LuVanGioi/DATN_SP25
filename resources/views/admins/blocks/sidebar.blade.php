@@ -39,7 +39,7 @@
       </li>
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="{{ route("ThanhVien.index") }}">
+        <a class="sidebar-link" href="{{ route("KhachHang.index") }}">
           <i class="fal fa-users"></i>
           <span>Khách Hàng</span>
         </a>

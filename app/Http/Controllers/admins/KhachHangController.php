@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\admins;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
-class ThanhVienController extends Controller
+class KhachHangController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        return view('admins.ThanhVien.DanhSach');
-
-
+        $khachHang = DB::table('khach_hang')->orderByDesc('id')->get();
+        return view('admins.KhachHang.DanhSach',compact('khachHang'));
     }
 
     /**
@@ -39,8 +38,8 @@ class ThanhVienController extends Controller
      */
     public function show(string $id)
     {
-        return view('admins.ThanhVien.ChiTiet', compact('id'));
-
+        $chiTiet = DB::table('khach_hang')->find($id);
+        return view("admins.KhachHang.chiTiet", compact("chiTiet"));
     }
 
     /**
@@ -56,7 +55,16 @@ class ThanhVienController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+    DB::beginTransaction();
+    $KhachHang = DB::table('khach_hang')->find($id);
+    if(!$KhachHang){
+        return redirect()->route('KhachHang.index')->with('error','Khách Hàng Không Tồn Tại');
+    }
+    DB::table('khach_hang')->where("id",$id)->update([
+        'TrangThai' => ($request->input('TrangThai') == "0" ? "1" : "0"),
+    ]);
+    DB::commit();
+    return redirect()->route('KhachHang.index')->with('success','Bỏ chặn thành công');
     }
 
     /**
