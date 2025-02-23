@@ -48,7 +48,7 @@
                                     <td>{{ $chatLieu->TenChatLieu }}</td>
                                     <td>{{ $chatLieu->deleted_at }}</td>
                                     <td>
-                                        <form action="/admin/ThungRac/{{ $chatLieu->id }}/restore" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                        <form action="{{ route("ThungRac.restore", $chatLieu->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
                                             @csrf
                                             <input type="hidden" name="table" value="chat_lieu">
                                             <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
@@ -66,9 +66,27 @@
                                     <td>{{ $thuongHieu->TenThuongHieu }}</td>
                                     <td>{{ $thuongHieu->deleted_at }}</td>
                                     <td>
-                                        <form action="/admin/ThungRac/{{ $thuongHieu->id }}/restore" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                        <form action="{{ route("ThungRac.restore", $thuongHieu->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
                                             @csrf
                                             <input type="hidden" name="table" value="thuong_hieu">
+                                            <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+
+                                @foreach ($danhSachDanhMucSanPham as $index => $danhMucSanPham)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" name="selectData[]" value="danh_muc_san_pham">
+                                    </td>
+                                    <td class="text-danger">Danh Mục Sản Phẩm</td>
+                                    <td>{{ $danhMucSanPham->TenDanhMucSanPham }}</td>
+                                    <td>{{ $danhMucSanPham->deleted_at }}</td>
+                                    <td>
+                                        <form action="{{ route("ThungRac.restore", $danhMucSanPham->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                            @csrf
+                                            <input type="hidden" name="table" value="danh_muc_san_pham">
                                             <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
                                         </form>
                                     </td>
@@ -84,7 +102,7 @@
                                     <td>{{ $sanPham->TenSanPham }}</td>
                                     <td>{{ $sanPham->deleted_at }}</td>
                                     <td>
-                                        <form action="/admin/ThungRac/{{ $sanPham->id }}/restore" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                        <form action="{{ route("ThungRac.restore", $sanPham->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
                                             @csrf
                                             <input type="hidden" name="table" value="san_pham">
                                             <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
@@ -102,7 +120,7 @@
                                     <td>{{ $phuongThuc->TenPhuongThuc }}</td>
                                     <td>{{ $phuongThuc->deleted_at }}</td>
                                     <td>
-                                        <form action="/admin/ThungRac/{{ $phuongThuc->id }}/restore" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                        <form action="{{ route("ThungRac.restore", $phuongThuc->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
                                             @csrf
                                             <input type="hidden" name="table" value="thong_tin_lien_he">
                                             <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
