@@ -18,6 +18,7 @@ class MaGiamGia extends Model
 
     protected $fillable = [
         'name',
+        'quantity', 
         'value',
         'min_value',
         'max_value',
