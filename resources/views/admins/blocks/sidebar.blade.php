@@ -98,7 +98,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/Banners">
+        <a class="sidebar-link" href="{{route('Banner.index')}}">
           <i class="fa-light fa-image"></i>
           <span>Banners</span>
         </a>

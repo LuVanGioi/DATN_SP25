@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('banner', function (Blueprint $table) {
             $table->id();
-            $table->string("ten_banner");
-            $table->string('hinh_anh')->nullable();
-            $table->string("vi_tri");
-            $table->enum("trang_thai", ["an", "hien"])->default("hien");
+            $table->string("TenBanner");
+            $table->string('HinhAnh')->nullable();
+            $table->string("Xoa")->default(0);
+            $table->enum("TrangThai", ["an", "hien"])->default("hien");
+            $table->string("deleted_at")->nullable();
             $table->timestamps();
         });
     }

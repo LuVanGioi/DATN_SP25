@@ -14,6 +14,7 @@
             <div class="card-body">
                 <div class="text-end">
                     <a href="{{route('Banner.create')}}" class="btn btn-primary btn-sm">Thêm Banner</a>
+                    <a href="{{route('ThungRac.index')}}" class="btn btn-dark btn-sm">Thùng Rác</a>
                 </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
@@ -25,30 +26,35 @@
                                             <th>STT</th>
                                             <th>Tên</th>
                                             <th>Hình ảnh</th>
-                                            <th>Vị trí</th>
                                             <th>Trạng Thái</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($danhSach as $row)
                                         <tr>
-                                            <td>1</td>
-                                            <td></td>
-                                            <td><img src="https://down-vn.img.susercontent.com/file/c7db377b177fc8e2ff75a769022dcc23" alt="Lỗi hiển thị" width="100px" height="50px"></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $row->id }}</td>
+                                            <td>{{ $row->TenBanner }}</td>
+                                            <td class="text-center"><img src="{{ Storage::url($row->HinhAnh) }}" alt="{{ $row->TenBanner }}" width="100px" class="img-fluid"></td>
+                                            <td class="text-center">
+                                                @if ($row->TrangThai == "hien")
+                                                <span class="badge bg-success">Hiển Thị</span>
+                                                @else
+                                                <span class="badge bg-danger">Ẩn</span>
+                                                @endif
+                                            </td>
                                             <td>
-                                                <a href="/admin/Banner/{{ "1" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
-
-                                                <a href="/admin/Banner/{{ "1" }}" class="btn btn-info btn-sm">Chi Tiết</a>
-
-                                                <form action="/admin/Banner/{{ "1234" }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <a href="{{route('Banner.edit', $row->id)}}"
+                                                    class="btn btn-primary btn-sm">Sửa</a>
+                                                <form action="{{route('Banner.destroy', $row->id)}}" method="POST"
+                                                    class="d-inline" onsubmit="return confirm('Bạn có muốn xóa không?');">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                                 </form>
                                             </td>
                                         </tr>
+                                    @endforeach
 
                                     </tbody>
                                 </table>
