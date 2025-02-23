@@ -16,3 +16,89 @@
 .sidebar-wrapper {
     border-radius: 0% !important;
 }
+
+.cke_notifications_area {
+    display: none !important;
+}
+
+.dropzone-wrapper {
+    padding: 0px;
+}
+
+.dropzone-wrapper > .dz-message {
+    border: 2px dashed #006666;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+
+.dropzone-wrapper > .dz-message label {
+    padding: 10px;
+}
+
+.dropzone-wrapper > .dz-message i {
+    font-size: 50px;
+    color: var(--theme-deafult);
+}
+
+.dropzone-secondary {
+    border: 2px dashed #FE6A49 !important;
+}
+
+.danhSachBienTheNutBam {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+.danhSachBienTheNutBam > .nutBienThe {
+    border: 1px solid #006666;
+    color: #006666;
+    padding: 5px 10px;
+    border-radius: 7px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.danhSachBienTheNutBam > .nutBienThe.view {
+    background-color: #006666;
+    color: white;
+}
+
+.formViewBienThe {
+    display: none;
+}
+
+.formViewBienThe.view {
+    display: block;
+}
+
+.colorProducts {
+    border: 1px solid #006666;
+    text-align: center;
+    width: 100%;
+    border-radius: 5px;
+    margin: 10px 0px;
+    color: #006666;
+    padding: 5px 7px;
+    font-size: 12px;
+}
+
+.form-control-sm {
+    padding: 3px 7px !important;
+    margin: 10px 0px !important;
+    font-size: 12px !important;
+    outline: 1px solid #006666;
+}
+
+.btn-xs {
+    padding: 5px 7px !important;
+    margin: 10px 0px !important;
+    font-size: 12px !important;
+}
+
+.cursor-p {
+    cursor: pointer;
+}
