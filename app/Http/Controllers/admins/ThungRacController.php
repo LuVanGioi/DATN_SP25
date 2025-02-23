@@ -34,7 +34,7 @@ class ThungRacController extends Controller
 
         DB::commit();
 
-        return redirect()->route("ChatLieu.index")->with("success", "Khôi Phục Dữ Liệu Thành Công!");
+        return redirect()->route("ThungRac.index")->with("success", "Khôi Phục Dữ Liệu Thành Công!");
     }
 
     public function destroy_images(string $id) {
