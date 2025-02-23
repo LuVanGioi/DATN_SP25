@@ -39,7 +39,20 @@
                                                         <?php echo 'Không Hoạt Động' ?>
                                                     @endif</td>
                                                     <td>
-                                                        <a href="/admin/KhachHang/{{ $row->id }}" class="btn btn-info btn-sm">Chi Tiết</a>
+                                                        <a href="{{route('KhachHang.show',$row->id)}}" class="btn btn-info btn-sm">Chi Tiết</a>
+                                                       <form method="POST" class="d-inline" action="{{route('KhachHang.update',$row->id)}}">
+
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="hidden" name="TrangThai" value="{{$row->TrangThai}}">
+                                                        @if ($row->TrangThai == 0)
+                                                        
+                                                        <button type="submit" class="btn btn-danger btn-sm" >Chặn</button>
+                                                    @else
+                                                    <button type="submit" class="btn btn-success btn-sm" >Bỏ Chặn</button>
+                                                    @endif
+                                                     
+                                                       </form>
                                                     </td>
                                                 </tr>
                                             @endforeach

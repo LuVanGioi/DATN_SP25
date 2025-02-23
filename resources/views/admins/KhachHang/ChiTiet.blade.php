@@ -17,11 +17,10 @@
       </div>
     </div>
     </div>
-    <!-- Container-fluid starts-->
     <div class="container-fluid">
     <div class="edit-profile">
       <div class="row">
-      <div class="col-xl-4">
+      <div class="col-xl-12">
         <div class="card">
         <div class="card-header">
 
@@ -70,7 +69,7 @@
         </div>
         </div>
       </div>
-      <div class="col-xl-8">
+      {{-- <div class="col-xl-8">
         <form class="card">
         <div class="card-header">
           <h4 class="card-title mb-0">Lịch Sử Mua Hàng</h4>
@@ -121,16 +120,15 @@
           </div>
           </div>
         </div>
-      </div>
+      </div> --}}
       <div class="card-footer text-end">
-        <a class="btn btn-primary" href="/admin/KhachHang">Quay Lại</a>
+        <a class="btn btn-dark" href="{{route('KhachHang.index')}}">Quay Lại</a>
       </div>
       </form>
       </div>
     </div>
     </div>
   </div>
-  <!-- Container-fluid Ends-->
   </div>
 
 @endsection

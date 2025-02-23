@@ -55,7 +55,16 @@ class KhachHangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+    DB::beginTransaction();
+    $KhachHang = DB::table('khach_hang')->find($id);
+    if(!$KhachHang){
+        return redirect()->route('KhachHang.index')->with('error','Khách Hàng Không Tồn Tại');
+    }
+    DB::table('khach_hang')->where("id",$id)->update([
+        'TrangThai' => ($request->input('TrangThai') == "0" ? "1" : "0"),
+    ]);
+    DB::commit();
+    return redirect()->route('KhachHang.index')->with('success','Bỏ chặn thành công');
     }
 
     /**
