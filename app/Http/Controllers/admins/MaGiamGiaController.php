@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admins;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admins\MaGiamGiaRequest;
 use App\Models\MaGiamGia; 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -28,21 +29,10 @@ class MaGiamGiaController extends Controller
         return view('admins.maGiamGias.create');
     }
 
-    public function store(Request $request)
+    public function store(MaGiamGiaRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'value' => 'required|integer',
-            'min_value' => 'required|integer',
-            'max_value' => 'required|integer',
-            'condition' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'status' => 'required|string|max:50',
-        ]);
-
+        $validatedData = $request->validated();
         MaGiamGia::create($validatedData);
-
         return redirect()->route('maGiamGias.index')->with('success', 'Mã giảm giá đã được thêm.');
     }
 
@@ -52,22 +42,10 @@ class MaGiamGiaController extends Controller
         return view('admins.maGiamGias.edit', compact('maGiamGia'));
     }
 
-    public function update(Request $request, $id)
+    public function update(MaGiamGiaRequest $request, $id)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'value' => 'required|integer',
-            'min_value' => 'required|integer',
-            'max_value' => 'required|integer',
-            'condition' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'status' => 'required|string|max:50',
-        ]);
-
         $maGiamGia = MaGiamGia::findOrFail($id);
-        $maGiamGia->update($validatedData);
-
+        $maGiamGia->update($request->validated());
         return redirect()->route('maGiamGias.index')->with('success', 'Mã giảm giá đã được cập nhật.');
     }
 
@@ -75,7 +53,6 @@ class MaGiamGiaController extends Controller
     {
         $maGiamGia = MaGiamGia::findOrFail($id);
         $maGiamGia->delete();
-
         return redirect()->route('maGiamGias.index')->with('success', 'Mã giảm giá đã được xóa.');
     }
 

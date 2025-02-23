@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\admins;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\admins\DanhMucSanPhamRequest;
 
 class DanhMucController extends Controller
 {
@@ -12,7 +14,8 @@ class DanhMucController extends Controller
      */
     public function index()
     {
-        return view('admins.DanhMuc.danhSach');
+        $danhSach = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
+        return view("admins.DanhMuc.danhSach", compact("danhSach"));
     }
 
     /**
@@ -20,15 +23,22 @@ class DanhMucController extends Controller
      */
     public function create()
     {
-        return view('admins.DanhMuc.taoDanhMuc');
+        return view("admins.DanhMuc.TaoDanhMuc");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(DanhMucSanPhamRequest $request)
     {
-        //
+        DB::beginTransaction();
+
+        DB::table('danh_muc_san_pham')->insert([
+            'TenDanhMucSanPham' => $request->input('TenDanhMucSanPham'),
+            'created_at' => now(),
+        ]);
+        DB::commit();
+        return redirect()->route('DanhMuc.index')->with('success', 'Thêm danh mục sản phẩm thành công');
     }
 
 
@@ -45,15 +55,34 @@ class DanhMucController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admins.DanhMuc.suaDanhMuc', compact('id'));
+        $thongTin = DB::table("danh_muc_san_pham")->find($id);
+
+        if (!$thongTin) {
+            return redirect()->route("DanhMuc.index")->with("error", "Danh Mục Không Tồn Tại");
+        }
+
+        return view("admins.DanhMuc.suaDanhMuc", compact("thongTin"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DanhMucSanPhamRequest $request, string $id)
     {
-        //
+        $thongTin = DB::table("danh_muc_san_pham")->find($id);
+
+        if (!$thongTin) {
+            return redirect()->route("DanhMuc.index")->with("error", "Danh Mục Không Tồn Tại");
+        }
+
+        DB::table(table: "danh_muc_san_pham")->where("id", $id)->update([
+            "TenDanhMucSanPham" => $request->input("TenDanhMucSanPham"),
+            "updated_at" => date("Y-m-d H:i:s")
+        ]);
+
+        DB::commit();
+
+        return redirect()->route("DanhMuc.index")->with("success", "Cập Nhật Danh Mục Thành Công");
     }
 
     /**
@@ -61,6 +90,19 @@ class DanhMucController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $thongTin = DB::table("danh_muc_san_pham")->find($id);
+
+        if (!$thongTin) {
+            return redirect()->route("DanhMuc.index")->with("error", "Danh Mục Không Tồn Tại");
+        }
+
+        DB::table("danh_muc_san_pham")->where("id", $id)->update([
+            "Xoa" => 1,
+            "deleted_at" => date("Y-m-d H:i:s")
+        ]);
+
+        DB::commit();
+
+        return redirect()->route("DanhMuc.index")->with("success", "Xóa Danh Mục Thành Công");
     }
 }
