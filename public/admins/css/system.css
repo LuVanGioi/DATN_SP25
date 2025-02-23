@@ -86,6 +86,17 @@
     font-size: 12px;
 }
 
+.colorProducts1 {
+    border: 1px solid #FE6A49;
+    text-align: center;
+    width: 100%;
+    border-radius: 5px;
+    margin: 10px 0px;
+    color: #FE6A49;
+    padding: 5px 7px;
+    font-size: 12px;
+}
+
 .form-control-sm {
     padding: 3px 7px !important;
     margin: 10px 0px !important;
@@ -101,4 +112,50 @@
 
 .cursor-p {
     cursor: pointer;
+}
+
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.image-preview > .image-container {
+    margin: 5px;
+    width: calc((100% - 32px - 32px) / 3);
+    position: relative;
+    float: left;
+}
+
+.image-preview > .image-container > img {
+    border-radius: 5px;
+    width: 100%;
+}
+
+.image-preview > .image-container > .delete-btn {
+    position: absolute;
+    border: none;
+    top: 0px;
+    right: 0px;
+    border-radius: 5px;
+    background-color: #FE6A49;
+    padding: 3px 10px;
+    text-align: center;
+}
+
+.image-preview > .image-container > .delete-btn > i {
+    font-size: 9px;
+    color: white;
+    line-height: 1.8px;
+}
+
+.VietHoa {
+    text-transform: uppercase;
+}
+
+.border-r-7 {
+    border-radius: 7px;
+}
+
+.form-group {
+    margin: 10px 0px;
 }

@@ -7,148 +7,69 @@
 @section("main")
     <div class="page-body">
         <div class="container-fluid pt-3">
+            @if (session('success'))
+                <div class="alert alert-success fade show" role="alert">
+                    <p>{{ session('success') }}</p>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger fade show" role="alert">
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endif
+
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>DANH SÁCH BÀI VIẾT</h5>
-                    <div class="d-flex">
-                        <input type="text" class="form-control me-2" placeholder="Tìm kiếm bài viết... 🔎"
-                            style="max-width: 300px;">
-                        <a href="/admin/BaiViet/create" class="btn btn-success btn-sm">Thêm Bài Viết</a>
+                    <div class="text-end">
+                        <a href="{{ route('BaiViet.create') }}" class="btn btn-primary btn-sm ms-2">Thêm Bài Viết</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Hình Ảnh</th>
-                                    <th>Tiêu Đề</th>
-                                    <th>Danh Mục</th>
-                                    <th>Tác Giả</th>
-                                    <th>Ngày Đăng</th>
-                                    <th>Thao Tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMzusCp2hUNtwjDEwynboK6kw2GyJejpeTgg&s"
-                                            alt="" style="width: 50%;">
-                                    </td>
-                                    <td>Bài viết mẫu</td>
-                                    <td>Công nghệ</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/02/2025</td>
-                                    <td>
-                                        <a href="/admin/BaiViet/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
-                                        <a href="/admin/BaiViet/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
-                                        <form action="/admin/BaiViet/{{ "1234" }}" method="POST" class="d-inline"
-                                            onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMzusCp2hUNtwjDEwynboK6kw2GyJejpeTgg&s"
-                                            alt="" style="width: 50%;">
-                                    </td>
-                                    <td>Bài viết mẫu</td>
-                                    <td>Công nghệ</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/02/2025</td>
-                                    <td>
-                                        <a href="/admin/BaiViet/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
-                                        <a href="/admin/BaiViet/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
-                                        <form action="/admin/BaiViet/{{ "1234" }}" method="POST" class="d-inline"
-                                            onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMzusCp2hUNtwjDEwynboK6kw2GyJejpeTgg&s"
-                                            alt="" style="width: 50%;">
-                                    </td>
-                                    <td>Bài viết mẫu</td>
-                                    <td>Công nghệ</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/02/2025</td>
-                                    <td>
-                                        <a href="/admin/BaiViet/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
-                                        <a href="/admin/BaiViet/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
-                                        <form action="/admin/BaiViet/{{ "1234" }}" method="POST" class="d-inline"
-                                            onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMzusCp2hUNtwjDEwynboK6kw2GyJejpeTgg&s"
-                                            alt="" style="width: 50%;">
-                                    </td>
-                                    <td>Bài viết mẫu</td>
-                                    <td>Công nghệ</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/02/2025</td>
-                                    <td>
-                                        <a href="/admin/BaiViet/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
-                                        <a href="/admin/BaiViet/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
-                                        <form action="/admin/BaiViet/{{ "1234" }}" method="POST" class="d-inline"
-                                            onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMzusCp2hUNtwjDEwynboK6kw2GyJejpeTgg&s"
-                                            alt="" style="width: 50%;">
-                                    </td>
-                                    <td>Bài viết mẫu</td>
-                                    <td>Công nghệ</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>20/02/2025</td>
-                                    <td>
-                                        <a href="/admin/BaiViet/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
-                                        <a href="/admin/BaiViet/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
-                                        <form action="/admin/BaiViet/{{ "1234" }}" method="POST" class="d-inline"
-                                            onsubmit="return confirm('Bạn có muốn xóa không?');">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-flex justify-content-end mt-3">
-                        <nav>
-                            <ul class="pagination">
-                                <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Sau</a></li>
-                            </ul>
-                        </nav>
+                        <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
+                            <table class="table table-striped table-bordered nowrap dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Hình Ảnh</th>
+                                        <th>Tiêu Đề</th>
+                                        <th>Danh Mục</th>
+                                        <th>Tác Giả</th>
+                                        <th>Ngày Đăng</th>
+                                        <th>Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($baiViet as $index => $bai)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>
+                                                <img src="{{ asset('storage/' . $bai->hinh_anh) }}" alt=""
+                                                    class="img-fluid w-50">
+                                            </td>
+                                            <td>{{ $bai->tieu_de }}</td>
+                                            <td>{{ $bai->ten_danh_muc }}</td>
+                                            <td>{{ $bai->tac_gia }}</td>
+                                            <td>{{ $bai->created_at }}</td>
+                                            <td>
+                                                <a href="{{ route('BaiViet.edit', $bai->id) }}"
+                                                    class="btn btn-primary btn-sm">Sửa</a>
+                                                <a href="{{ route('BaiViet.show', $bai->id) }}" class="btn btn-info btn-sm">Chi
+                                                    Tiết</a>
+                                                <form action="{{ route('BaiViet.destroy', $bai->id) }}" method="POST"
+                                                    class="d-inline" onsubmit="return confirm('Bạn có muốn xóa không?');">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

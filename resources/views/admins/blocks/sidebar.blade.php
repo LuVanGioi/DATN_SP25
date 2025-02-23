@@ -22,7 +22,7 @@
       </li>
       <li class="pin-title sidebar-main-title">
         <div>
-          <h6>GHIM</h6>
+          <h6>PIN</h6>
         </div>
       </li>
       <li class="sidebar-main-title">
@@ -82,22 +82,10 @@
         <a class="sidebar-link sidebar-title">
           <i class="fa-light fa-envelope"></i>
           <span>Mã Giảm Giá</span></a>
-        <ul class="sidebar-submenu">
-          <li><a href="/admin/maGiamGia">Danh Sách</a></li>
-          <li><a href="/admin/maGiamGia/create">Tạo Mã</a></li>
-        </ul>
-      </li>
-
-
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"></i>
-        <a class="sidebar-link sidebar-title">
-          <i class="fal fa-users"></i>
-          <span>Khách Hàng</span></a>
-        <ul class="sidebar-submenu">
-          <li><a href="/admin/KhachHang">Danh Sách</a></li>
-          <li><a href="/admin/mailKhachHang/create">Gửi Mail</a></li>
-        </ul>
+            <ul class="sidebar-submenu">
+             <li><a href="{{ route('maGiamGias.index') }}">Danh Sách</a></li>
+             <li><a href="{{ route('maGiamGias.create') }}">Tạo Mã</a></li>
+          </ul>
       </li>
 
       <li class="sidebar-list">
@@ -110,7 +98,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/Banners">
+        <a class="sidebar-link" href="{{route('Banner.index')}}">
           <i class="fa-light fa-image"></i>
           <span>Banners</span>
         </a>
@@ -128,7 +116,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/ThongTinLienHe">
+        <a class="sidebar-link" href="{{ route("ThongTinLienHe.index") }}">
           <i class="fa-light fa-headset"></i>
           <span>Thông Tin Liên Hệ</span>
         </a>

@@ -5,54 +5,67 @@
 @endsection
 
 @section("main")
-    <div class="container-fluid pt-3">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="card-header text-center">
-                        <h5>THÊM BÀI VIẾT MỚI</h5>
-                    </div>
-                    <div class="card-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
-                            <div class="card-header text-center">
-                                <h5>THÊM BÀI VIẾT MỚI</h5>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image">Hình Ảnh</label>
-                                <input class="form-control" type="file" name="image" id="image" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="title">Tiêu Đề</label>
-                                <input class="form-control" type="text" name="title" id="title" placeholder="Tiêu Đề"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="category">Danh Mục</label>
-                                <select class="form-control" name="category" id="category" required>
-                                    <option value="">Chọn danh mục</option>
-                                    <option value="tin-tuc">Tin Tức</option>
-                                    <option value="su-kien">Sự Kiện</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="author">Tác Giả</label>
-                                <input class="form-control" type="text" name="author" id="author" placeholder="Tác Giả"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="publish_date">Ngày Đăng</label>
-                                <input class="form-control" type="date" name="publish_date" id="publish_date" required>
-                            </div>
-                            <div class="text-end">
-                                <button class="btn btn-primary me-3" type="submit">Thêm Ngay</button>
-                                <button class="btn btn-secondary" type="reset">Đặt Lại</button>
-                            </div>
-                        </form>
-
-                        <div class="row">
-                            <div class="col">
+    <div class="page-body">
+        <div class="container-fluid pt-3">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>THÊM BÀI VIẾT MỚI</h5>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('BaiViet.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
                                 <div class="mb-3">
-                                    <a href="/admin/BaiViet" class="btn btn-sm btn-light">Quay Lại</a>
+                                    <label for="danh_muc_id">Danh Mục</label>
+                                    <select class="form-control" name="danh_muc_id" id="danh_muc_id" required>
+                                        <option value="">Chọn danh mục</option>
+                                        @foreach($danhMuc as $dm)
+                                            <option value="{{ $dm->id }}">{{ $dm->TenDanhMucBaiViet }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="hinh_anh">Hình Ảnh</label>
+                                    <input class="form-control" type="file" name="hinh_anh" id="hinh_anh" required>
+                                    @error("hinh_anh")
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tieu_de">Tiêu Đề</label>
+                                    <input class="form-control" type="text" name="tieu_de" id="tieu_de"
+                                        placeholder="Tiêu Đề" value="{{ old('tieu_de') }}" required>
+                                    @error("tieu_de")
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tac_gia">Tác Giả</label>
+                                    <input class="form-control" type="text" name="tac_gia" id="tac_gia"
+                                        placeholder="Tác Giả" value="{{ old('tac_gia') }}" required>
+                                    @error("tac_gia")
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="noi_dung">Nội Dung</label>
+                                    <textarea name="noi_dung" class="note-DATN">{{ old('noi_dung') }}</textarea>
+                                    @error("noi_dung")
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div class="text-end">
+                                    <button class="btn btn-primary me-3" type="submit">Thêm Ngay</button>
+                                    <button class="btn btn-secondary" type="reset">Đặt Lại</button>
+                                </div>
+                            </form>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <a href="/admin/BaiViet" class="btn btn-sm btn-light">Quay Lại</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

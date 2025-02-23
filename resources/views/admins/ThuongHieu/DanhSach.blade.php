@@ -7,13 +7,25 @@
 @section("main")
 <div class="page-body">
     <div class="container-fluid pt-3">
+        @if (session('success'))
+        <div class="alert alert-success fade show" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+        @endif
+
+        @if (session('error'))
+        <div class="alert alert-danger fade show" role="alert">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
+
         <div class="card">
             <div class="card-header">
                 <h5>DANH SÁCH THƯƠNG HIỆU</h5>
             </div>
             <div class="card-body">
                 <div class="text-end">
-                    <a href="/admin/ThuongHieu/create" class="btn btn-primary btn-sm">Thêm Thương Hiệu</a> <a href="/admin/ThungRac" class="btn btn-dark btn-sm">Thùng Rác</a>
+                    <a href="{{route('ThuongHieu.create')}}" class="btn btn-primary btn-sm">Thêm Thương Hiệu</a> <a href="{{route('ThungRac.index')}}" class="btn btn-dark btn-sm">Thùng Rác</a>
                 </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
@@ -37,9 +49,9 @@
                                             <td>{{ $row->created_at }}</td>
                                             <td>{{ $row->updated_at }}</td>
                                             <td>
-                                                <a href="/admin/ThuongHieu/{{ $row->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
+                                                <a href="{{route('ThuongHieu.edit',$row->id)}}" class="btn btn-primary btn-sm">Sửa</a>
 
-                                                <form action="/admin/ThuongHieu/{{ $row->id }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <form action="{{route('ThuongHieu.destroy',$row->id)}}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
                                                     <input type="hidden" name="table" value="thuong_hieu">

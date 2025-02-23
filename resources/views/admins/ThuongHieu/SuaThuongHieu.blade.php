@@ -34,7 +34,6 @@
                                 <div class="col">
                                     <div class="text-end">
                                         <button class="btn btn-primary me-3" type="submit">Cập Nhật</button>
-                                        <button class="btn btn-secondary" type="reset">Đặt Lại</button>
                                     </div>
                                 </div>
                             </div>

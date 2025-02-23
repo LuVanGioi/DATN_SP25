@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gia_tri_bien_the', function (Blueprint $table) {
+        Schema::create('kich_co', function (Blueprint $table) {
             $table->id();
+            $table->string("TenKichCo");
             $table->string("ID_BienThe");
-            $table->string("TenGiaTri", "225");
             $table->string("Xoa")->default(0);
             $table->string("deleted_at")->nullable();
             $table->timestamps();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gia_tri_bien_the');
+        Schema::dropIfExists('kich_co');
     }
 };

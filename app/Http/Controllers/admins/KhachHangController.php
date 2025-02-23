@@ -22,7 +22,7 @@ class KhachHangController extends Controller
      */
     public function create()
     {
-        //
+        //tesst git 
     }
 
     /**

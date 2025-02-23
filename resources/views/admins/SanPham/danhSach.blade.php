@@ -7,14 +7,26 @@
 @section("main")
 <div class="page-body">
     <div class="container-fluid pt-3">
+        @if (session('success'))
+        <div class="alert alert-success fade show" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+        @endif
+
+        @if (session('error'))
+        <div class="alert alert-danger fade show" role="alert">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
         <div class="card">
             <div class="card-header">
                 <h5>DANH SÁCH SẢN PHẨM</h5>
             </div>
             <div class="card-body">
                 <div class="text-end">
-                    <a href="/admin/SanPham/create" class="btn btn-primary btn-sm">Thêm Sản Phẩm</a>
-                </div> 
+                    <a href="{{ route("SanPham.create") }}" class="btn btn-primary btn-sm">Thêm Sản Phẩm</a>
+                    <a href="{{ route("ThungRac.index") }}" class="btn btn-dark btn-sm">Thùng Rác</a>
+                </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
                         <div class="row dt-row">
@@ -24,34 +36,63 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Danh Mục</th>
+                                            <th class="text-center">Hình Ảnh</th>
                                             <th>Tên</th>
                                             <th>Chất Liệu</th>
                                             <th>Thương Hiệu</th>
-                                            <th>Trạng Thái</th>
+                                            <th>Giá</th>
+                                            <th class="text-center">Trạng Thái</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($danhSach as $index => $SanPham)
                                         <tr>
-                                            <td>1</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $index + 1 }}</td>
                                             <td>
-                                                <a href="/admin/SanPham/{{ "1234" }}/edit" class="btn btn-primary btn-sm">Sửa</a>
+                                                @foreach ($danhSachDanhMuc as $danhMuc)
+                                                @if ($danhMuc->id == $SanPham->ID_DanhMuc)
+                                                {{ $danhMuc->TenDanhMucSanPham }}
+                                                @endif
+                                                @endforeach
+                                            </td>
+                                            <td class="text-center"><img src="{{ Storage::url($SanPham->HinhAnh) }}" alt="{{ $SanPham->TenSanPham }}" width="100px" class="img-fluid"></td>
+                                            <td>{{ $SanPham->TenSanPham }}</td>
+                                            <td>
+                                                @foreach ($danhSachChatLieu as $chatLieu)
+                                                @if ($chatLieu->id == $SanPham->ID_ChatLieu)
+                                                {{ $chatLieu->TenChatLieu }}
+                                                @endif
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach ($danhSachThuongHieu as $thuongHieu)
+                                                @if ($thuongHieu->id == $SanPham->ID_ThuongHieu)
+                                                {{ $thuongHieu->TenThuongHieu }}
+                                                @endif
+                                                @endforeach
+                                            </td>
+                                            <td>{{ number_format($SanPham->GiaSanPham, 0, ',', '.') }}đ</td>
+                                            <td class="text-center">
+                                                @if ($SanPham->TrangThai == "hien")
+                                                <span class="badge bg-success">Hiển Thị</span>
+                                                @else
+                                                <span class="badge bg-danger">Ẩn</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="/admin/SanPham/{{ $SanPham->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
 
-                                                <a href="/admin/SanPham/{{ "1234" }}" class="btn btn-info btn-sm">Chi Tiết</a>
+                                                <a href="/admin/SanPham/{{ $SanPham->id }}" class="btn btn-info btn-sm">Chi Tiết</a>
 
-                                                <form action="/admin/SanPham/{{ "1234" }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <form action="/admin/SanPham/{{ $SanPham->id }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                                 </form>
                                             </td>
                                         </tr>
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

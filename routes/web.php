@@ -1,18 +1,22 @@
 <?php
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admins\homeController;
-use App\Http\Controllers\admins\KhachHangController;
-use App\Http\Controllers\admins\SanPhamController;
+use App\Http\Controllers\admins\BannerController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
 use App\Http\Controllers\admins\DanhMucController;
-use App\Http\Controllers\admins\CouponController;
+use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\ThungRacController;
+use App\Http\Controllers\admins\KhachHangController;
+use App\Http\Controllers\admins\MaGiamGiaController;
 use App\Http\Controllers\admins\ThuongHieuController;
-use App\Http\Controllers\admins\GiaTriBienTheController;
+use App\Http\Controllers\admins\MaGiamGiaMaController;
+use App\Http\Controllers\admins\BienTheSanPhamController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
+use App\Http\Controllers\admins\ThongTinLienHeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,46 +33,43 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
-
-
-
 #ADMIN
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
 Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
 Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
-Route::resource('/admin/KhachHang', KhachHangController::class );
-Route::resource('admin/SanPham', SanPhamController::class);
-Route::resource('/admin/BaiViet', BaiVietController::class);
-Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
-Route::resource('/admin/ChatLieu', ChatLieuController::class);
-Route::resource('/admin/ThuongHieu', ThuongHieuController::class);
-
-
-Route::resource('admin/DanhMuc', DanhMucController::class);
+Route::resource('admin/KhachHang', KhachHangController::class );
 Route::resource('admin/SanPham', SanPhamController::class);
 Route::resource('admin/BaiViet', BaiVietController::class);
 Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('admin/ChatLieu', ChatLieuController::class);
 Route::resource('admin/ThuongHieu', ThuongHieuController::class);
-Route::resource('admin/BienThe', BienTheController::class);
-Route::post('admin/GiaTriBienThe', [GiaTriBienTheController::class, "createValue"])->name('GiaTriBienThe.index');
-Route::get('admin/GiaTriBienThe/{id}/destroy', [GiaTriBienTheController::class, "destroy"])->name('GiaTriBienThe.destroy');
+Route::get('admin/ThungRac', [ThungRacController::class, "index"])->name('ThungRac.index');
+Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"])->name('ThungRac.restore');
+Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
 
+Route::resource('admin/DanhMuc', DanhMucController::class);
+Route::resource('admin/SanPham', SanPhamController::class);
+Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
+Route::resource('admin/BaiViet', BaiVietController::class);
+Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
+Route::resource('admin/ChatLieu', ChatLieuController::class);
+Route::resource('admin/ThuongHieu', ThuongHieuController::class);
+Route::resource('admin/BienThe', BienTheController::class);
+Route::resource('admin/BaiViet', BaiVietController::class);
+Route::resource('admin/Banner', BannerController::class);
 
 Route::prefix('admin/maGiamGia')->group(function () {
-    Route::resource('/', CouponController::class)->names([
-        'index' => 'coupons.index',
-        'create' => 'coupons.create',
-        'store' => 'coupons.store',
-        'edit' => 'coupons.edit',
-        'update' => 'coupons.update',
-        'show' => 'coupons.show',
-        'destroy' => 'coupons.destroy',
+
+    Route::resource('maGiamGia', MaGiamGiaController::class)->names([
+        'index' => 'maGiamGias.index',
+        'create' => 'maGiamGias.create',
+        'store' => 'maGiamGias.store',
+        'edit' => 'maGiamGias.edit',
+        'update' => 'maGiamGias.update',
+        'destroy' => 'maGiamGias.destroy',
     ]);
 });
-
-Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
-Route::resource('/admin/ChatLieu', ChatLieuController::class);
-Route::resource('/admin/ThuongHieu', ThuongHieuController::class);
+Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
+Route::resource('admin/ChatLieu', ChatLieuController::class);
+Route::resource('admin/ThuongHieu', ThuongHieuController::class);
+Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
