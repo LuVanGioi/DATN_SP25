@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admins;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class BannerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class BannerRequest extends FormRequest
     {
         return [
             'TenBanner' => 'required|string|max:255',
-            'HinhAnh' => 'image',
+            'HinhAnh.*' => 'image',
             'TrangThai' => 'required',
         ];
     }
@@ -32,7 +32,7 @@ class BannerRequest extends FormRequest
         return [
             'TenBanner.required' => 'Tên banner không được để trống!',
             'TenBanner.max' => 'Tên banner quá dài!',
-            'HinhAnh.image' => 'Hình ảnh không hợp lệ!',
+            'HinhAnh.*.image' => 'Hình ảnh không hợp lệ!',
             'TrangThai.required' => 'Trạng thái không được để trống!',
         ];
     }

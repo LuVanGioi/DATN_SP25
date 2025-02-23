@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admins;
 
-use App\Http\Requests\BannerRequest;
+use App\Http\Requests\Admins\BannerRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
