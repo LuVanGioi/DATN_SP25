@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admins\BaiVietRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -40,37 +41,26 @@ class BaiVietController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BaiVietRequest $request)
     {
-        $request->validate([
-            'hinh_anh' => 'required|image',
-            'tieu_de' => 'required|string|max:255',
-            'danh_muc_id' => 'required|exists:danh_muc_bai_viet,id',
-            'tac_gia' => 'required|string|max:255',
-            'noi_dung' => 'required',
-            'ngay_dang' => 'required|date',
-        ]);
+
 
         $path = $request->file('hinh_anh')->store('images', 'public');
 
         DB::beginTransaction();
-        try {
-            DB::table('bai_viet')->insert([
-                'hinh_anh' => $path,
-                'tieu_de' => $request->tieu_de,
-                'danh_muc_id' => $request->danh_muc_id,
-                'tac_gia' => $request->tac_gia,
-                'noi_dung' => $request->noi_dung,
-                'ngay_dang' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-            DB::commit();
-            return redirect()->route('baiViet.index')->with('success', 'Bài viết đã được tạo thành công.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
-        }
+
+        DB::table('bai_viet')->insert([
+            'hinh_anh' => $path,
+            'tieu_de' => $request->tieu_de,
+            'danh_muc_id' => $request->danh_muc_id,
+            'tac_gia' => $request->tac_gia,
+            'noi_dung' => $request->noi_dung,
+            'ngay_dang' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        DB::commit();
+        return redirect()->route('BaiViet.index')->with('success', 'Bài viết đã được tạo thành công.');
     }
 
     /**
@@ -102,41 +92,30 @@ class BaiVietController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BaiVietRequest $request, string $id)
     {
-        $request->validate([
-            'hinh_anh' => 'image|nullable',
-            'tieu_de' => 'required|string|max:255',
-            'danh_muc_id' => 'required|exists:danh_muc_bai_viet,id',
-            'tac_gia' => 'required|string|max:255',
-            'noi_dung' => 'required',
-            'ngay_dang' => 'required|date',
-        ]);
-
-        $baiViet = DB::table('bai_viet')->where('id', $id)->first();
-
-        if ($request->hasFile('hinh_anh')) {
-            $path = $request->file('hinh_anh')->store('images', 'public');
-            Storage::disk('public')->delete($baiViet->hinh_anh);
-            $baiViet->hinh_anh = $path;
-        }
-
         DB::beginTransaction();
-        try {
-            DB::table('bai_viet')->where('id', $id)->update([
-                'hinh_anh' => $baiViet->hinh_anh ?? $baiViet->hinh_anh,
-                'tieu_de' => $request->tieu_de,
-                'danh_muc_id' => $request->danh_muc_id,
-                'tac_gia' => $request->tac_gia,
-                'noi_dung' => $request->noi_dung,
-                'updated_at' => now(),
-            ]);
-            DB::commit();
-            return redirect()->route('baiViet.index')->with('success', 'Bài viết đã được cập nhật thành công.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Sửa bài viết thất bại.');
+        $baiViet = DB::table('bai_viet')->find($id);
+        if (!$baiViet) {
+            return redirect()->route('BaiViet.index')->with('error', 'Bài viết không tồn tại.');
         }
+        $image = $baiViet->hinh_anh;
+        if ($request->hasFile('hinh_anh')) {
+            $image = $request->file('hinh_anh')->store('uploads/BaiViet', 'public');
+            Storage::disk('public')->delete($baiViet->hinh_anh);
+            
+        }
+
+        DB::table('bai_viet')->where('id', $id)->update([
+            'hinh_anh' => $image,
+            'tieu_de' => $request->tieu_de,
+            'danh_muc_id' => $request->danh_muc_id,
+            'tac_gia' => $request->tac_gia,
+            'noi_dung' => $request->noi_dung,
+            'updated_at' => now(),
+        ]);
+        DB::commit();
+        return redirect()->route('BaiViet.index')->with('success', 'Bài viết đã được cập nhật thành công.');
     }
 
     /**
@@ -148,7 +127,7 @@ class BaiVietController extends Controller
         try {
             DB::table('bai_viet')->where('id', $id)->delete();
             DB::commit();
-            return redirect()->route('baiViet.index')->with('success', 'Bài viết đã được xóa thành công.');
+            return redirect()->route('BaiViet.index')->with('success', 'Bài viết đã được xóa thành công.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Xóa bài viết thất bại.');

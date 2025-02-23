@@ -17,8 +17,12 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="TenDanhMucBaiViet">Tên Danh Mục Bài Viết</label>
-                                <input class="form-control" type="text" name="TenDanhMucBaiViet" id="TenDanhMucBaiViet"
-                                    placeholder="Tên Danh Mục Bài Viết" required>
+                                <input class="form-control @error("TenDanhMucBaiViet") is-invalid border-danger @enderror"
+                                    type="text" name="TenDanhMucBaiViet" id="TenDanhMucBaiViet"
+                                    placeholder="Tên Danh Mục Bài Viết" value="{{ old('TenDanhMucBaiViet') }}">
+                                @error("TenDanhMucBaiViet")
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="text-end">
                                 <button class="btn btn-primary me-3" type="submit">Thêm Ngay</button>
