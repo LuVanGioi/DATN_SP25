@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
+use App\Http\Controllers\admins\BienTheSanPhamController;
 use App\Http\Controllers\admins\DanhMucController;
 use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\ChatLieuController;
@@ -34,9 +35,14 @@ Route::get('/', function () {
 #ADMIN
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
 Route::get('admin/ThungRac', [ThungRacController::class, "index"])->name('ThungRac.index');
-Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
+Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"])->name('ThungRac.restore');
+Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
+
+
+
 Route::resource('admin/DanhMuc', DanhMucController::class);
 Route::resource('admin/SanPham', SanPhamController::class);
+Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
 
 Route::resource('admin/ThanhVien', ThanhVienController::class);
 Route::resource('admin/BaiViet', BaiVietController::class);
@@ -62,3 +68,4 @@ Route::resource('/admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('/admin/ChatLieu', ChatLieuController::class);
 Route::resource('/admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('/admin/ThongTinLienHe', ThongTinLienHeController::class);
+

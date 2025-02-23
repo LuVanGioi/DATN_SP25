@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admins\DanhMucSanPhamRequest;
 
 class DanhMucController extends Controller
 {
@@ -28,19 +29,17 @@ class DanhMucController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-{
-   
+    public function store(DanhMucSanPhamRequest $request)
+    {
+        DB::beginTransaction();
 
-    DB::beginTransaction();
-   
         DB::table('danh_muc_san_pham')->insert([
             'TenDanhMucSanPham' => $request->input('TenDanhMucSanPham'),
             'created_at' => now(),
         ]);
         DB::commit();
         return redirect()->route('DanhMuc.index')->with('success', 'Thêm danh mục sản phẩm thành công');
-}
+    }
 
 
     /**
@@ -58,7 +57,7 @@ class DanhMucController extends Controller
     {
         $thongTin = DB::table("danh_muc_san_pham")->find($id);
 
-        if(!$thongTin) {
+        if (!$thongTin) {
             return redirect()->route("DanhMuc.index")->with("error", "Danh Mục Không Tồn Tại");
         }
 
@@ -68,14 +67,14 @@ class DanhMucController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(DanhMucSanPhamRequest $request, string $id)
     {
         $thongTin = DB::table("danh_muc_san_pham")->find($id);
 
-        if(!$thongTin) {
+        if (!$thongTin) {
             return redirect()->route("DanhMuc.index")->with("error", "Danh Mục Không Tồn Tại");
         }
-        
+
         DB::table(table: "danh_muc_san_pham")->where("id", $id)->update([
             "TenDanhMucSanPham" => $request->input("TenDanhMucSanPham"),
             "updated_at" => date("Y-m-d H:i:s")
@@ -93,7 +92,7 @@ class DanhMucController extends Controller
     {
         $thongTin = DB::table("danh_muc_san_pham")->find($id);
 
-        if(!$thongTin) {
+        if (!$thongTin) {
             return redirect()->route("DanhMuc.index")->with("error", "Danh Mục Không Tồn Tại");
         }
 
