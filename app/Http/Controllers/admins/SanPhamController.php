@@ -49,6 +49,8 @@ class SanPhamController extends Controller
         $image = null;
         $images = null;
 
+        // dd($request->all());
+
         if ($request->hasFile("hinhAnh")) {
             $image = $request->file("hinhAnh")->store("uploads/SanPham", "public");
         }
@@ -83,27 +85,21 @@ class SanPhamController extends Controller
 
 
         if ($request->input("TheLoai") == "bienThe") {
-            $kichCo = $request->input('KichCo');
-            $mauSac = $request->input('MauSac');
-            $giaBienThe = $request->input('GiaBienThe');
-            $soLuongBienThe = $request->input('SoLuongBienThe');
-            $soLuongMauSacMoiKichCo = floor(count($mauSac) / count($kichCo));
+            $thongTinBienThes = $request->input('ThongTinBienThe', []);
+            $giaBienThes = $request->input('GiaBienThe', []);
+            $soLuongBienThes = $request->input('SoLuongBienThe', []);
 
-            foreach ($kichCo as $kichCo) {
-                for ($i = 0; $i < $soLuongMauSacMoiKichCo; $i++) {
-                    $mauSacArray = array_shift($mauSac);
-                    $giaBienTheArray = array_shift($giaBienThe);
-                    $soLuongBienTheArray = array_shift($soLuongBienThe);
+            foreach ($thongTinBienThes as $index => $thongTin) {
+                [$kichCo, $idMauSac] = explode('|', $thongTin);
 
-                    DB::table('bien_the_san_pham')->insert([
-                        'KichCo' => $kichCo,
-                        'ID_MauSac' => $mauSacArray,
-                        'ID_SanPham' => $sanPham->id,
-                        'Gia' => $giaBienTheArray,
-                        'SoLuong' => $soLuongBienTheArray,
-                        'created_at' => now(),
-                    ]);
-                }
+                DB::table('bien_the_san_pham')->insert([
+                    'KichCo' => $kichCo,
+                    'ID_MauSac' => $idMauSac,
+                    'ID_SanPham' => $sanPham->id,
+                    'Gia' => $giaBienThes[$index],
+                    'SoLuong' => $soLuongBienThes[$index],
+                    'created_at' => now(),
+                ]);
             }
         }
 
@@ -155,8 +151,12 @@ class SanPhamController extends Controller
         $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
 
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
+        
+        $idMauSacDaCo = $danhSachBienThe->pluck('ID_MauSac')->toArray();
 
-        return view("admins.SanPham.SuaSanPham", compact("sanPham", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh"));
+        $mauSacChuaCo = DB::table('mau_sac')->whereNotIn('id', $idMauSacDaCo)->get();
+
+        return view("admins.SanPham.SuaSanPham", compact("sanPham", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh", "idMauSacDaCo"));
     }
 
     /**

@@ -159,8 +159,8 @@
 
                                                 @foreach ($thongTinMauSac as $MauSacCon)
                                                 <?php $randomId = rand(1000, 9999); ?>
-                                                <input type="hidden" name="MauSac[]" value="{{ $MauSacCon->id }}">
                                                 <div id="itemBienThe_{{ $MauSacCon->id.$randomId }}" class="col">
+                                                    <input type="hidden" name="ThongTinBienThe[]" value="{{ $KichCo->TenKichCo }}|{{ $MauSacCon->id }}">
                                                     <div class="col">
                                                         <small for="" class="label-control">Màu Sắc</small>
                                                         <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
@@ -279,33 +279,33 @@
 
     document.getElementById('khoAnh').addEventListener('change', function() {
         imagesPreview.innerHTML = '';
-            const files = Array.from(this.files);
+        const files = Array.from(this.files);
 
-            files.forEach((file, index) => {
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
+        files.forEach((file, index) => {
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
 
-                    reader.onload = function(e) {
-                        const container = document.createElement('div');
-                        container.classList.add('image-container');
+                reader.onload = function(e) {
+                    const container = document.createElement('div');
+                    container.classList.add('image-container');
 
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
 
-                        const deleteBtn = document.createElement('button');
-                        deleteBtn.innerHTML = '<i class="fal fa-times"></i>';
-                        deleteBtn.classList.add('delete-btn');
-                        deleteBtn.onclick = () => container.remove();
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '<i class="fal fa-times"></i>';
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.onclick = () => container.remove();
 
-                        container.appendChild(img);
-                        container.appendChild(deleteBtn);
+                    container.appendChild(img);
+                    container.appendChild(deleteBtn);
 
-                        imagesPreview.appendChild(container);
-                    }
-
-                    reader.readAsDataURL(file);
+                    imagesPreview.appendChild(container);
                 }
-            });
+
+                reader.readAsDataURL(file);
+            }
         });
+    });
 </script>
 @endsection

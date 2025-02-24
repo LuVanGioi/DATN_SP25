@@ -110,7 +110,7 @@
         <i class="fa fa-thumb-tack"> </i>
         <a class="sidebar-link" href="/admin/BaoCao">
           <i class="fa-light fa-bug"></i>
-          <span>Báo Cáo</span>
+          <span>Yêu Cầu Hỗ Trợ</span>
         </a>
       </li>
 
