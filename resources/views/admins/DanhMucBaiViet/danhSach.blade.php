@@ -46,7 +46,8 @@
                                                 <a href="{{ route('DanhMucBaiViet.edit', $danhMuc->id) }}"
                                                     class="btn btn-primary btn-sm">Sửa</a>
                                                 <form action="{{ route('DanhMucBaiViet.destroy', $danhMuc->id) }}" method="POST"
-                                                    class="d-inline" onsubmit="return confirm('Xóa?');">
+                                                    class="d-inline"
+                                                    onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                                                     @csrf @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                                 </form>
