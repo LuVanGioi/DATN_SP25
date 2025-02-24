@@ -165,6 +165,9 @@
                 <h5>BIẾN THỂ SẢN PHẨM</h5>
             </div>
             <div class="card-body">
+                <!-- <div class="text-end">
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddBienThe">Thêm Màu Sắc</button>
+                </div> -->
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
                         <div class="row dt-row">
