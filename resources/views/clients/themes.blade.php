@@ -29,7 +29,7 @@
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
-    <link rel="stylesheet" href="/clients/css/style.css?m=<?=time();?>">
+    <link rel="stylesheet" href="/clients/css/style.css">
     @yield("css")
 </head>
 

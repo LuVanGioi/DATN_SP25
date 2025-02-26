@@ -19,10 +19,10 @@
                             <div class="div-table">
                                 <div class="div-cell">
                                     <div class="caption-content">
-                                        <h2 class="caption-title">The Biggest</h2>
-                                        <h3 class="caption-subtitle">Sale</h3>
+                                        <h2 class="caption-title">Lớn Nhất</h2>
+                                        <h3 class="caption-subtitle">Giảm Giá</h3>
                                         <p class="caption-text">
-                                            <a class="btn btn-theme" href="#">Shop Now</a>
+                                            <a class="btn btn-theme" href="#">Mua Ngay</a>
                                         </p>
                                     </div>
                                 </div>

@@ -2,7 +2,7 @@
 
 
 @section("title")
-    <title>Register - WD-14</title>
+    <title>Đăng Ký - WD-14</title>
 @endsection
 
 @section('main')
@@ -10,29 +10,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="block-title"><span>Register</span></h3>
+                    <h3 class="block-title"><span>Đăng Ký</span></h3>
                     <form action="#" class="form-login">
                         <div class="row">
                             <div class="col-md-12 hello-text-wrap">
-                                <span class="hello-text text-thin">Hello, welcome to your account</span>
+                                <span class="hello-text text-thin">Xin chào, chào mừng bạn đến với tài khoản của bạn</span>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group"><input class="form-control" type="text"
-                                        placeholder="User name or email"></div>
+                                        placeholder="Tên đăng nhập hoặc email"></div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group"><input class="form-control" type="password"
-                                        placeholder="Your password"></div>
+                                        placeholder="Mật khẩu của bạn"></div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group"><input class="form-control" type="confirmPassword"
-                                        placeholder="Your Confirm Password"></div>
+                                <div class="form-group"><input class="form-control" type="password"
+                                        placeholder="Xác nhận mật khẩu"></div>
                             </div>
                             <div class="col-md-12 col-lg-6">
-                                <a href="/dang-nhap">Already have an account?</a>
+                                <a href="/dang-nhap">Đã có tài khoản?</a>
                             </div>
                             <div class="col-md-6">
-                                <a class="btn btn-theme btn-block btn-theme-dark" href="#">Register</a>
+                                <a class="btn btn-theme btn-block btn-theme-dark" href="#">Đăng Ký</a>
                             </div>
                         </div>
                     </form>
@@ -41,16 +41,16 @@
                     <form action="#" class="create-account">
                         <div class="row">
                             <div class="col-md-12 hello-text-wrap">
-                                <span class="hello-text text-thin">Create Your Account on Bellashop</span>
+                                <span class="hello-text text-thin">Tạo Tài Khoản Của Bạn Trên Bellashop</span>
                             </div>
                             <div class="col-md-12">
-                                <h3 class="block-title">Register Today and You'll be able to</h3>
+                                <h3 class="block-title">Đăng ký hôm nay và bạn sẽ có thể</h3>
                                 <ul class="list-check">
-                                    <li>Online Order Status</li>
-                                    <li>See Ready Hot Deals</li>
-                                    <li>Love List</li>
-                                    <li>Sign up to receive exclusive news and private sales</li>
-                                    <li>Quick Buy Stuffs</li>
+                                    <li>Trạng thái đơn hàng trực tuyến</li>
+                                    <li>Xem các ưu đãi nóng</li>
+                                    <li>Danh sách yêu thích</li>
+                                    <li>Đăng ký nhận tin tức độc quyền và bán hàng riêng</li>
+                                    <li>Mua hàng nhanh chóng</li>
                                 </ul>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <div class="media">
                             <div class="pull-right"><i class="fa fa-gift"></i></div>
                             <div class="media-body">
-                                <h4 class="media-heading">Buy 1 Get 1</h4>
+                                <h4 class="media-heading">Mua 1 Tặng 1</h4>
                                 Proin dictum elementum velit. Fusce euismod consequat ante.
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                         <div class="media">
                             <div class="pull-right"><i class="fa fa-comments"></i></div>
                             <div class="media-body">
-                                <h4 class="media-heading">Call to Free</h4>
+                                <h4 class="media-heading">Gọi Miễn Phí</h4>
                                 Proin dictum elementum velit. Fusce euismod consequat ante.
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                         <div class="media">
                             <div class="pull-right"><i class="fa fa-trophy"></i></div>
                             <div class="media-body">
-                                <h4 class="media-heading">Money Back!</h4>
+                                <h4 class="media-heading">Hoàn Tiền!</h4>
                                 Proin dictum elementum velit. Fusce euismod consequat ante.
                             </div>
                         </div>
