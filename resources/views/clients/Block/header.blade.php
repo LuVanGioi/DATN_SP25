@@ -9,7 +9,7 @@
                     </a>
                 </li>
                 <li class="icon-form">
-                    <a href="/dang-nhap"><img src="/clients/images/icon-2.png" alt="">
+                    <a href="/dang-ky"><img src="/clients/images/icon-2.png" alt="">
                         <span class="colored">Tạo tài khoản</span>
                     </a>
                 </li>
