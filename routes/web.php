@@ -33,7 +33,15 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 Route::get('/', function () {
     return view('clients.TrangChu');
 });
-
+Route::get('/dang-nhap', function() {
+    return view('clients.DangNhap');
+});
+Route::get('/dang-ky', function() {
+    return view('clients.DangKy');
+});
+Route::get('/forgot-password', function() {
+    return view('clients.QuenMatKhau');
+});
 
 
 #ADMINS
