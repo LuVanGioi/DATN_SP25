@@ -34,15 +34,20 @@ Route::get('/', function () {
     return view('clients.TrangChu');
 });
 Route::get('/dang-nhap', function() {
-    return view('clients.DangNhap');
+    return view('clients.TaiKhoan.DangNhap');
 });
 Route::get('/dang-ky', function() {
-    return view('clients.DangKy');
+    return view('clients.TaiKhoan.DangKy');
 });
 Route::get('/forgot-password', function() {
-    return view('clients.QuenMatKhau');
+    return view('clients.TaiKhoan.QuenMatKhau');
 });
-
+Route::get('/gioi-thieu-cua-hang', function() {
+    return view('clients.GioiThieu.GioiThieu');
+});
+Route::get('/danh-sach-bai-viet', function() {
+    return view('clients.BaiViet.BaiViet');
+});
 
 #ADMINS
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
