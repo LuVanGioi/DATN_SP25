@@ -5,11 +5,12 @@
 @endsection
 
 @section("main")
+<div class="page-body">
     <div class="container-fluid pt-3">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
+        <div class="row ">
+            <div class="col-md-8">
                 <div class="card shadow-sm">
-                    <div class="card-header text-center">
+                    <div class="card-header">
                         <h5>THÊM DANH MỤC BÀI VIẾT MỚI</h5>
                     </div>
                     <div class="card-body">
@@ -41,5 +42,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection

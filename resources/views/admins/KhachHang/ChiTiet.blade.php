@@ -44,10 +44,10 @@
             <label class="form-label">Email</label>
             <input class="form-control" value="{{$chiTiet->Email}}" disabled>
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">Mật Khẩu</label>
             <input class="form-control" type="password" value="{{$chiTiet->MatKhau}}" disabled>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label">Số Điện Thoại</label>
             <input class="form-control" value="{{$chiTiet->SoDienThoai}}" disabled>
@@ -64,7 +64,10 @@
             <label class="form-label">Vai trò</label>
             <input class="form-control" value="{{$chiTiet->VaiTro == 'khach' ? "Khách" : 'Quản Trị'}}" disabled>
           </div>
-
+          <div class="mb-3">
+            <label class="form-label">Thời Gian Tham Gia</label>
+            <input class="form-control" value="{{$chiTiet->create_at}}" disabled>
+          </div>
           </form>
         </div>
         </div>

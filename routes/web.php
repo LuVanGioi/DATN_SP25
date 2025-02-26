@@ -29,11 +29,14 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 |
 */
 
+#CLIENTS
 Route::get('/', function () {
-    return view('welcome');
+    return view('clients.TrangChu');
 });
 
-#ADMIN
+
+
+#ADMINS
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
 Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
 Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
