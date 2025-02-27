@@ -72,6 +72,15 @@ Route::get('/yeu-cau-tra-hang', function() {
 Route::get('/lien-he', function() {
     return view('clients.LienHe.LienHe');
 });
+Route::get('/faq', function() {
+    return view('clients.Faq.Faq');
+});
+Route::get('/san-pham-yeu-thich', function() {
+    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
+});
+Route::get('/gio-hang', function() {
+    return view('clients.GioHang.GioHang');
+});
 
 
 #ADMINS

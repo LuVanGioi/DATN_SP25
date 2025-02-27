@@ -66,24 +66,8 @@
                     <li class="active"><a href="/">Trang chủ</a></li>
                     <li><a href="/hang-moi-ve">Hàng mới về</a></li>
                     <li><a href="/hang-giam-gia">Hàng giảm giá</a></li>
-                    <li><a href="/danh-muc-san-pham/ao-nam">Áo nam</a>
-                        <ul>
-                            <li><a href="/san-pham/san-pham-1">Sản phẩm 1</a></li>
-                            <li><a href="/san-pham/san-pham-2">Sản phẩm 2</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/danh-muc-san-pham/quan-nam">Quần nam</a>
-                        <ul>
-                            <li><a href="/san-pham/san-pham-1">Sản phẩm 1</a></li>
-                            <li><a href="/san-pham/san-pham-2">Sản phẩm 2</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/danh-muc-san-pham/quan-nam">Quần nam</a>
-                        <ul>
-                            <li><a href="/san-pham/san-pham-1">Sản phẩm 1</a></li>
-                            <li><a href="/san-pham/san-pham-2">Sản phẩm 2</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/danh-muc-san-pham/quan-ao-nam">Quần áo nam</a></li>
+                    <li><a href="/danh-muc-san-pham/quan-ao-nu">Quần áo nữ</a></li>
                     <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
                     <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
                     <li><a href="/lien-he">Liên hệ</a></li>
