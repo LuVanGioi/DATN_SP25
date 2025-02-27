@@ -203,7 +203,7 @@
                                         <div class="media">
                                             <a class="pull-left media-link" href="#">
                                                 <img class="media-object" src="clients/images/recent-post-1.jpg" alt="">
-                                                <i class="fab fa-plus"></i>
+                                                <i class="fa fa-plus"></i>
                                             </a>
                                             <div class="media-body">
                                                 <div class="media-meta">

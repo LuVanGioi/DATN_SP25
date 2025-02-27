@@ -10,7 +10,7 @@
                 </li>
                 <li class="icon-form">
                     <a href="/dang-ky"><img src="/clients/images/icon-2.png" alt="">
-                        <span class="colored">Tạo tài khoản</span>
+                        <span>Tạo tài khoản</span>
                     </a>
                 </li>
                 <li><a href="mailto:lumanhgioi.vn@gmail.com"><i class="fa fa-envelope"></i>
@@ -24,6 +24,7 @@
                 <li class="hidden-xs"><a href="/thong-tin-tai-khoan">Tài khoản</a></li>
                 <li class="hidden-xs"><a href="/lien-he">Liên hệ</a></li>
                 <li class="hidden-xs"><a href="/faq">FAQ</a></li>
+                <li class="hidden-xs"><a href="/san-pham-yeu-thich">Sản phẩm yêu thích</a></li>
                 <li>
                     <div class="gtranslate_wrapper"></div>
                 </li>
