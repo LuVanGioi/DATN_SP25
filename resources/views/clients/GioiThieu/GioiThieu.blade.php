@@ -126,7 +126,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-1.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -145,7 +145,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-2.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -164,7 +164,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-3.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -189,7 +189,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-4.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                 <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -208,7 +208,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-5.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                 <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -227,7 +227,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-6.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                 <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -252,7 +252,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-7.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                 <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -271,7 +271,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-8.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                 <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
@@ -290,7 +290,7 @@
                         <div class="media">
                             <a class="pull-left media-link" href="#">
                                 <img class="media-object" src="/clients/images/top-sellers-9.jpg" alt="">
-                                <i class="fab fa-plus"></i>
+                                 <i class="fa fa-plus"></i>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="#">Tên sản phẩm chuẩn</a></h4>
