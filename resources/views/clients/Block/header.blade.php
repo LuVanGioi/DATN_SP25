@@ -38,7 +38,7 @@
         <div class="container">
 
             <div class="logo">
-                <a href="/"><img src="/clients/images/logo-bella-shop.png" alt="WD - 14"></a>
+                <a href="/"><img src="clients/images/WanderWeave-logo.png" alt="WD - 14"></a>
             </div>
 
             <div class="header-search">
