@@ -10,7 +10,7 @@
                 </li>
                 <li class="icon-form">
                     <a href="/dang-ky"><img src="/clients/images/icon-2.png" alt="">
-                        <span class="colored">Tạo tài khoản</span>
+                        <span>Tạo tài khoản</span>
                     </a>
                 </li>
                 <li><a href="mailto:lumanhgioi.vn@gmail.com"><i class="fa fa-envelope"></i>
@@ -24,6 +24,7 @@
                 <li class="hidden-xs"><a href="/thong-tin-tai-khoan">Tài khoản</a></li>
                 <li class="hidden-xs"><a href="/lien-he">Liên hệ</a></li>
                 <li class="hidden-xs"><a href="/faq">FAQ</a></li>
+                <li class="hidden-xs"><a href="/san-pham-yeu-thich">Sản phẩm yêu thích</a></li>
                 <li>
                     <div class="gtranslate_wrapper"></div>
                 </li>
@@ -37,7 +38,7 @@
         <div class="container">
 
             <div class="logo">
-                <a href="/"><img src="/clients/images/logo-bella-shop.png" alt="WD - 14"></a>
+                <a href="/"><img src="clients/images/WanderWeave-logo.png" alt="WD - 14"></a>
             </div>
 
             <div class="header-search">
@@ -65,24 +66,8 @@
                     <li class="active"><a href="/">Trang chủ</a></li>
                     <li><a href="/hang-moi-ve">Hàng mới về</a></li>
                     <li><a href="/hang-giam-gia">Hàng giảm giá</a></li>
-                    <li><a href="/danh-muc-san-pham/ao-nam">Áo nam</a>
-                        <ul>
-                            <li><a href="/san-pham/san-pham-1">Sản phẩm 1</a></li>
-                            <li><a href="/san-pham/san-pham-2">Sản phẩm 2</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/danh-muc-san-pham/quan-nam">Quần nam</a>
-                        <ul>
-                            <li><a href="/san-pham/san-pham-1">Sản phẩm 1</a></li>
-                            <li><a href="/san-pham/san-pham-2">Sản phẩm 2</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/danh-muc-san-pham/quan-nam">Quần nam</a>
-                        <ul>
-                            <li><a href="/san-pham/san-pham-1">Sản phẩm 1</a></li>
-                            <li><a href="/san-pham/san-pham-2">Sản phẩm 2</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/danh-muc-san-pham/quan-ao-nam">Quần áo nam</a></li>
+                    <li><a href="/danh-muc-san-pham/quan-ao-nu">Quần áo nữ</a></li>
                     <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
                     <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
                     <li><a href="/lien-he">Liên hệ</a></li>

@@ -401,7 +401,7 @@ jQuery(document).ready(function () {
         if ($('#map-canvas').length) {
             var map;
             var marker;
-            var image = 'assets/img/icon-google-map.png'; // marker icon
+            var image = 'clients/images/icon-google-map.png'; // marker icon
             google.maps.event.addDomListener(window, 'load', function () {
                 var mapOptions = {
                     scrollwheel: false,

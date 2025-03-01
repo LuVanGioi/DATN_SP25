@@ -34,13 +34,52 @@ Route::get('/', function () {
     return view('clients.TrangChu');
 });
 Route::get('/dang-nhap', function() {
-    return view('clients.DangNhap');
+    return view('clients.XacThuc.DangNhap');
 });
 Route::get('/dang-ky', function() {
-    return view('clients.DangKy');
+    return view('clients.XacThuc.DangKy');
 });
 Route::get('/forgot-password', function() {
-    return view('clients.QuenMatKhau');
+    return view('clients.XacThuc.QuenMatKhau');
+});
+Route::get('/gioi-thieu-cua-hang', function() {
+    return view('clients.GioiThieu.GioiThieu');
+});
+Route::get('/danh-sach-bai-viet', function() {
+    return view('clients.BaiViet.BaiViet');
+});
+Route::get('/thong-tin-tai-khoan', function() {
+    return view('clients.ThongTinTaiKhoan.ThongTinTaiKhoan');
+});
+Route::get('/tai-khoan-cua-toi', function() {
+    return view('clients.ThongTinTaiKhoan.TaiKhoanCuaToi');
+});
+Route::get('/doi-mat-khau', function() {
+    return view('clients.ThongTinTaiKhoan.DoiMatKhau');
+});
+Route::get('/so-dia-chi', function() {
+    return view('clients.ThongTinTaiKhoan.DiaChi');
+});
+Route::get('/lich-su-don-hang', function() {
+    return view('clients.ThongTinTaiKhoan.LichSuDonHang');
+});
+Route::get('/danh-gia-va-nhan-xet', function() {
+    return view('clients.ThongTinTaiKhoan.DanhGia');
+});
+Route::get('/yeu-cau-tra-hang', function() {
+    return view('clients.ThongTinTaiKhoan.YeuCauTraHang');
+});
+Route::get('/lien-he', function() {
+    return view('clients.LienHe.LienHe');
+});
+Route::get('/faq', function() {
+    return view('clients.Faq.Faq');
+});
+Route::get('/san-pham-yeu-thich', function() {
+    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
+});
+Route::get('/gio-hang', function() {
+    return view('clients.GioHang.GioHang');
 });
 
 

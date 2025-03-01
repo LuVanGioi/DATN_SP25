@@ -11,7 +11,6 @@
 
         <div class="main-slider">
             <div class="owl-carousel" id="main-slider">
-
                 <div class="item slide1">
                     <img class="slide-img" src="/clients/images/item/banner_item_1.png" alt="">
                 </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +30,7 @@
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
-    <link rel="stylesheet" href="/clients/css/style.css?m=<?=time();?>">
+    <link rel="stylesheet" href="/clients/css/style.css">
     @yield("css")
 </head>
 
@@ -71,9 +72,12 @@
                             <div class="media">
                                 <div class="media-body">
                                     <div>
-                                        <a href="#" class="btn btn-theme btn-theme-dark" data-dismiss="modal">Close</a><!--
-                                            --><a href="shopping-cart.html"
-                                            class="btn btn-theme btn-theme-transparent btn-call-checkout">Checkout</a>
+                                        <a href="#" class="btn btn-theme btn-theme-dark" data-dismiss="modal">
+                                            Close
+                                        </a>
+                                        <a href="/gio-hang"
+                                            class="btn btn-theme btn-theme-transparent btn-call-checkout">Checkout
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -119,4 +123,5 @@
 
     @yield("js")
 </body>
+
 </html>
