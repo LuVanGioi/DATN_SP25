@@ -12,23 +12,12 @@
         <div class="main-slider">
             <div class="owl-carousel" id="main-slider">
 
-                <div class="item ">
-                    <img class="slide-img" src="/clients/images/slide-1.jpg" alt="">
-                    <div class="caption">
-                        <div class="container">
-                            <div class="div-table">
-                                <div class="div-cell">
-                                    <div class="caption-content">
-                                        <h2 class="caption-title">The Biggest</h2>
-                                        <h3 class="caption-subtitle">Sale</h3>
-                                        <p class="caption-text">
-                                            <a class="btn btn-theme" href="#">Shop Now</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="item slide1">
+                    <img class="slide-img" src="/clients/images/item/banner_item_1.png" alt="">
+                </div>
+
+                <div class="item slide2">
+                    <img class="slide-img" src="/clients/images/item/banner_item_2.png" alt="">
                 </div>
 
             </div>
@@ -172,6 +161,7 @@
 
                                     <a class="btn btn-theme btn-theme-transparent btn-icon-left">
                                         <form action="" method="POST">
+                                            @csrf
                                             <input type="hidden" name="id_product" value="1">
                                             <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
                                         </form>
