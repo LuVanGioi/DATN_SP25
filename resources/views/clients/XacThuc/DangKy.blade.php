@@ -60,16 +60,16 @@
         </div>
     </section>
 
-    <section class="page-section">
+    <section class="page-section no-padding-top">
         <div class="container">
             <div class="row blocks shop-info-banners">
                 <div class="col-md-4">
                     <div class="block">
                         <div class="media">
-                            <div class="pull-right"><i class="fa fa-gift"></i></div>
+                            <div class="pull-right"><i class="fa fa-credit-card"></i></div>
                             <div class="media-body">
-                                <h4 class="media-heading">Mua 1 Tặng 1</h4>
-                                Proin dictum elementum velit. Fusce euismod consequat ante.
+                                <h4 class="media-heading">Thanh toán</h4>
+                                Thanh toán qua các cổng online và COD 1 cách nhanh chóng.
                             </div>
                         </div>
                     </div>
@@ -77,10 +77,10 @@
                 <div class="col-md-4">
                     <div class="block">
                         <div class="media">
-                            <div class="pull-right"><i class="fa fa-comments"></i></div>
+                            <div class="pull-right"><i class="fa fa-headset"></i></div>
                             <div class="media-body">
-                                <h4 class="media-heading">Gọi Miễn Phí</h4>
-                                Proin dictum elementum velit. Fusce euismod consequat ante.
+                                <h4 class="media-heading">Hỗ trợ</h4>
+                                Đội ngũ hỗ trợ 24/7. Sẵn sàng giúp bạn tư vấn và giải đáp thắc mắc.
                             </div>
                         </div>
                     </div>
@@ -88,10 +88,10 @@
                 <div class="col-md-4">
                     <div class="block">
                         <div class="media">
-                            <div class="pull-right"><i class="fa fa-trophy"></i></div>
+                            <div class="pull-right"><i class="fa fa-rotate-left"></i></div>
                             <div class="media-body">
-                                <h4 class="media-heading">Hoàn Tiền!</h4>
-                                Proin dictum elementum velit. Fusce euismod consequat ante.
+                                <h4 class="media-heading">Hoàn trả</h4>
+                                Có hỗ trợ đổi trả hàng, bạn nhận lại 100% giá trị đơn hàng.
                             </div>
                         </div>
                     </div>

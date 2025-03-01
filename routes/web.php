@@ -81,7 +81,15 @@ Route::get('/san-pham-yeu-thich', function() {
 Route::get('/gio-hang', function() {
     return view('clients.GioHang.GioHang');
 });
-
+Route::get('/quan-ao-nam', function() {
+    return view('clients.QuanAoNam.QuanAoNam');
+});
+Route::get('/quan-ao-nu', function() {
+    return view('clients.QuanAoNu.QuanAoNu');
+});
+Route::get('/san-pham', function() {
+    return view('clients.SanPham.SanPham');
+});
 
 #ADMINS
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
