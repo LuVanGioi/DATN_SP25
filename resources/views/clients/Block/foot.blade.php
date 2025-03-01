@@ -34,12 +34,12 @@
                 <div class="widget widget-categories">
                     <h4 class="widget-title">Liên kết</h4>
                     <ul>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Tìm kiếm</a></li>
-                        <li><a href="#">Chính sách đổi trả</a></li>
-                        <li><a href="#">Chính sách bảo mật</a></li>
-                        <li><a href="#">Điều khoản dịch vụ</a></li>
-                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="/gioi-thieu-cua-hang">Về chúng tôi</a></li>
+                        <li><a href="/tim-kiem">Tìm kiếm</a></li>
+                        <li><a href="/chinh-sach-doi-tra">Chính sách đổi trả</a></li>
+                        <li><a href="/chinh-sach-bao-mat">Chính sách bảo mật</a></li>
+                        <li><a href="/dieu-khoan-dich-vu">Điều khoản dịch vụ</a></li>
+                        <li><a href="/lien-he">Liên hệ</a></li>
                     </ul>
                 </div>
             </div>
@@ -66,12 +66,12 @@
             <div class="col-sm-6">
                 <div class="payments">
                     <ul>
-                        <li><img src="images/visa.jpg" alt=""></li>
-                        <li><img src="images/mastercard.jpg" alt=""></li>
-                        <li><img src="images/paypal.jpg" alt=""></li>
-                        <li><img src="images/american-express.jpg" alt=""></li>
-                        <li><img src="images/visa-electron.jpg" alt=""></li>
-                        <li><img src="images/maestro.jpg" alt=""></li>
+                        <li><img src="/clients/images/visa.jpg" alt=""></li>
+                        <li><img src="/clients/images/mastercard.jpg" alt=""></li>
+                        <li><img src="/clients/images/paypal.jpg" alt=""></li>
+                        <li><img src="/clients/images/american-express.jpg" alt=""></li>
+                        <li><img src="/clients/images/visa-electron.jpg" alt=""></li>
+                        <li><img src="/clients/images/maestro.jpg" alt=""></li>
                     </ul>
                 </div>
             </div>
