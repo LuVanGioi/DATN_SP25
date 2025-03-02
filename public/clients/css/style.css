@@ -111,3 +111,12 @@ select {
     border: none;
     background: none;
 }
+
+.header-wrapper .logo {
+    justify-content: center;
+    text-align: center;
+}
+
+.header-wrapper .logo img {
+    height: 30px;
+}

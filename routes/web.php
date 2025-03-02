@@ -91,6 +91,11 @@ Route::get('/san-pham', function() {
     return view('clients.SanPham.SanPham');
 });
 
+
+
+
+
+
 #ADMINS
 Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
 Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
