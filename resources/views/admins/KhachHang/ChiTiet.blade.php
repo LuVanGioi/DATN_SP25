@@ -66,7 +66,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Thời Gian Tham Gia</label>
-            <input class="form-control" value="{{$chiTiet->create_at}}" disabled>
+            <input class="form-control" value="{{$chiTiet->created_at}}" disabled>
           </div>
           </form>
         </div>

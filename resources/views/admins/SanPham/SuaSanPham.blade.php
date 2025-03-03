@@ -31,10 +31,10 @@
 
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label>Chất Liệu</label>
-                                        <select name="ChatLieu" class="form-control" required>
-                                            @foreach ($danhSachChatLieu as $ChatLieu)
-                                            <option value="{{ $ChatLieu->id }}" {{ ($sanPham->ID_ChatLieu == $ChatLieu->id ? "selected" : "") }}>{{ $ChatLieu->TenChatLieu }}</option>
+                                        <label>Thương Hiệu</label>
+                                        <select name="ThuongHieu" class="form-control" required>
+                                            @foreach ($danhSachThuongHieu as $ThuongHieu)
+                                            <option value="{{ $ThuongHieu->id }}" {{ ($sanPham->ID_ThuongHieu == $ThuongHieu->id ? "selected" : "") }}>{{ $ThuongHieu->TenThuongHieu }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -42,12 +42,8 @@
 
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label>Thương Hiệu</label>
-                                        <select name="ThuongHieu" class="form-control" required>
-                                            @foreach ($danhSachThuongHieu as $ThuongHieu)
-                                            <option value="{{ $ThuongHieu->id }}" {{ ($sanPham->ID_ThuongHieu == $ThuongHieu->id ? "selected" : "") }}>{{ $ThuongHieu->TenThuongHieu }}</option>
-                                            @endforeach
-                                        </select>
+                                        <label>Chất Liệu</label>
+                                        <input class="form-control" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ $sanPham->ID_ChatLieu }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -160,14 +156,14 @@
             </div>
         </form>
 
-        <div class="card" id="formBienThe" {{ $sanPham->TheLoai == "bienThe" ? 'style="display:block"' : 'style="display:none"' }}>
+        <div class="card" id="formBienThe" style="display: {{ $sanPham->TheLoai == 'bienThe' ? 'block' : 'none' }}">
             <div class="card-header">
                 <h5>BIẾN THỂ SẢN PHẨM</h5>
             </div>
             <div class="card-body">
-                <!-- <div class="text-end">
+                <div class="text-end">
                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddBienThe">Thêm Màu Sắc</button>
-                </div> -->
+                </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
                         <div class="row dt-row">
@@ -266,6 +262,67 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal bd-example-modal-xl fade" id="modalAddBienThe" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form action="{{ route("BienTheSanPham.store") }}" method="POST">
+                @csrf
+                <input type="hidden" name="ID_SanPham" value="{{ $sanPham->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Biển Thể Sản Phẩm</h5>
+                    <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @foreach($danhSachBienThe1 as $BienTheNutBam1)
+                    @if ($BienTheNutBam1->id == 1)
+                    @foreach ($KichCoChuaCo as $KichCo)
+                    <?php $randomId2 = rand(10000, 99999); ?>
+                    <div class="row" id="itemKichCo_{{ $KichCo->id.$randomId2 }}">
+                        <div class="col">
+                            <small for="" class="label-control">{{ $BienTheNutBam1->TenBienThe }}</small>
+                            <div class="colorProducts">{{ $KichCo->TenKichCo }}</div>
+                            <button class="btn btn-danger btn-xs w-100" onclick="xoaBienTheKichCo('itemKichCo_{{ $KichCo->id.$randomId2 }}')"><i class="fal fa-trash"></i></button>
+                        </div>
+                        <input type="hidden" name="KichCo[]" value="{{ $KichCo->TenKichCo }}">
+
+                        @foreach ($thongTinMauSac as $MauSacCon)
+                        <?php $randomId = rand(1000, 9999); ?>
+                        <div id="itemBienThe_{{ $MauSacCon->id.$randomId }}" class="col">
+                            <input type="hidden" name="ThongTinBienThe[]" value="{{ $KichCo->TenKichCo }}|{{ $MauSacCon->id }}">
+                            <div class="col">
+                                <small for="" class="label-control">Màu Sắc</small>
+                                <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
+                            </div>
+
+                            <div class="col">
+                                <small for="" class="label-control">Giá Tiền</small>
+                                <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" placeholder="Nhập Giá Tiền" value="{{ $sanPham->GiaSanPham }}">
+                            </div>
+
+                            <div class="col">
+                                <small for="" class="label-control">Số Lượng</small>
+                                <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng" value="1">
+                            </div>
+
+                            <div class="col">
+                                <br>
+                                <button class="btn btn-danger btn-xs w-100" onclick="xoaGiaTriBienThe('itemBienThe_{{ $MauSacCon->id.$randomId }}')"><i class="fal fa-trash"></i></button>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    @endforeach
+                    @endif
+                    @endforeach
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Đóng</button>
+                    <button class="btn btn-primary" type="submit">Thêm Ngay</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -20,33 +20,38 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Danh Mục</label>
-                                        <select name="DanhMuc" class="form-control" required>
+                                        <select name="DanhMuc" class="form-control @error(" DanhMuc") is-invalid border-danger @enderror" required>
                                             @foreach ($danhSachDanhMuc as $DanhMuc)
                                             <option value="{{ $DanhMuc->id }}">{{ $DanhMuc->TenDanhMucSanPham }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label>Chất Liệu</label>
-                                        <select name="ChatLieu" class="form-control" required>
-                                            @foreach ($danhSachChatLieu as $ChatLieu)
-                                            <option value="{{ $ChatLieu->id }}">{{ $ChatLieu->TenChatLieu }}</option>
-                                            @endforeach
-                                        </select>
+                                        @error("DanhMuc")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Thương Hiệu</label>
-                                        <select name="ThuongHieu" class="form-control" required>
+                                        <select name="ThuongHieu" class="form-control @error(" ThuongHieu") is-invalid border-danger @enderror" required>
                                             @foreach ($danhSachThuongHieu as $ThuongHieu)
                                             <option value="{{ $ThuongHieu->id }}">{{ $ThuongHieu->TenThuongHieu }}</option>
                                             @endforeach
                                         </select>
+                                        @error("ThuongHieu")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label>Chất Liệu</label>
+                                        <input class="form-control @error("ChatLieu") is-invalid border-danger @enderror" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" required>
+                                        @error("ChatLieu")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -55,14 +60,20 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Tên Sản Phẩm</label>
-                                        <input class="form-control" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" required>
+                                        <input class="form-control @error(" TenSanPham") is-invalid border-danger @enderror" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" required>
+                                        @error("TenSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col" id="formInputMoney">
                                     <div class="mb-3">
                                         <label>Giá Sản Phẩm</label>
-                                        <input class="form-control" type="number" onkeyup="CapNhacGiaNhap()" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" required>
+                                        <input class="form-control @error(" GiaSanPham") is-invalid border-danger @enderror" type="number" onkeyup="CapNhacGiaNhap()" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" required>
+                                        @error("GiaSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

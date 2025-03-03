@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admins\SanPhamRequest;
 use Illuminate\Support\Facades\Storage;
 
 class SanPhamController extends Controller
@@ -35,14 +36,13 @@ class SanPhamController extends Controller
         $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
         $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
 
-
         return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo"));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SanPhamRequest $request)
     {
         DB::beginTransaction();
 
@@ -124,12 +124,18 @@ class SanPhamController extends Controller
         $thuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->find($sanPham->ID_ThuongHieu);
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
 
-        $danhSachKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
-
         $danhSachBienThe = DB::table("bien_the_san_pham")->where("xoa", 0)->where("ID_SanPham", $id)->get();
 
         $danhSachMauSac = DB::table("mau_sac")->where("xoa", 0)->get();
-        return view("admins.SanPham.ChiTiet", compact("sanPham", "danhMuc", "chatLieu", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac"));
+
+        $idMauSacDaCo = $danhSachBienThe->pluck('KichCo')->toArray();
+
+        $danhSachKichCo = DB::table("kich_co")->where("Xoa", 0)->whereIn("TenKichCo", $idMauSacDaCo)->get();
+
+        $KichCoDaCo = DB::table('mau_sac')->whereIn('id', $idMauSacDaCo)->count();
+
+
+        return view("admins.SanPham.ChiTiet", compact("sanPham", "danhMuc", "chatLieu", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac", "KichCoDaCo"));
     }
 
     /**
@@ -149,20 +155,20 @@ class SanPhamController extends Controller
         $danhSachBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $id)->get();
         $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
         $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
-
+        $danhSachBienThe1 = DB::table("bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
         
-        $idMauSacDaCo = $danhSachBienThe->pluck('ID_MauSac')->toArray();
+        $idKichCoDaCo = $danhSachBienThe->pluck('KichCo')->toArray();
 
-        $mauSacChuaCo = DB::table('mau_sac')->whereNotIn('id', $idMauSacDaCo)->get();
+        $KichCoChuaCo = DB::table('kich_co')->whereNotIn('TenKichCo', $idKichCoDaCo)->get();
 
-        return view("admins.SanPham.SuaSanPham", compact("sanPham", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh", "idMauSacDaCo"));
+        return view("admins.SanPham.SuaSanPham", compact("sanPham", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh", "KichCoChuaCo", "danhSachBienThe1"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SanPhamRequest $request, string $id)
     {
         DB::beginTransaction();
         $sanPham = DB::table("san_pham")->where("Xoa", 0)->find($id);
