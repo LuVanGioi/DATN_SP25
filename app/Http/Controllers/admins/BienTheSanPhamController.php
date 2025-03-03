@@ -29,7 +29,34 @@ class BienTheSanPhamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+
+        $sanPham = DB::table("san_pham")->where("Xoa", 0)->find($request->input("ID_SanPham"));
+
+        if (!$sanPham) {
+            return redirect()->route("SanPham.index")->with("error", "Sản Phẩm Không Tồn Tại!");
+        }
+
+        $thongTinBienThes = $request->input('ThongTinBienThe', []);
+        $giaBienThes = $request->input('GiaBienThe', []);
+        $soLuongBienThes = $request->input('SoLuongBienThe', []);
+
+        foreach ($thongTinBienThes as $index => $thongTin) {
+            [$kichCo, $idMauSac] = explode('|', $thongTin);
+
+            DB::table('bien_the_san_pham')->insert([
+                'KichCo' => $kichCo,
+                'ID_MauSac' => $idMauSac,
+                'ID_SanPham' => $request->input("ID_SanPham"),
+                'Gia' => $giaBienThes[$index],
+                'SoLuong' => $soLuongBienThes[$index],
+                'created_at' => now(),
+            ]);
+        }
+
+        DB::commit();
+
+        return redirect()->route("SanPham.edit", $request->input("ID_SanPham"))->with("success", "Thêm Biến Thể Vào Sản Phẩm Thành Công!");
     }
 
     /**

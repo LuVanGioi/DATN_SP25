@@ -1,0 +1,122 @@
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('../fonts/SourceSans3-VariableFont_wght.ttf') format('truetype'),
+        url('/fonts/SourceSans3-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+* {
+    font-family: 'Source Sans 3', sans-serif !important;
+}
+
+i {
+    font-family: 'Font Awesome 6 Free' !important;
+}
+
+.fab {
+    font-family: "Font Awesome 6 Brands" !important; 
+}
+
+select {
+    color: black !important;
+}
+
+.cart-wrapper {
+    display: flex;
+}
+
+.cart-wrapper > a {
+    margin-right: 5px;
+}
+
+.container .nav-justified-off {
+    margin: 10px 0px;
+}
+
+.categoris-product {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    display: block;
+}
+
+.categoris-product > a {
+    border-right: 1px solid #e5e5e5;
+    padding: 0px 10px;
+    text-decoration: none;
+    text-align: center;
+    color: #2a8ec7;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.categoris-product > a:hover {
+    cursor: pointer;
+}
+
+.categoris-product > a:last-child {
+    border-right: none;
+    margin-right: 0px;
+    padding-right: 0px;
+}
+
+.thumbnail > .media {
+    position: relative;
+}
+
+.thumbnail > .media > .ribbons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgb(237, 237, 237);
+    padding: 3px 5px;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.thumbnail > .media > .ribbons.hot-sale {
+    background-color: #f73333;
+    color: white;
+}
+
+.thumbnail > .media > .ribbons.new {
+    background-color: #03b26c;
+    color: white;
+}
+
+.caption > .caption-title {
+    text-align: left;
+}
+
+.caption > .caption-title > a {
+    font-weight: bold;
+}
+
+.caption > .price {
+    font-size: 22px;
+}
+
+.media > .media-link > img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.media > .media-link > img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-none {
+    border: none;
+    background: none;
+}
+
+.header-wrapper .logo {
+    justify-content: center;
+    text-align: center;
+}
+
+.header-wrapper .logo img {
+    height: 30px;
+}

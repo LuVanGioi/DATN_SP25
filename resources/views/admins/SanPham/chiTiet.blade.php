@@ -13,6 +13,7 @@
                 <h5>THÔNG TIN SẢN PHẨM: <span class="VietHoa">{{ $sanPham->TenSanPham }}</span></h5>
             </div>
             <div class="card-body">
+                <a href="{{ route("SanPham.index") }}" class="btn btn-dark mb-3">Quay Lại</a>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="list-group" id="list-tab" role="tablist">
@@ -41,7 +42,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label class="label-control">Chất Liệu:</label>
-                                        <input type="text" class="form-control" value="{{ $chatLieu->TenChatLieu }}" readonly>
+                                        <input type="text" class="form-control" value="{{ $sanPham->ID_ThuongHieu }}" readonly>
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -77,7 +78,7 @@
 
                                     <div class="col-md-12 mb-3">
                                         <label class="label-control">Mô Tả Sản Phẩm:</label>
-                                        <div class="border border-1 border-r p-2">
+                                        <div class="border border-1 border-r card-body">
                                             {!! $sanPham->Mota !!}
                                         </div>
                                     </div>
@@ -115,6 +116,7 @@
                                 <div class="disabled-container">
                                     <div class="treejs">
                                         <div class="treejs-nodes row">
+
                                             @foreach ($danhSachKichCo as $kichCo)
                                             <div class="col-md-3 mb-3 mt-3">
                                                 <div class="treejs-node treejs-node__halfchecked treejs-node__disabled border border-1 border-r-7 p-2">
@@ -146,10 +148,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="mt-3">
-                    <a href="{{ route("SanPham.index") }}" class="btn btn-dark">Quay Lại</a>
                 </div>
             </div>
         </div>

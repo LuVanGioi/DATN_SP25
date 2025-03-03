@@ -58,13 +58,7 @@
                                             </td>
                                             <td class="text-center"><img src="{{ Storage::url($SanPham->HinhAnh) }}" alt="{{ $SanPham->TenSanPham }}" width="100px" class="img-fluid"></td>
                                             <td>{{ $SanPham->TenSanPham }}</td>
-                                            <td>
-                                                @foreach ($danhSachChatLieu as $chatLieu)
-                                                @if ($chatLieu->id == $SanPham->ID_ChatLieu)
-                                                {{ $chatLieu->TenChatLieu }}
-                                                @endif
-                                                @endforeach
-                                            </td>
+                                            <td>{{ $SanPham->ID_ChatLieu }}</td>
                                             <td>
                                                 @foreach ($danhSachThuongHieu as $thuongHieu)
                                                 @if ($thuongHieu->id == $SanPham->ID_ThuongHieu)
@@ -81,11 +75,11 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="/admin/SanPham/{{ $SanPham->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
+                                                <a href="{{ route("SanPham.edit", $SanPham->id) }}" class="btn btn-primary btn-sm">Sửa</a>
 
-                                                <a href="/admin/SanPham/{{ $SanPham->id }}" class="btn btn-info btn-sm">Chi Tiết</a>
+                                                <a href="{{ route("SanPham.show", $SanPham->id) }}" class="btn btn-info btn-sm">Chi Tiết</a>
 
-                                                <form action="/admin/SanPham/{{ $SanPham->id }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <form action="{{ route("SanPham.destroy", $SanPham->id) }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>

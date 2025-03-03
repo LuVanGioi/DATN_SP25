@@ -39,7 +39,7 @@
       </li>
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="{{ route("ThanhVien.index") }}">
+        <a class="sidebar-link" href="{{ route("KhachHang.index") }}">
           <i class="fal fa-users"></i>
           <span>Khách Hàng</span>
         </a>
@@ -60,7 +60,7 @@
           <i class="fa-light fa-grid-2-plus"></i>
           <span>Sản Phẩm</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="{{ route("ChatLieu.index") }}">Chất Liệu</a></li>
+          <!-- <li><a href="{{ route("ChatLieu.index") }}">Chất Liệu</a></li> -->
           <li><a href="{{ route("ThuongHieu.index") }}">Thương Hiệu</a></li>
           <li><a href="{{ route("BienThe.index") }}">Biến Thể</a></li>
           <li><a href="{{ route("SanPham.index") }}">Sản Phẩm</a></li>
@@ -110,7 +110,7 @@
         <i class="fa fa-thumb-tack"> </i>
         <a class="sidebar-link" href="/admin/BaoCao">
           <i class="fa-light fa-bug"></i>
-          <span>Báo Cáo</span>
+          <span>Yêu Cầu Hỗ Trợ</span>
         </a>
       </li>
 

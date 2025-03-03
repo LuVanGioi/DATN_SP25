@@ -5,11 +5,12 @@
 @endsection
 
 @section("main")
+<div class="page-body">
     <div class="container-fluid pt-3">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
+        <div class="row ">
+            <div class="col-md-8">
                 <div class="card shadow-sm">
-                    <div class="card-header text-center">
+                    <div class="card-header">
                         <h5>THÊM DANH MỤC BÀI VIẾT MỚI</h5>
                     </div>
                     <div class="card-body">
@@ -17,8 +18,12 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="TenDanhMucBaiViet">Tên Danh Mục Bài Viết</label>
-                                <input class="form-control" type="text" name="TenDanhMucBaiViet" id="TenDanhMucBaiViet"
-                                    placeholder="Tên Danh Mục Bài Viết" required>
+                                <input class="form-control @error("TenDanhMucBaiViet") is-invalid border-danger @enderror"
+                                    type="text" name="TenDanhMucBaiViet" id="TenDanhMucBaiViet"
+                                    placeholder="Tên Danh Mục Bài Viết" value="{{ old('TenDanhMucBaiViet') }}">
+                                @error("TenDanhMucBaiViet")
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="text-end">
                                 <button class="btn btn-primary me-3" type="submit">Thêm Ngay</button>
@@ -37,5 +42,6 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 @endsection
