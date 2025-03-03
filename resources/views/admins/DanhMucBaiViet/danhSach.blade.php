@@ -24,6 +24,7 @@
                     <h5>DANH MỤC BÀI VIẾT</h5>
                     <div class="text-end">
                         <a href="{{ route('DanhMucBaiViet.create') }}" class="btn btn-primary btn-sm ms-2">Thêm Danh Mục</a>
+                        <a href="{{ route("ThungRac.index") }}" class="btn btn-dark btn-sm">Thùng Rác</a>
                     </div>
                 </div>
                 <div class="card-body">

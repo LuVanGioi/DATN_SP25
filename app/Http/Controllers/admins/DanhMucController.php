@@ -101,6 +101,11 @@ class DanhMucController extends Controller
             "deleted_at" => date("Y-m-d H:i:s")
         ]);
 
+        DB::table("san_pham")->where("ID_DanhMuc", $thongTin->id)->update([
+            "Xoa" => 1,
+            "deleted_at" => date("Y-m-d H:i:s")
+        ]);
+
         DB::commit();
 
         return redirect()->route("DanhMuc.index")->with("success", "Xóa Danh Mục Thành Công");

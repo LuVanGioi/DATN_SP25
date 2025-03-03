@@ -15,8 +15,10 @@ class ThungRacController extends Controller
         $danhSachSanPham = DB::table("san_pham")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách sản phẩm
         $danhSachDanhMucSanPham = DB::table("danh_muc_san_pham")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách danh mục sản phẩm
         $danhSachBanner = DB::table("banner")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách banner
-        
-        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu", "danhSachThongTinLienHe", "danhSachSanPham", "danhSachDanhMucSanPham","danhSachBanner"));
+        $danhSachDanhMucBaiViet = DB::table("danh_muc_bai_viet")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách danh mục bài viết
+        $danhSachBaiViet = DB::table("bai_viet")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách bài viết
+
+        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu", "danhSachThongTinLienHe", "danhSachSanPham", "danhSachDanhMucSanPham","danhSachBanner", "danhSachBaiViet", "danhSachDanhMucBaiViet"));
     }
 
     public function restore(Request $request, string $id)
