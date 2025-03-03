@@ -58,13 +58,7 @@
                                             </td>
                                             <td class="text-center"><img src="{{ Storage::url($SanPham->HinhAnh) }}" alt="{{ $SanPham->TenSanPham }}" width="100px" class="img-fluid"></td>
                                             <td>{{ $SanPham->TenSanPham }}</td>
-                                            <td>
-                                                @foreach ($danhSachChatLieu as $chatLieu)
-                                                @if ($chatLieu->id == $SanPham->ID_ChatLieu)
-                                                {{ $chatLieu->TenChatLieu }}
-                                                @endif
-                                                @endforeach
-                                            </td>
+                                            <td>{{ $SanPham->ID_ChatLieu }}</td>
                                             <td>
                                                 @foreach ($danhSachThuongHieu as $thuongHieu)
                                                 @if ($thuongHieu->id == $SanPham->ID_ThuongHieu)

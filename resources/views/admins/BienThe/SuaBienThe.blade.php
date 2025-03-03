@@ -73,7 +73,7 @@
     function themNhapGiaTriBienThe() {
         var form = document.getElementById("danhSachNhapGiaTri");
         form.insertAdjacentHTML('beforeend', `
-        <input class="form-control mt-1 mb-1 @error(" GiaTriBienTheMoi[]") is-invalid border-danger @enderror" type="text" name="GiaTriBienTheMoi[]" id="input_${id}" placeholder="Giá Trị Biến Thể" value="{{ old("GiaTriBienTheMoi[]") }}">
+        <input class="form-control mt-1 mb-1 @error(" GiaTriBienTheMoi[]") is-invalid border-danger @enderror" type="text" name="GiaTriBienTheMoi[]" placeholder="Giá Trị Biến Thể" value="{{ old("GiaTriBienTheMoi[]") }}">
         `);
     }
 </script>
