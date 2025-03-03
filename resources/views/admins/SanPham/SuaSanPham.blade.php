@@ -156,7 +156,7 @@
             </div>
         </form>
 
-        <div class="card" id="formBienThe" style="display: {{ $sanPham->TheLoai == 'bienThe' ? 'block' : 'none' }}">
+        <div class="card" id="formBienThe" style="display: <?=$sanPham->TheLoai == 'bienThe' ? 'block' : 'none';?>">
             <div class="card-header">
                 <h5>BIẾN THỂ SẢN PHẨM</h5>
             </div>

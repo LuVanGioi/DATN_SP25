@@ -75,11 +75,11 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="/admin/SanPham/{{ $SanPham->id }}/edit" class="btn btn-primary btn-sm">Sửa</a>
+                                                <a href="{{ route("SanPham.edit", $SanPham->id) }}" class="btn btn-primary btn-sm">Sửa</a>
 
-                                                <a href="/admin/SanPham/{{ $SanPham->id }}" class="btn btn-info btn-sm">Chi Tiết</a>
+                                                <a href="{{ route("SanPham.show", $SanPham->id) }}" class="btn btn-info btn-sm">Chi Tiết</a>
 
-                                                <form action="/admin/SanPham/{{ $SanPham->id }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
+                                                <form action="{{ route("SanPham.destroy", $SanPham->id) }}" class="d-inline" method="POST" onsubmit="return confirm('Bạn có muốn xóa không?'); ">
                                                     @csrf
                                                     @method("DELETE")
                                                     <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
