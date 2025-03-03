@@ -66,7 +66,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Nội Dung</label>
-                                        <textarea class="form-control" rows="5" readonly>{{ $baiViet->noi_dung }}</textarea>
+                                        <div class="form-control" readonly>{!! $baiViet->noi_dung !!}</div>
                                     </div>
                                 </div>
                             </div>

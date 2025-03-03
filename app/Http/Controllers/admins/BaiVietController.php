@@ -24,7 +24,7 @@ class BaiVietController extends Controller
             $query->where('bai_viet.tieu_de', 'like', '%' . $search . '%');
         }
 
-        $baiViet = $query->orderByDesc('bai_viet.id')->paginate(5);
+        $baiViet = $query->orderByDesc('bai_viet.id')->get();
 
         return view('admins.BaiViet.danhSach', compact('baiViet', 'search'));
     }
