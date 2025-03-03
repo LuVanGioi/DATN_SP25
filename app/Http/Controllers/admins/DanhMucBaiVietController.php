@@ -98,6 +98,12 @@ class DanhMucBaiVietController extends Controller
                 'Xoa' => 1,
                 'updated_at' => now(),
             ]);
+
+            DB::table('bai_viet')->where('danh_muc_id', $id)->update([
+                'Xoa' => 1,
+                'updated_at' => now(),
+            ]);
+
             DB::commit();
             return redirect()->route('DanhMucBaiViet.index')->with('success', 'Xóa danh mục bài viết thành công');
         } catch (\Exception $e) {

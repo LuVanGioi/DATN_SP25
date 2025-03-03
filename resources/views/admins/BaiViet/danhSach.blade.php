@@ -24,6 +24,7 @@
                     <h5>DANH SÁCH BÀI VIẾT</h5>
                     <div class="text-end">
                         <a href="{{ route('BaiViet.create') }}" class="btn btn-primary btn-sm ms-2">Thêm Bài Viết</a>
+                        <a href="{{ route("ThungRac.index") }}" class="btn btn-dark btn-sm">Thùng Rác</a>
                     </div>
                 </div>
                 <div class="card-body">

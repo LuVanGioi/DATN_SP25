@@ -39,6 +39,43 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach ($danhSachDanhMucBaiViet as $index => $danhMucBaiViet)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" name="selectData[]" value="danh_muc_bai_viet">
+                                    </td>
+                                    <td class="text-info">Danh Mục Bài Viết</td>
+                                    <td>{{ $danhMucBaiViet->TenDanhMucBaiViet }}</td>
+                                    <td>{{ $danhMucBaiViet->deleted_at }}</td>
+                                    <td>
+                                        <form action="{{ route("ThungRac.restore", $danhMucBaiViet->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                            @csrf
+                                            <input type="hidden" name="table" value="danh_muc_bai_viet">
+                                            <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+
+                                @foreach ($danhSachBaiViet as $index => $BaiViet)
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" name="selectData[]" value="bai_viet">
+                                    </td>
+                                    <td class="text-info">Bài Viết</td>
+                                    <td>{{ $BaiViet->tieu_de }}</td>
+                                    <td>{{ $BaiViet->deleted_at }}</td>
+                                    <td>
+                                        <form action="{{ route("ThungRac.restore", $BaiViet->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                            @csrf
+                                            <input type="hidden" name="table" value="bai_viet">
+                                            <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+
+
                                 @foreach ($danhSachChatLieu as $index => $chatLieu)
                                 <tr>
                                     <td class="text-center">
