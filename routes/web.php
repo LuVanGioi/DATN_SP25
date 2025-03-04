@@ -16,8 +16,11 @@ use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\BienTheSanPhamController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
+
 use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
+use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
+use Monolog\Handler\SamplingHandler;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +35,8 @@ use App\Http\Controllers\clients\homeController as ClientsHomeController;
 
 #CLIENTS
 Route::get('/', [ClientsHomeController::class, "home"]);
-Route::resource('data-gio-hang', GioHangController::class);
-
+Route::resource('gio-hang', GioHangController::class);
+Route::resource('san-pham', ClientsSanPhamController::class);
 
 
 
@@ -84,18 +87,14 @@ Route::get('/faq', function() {
 Route::get('/san-pham-yeu-thich', function() {
     return view('clients.SanPhamYeuThich.SanPhamYeuThich');
 });
-Route::get('/gio-hang', function() {
-    return view('clients.GioHang.GioHang');
-});
+
 Route::get('/quan-ao-nam', function() {
     return view('clients.QuanAoNam.QuanAoNam');
 });
 Route::get('/quan-ao-nu', function() {
     return view('clients.QuanAoNu.QuanAoNu');
 });
-Route::get('/san-pham', function() {
-    return view('clients.SanPham.SanPham');
-});
+
 
 
 

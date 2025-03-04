@@ -136,7 +136,7 @@
                     <div class="col-md-3 col-sm-6">
                         <div class="thumbnail no-border no-padding">
                             <div class="media">
-                                <a class="media-link" href="/san-pham/">
+                                <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">
                                     <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
                                 </a>
                                 <span class="ribbons hot-sale">Flash Sale</span>
@@ -144,7 +144,7 @@
                             <div class="caption text-center">
 
                                 <h4 class="caption-title">
-                                    <a href="/san-pham/{{ xoadau($sanPham->TenSanPham) }}">{{ $sanPham->TenSanPham }}</a>
+                                    <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
                                 </h4>
                                 <div class="categoris-product">
                                     <a href="">Quần áo nam</a>
@@ -154,19 +154,19 @@
                                 <div class="price"><ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins> <del>610.000đ</del></div>
 
                                 <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ $_SERVER['SERVER_NAME'] }}/san-pham/{{ xoadau($sanPham->TenSanPham) }}" target="_blank">
+                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}" target="_blank">
                                         <i class="fa fa-share"></i>
                                     </a>
 
                                     <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                        <form action="{{ route("data-gio-hang.store") }}" method="POST">
+                                        <form action="{{ route("gio-hang.store") }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id_product" value="{{ $sanPham->id }}">
                                             <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
                                         </form>
                                     </a>
                                     <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                        href="/san-pham/{{ xoadau($sanPham->TenSanPham) }}">
+                                        href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">
                                         <i class="fa fa-circle-info"></i>
                                     </a>
                                 </div>
