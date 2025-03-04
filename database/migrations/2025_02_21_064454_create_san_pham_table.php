@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('san_pham', function (Blueprint $table) {
             $table->id();
-            $table->string('HinhAnh', 255)->nullable();
-            $table->string("TenSanPham")->unique();
+            $table->string("DuongDan")->unique();
+            $table->string('HinhAnh')->nullable();
+            $table->string("TenSanPham", 255)->unique();
             $table->string("ID_DanhMuc");
-            $table->string("ID_ChatLieu");
             $table->string("ID_ThuongHieu");
+            $table->string("ChatLieu");
             $table->integer("GiaSanPham");
+            $table->integer("GiaKhuyenMai")->nullable();
+            $table->string("Nhan")->nullable();
             $table->text("Mota")->nullable();
             $table->enum("TrangThai", ["an", "hien"])->default("hien");
             $table->enum("TheLoai", ["thuong", "bienThe"])->default("thuong");

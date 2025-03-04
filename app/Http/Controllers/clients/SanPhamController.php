@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\clients;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class SanPhamController extends Controller
 {
@@ -36,7 +37,10 @@ class SanPhamController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $thongTinSanPham = DB::table("san_pham")->whereRaw("LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+            TenSanPham, ' ', '-'), 'Á', 'A'), 'à', 'a'), 'Ả', 'A'), 'ã', 'a'), 'á', 'a'), 'ạ', 'a'), 
+            'ă', 'a'), 'ắ', 'a'), 'ặ', 'a') = ?", [$id])->first();
+        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham"));
     }
 
     /**

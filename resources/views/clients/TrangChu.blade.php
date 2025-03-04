@@ -139,20 +139,25 @@
                                 <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">
                                     <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
                                 </a>
-                                <span class="ribbons hot-sale">Flash Sale</span>
+                                @if ($sanPham->Nhan)
+                                <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
+                                @endif
                             </div>
                             <div class="caption text-center">
-
                                 <h4 class="caption-title">
                                     <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
                                 </h4>
                                 <div class="categoris-product">
                                     <a href="">Quần áo nam</a>
                                     <a href="">Adidas</a>
-                                    <a href="">{{ $sanPham->ID_ChatLieu }}</a>
+                                    <a href="">{{ $sanPham->ChatLieu }}</a>
                                 </div>
-                                <div class="price"><ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins> <del>610.000đ</del></div>
-
+                                <div class="price">
+                                    <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                                    @if ($sanPham->GiaKhuyenMai)
+                                    <del>{{ number_format($sanPham->GiaKhuyenMai) }}đ</del>
+                                    @endif
+                                </div>
                                 <div class="buttons">
                                     <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}" target="_blank">
                                         <i class="fa fa-share"></i>

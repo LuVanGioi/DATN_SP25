@@ -49,3 +49,25 @@ if (!function_exists('xoadau1')) {
         return $strTitle;
     }
 }
+
+if (!function_exists('nhan')) {
+    function nhan($nhan) {
+        if($nhan == "hot") {
+            return "HOT";
+        } else if($nhan == "sale") {
+            return "Giảm Giá";
+        } else if($nhan == "new") {
+            return "Sản Phẩm Mới";
+        } else if($nhan == "featured") {
+            return "Nổi Bật";
+        } else if($nhan == "clearance") {
+            return "Xả Kho";
+        } else if($nhan == "limited") {
+            return "Bản Giới Hạn";
+        } else if($nhan == "discount") {
+            return "Ưu Đãi Đặc Biệt";
+        } else {
+            return "";
+        }
+    }
+}

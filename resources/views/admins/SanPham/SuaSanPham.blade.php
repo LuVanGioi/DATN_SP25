@@ -43,7 +43,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Chất Liệu</label>
-                                        <input class="form-control" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ $sanPham->ID_ChatLieu }}" required>
+                                        <input class="form-control" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ $sanPham->ChatLieu }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -58,8 +58,36 @@
 
                                 <div class="col" id="formInputMoney">
                                     <div class="mb-3">
-                                        <label>Giá Sản Phẩm</label>
+                                        <label>Giá Gốc</label>
+                                        <input class="form-control" type="number" name="GiaKhuyenMai" placeholder="Giá Khuyến Mãi" value="{{ $sanPham->GiaKhuyenMai }}">
+                                    </div>
+                                </div>
+
+                                <div class="col" id="formInputMoney">
+                                    <div class="mb-3">
+                                        <label>Giá Bán</label>
                                         <input class="form-control" type="number" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" value="{{ $sanPham->GiaSanPham }}" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label>Nhãn</label>
+                                        <select name="Nhan" class="form-control">
+                                            <option value="" {{ $sanPham->Nhan == NULL ? "selected" : "" }}>Không Có</option>
+                                            <option value="hot" {{ $sanPham->Nhan == "hot" ? "selected" : "" }}>HOT</option>
+                                            <option value="sale" {{ $sanPham->Nhan == "sale" ? "selected" : "" }}>Giảm Giá</option>
+                                            <option value="new" {{ $sanPham->Nhan == "new" ? "selected" : "" }}>Hàng Mới</option>
+                                            <option value="featured" {{ $sanPham->Nhan == "featured" ? "selected" : "" }}>Nổi Bật</option>
+                                            <option value="clearance" {{ $sanPham->Nhan == "clearance" ? "selected" : "" }}>Xả</option>
+                                            <option value="limited" {{ $sanPham->Nhan == "limited" ? "selected" : "" }}>Giới Hạn</option>
+                                            <option value="discount" {{ $sanPham->Nhan == "discount" ? "selected" : "" }}>Ưu Đãi Đặc Biệt</option>
+                                        </select>
+                                        @error("Nhan")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -156,7 +184,7 @@
             </div>
         </form>
 
-        <div class="card" id="formBienThe" style="display: <?=$sanPham->TheLoai == 'bienThe' ? 'block' : 'none';?>">
+        <div class="card" id="formBienThe" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'block' : 'none'; ?>">
             <div class="card-header">
                 <h5>BIẾN THỂ SẢN PHẨM</h5>
             </div>
