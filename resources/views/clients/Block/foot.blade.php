@@ -47,10 +47,9 @@
                 <div class="widget widget-categories">
                     <h4 class="widget-title">Thông tin liên hệ</h4>
                     <ul>
-                        <li><a href="#">Đường Trịnh Văn Bô, Phương Canh, Quận Nam Từ Liêm, Hà Nội</a></li>
-                        <li><a href="#">0333.293.290</a></li>
-                        <li><a href="#">lumanhgioi.vn@gmail.com</a></li>
-                        <li><a href="#">Fanpage Facebook</a></li>
+                        @foreach ($danhSachLienHe as $lienHe)
+                        <li><a href="{{ $lienHe->DuongDan }}" target="_blank">{{ $lienHe->TenPhuongThuc }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

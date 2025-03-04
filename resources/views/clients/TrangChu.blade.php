@@ -132,47 +132,48 @@
 
             <div class="tab-pane fade active in" id="tat-ca">
                 <div class="row">
+                    @foreach ($tatCaSanPham as $sanPham)
                     <div class="col-md-3 col-sm-6">
                         <div class="thumbnail no-border no-padding">
                             <div class="media">
                                 <a class="media-link" href="/san-pham/">
-                                    <img src="https://www.sport9.vn/images/thumbs/002/0021481_bo-quan-ao-bong-da-doi-tuyen-quoc-gia-duc-mau-xam.jpeg?preset=large&watermark=default" alt="">
+                                    <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
                                 </a>
                                 <span class="ribbons hot-sale">Flash Sale</span>
                             </div>
                             <div class="caption text-center">
 
                                 <h4 class="caption-title">
-                                    <a href="/san-pham/">Áo Bóng Đá Nam Thương Hiệu Adidas, Chất Liệu Da Cá
-                                        Sấu Siêu Vip, Hết Từ Để Tả</a>
+                                    <a href="/san-pham/{{ xoadau($sanPham->TenSanPham) }}">{{ $sanPham->TenSanPham }}</a>
                                 </h4>
                                 <div class="categoris-product">
                                     <a href="">Quần áo nam</a>
                                     <a href="">Adidas</a>
-                                    <a href="">Da Cá Sấu</a>
+                                    <a href="">{{ $sanPham->ID_ChatLieu }}</a>
                                 </div>
-                                <div class="price"><ins>550.000đ</ins> <del>610.000đ</del></div>
+                                <div class="price"><ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins> <del>610.000đ</del></div>
 
                                 <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank">
+                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ $_SERVER['SERVER_NAME'] }}/san-pham/{{ xoadau($sanPham->TenSanPham) }}" target="_blank">
                                         <i class="fa fa-share"></i>
                                     </a>
 
                                     <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                        <form action="" method="POST">
+                                        <form action="{{ route("data-gio-hang.store") }}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="id_product" value="1">
+                                            <input type="hidden" name="id_product" value="{{ $sanPham->id }}">
                                             <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
                                         </form>
                                     </a>
                                     <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                        href="/san-pham/">
+                                        href="/san-pham/{{ xoadau($sanPham->TenSanPham) }}">
                                         <i class="fa fa-circle-info"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
             </div>
 
@@ -241,34 +242,32 @@
                 class="fas fa-file-lines me-2"></i> Xem tất cả</a>
         <h2 class="block-title"><span>Bài viết gần đây</span></h2>
         <div class="row">
-
+            @foreach ($tatCaBaiViet as $baiViet)
             <div class="col-md-6">
                 <div class="recent-post">
                     <div class="media">
-                        <a class="pull-left media-link" href="#">
-                            <img class="media-object" src="/clients/images/recent-post-1.jpg" alt="">
-                            <i class="fa fa-plus"></i>
+                        <a class="pull-left" href="/bai-viet/{{ xoadau($baiViet->tieu_de) }}">
+                            <img class="media-object" src="{{ Storage::url($baiViet->hinh_anh) }}" width="100px" alt="">
                         </a>
                         <div class="media-body">
-                            <p class="media-category"><a href="#">Tác Giả</a></p>
-                            <h4 class="media-heading"><a href="#">Tiêu Đề Bài Viết Nè</a></h4>
+                            <p class="media-category"><a href="#">{{ $baiViet->tac_gia }}</a></p>
+                            <h4 class="media-heading"><a href="#">{{ $baiViet->tieu_de }}</a></h4>
                             Nội dung bài viết ngắn...
                             <div class="media-meta">
-                                26/02/2025
-                                <span class="divider">/</span><a href="#"><i class="fas fa-comment"></i>
-                                    27</a>
-                                <span class="divider">/</span><a href="#"><i class="fas fa-eye"></i> 18</a>
+                                {{ $baiViet->ngay_dang }}
+                                <span class="divider">/</span><i class="fas fa-comment"></i> 27
+                                <span class="divider">/</span><i class="fas fa-eye"></i> 18
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            @endforeach
         </div>
     </div>
 </section>
 
-<section class="page-section no-padding-top">
+<section class="page-section no-padding-top mt-3">
     <div class="container">
         <div class="row blocks shop-info-banners">
             <div class="col-md-4">

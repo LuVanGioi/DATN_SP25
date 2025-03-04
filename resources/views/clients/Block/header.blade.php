@@ -64,9 +64,10 @@
                 <a href="#" class="menu-toggle-close btn"><i class="fa fa-times"></i></a>
                 <ul class="nav sf-menu">
                     <li class="active"><a href="/">Trang chủ</a></li>
-                    <li><a href="/san-pham">Sản phẩm</a></li>
-                    <li><a href="/quan-ao-nam">Quần áo nam</a></li>
-                    <li><a href="/quan-ao-nu">Quần áo nữ</a></li>
+                    <li><a href="/san-pham">Hàng mới về</a></li>
+                    @foreach ($danhMucSanPham as $danhMuc)
+                    <li><a href="/danh-muc/{{ xoadau($danhMuc->TenDanhMucSanPham) }}">{{ $danhMuc->TenDanhMucSanPham }}</a></li>
+                    @endforeach
                     <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
                     <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
                     <li><a href="/lien-he">Liên hệ</a></li>
