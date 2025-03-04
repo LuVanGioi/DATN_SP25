@@ -13,7 +13,7 @@
     </form>
     <div class="header-logo-wrapper col-auto p-0">
       <div class="logo-wrapper">
-        <a href="/admin/home">
+        <a href="/">
           <img class="img-fluid for-light" src="/admins/images/logo/logo_DATN.png" style="width:100px" alt="logo-light">
           <img class="img-fluid for-dark" src="/admins/images/logo/logo_DATN.png" style="width:100px" alt="logo-dark">
         </a>

@@ -38,8 +38,6 @@
                                             <th>Danh Mục</th>
                                             <th class="text-center">Hình Ảnh</th>
                                             <th>Tên</th>
-                                            <th>Chất Liệu</th>
-                                            <th>Thương Hiệu</th>
                                             <th>Giá</th>
                                             <th class="text-center">Trạng Thái</th>
                                             <th>Thao Tác</th>
@@ -57,15 +55,7 @@
                                                 @endforeach
                                             </td>
                                             <td class="text-center"><img src="{{ Storage::url($SanPham->HinhAnh) }}" alt="{{ $SanPham->TenSanPham }}" width="100px" class="img-fluid"></td>
-                                            <td>{{ $SanPham->TenSanPham }}</td>
-                                            <td>{{ $SanPham->ID_ChatLieu }}</td>
-                                            <td>
-                                                @foreach ($danhSachThuongHieu as $thuongHieu)
-                                                @if ($thuongHieu->id == $SanPham->ID_ThuongHieu)
-                                                {{ $thuongHieu->TenThuongHieu }}
-                                                @endif
-                                                @endforeach
-                                            </td>
+                                            <td>{{ Str::limit($SanPham->TenSanPham, 20) }}</td>
                                             <td>{{ number_format($SanPham->GiaSanPham, 0, ',', '.') }}đ</td>
                                             <td class="text-center">
                                                 @if ($SanPham->TrangThai == "hien")

@@ -75,13 +75,38 @@ select {
     text-transform: uppercase;
 }
 
-.thumbnail > .media > .ribbons.hot-sale {
+.thumbnail > .media > .ribbons.hot {
+    background-color: #f73333;
+    color: white;
+}
+
+.thumbnail > .media > .ribbons.sale {
     background-color: #f73333;
     color: white;
 }
 
 .thumbnail > .media > .ribbons.new {
     background-color: #03b26c;
+    color: white;
+}
+
+.thumbnail > .media > .ribbons.featured {
+    background-color: #035bb2;
+    color: white;
+}
+
+.thumbnail > .media > .ribbons.clearance {
+    background-color: #ffbf00;
+    color: white;
+}
+
+.thumbnail > .media > .ribbons.limited {
+    background-color: #730eef;
+    color: white;
+}
+
+.thumbnail > .media > .ribbons.discount {
+    background-color: #ef4a0e;
     color: white;
 }
 

@@ -56,12 +56,15 @@ class SanPhamController extends Controller
         }
 
         DB::table("san_pham")->insert([
+            "DuongDan" => xoadau($request->input("TenSanPham")),
             "HinhAnh" => $image,
             "TenSanPham" => $request->input("TenSanPham"),
             "ID_DanhMuc" => $request->input("DanhMuc"),
-            "ID_ChatLieu" => $request->input("ChatLieu"),
             "ID_ThuongHieu" => $request->input("ThuongHieu"),
+            "ChatLieu" => $request->input("ChatLieu"),
             "GiaSanPham" => $request->input("GiaSanPham"),
+            "GiaKhuyenMai" => $request->input("GiaKhuyenMai"),
+            "Nhan" => $request->input("Nhan"),
             "Mota" => $request->input("MoTaSanPham"),
             "TrangThai" => "hien",
             "TheLoai" => $request->input("TheLoai"),
@@ -71,7 +74,7 @@ class SanPhamController extends Controller
         DB::commit();
 
         $sanPham = DB::table("san_pham")->orderByDesc("id")->first();
-
+        if ($request->file("images")) {
         foreach ($request->file("images") as $row) {
             if ($row->isValid()) {
                 $images = $row->store("uploads/SanPham", "public");
@@ -82,7 +85,7 @@ class SanPhamController extends Controller
                 ]);
             }
         }
-
+    }
 
         if ($request->input("TheLoai") == "bienThe") {
             $thongTinBienThes = $request->input('ThongTinBienThe', []);
@@ -120,7 +123,6 @@ class SanPhamController extends Controller
         }
 
         $danhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->find($sanPham->ID_DanhMuc);
-        $chatLieu = DB::table("chat_lieu")->where("Xoa", 0)->find($sanPham->ID_ChatLieu);
         $thuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->find($sanPham->ID_ThuongHieu);
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
 
@@ -135,7 +137,7 @@ class SanPhamController extends Controller
         $KichCoDaCo = DB::table('mau_sac')->whereIn('id', $idMauSacDaCo)->count();
 
 
-        return view("admins.SanPham.ChiTiet", compact("sanPham", "danhMuc", "chatLieu", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac", "KichCoDaCo"));
+        return view("admins.SanPham.ChiTiet", compact("sanPham", "danhMuc", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac", "KichCoDaCo"));
     }
 
     /**
@@ -189,9 +191,11 @@ class SanPhamController extends Controller
             "HinhAnh" => $image,
             "TenSanPham" => $request->input("TenSanPham"),
             "ID_DanhMuc" => $request->input("DanhMuc"),
-            "ID_ChatLieu" => $request->input("ChatLieu"),
             "ID_ThuongHieu" => $request->input("ThuongHieu"),
+            "ChatLieu" => $request->input("ChatLieu"),
             "GiaSanPham" => $request->input("GiaSanPham"),
+            "GiaKhuyenMai" => $request->input("GiaKhuyenMai"),
+            "Nhan" => $request->input("Nhan"),
             "Mota" => $request->input("MoTaSanPham"),
             "TrangThai" => $request->input("TrangThai"),
             "TheLoai" => $request->input("TheLoai"),

@@ -30,42 +30,52 @@
 
                             <div class="tab-pane fade list-behaviors active show" id="thongTin" role="tabpanel">
                                 <div class="row">
-                                    <div class="col-md-12 mb-2">
+                                    <div class="col-md-12 mb-3">
                                         <label class="label-control">Tên Sản Phẩm:</label>
                                         <input type="text" class="form-control" value="{{ $sanPham->TenSanPham }}" readonly>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Danh Mục:</label>
                                         <input type="text" class="form-control" value="{{ $danhMuc->TenDanhMucSanPham }}" readonly>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label class="label-control">Chất Liệu:</label>
-                                        <input type="text" class="form-control" value="{{ $sanPham->ID_ThuongHieu }}" readonly>
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Thương Hiệu:</label>
                                         <input type="text" class="form-control" value="{{ $thuongHieu->TenThuongHieu }}" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-2">
-                                        <label class="label-control">Giá Sản Phẩm:</label>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="label-control">Chất Liệu:</label>
+                                        <input type="text" class="form-control" value="{{ $sanPham->ChatLieu }}" readonly>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="label-control">Giá Gốc:</label>
+                                        <input type="text" class="form-control" value="{{ ($sanPham->GiaKhuyenMai ? number_format($sanPham->GiaKhuyenMai) : "0") }}đ" readonly>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label class="label-control">Giá Bán:</label>
                                         <input type="text" class="form-control" value="{{ number_format($sanPham->GiaSanPham) }}đ" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-2">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="label-control">Nhãn:</label>
+                                        <input type="text" class="form-control" value="{{ nhan($sanPham->Nhan) }}" readonly>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Trạng Thái:</label>
                                         <input type="text" class="form-control" value="{{ ($sanPham->TrangThai == "hien" ? "Hiển Thị" : "Ẩn") }}" readonly>
                                     </div>
 
-                                    <div class="col-md-12 mb-2">
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Loại Sản Phẩm:</label>
                                         <input type="text" class="form-control" value="{{ ($sanPham->TheLoai == "bienThe" ? "Biến Thể" : "Thường") }}" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-2">
+                                    <div class="col-md-6 mb-3">
                                         <label class="label-control">Thời Gian Tạo:</label>
                                         <input type="text" class="form-control" value="{{ $sanPham->created_at }}" readonly>
                                     </div>
@@ -74,11 +84,15 @@
                                         <label class="label-control">Thời Gian Cập Nhật:</label>
                                         <input type="text" class="form-control" value="{{ ($sanPham->updated_at ?? "Chưa Có Thời Gian Chỉnh Sửa") }}" readonly>
                                     </div>
-                                    <hr>
-
+                                    @if ($sanPham->TheLoai == "bienThe")
                                     <div class="col-md-12 mb-3">
+                                        <label class="label-control">Biến Thể:</label>
+                                    </div>
+                                    @endif
+
+                                    <div class="col-md-12 border-top pt-3 mb-3">
                                         <label class="label-control">Mô Tả Sản Phẩm:</label>
-                                        <div class="border border-1 border-r card-body">
+                                        <div class="border border-1 border-r-7 card-body">
                                             {!! $sanPham->Mota !!}
                                         </div>
                                     </div>
@@ -93,7 +107,7 @@
                                     </div>
 
                                     <hr>
-                                    <div class="col-md-12 mb-2 mt-3">
+                                    <div class="col-md-12 mb-3 mt-3">
                                         <label class="label-control d-block">Hình Ảnh Các Sản Phẩm:</label>
                                         <div class="owl-carousel owl-theme owl-loaded owl-drag" id="owl-carousel-13">
                                             <div class="owl-stage-outer">
