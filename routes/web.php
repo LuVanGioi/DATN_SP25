@@ -15,6 +15,7 @@ use App\Http\Controllers\admins\MaGiamGiaController;
 use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\BienTheSanPhamController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
+use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 
 use App\Http\Controllers\clients\GioHangController;
@@ -124,6 +125,7 @@ Route::resource('admin/ChatLieu', ChatLieuController::class);
 Route::resource('admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('admin/BienThe', BienTheController::class);
 Route::resource('admin/BaiViet', BaiVietController::class);
+Route::resource('admin/BinhLuanBaiViet', BinhLuanBaiVietController::class);
 Route::resource('admin/Banner', BannerController::class);
 
 Route::prefix('admin/maGiamGia')->group(function () {
