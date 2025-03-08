@@ -11,18 +11,13 @@ use Illuminate\Support\Facades\Log;
 class MaGiamGiaController extends Controller
 {
     public function index(Request $request)
-    {
-        $maGiamGias = MaGiamGia::all()->toArray(); 
-        $currentPage = $request->get('page', 1);
-        $perPage = 8; 
-        $currentItems = array_slice($maGiamGias, ($currentPage - 1) * $perPage, $perPage);
-        $maGiamGiasPaginator = new LengthAwarePaginator($currentItems, count($maGiamGias), $perPage, $currentPage, [
-            'path' => $request->url(),
-            'query' => $request->query()
-        ]);
+{
+    // Lấy tất cả các mã giảm giá
+    $maGiamGias = MaGiamGia::all(); 
 
-        return view('admins.maGiamGias.index', compact('maGiamGiasPaginator'));
-    }
+    // Trả về view với danh sách tất cả mã giảm giá
+    return view('admins.maGiamGias.index', compact('maGiamGias'));
+}
 
     public function create()
     {
