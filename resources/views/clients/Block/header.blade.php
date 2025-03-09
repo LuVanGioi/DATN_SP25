@@ -2,19 +2,33 @@
     <div class="container">
         <div class="top-bar-left">
             <ul class="list-inline">
+                @if (Auth::check())
+                <li>
+                    <a href=""><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
+                </li>
+                <li>
+                    <form action="{{route('logout')}}" method="POST">
+                        @csrf
+                        <button class="btn-none"><i class="fas fa-sign-out-alt"></i>Đăng Xuất</button>
+                    </form>
+                </li>
+                @else
                 <li class="icon-user">
-                    <a href="/dang-nhap">
+                    <a href="{{route('login')}}">
                         <img src="/clients/images/icon-1.png" alt="">
-                        <span>Đăng nhập</span>
+                        <span>Đăng Nhập</span>
+
                     </a>
                 </li>
                 <li class="icon-form">
-                    <a href="/dang-ky"><img src="/clients/images/icon-2.png" alt="">
+                    <a href="{{route('register')}}"><img src="/clients/images/icon-2.png" alt="">
                         <span>Tạo tài khoản</span>
                     </a>
                 </li>
-                <li><a href="mailto:lumanhgioi.vn@gmail.com"><i class="fa fa-envelope"></i>
-                        <span>lumanhgioi.vn@gmail.com</span></a></li>
+
+                @endif
+               
+   
             </ul>
         </div>
         <div class="top-bar-right">

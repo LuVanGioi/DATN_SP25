@@ -1,3 +1,9 @@
+
+@if (Auth::check() && Auth::user()->role !== "Admin") 
+   {{  redirect('/admin/thongKe') }}
+     {{abort(403)}}
+@endif
+
 <!DOCTYPE html>
 <html lang="vi">
 
