@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('danh_muc_san_pham', function (Blueprint $table) {
             $table->id();
             $table->string("TenDanhMucSanPham");
-            $table->boolean("Xoa")->default(0); // Chỉnh sửa loại dữ liệu thành boolean
-            $table->softDeletes(); // Thêm support cho soft deletes
+            $table->string("Xoa")->default(0);
+            $table->string("deleted_at")->nullable();
             $table->timestamps();
         });
     }
