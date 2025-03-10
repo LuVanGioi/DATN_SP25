@@ -133,7 +133,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/LienKetWebsite">
+        <a class="sidebar-link" href="{{ route("LienKetWebsite.index") }}">
           <i class="fa-light fa-link"></i>
           <span>Liên Kết Website</span>
         </a>
