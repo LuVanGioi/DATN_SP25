@@ -18,74 +18,43 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>ID_SanPham</th>
-                                        <th>ID_BienThe</th>
-                                        <th>Tên Sản Phẩm</th>
+                                        <th>Mã Đơn Hàng</th>
+                                        <th>Sản Phẩm</th>
                                         <th>Kích Cỡ</th>
                                         <th>Màu Sắc</th>
                                         <th>Giá</th>
                                         <th>Số Lượng</th>
                                         <th>Tổng Tiền</th>
-                                        <th>ID_HoaDon</th>
-                                        <th>Trạng thái đơn hàng</th>
+                                        <th>Trạng thái</th>
                                         <th>Ghi Chú</th>
                                         <th>Thao Tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>#</td>
-                                        <td>001</td>
-                                        <td>001</td>
+                                        <td>1</td>
+                                        <td>#123456</td>
                                         <td>Áo cộc Nike</td>
                                         <td>M</td>
                                         <td>Đỏ</td>
                                         <td>120.000đ</td>
                                         <td>1</td>
                                         <td>120.000đ</td>
-                                        <td>001</td>
                                         <td>
-                                            <select name="" id="">
+                                            <select name="" class="form-control">
                                                 <option value="">Chờ Xác Nhận</option>
                                                 <option value="">Đã Xác Nhận</option>
-                                                <option value="">Chuẩn Bị Giao</option>
-                                                <option value="">Đang Giao</option>
-                                                <option value="">Đã Giao</option>
+                                                <option value="">Đang Giao Hàng</option>
+                                                <option value="">Đã Giao Hàng</option>
                                                 <option value="">Giao Thất Bại</option>
                                                 <option value="">Đã Hủy</option>
+                                                <option value="">Hoàn Hàng</option>
                                             </select>
                                         </td>
                                         <td>Ghi Chú</td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', 1234) }}">Xem Chi
                                                 Tiết</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#</td>
-                                        <td>002</td>
-                                        <td>002</td>
-                                        <td>Áo Khoác Adidas</td>
-                                        <td>L</td>
-                                        <td>Trắng</td>
-                                        <td>120.000đ</td>
-                                        <td>1</td>
-                                        <td>120.000đ</td>
-                                        <td>002</td>
-                                        <td>
-                                            <select name="" id="">
-                                                <option value="">Chờ Xác Nhận</option>
-                                                <option value="">Đã Xác Nhận</option>
-                                                <option value="">Chuẩn Bị Giao</option>
-                                                <option value="">Đang Giao</option>
-                                                <option value="">Đã Giao</option>
-                                                <option value="">Giao Thất Bại</option>
-                                                <option value="">Đã Hủy</option>
-                                            </select>
-                                        </td>
-                                        <td>Ghi Chú</td>
-                                        <td>
-                                            <a class="btn btn-info btn-sm" href="">Xem Chi Tiết</a>
                                         </td>
                                     </tr>
                                 </tbody>
