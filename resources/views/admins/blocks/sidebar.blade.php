@@ -91,7 +91,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/DonHang">
+        <a class="sidebar-link" href="{{ route('DonHang.index') }}">
           <i class="fa-light fa-bags-shopping"></i>
           <span>Đơn Hàng</span>
         </a>

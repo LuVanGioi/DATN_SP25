@@ -18,6 +18,7 @@ use App\Http\Controllers\admins\CaiDatWebsiteController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
+use App\Http\Controllers\admins\DonHangController;
 
 use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
@@ -145,3 +146,4 @@ Route::resource('admin/ChatLieu', ChatLieuController::class);
 Route::resource('admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
 Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
+Route::resource('admin/DonHang', DonHangController::class);
