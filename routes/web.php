@@ -23,7 +23,6 @@ use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
-use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Middleware\CheckRoleMiddleware;
@@ -130,11 +129,13 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
+    Route::resource('admin/BinhLuanBaiViet', BinhLuanBaiVietController::class);
     Route::resource('admin/ChatLieu', ChatLieuController::class);
     Route::resource('admin/ThuongHieu', ThuongHieuController::class);
     Route::resource('admin/BienThe', BienTheController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/Banner', BannerController::class);
+    Route::resource('admin/DonHang', DonHangController::class);
 
     Route::prefix('admin/maGiamGia')->group(function () {
 
@@ -151,4 +152,5 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/ChatLieu', ChatLieuController::class);
     Route::resource('admin/ThuongHieu', ThuongHieuController::class);
     Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
+    Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
 });
