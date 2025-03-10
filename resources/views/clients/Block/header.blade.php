@@ -72,9 +72,9 @@
                         <a href="#">Danh mục</a>
                         <ul>
                             @foreach ($danhMucSanPham as $danhMuc)
-                                <li><a
+                                {{-- <li><a
                                     href="/danh-muc/{{ xoadau($danhMuc->TenDanhMucSanPham) }}">{{ $danhMuc->TenDanhMucSanPham }}</a>
-                                </li>
+                                </li> --}}
                             @endforeach
                         </ul>
                     </li>
