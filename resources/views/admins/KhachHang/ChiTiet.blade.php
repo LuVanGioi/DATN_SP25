@@ -34,7 +34,7 @@
             <div class="profile-title">
             <div class="media"> <img class="img-70 rounded-circle" alt="" src="../assets/images/user/7.jpg">
               <div class="media-body">
-              <h5 class="mb-1">{{$chiTiet->HoTen}}</h5>
+              <h5 class="mb-1">{{$chiTiet->name}}</h5>
               </div>
             </div>
             </div>
@@ -42,27 +42,12 @@
 
           <div class="mb-3">
             <label class="form-label">Email</label>
-            <input class="form-control" value="{{$chiTiet->Email}}" disabled>
+            <input class="form-control" value="{{$chiTiet->email}}" disabled>
           </div>
-          <!-- <div class="mb-3">
-            <label class="form-label">Mật Khẩu</label>
-            <input class="form-control" type="password" value="{{$chiTiet->MatKhau}}" disabled>
-          </div> -->
-          <div class="mb-3">
-            <label class="form-label">Số Điện Thoại</label>
-            <input class="form-control" value="{{$chiTiet->SoDienThoai}}" disabled>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Ngày Sinh</label>
-            <input class="form-control" value="{{$chiTiet->NgaySinh}}" disabled>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Giới Tính</label>
-            <input class="form-control" value="{{$chiTiet->GioiTinh == 'nam' ? "Nam" : 'Nữ'}}" disabled>
-          </div>
+          
           <div class="mb-3">
             <label class="form-label">Vai trò</label>
-            <input class="form-control" value="{{$chiTiet->VaiTro == 'khach' ? "Khách" : 'Quản Trị'}}" disabled>
+            <input class="form-control" value="{{$chiTiet->role == 'User' ? "Khách" : 'Quản Trị'}}" disabled>
           </div>
           <div class="mb-3">
             <label class="form-label">Thời Gian Tham Gia</label>

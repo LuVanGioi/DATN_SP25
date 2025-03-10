@@ -11,14 +11,11 @@
 
         <div class="main-slider">
             <div class="owl-carousel" id="main-slider">
+            @foreach ($tatCaBanner as $Banner)
                 <div class="item slide1">
-                    <img class="slide-img" src="/clients/images/item/banner_item_1.png" alt="">
+                    <img class="slide-img" src="{{ Storage::url($Banner->HinhAnh) }}" alt="{{ $Banner->TenBanner }}">
                 </div>
-
-                <div class="item slide2">
-                    <img class="slide-img" src="/clients/images/item/banner_item_2.png" alt="">
-                </div>
-
+                @endforeach
             </div>
         </div>
 

@@ -26,6 +26,7 @@
                                         <th>Số Lượng</th>
                                         <th>Tổng Tiền</th>
                                         <th>Trạng thái</th>
+                                        <th>Phương Thức Thanh Toán</th>
                                         <th>Ghi Chú</th>
                                         <th>Thao Tác</th>
                                     </tr>
@@ -51,6 +52,7 @@
                                                 <option value="">Hoàn Hàng</option>
                                             </select>
                                         </td>
+                                        <td>Thanh Toán Khi Nhận Hàng</td>
                                         <td>Ghi Chú</td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', 1234) }}">Xem Chi

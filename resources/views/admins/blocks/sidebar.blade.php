@@ -1,11 +1,11 @@
 <div class="logo-wrapper">
-  <a href="/admin/home">
+  <a href="/">
     <img class="img-fluid" src="/admins/images/logo/logo_DATN.png" style="width: 200px" alt="">
   </a>
   <div class="back-btn"><i class="fa fa-angle-left"> </i></div>
 </div>
 <div class="logo-icon-wrapper">
-  <a href="/admin/home">
+  <a href="/">
     <img class="img-fluid" src="/admins/images/logo-icon.png" alt="">
   </a>
 </div>
@@ -133,7 +133,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/LienKetWebsite">
+        <a class="sidebar-link" href="{{ route("LienKetWebsite.index") }}">
           <i class="fa-light fa-link"></i>
           <span>Liên Kết Website</span>
         </a>
