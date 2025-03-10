@@ -193,7 +193,6 @@
                                                 <div class="col">
                                                     <small for="" class="label-control">{{ $BienTheNutBam1->TenBienThe }}</small>
                                                     <div class="colorProducts">{{ $KichCo->TenKichCo }}</div>
-                                                    <button class="btn btn-danger btn-xs w-100" onclick="xoaBienTheKichCo('itemKichCo_{{ $KichCo->id.$randomId2 }}')"><i class="fal fa-trash"></i></button>
                                                 </div>
                                                 <input type="hidden" name="KichCo[]" value="{{ $KichCo->TenKichCo }}">
 
@@ -214,11 +213,6 @@
                                                     <div class="col">
                                                         <small for="" class="label-control">Số Lượng</small>
                                                         <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng">
-                                                    </div>
-
-                                                    <div class="col">
-                                                        <br>
-                                                        <button class="btn btn-danger btn-xs w-100" onclick="xoaGiaTriBienThe('itemBienThe_{{ $MauSacCon->id.$randomId }}')"><i class="fal fa-trash"></i></button>
                                                     </div>
                                                 </div>
                                                 @endforeach
@@ -256,7 +250,7 @@
             });
 
             values1.forEach((value, index) => {
-                SoLuongBienThe[index].value = 1;
+                SoLuongBienThe[index].value = "0";
             });
         }
     }

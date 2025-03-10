@@ -1,11 +1,11 @@
 <div class="logo-wrapper">
-  <a href="/admin/home">
+  <a href="/">
     <img class="img-fluid" src="/admins/images/logo/logo_DATN.png" style="width: 200px" alt="">
   </a>
   <div class="back-btn"><i class="fa fa-angle-left"> </i></div>
 </div>
 <div class="logo-icon-wrapper">
-  <a href="/admin/home">
+  <a href="/">
     <img class="img-fluid" src="/admins/images/logo-icon.png" alt="">
   </a>
 </div>
