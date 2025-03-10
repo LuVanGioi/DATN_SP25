@@ -106,6 +106,6 @@ class BannerController extends Controller
             "deleted_at" => date("Y-m-d H:i:s")
         ]);
 
-        return redirect()->route("Banner.index")->with("success", "Xóa Danh Mục Thành Công");
+        return redirect()->route("Banner.index")->with("success", "Xóa Thành Công");
     }
 }

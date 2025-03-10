@@ -5,6 +5,7 @@ use Monolog\Handler\SamplingHandler;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\admins\homeController;
+use App\Http\Controllers\clients\BangTinController;
 use App\Http\Controllers\admins\BannerController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
@@ -64,7 +65,7 @@ Route::get('gioi-thieu-cua-hang', function() {
     return view('clients.GioiThieu.GioiThieu');
 });
 Route::get('danh-sach-bai-viet', function() {
-    return view('clients.BaiViet.BaiViet');
+    return view('clients.BaiViet.Baiviet');
 });
 Route::get('thong-tin-tai-khoan', function() {
     return view('clients.ThongTinTaiKhoan.ThongTinTaiKhoan');
@@ -103,6 +104,8 @@ Route::get('/quan-ao-nam', function() {
 Route::get('/quan-ao-nu', function() {
     return view('clients.QuanAoNu.QuanAoNu');
 });
+
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 
 
 
