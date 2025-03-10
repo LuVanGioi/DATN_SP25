@@ -50,8 +50,8 @@
                 <div class="cart-wrapper">
                     <a href="/thong-tin-tai-khoan" class="btn btn-theme-transparent hidden-xs hidden-sm"><i
                             class="fa fa-user-circle"></i></a>
-                    <a href="#" class="btn btn-theme-transparent" data-toggle="modal"
-                        data-target="#popup-cart"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs"> 0
+                    <a href="#" class="btn btn-theme-transparent" data-toggle="modal" data-target="#popup-cart"><i
+                            class="fa fa-shopping-cart"></i> <span class="hidden-xs"> 0
                             Sản phẩm - 0 đ </span> <i class="fa fa-angle-down"></i></a>
                     <a href="#" class="menu-toggle btn btn-theme-transparent"><i class="fa fa-bars"></i></a>
                 </div>
@@ -64,9 +64,20 @@
                 <a href="#" class="menu-toggle-close btn"><i class="fa fa-times"></i></a>
                 <ul class="nav sf-menu">
                     <li class="active"><a href="/">Trang chủ</a></li>
-                    <li><a href="/san-pham">Sản phẩm</a></li>
-                    <li><a href="/quan-ao-nam">Quần áo nam</a></li>
-                    <li><a href="/quan-ao-nu">Quần áo nữ</a></li>
+                    <li>
+                        <a href="#">Hàng mới về</a>
+                        <ul></ul>
+                    </li>
+                    <li>
+                        <a href="#">Danh mục</a>
+                        <ul>
+                            @foreach ($danhMucSanPham as $danhMuc)
+                                <li><a
+                                    href="/danh-muc/{{ xoadau($danhMuc->TenDanhMucSanPham) }}">{{ $danhMuc->TenDanhMucSanPham }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
                     <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
                     <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
                     <li><a href="/lien-he">Liên hệ</a></li>

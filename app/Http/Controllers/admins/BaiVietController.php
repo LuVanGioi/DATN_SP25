@@ -18,7 +18,7 @@ class BaiVietController extends Controller
         $search = $request->input('search');
         $query = DB::table('bai_viet')
             ->join('danh_muc_bai_viet', 'bai_viet.danh_muc_id', '=', 'danh_muc_bai_viet.id')
-            ->select('bai_viet.*', 'danh_muc_bai_viet.TenDanhMucBaiViet as ten_danh_muc');
+            ->select('bai_viet.*', 'danh_muc_bai_viet.TenDanhMucBaiViet as ten_danh_muc')->where('danh_muc_bai_viet.Xoa', 0)->where("bai_viet.Xoa", 0);
 
         if ($search) {
             $query->where('bai_viet.tieu_de', 'like', '%' . $search . '%');
@@ -125,7 +125,10 @@ class BaiVietController extends Controller
     {
         DB::beginTransaction();
         try {
-            DB::table('bai_viet')->where('id', $id)->delete();
+            DB::table('bai_viet')->where('id', $id)->update([
+                "Xoa" => 1,
+                "deleted_at" => date("Y/m/d H:i:s")
+            ]);
             DB::commit();
             return redirect()->route('BaiViet.index')->with('success', 'Bài viết đã được xóa thành công.');
         } catch (\Exception $e) {

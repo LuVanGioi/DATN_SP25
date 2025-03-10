@@ -13,10 +13,17 @@ use App\Http\Controllers\admins\ThungRacController;
 use App\Http\Controllers\admins\KhachHangController;
 use App\Http\Controllers\admins\MaGiamGiaController;
 use App\Http\Controllers\admins\ThuongHieuController;
-use App\Http\Controllers\admins\MaGiamGiaMaController;
 use App\Http\Controllers\admins\BienTheSanPhamController;
+use App\Http\Controllers\admins\CaiDatWebsiteController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
+use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
+use App\Http\Controllers\admins\DonHangController;
+
+use App\Http\Controllers\clients\GioHangController;
+use App\Http\Controllers\clients\homeController as ClientsHomeController;
+use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
+use Monolog\Handler\SamplingHandler;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,25 +37,30 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 */
 
 #CLIENTS
-Route::get('/', function () {
-    return view('clients.TrangChu');
-});
-Route::get('/dang-nhap', function() {
+Route::get('/', [ClientsHomeController::class, "home"]);
+Route::resource('gio-hang', GioHangController::class);
+Route::resource('san-pham', ClientsSanPhamController::class);
+
+
+
+
+
+Route::get('dang-nhap', function() {
     return view('clients.XacThuc.DangNhap');
 });
-Route::get('/dang-ky', function() {
+Route::get('dang-ky', function() {
     return view('clients.XacThuc.DangKy');
 });
-Route::get('/forgot-password', function() {
+Route::get('forgot-password', function() {
     return view('clients.XacThuc.QuenMatKhau');
 });
-Route::get('/gioi-thieu-cua-hang', function() {
+Route::get('gioi-thieu-cua-hang', function() {
     return view('clients.GioiThieu.GioiThieu');
 });
-Route::get('/danh-sach-bai-viet', function() {
+Route::get('danh-sach-bai-viet', function() {
     return view('clients.BaiViet.BaiViet');
 });
-Route::get('/thong-tin-tai-khoan', function() {
+Route::get('thong-tin-tai-khoan', function() {
     return view('clients.ThongTinTaiKhoan.ThongTinTaiKhoan');
 });
 Route::get('/tai-khoan-cua-toi', function() {
@@ -78,18 +90,14 @@ Route::get('/faq', function() {
 Route::get('/san-pham-yeu-thich', function() {
     return view('clients.SanPhamYeuThich.SanPhamYeuThich');
 });
-Route::get('/gio-hang', function() {
-    return view('clients.GioHang.GioHang');
-});
+
 Route::get('/quan-ao-nam', function() {
     return view('clients.QuanAoNam.QuanAoNam');
 });
 Route::get('/quan-ao-nu', function() {
     return view('clients.QuanAoNu.QuanAoNu');
 });
-Route::get('/san-pham', function() {
-    return view('clients.SanPham.SanPham');
-});
+
 
 
 
@@ -119,6 +127,7 @@ Route::resource('admin/ChatLieu', ChatLieuController::class);
 Route::resource('admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('admin/BienThe', BienTheController::class);
 Route::resource('admin/BaiViet', BaiVietController::class);
+Route::resource('admin/BinhLuanBaiViet', BinhLuanBaiVietController::class);
 Route::resource('admin/Banner', BannerController::class);
 
 Route::prefix('admin/maGiamGia')->group(function () {
@@ -136,3 +145,5 @@ Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
 Route::resource('admin/ChatLieu', ChatLieuController::class);
 Route::resource('admin/ThuongHieu', ThuongHieuController::class);
 Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
+Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
+Route::resource('admin/DonHang', DonHangController::class);

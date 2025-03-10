@@ -14,7 +14,7 @@
   <div id="sidebar-menu">
     <ul class="sidebar-links" id="simple-bar">
       <li class="back-btn">
-        <a href="/admin/home">
+        <a href="/">
           <img class="img-fluid" src="/admins/images/logo-icon.png" alt="">
         </a>
         <div class="mobile-back text-end"> <span>Back </span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i>
@@ -74,6 +74,7 @@
         <ul class="sidebar-submenu">
           <li><a href="{{ route("DanhMucBaiViet.index") }}">Danh Mục</a></li>
           <li><a href="{{ route("BaiViet.index") }}">Bài Viết</a></li>
+          <li><a href="{{ route("BinhLuanBaiViet.index") }}">Bình Luận Bài Viết</a></li>
         </ul>
       </li>
 
@@ -90,7 +91,7 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/DonHang">
+        <a class="sidebar-link" href="{{ route('DonHang.index') }}">
           <i class="fa-light fa-bags-shopping"></i>
           <span>Đơn Hàng</span>
         </a>
@@ -124,9 +125,17 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/CaiDatWebsite">
+        <a class="sidebar-link" href="{{ route("CaiDatWebsite.index") }}">
           <i class="fa-light fa-cog"></i>
           <span>Cài Đặt Website</span>
+        </a>
+      </li>
+
+      <li class="sidebar-list">
+        <i class="fa fa-thumb-tack"> </i>
+        <a class="sidebar-link" href="/admin/LienKetWebsite">
+          <i class="fa-light fa-link"></i>
+          <span>Liên Kết Website</span>
         </a>
       </li>
 

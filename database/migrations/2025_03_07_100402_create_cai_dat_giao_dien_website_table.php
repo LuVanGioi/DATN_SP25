@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chat_lieu', function (Blueprint $table) {
+        Schema::create('cai_dat_giao_dien_website', function (Blueprint $table) {
             $table->id();
-            $table->string("TenChatLieu", "255");
-            $table->string("Xoa")->default(false);
-            $table->string("deleted_at")->nullable();
+            $table->string("Loai");
+            $table->text("GiaTri")->nullable();
+            $table->string("TrangThai")->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chat_lieu');
+        Schema::dropIfExists('cai_dat_giao_dien_website');
     }
 };

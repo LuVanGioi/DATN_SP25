@@ -48,7 +48,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Chất Liệu</label>
-                                        <input class="form-control @error("ChatLieu") is-invalid border-danger @enderror" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" required>
+                                        <input class="form-control @error("ChatLieu") is-invalid border-danger @enderror" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm"  value="{{ old("ChatLieu") }}" required>
                                         @error("ChatLieu")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -60,7 +60,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Tên Sản Phẩm</label>
-                                        <input class="form-control @error(" TenSanPham") is-invalid border-danger @enderror" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" required>
+                                        <input class="form-control @error(" TenSanPham") is-invalid border-danger @enderror" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" value="{{ old("TenSanPham") }}" required>
                                         @error("TenSanPham")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -69,9 +69,38 @@
 
                                 <div class="col" id="formInputMoney">
                                     <div class="mb-3">
-                                        <label>Giá Sản Phẩm</label>
-                                        <input class="form-control @error(" GiaSanPham") is-invalid border-danger @enderror" type="number" onkeyup="CapNhacGiaNhap()" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" required>
+                                        <label>Giá Gốc</label>
+                                        <input class="form-control @error(" GiaKhuyenMai") is-invalid border-danger @enderror" type="number" name="GiaKhuyenMai" value="{{ old("GiaKhuyenMai") }}" placeholder="Giá Gốc Của Sản Phẩm">
+                                        @error("GiaKhuyenMai")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col" id="formInputMoney">
+                                    <div class="mb-3">
+                                        <label>Giá Bán</label>
+                                        <input class="form-control @error(" GiaSanPham") is-invalid border-danger @enderror" type="number" onkeyup="CapNhacGiaNhap()" name="GiaSanPham"  value="{{ old("GiaSanPham") }}" id="Gia" placeholder="Giá Khuyễn Mãi Sản Phẩm" required>
                                         @error("GiaSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label>Nhãn</label>
+                                        <select name="Nhan" class="form-control">
+                                            <option value="">Không Có</option>
+                                            <option value="hot">HOT</option>
+                                            <option value="sale">Giảm Giá</option>
+                                            <option value="new">Hàng Mới</option>
+                                            <option value="featured">Nổi Bật</option>
+                                            <option value="clearance">Xả</option>
+                                            <option value="limited">Giới Hạn</option>
+                                            <option value="discount">Ưu Đãi Đặc Biệt</option>
+                                        </select>
+                                        @error("Nhan")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -82,7 +111,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Mô Tả</label>
-                                        <textarea name="MoTaSanPham" class="note-DATN"></textarea>
+                                        <textarea name="MoTaSanPham" class="note-DATN">{{ old("MoTaSanPham") }}</textarea>
                                     </div>
                                 </div>
                             </div>
