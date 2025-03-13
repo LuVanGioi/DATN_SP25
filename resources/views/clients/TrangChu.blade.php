@@ -11,14 +11,11 @@
 
         <div class="main-slider">
             <div class="owl-carousel" id="main-slider">
+            @foreach ($tatCaBanner as $Banner)
                 <div class="item slide1">
-                    <img class="slide-img" src="/clients/images/item/banner_item_1.png" alt="">
+                    <img class="slide-img" src="{{ Storage::url($Banner->HinhAnh) }}" alt="{{ $Banner->TenBanner }}">
                 </div>
-
-                <div class="item slide2">
-                    <img class="slide-img" src="/clients/images/item/banner_item_2.png" alt="">
-                </div>
-
+                @endforeach
             </div>
         </div>
 
@@ -251,13 +248,13 @@
             <div class="col-md-6">
                 <div class="recent-post">
                     <div class="media">
-                        <a class="pull-left" href="/bai-viet/{{ xoadau($baiViet->tieu_de) }}">
-                            <img class="media-object" src="{{ Storage::url($baiViet->hinh_anh) }}" width="100px" alt="">
+                        <a class="pull-left" href="/bai-viet/{{ ($baiViet->tieu_de) }}">
+                            <img class="media-object" src="{{ $baiViet->hinh_anh }}" width="150px" height="100px" alt="">
                         </a>
                         <div class="media-body">
-                            <p class="media-category"><a href="#">{{ $baiViet->tac_gia }}</a></p>
+                            <p class="media-category"><a href="#">Tác giả: {{ $baiViet->tac_gia }}</a></p>
                             <h4 class="media-heading"><a href="#">{{ $baiViet->tieu_de }}</a></h4>
-                            Nội dung bài viết ngắn...
+                            <h4 class="media-heading"><a href="#">{{ $baiViet->noi_dung }}</a></h4>
                             <div class="media-meta">
                                 {{ $baiViet->ngay_dang }}
                                 <span class="divider">/</span><i class="fas fa-comment"></i> 27

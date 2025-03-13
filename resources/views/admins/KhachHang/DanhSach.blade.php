@@ -31,9 +31,9 @@
                                         <tbody>
                                             @foreach ($khachHang as $index => $row)<tr>
                                                     <td>{{$row->id }}</td>
-                                                    <td>{{$row->Email}}</td>
+                                                    <td>{{$row->email}}</td>
                                                     <td>{{$row->created_at}}</td>
-                                                    <td>@if ($row->TrangThai == 0)
+                                                    <td>@if ($row->role == 0)
                                                         <?php echo 'Hoạt Động' ?>
                                                     @else
                                                         <?php echo 'Không Hoạt Động' ?>
@@ -44,13 +44,13 @@
 
                                                         @csrf
                                                         @method('PUT')
-                                                        <input type="hidden" name="TrangThai" value="{{$row->TrangThai}}">
-                                                        @if ($row->TrangThai == 0)
+                                                        <input type="hidden" name="role" value="{{$row->role}}">
+                                                        <!-- @if ($row->role == 0)
                                                         
                                                         <button type="submit" class="btn btn-danger btn-sm" >Chặn</button>
                                                     @else
                                                     <button type="submit" class="btn btn-success btn-sm" >Bỏ Chặn</button>
-                                                    @endif
+                                                    @endif -->
                                                      
                                                        </form>
                                                     </td>

@@ -12,7 +12,8 @@ class homeController extends Controller
     {
         $tatCaSanPham = DB::table("san_pham")->where("Xoa", 0)->orderByDesc("id")->limit(100)->get();
         $tatCaBaiViet = DB::table("bai_viet")->where("Xoa", 0)->orderByDesc("id")->limit(5)->get();
-        return view('clients.TrangChu', compact("tatCaSanPham", "tatCaBaiViet"));
+        $tatCaBanner = DB::table("banner")->where("Xoa", 0)->orderByDesc("id")->limit(5)->get();
+        return view('clients.TrangChu', compact("tatCaSanPham", "tatCaBaiViet", "tatCaBanner"));
     }
     
 }

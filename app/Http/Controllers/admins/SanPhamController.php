@@ -17,11 +17,10 @@ class SanPhamController extends Controller
     {
         $danhSach = DB::table("san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachDanhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
-        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
 
 
-        return view("admins.SanPham.DanhSach", compact("danhSach", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu"));
+        return view("admins.SanPham.DanhSach", compact("danhSach", "danhSachDanhMuc", "danhSachThuongHieu"));
     }
 
     /**
@@ -30,13 +29,12 @@ class SanPhamController extends Controller
     public function create()
     {
         $danhSachDanhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
-        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachBienThe = DB::table("bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
         $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
         $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
 
-        return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo"));
+        return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo"));
     }
 
     /**
@@ -152,7 +150,6 @@ class SanPhamController extends Controller
         }
 
         $danhSachDanhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
-        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $id)->get();
         $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
@@ -164,7 +161,7 @@ class SanPhamController extends Controller
 
         $KichCoChuaCo = DB::table('kich_co')->whereNotIn('TenKichCo', $idKichCoDaCo)->get();
 
-        return view("admins.SanPham.SuaSanPham", compact("sanPham", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh", "KichCoChuaCo", "danhSachBienThe1"));
+        return view("admins.SanPham.SuaSanPham", compact("sanPham", "danhSachDanhMuc", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh", "KichCoChuaCo", "danhSachBienThe1"));
     }
 
     /**

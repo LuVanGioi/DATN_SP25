@@ -13,7 +13,7 @@ class KhachHangController extends Controller
      */
     public function index()
     {
-        $khachHang = DB::table('khach_hang')->orderByDesc('id')->get();
+        $khachHang = DB::table('users')->orderByDesc('id')->where('role', 'User')->get();
         return view('admins.KhachHang.DanhSach',compact('khachHang'));
     }
 
@@ -38,7 +38,7 @@ class KhachHangController extends Controller
      */
     public function show(string $id)
     {
-        $chiTiet = DB::table('khach_hang')->find($id);
+        $chiTiet = DB::table('users')->find($id);
         return view("admins.KhachHang.chiTiet", compact("chiTiet"));
     }
 

@@ -32,7 +32,7 @@ class BannerController extends Controller
         DB::beginTransaction();
         foreach ($request->file("HinhAnh") as $row) {
             if ($row->isValid()) {
-                $images = $row->store("uploads/Banner", "public");
+                $images = $row->store("uploads/Banners", "public");
                 DB::table('banner')->insert([
                     "TenBanner"   => $request->input("TenBanner"),
                     "HinhAnh"     => $images,
@@ -74,7 +74,7 @@ class BannerController extends Controller
         $image = $banner->HinhAnh;
 
         if ($request->hasFile("HinhAnh")) {
-            $image = $request->file("HinhAnh")->store("uploads/Banner", "public");
+            $image = $request->file("HinhAnh")->store("uploads/Banners", "public");
             Storage::disk('public')->delete($banner->HinhAnh);
         }
 
@@ -106,6 +106,6 @@ class BannerController extends Controller
             "deleted_at" => date("Y-m-d H:i:s")
         ]);
 
-        return redirect()->route("Banner.index")->with("success", "Xóa Danh Mục Thành Công");
+        return redirect()->route("Banner.index")->with("success", "Xóa Thành Công");
     }
 }
