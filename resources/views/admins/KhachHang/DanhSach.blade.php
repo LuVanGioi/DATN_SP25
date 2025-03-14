@@ -45,12 +45,12 @@
                                                         @csrf
                                                         @method('PUT')
                                                         <input type="hidden" name="role" value="{{$row->role}}">
-                                                        @if ($row->role == 0)
+                                                        <!-- @if ($row->role == 0)
                                                         
                                                         <button type="submit" class="btn btn-danger btn-sm" >Chặn</button>
                                                     @else
                                                     <button type="submit" class="btn btn-success btn-sm" >Bỏ Chặn</button>
-                                                    @endif
+                                                    @endif -->
                                                      
                                                        </form>
                                                     </td>

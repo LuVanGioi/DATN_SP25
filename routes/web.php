@@ -5,6 +5,7 @@ use Monolog\Handler\SamplingHandler;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\admins\homeController;
+use App\Http\Controllers\clients\BangTinController;
 use App\Http\Controllers\admins\BannerController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
+use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Middleware\CheckRoleMiddleware;
@@ -62,7 +64,7 @@ Route::get('/admin', function () {
 Route::get('gioi-thieu-cua-hang', function () {
     return view('clients.GioiThieu.GioiThieu');
 });
-Route::get('danh-sach-bai-viet', function () {
+Route::get('danh-sach-bai-viet', function() {
     return view('clients.BaiViet.BaiViet');
 });
 Route::get('thong-tin-tai-khoan', function () {
@@ -103,6 +105,8 @@ Route::get('/quan-ao-nu', function () {
     return view('clients.QuanAoNu.QuanAoNu');
 });
 
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
+
 
 
 
@@ -129,11 +133,13 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
+    Route::resource('admin/BinhLuanBaiViet', BinhLuanBaiVietController::class);
     Route::resource('admin/ChatLieu', ChatLieuController::class);
     Route::resource('admin/ThuongHieu', ThuongHieuController::class);
     Route::resource('admin/BienThe', BienTheController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/Banner', BannerController::class);
+    Route::resource('admin/DonHang', DonHangController::class);
 
     Route::prefix('admin/maGiamGia')->group(function () {
         Route::resource('maGiamGia', MaGiamGiaController::class)->names([
@@ -149,4 +155,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/ChatLieu', ChatLieuController::class);
     Route::resource('admin/ThuongHieu', ThuongHieuController::class);
     Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
+    Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
+    Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
 });

@@ -44,8 +44,8 @@
                                         <div class="mb-3">
                                             <label for="TrangThai" class="form-label">Trạng thái</label>
                                             <select id="TrangThai" name="TrangThai" class="form-control" required>
-                                                <option value="1">Hiện</option>
-                                                <option value="0">Ẩn</option>
+                                                <option value="hien">Hiện</option>
+                                                <option value="an">Ẩn</option>
                                             </select>
                                         </div>
                                     </div>
