@@ -32,18 +32,29 @@
       <ul class="nav-menus">
         <li>
           <div class="mode"><i class="moon" data-feather="moon"> </i></div>
-        </li>
-        <li class="profile-nav onhover-dropdown">
-          <div class="media profile-media"><img class="b-r-10" src="/admins/images/profile.png" alt="">
+        </li>   
+        
+          <li class="profile-nav onhover-dropdown">
+          <div class="media profile-media">
+            <img class="b-r-10" src="/admins/images/profile.png" alt="">
             <div class="media-body d-xxl-block d-none box-col-none">
-              <div class="d-flex align-items-center gap-2"> <span>Tên người dùng</span><i class="middle fa fa-angle-down"> </i></div>
+              <div class="d-flex align-items-center gap-2"> <a href="{{route('home.index')}}"><span>{{Auth::user()->name}}</span><i class="middle fa fa-angle-down"> </i> </a> </div>
               <p class="mb-0 font-roboto">Quản Trị Viên</p>
             </div>
           </div>
           <ul class="profile-dropdown onhover-show-div">
-            <li><a class="btn btn-pill btn-outline-primary btn-sm" href="/admin/taiKhoan">Đăng Xuất</a></li>
-          </ul>
+            <li>
+                <form action="{{route('logout')}}" method="POST" class="d-flex align-items-center">
+                    @csrf
+                    <button class="btn btn-primary d-flex align-items-center">
+                        <i class="fas fa-sign-out-alt me-2"></i> Đăng Xuất
+                    </button>
+                </form>
+            </li>
+        </ul>
         </li>
+       
+        
       </ul>
     </div>
   </div>
