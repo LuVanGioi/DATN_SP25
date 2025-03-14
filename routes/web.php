@@ -24,7 +24,7 @@ use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
-use App\Http\Controllers\clients\GioHangController;
+use App\Http\Controllers\admins\LienKetWebsiteController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Middleware\CheckRoleMiddleware;
