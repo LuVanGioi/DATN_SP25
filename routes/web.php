@@ -23,7 +23,6 @@ use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
-use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Middleware\CheckRoleMiddleware;
@@ -151,11 +150,3 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/ThuongHieu', ThuongHieuController::class);
     Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
 });
-<<<<<<<<< Temporary merge branch 1
-Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
-Route::resource('admin/ChatLieu', ChatLieuController::class);
-Route::resource('admin/ThuongHieu', ThuongHieuController::class);
-Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
-Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
-=========
->>>>>>>>> Temporary merge branch 2
