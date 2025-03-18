@@ -32,7 +32,7 @@
                                     <a href="#">Nữ</a>
                                     <ul class="children">
                                         <li>
-                                            <a href="#">Áo Len & Đan
+                                            <a href="#">Áo Len
                                                 <span class="count">12</span>
                                             </a>
                                         </li>
