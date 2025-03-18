@@ -22,4 +22,8 @@ class supportController extends Controller
         
         return redirect()->back()->with("success_support","Đăng Ký Mail Thành Công!");
     }
+
+    public function contact_form(Request $request) {
+
+    }
 }
