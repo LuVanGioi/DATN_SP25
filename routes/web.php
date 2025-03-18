@@ -59,7 +59,7 @@ Route::get('/admin', function () {
 })->middleware('auth.admin');
 
 Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
-
+Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 
 Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.Baiviet');
