@@ -25,8 +25,10 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
+use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
+use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Middleware\CheckRoleMiddleware;
 use PhpParser\Node\Expr\FuncCall;
 
@@ -42,67 +44,52 @@ use PhpParser\Node\Expr\FuncCall;
 */
 
 #CLIENTS
-Route::get('/', [ClientsHomeController::class, "home"]);
+Route::get('/', [ClientsHomeController::class, "home"])->name("home.client");
 Route::resource('gio-hang', GioHangController::class);
 Route::resource('san-pham', ClientsSanPhamController::class);
+Route::get('url/{code}', [ClientsLienKetWebsiteController::class, "index"]);
 
-Route::get('dang-nhap',[ClientsAuthController::class, 'showFormLogin']);
-Route::post('dang-nhap',[ClientsAuthController::class, 'login'])->name('login');
-
-Route::get('dang-ky',[ClientsAuthController::class, 'showFormRegister']);
-Route::post('dang-ky',[ClientsAuthController::class, 'register'])->name('register');
-
-Route::post('dang-xuat',[ClientsAuthController::class, 'logout'])->name('logout');
-
-
-Route::get('/admin', function(){
+Route::get('dang-nhap', [ClientsAuthController::class, 'showFormLogin']);
+Route::post('dang-nhap', [ClientsAuthController::class, 'login'])->name('login');
+Route::get('dang-ky', [ClientsAuthController::class, 'showFormRegister']);
+Route::post('dang-ky', [ClientsAuthController::class, 'register'])->name('register');
+Route::post('dang-xuat', [ClientsAuthController::class, 'logout'])->name('logout');
+Route::get('/admin', function () {
     return  view('/admin.KhachHang');
 })->middleware('auth.admin');
 
+Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
 
 
-Route::get('gioi-thieu-cua-hang', function() {
-    return view('clients.GioiThieu.GioiThieu');
-});
-Route::get('danh-sach-bai-viet', function() {
+Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.Baiviet');
 });
-Route::get('thong-tin-tai-khoan', function() {
+Route::get('thong-tin-tai-khoan', function () {
     return view('clients.ThongTinTaiKhoan.ThongTinTaiKhoan');
 });
-Route::get('/tai-khoan-cua-toi', function() {
+Route::get('/tai-khoan-cua-toi', function () {
     return view('clients.ThongTinTaiKhoan.TaiKhoanCuaToi');
 });
-Route::get('/doi-mat-khau', function() {
+Route::get('/doi-mat-khau', function () {
     return view('clients.ThongTinTaiKhoan.DoiMatKhau');
 });
-Route::get('/so-dia-chi', function() {
+Route::get('/so-dia-chi', function () {
     return view('clients.ThongTinTaiKhoan.DiaChi');
 });
-Route::get('/lich-su-don-hang', function() {
+Route::get('/lich-su-don-hang', function () {
     return view('clients.ThongTinTaiKhoan.LichSuDonHang');
 });
-Route::get('/danh-gia-va-nhan-xet', function() {
+Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
 });
-Route::get('/yeu-cau-tra-hang', function() {
+Route::get('/yeu-cau-tra-hang', function () {
     return view('clients.ThongTinTaiKhoan.YeuCauTraHang');
 });
-Route::get('/lien-he', function() {
+Route::get('/lien-he', function () {
     return view('clients.LienHe.LienHe');
 });
-Route::get('/faq', function() {
+Route::get('/faq', function () {
     return view('clients.Faq.Faq');
-});
-Route::get('/san-pham-yeu-thich', function() {
-    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
-});
-
-Route::get('/quan-ao-nam', function() {
-    return view('clients.QuanAoNam.QuanAoNam');
-});
-Route::get('/quan-ao-nu', function() {
-    return view('clients.QuanAoNu.QuanAoNu');
 });
 
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
@@ -118,7 +105,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
     Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
     Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
-    Route::resource('admin/KhachHang', KhachHangController::class );
+    Route::resource('admin/KhachHang', KhachHangController::class);
     Route::resource('admin/SanPham', SanPhamController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
