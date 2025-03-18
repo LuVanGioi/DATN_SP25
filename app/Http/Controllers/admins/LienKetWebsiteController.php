@@ -34,6 +34,7 @@ class LienKetWebsiteController extends Controller
 
 
         DB::table("lien_ket_ket_website")->insert([
+            "DuongDan" => xoadau($request->input("TieuDe")),
             "TieuDe" => $request->input("TieuDe"),
             "NoiDung" => $request->input("NoiDung"),
             "Xoa" => "0",
@@ -89,6 +90,19 @@ class LienKetWebsiteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $LienKetWebsite = DB::table("lien_ket_ket_website")->find($id);
+
+        if (!$LienKetWebsite) {
+            return redirect()->route("LienKetWebsite.index")->with("error", "Liên Kết Không Tồn Tại!");
+        }
+
+        DB::table("lien_ket_ket_website")->where("id", $id)->update([
+            "Xoa" => 1,
+            "deleted_at" => date("Y/m/d H:i:s")
+        ]);
+
+        DB::commit();
+
+        return redirect()->route("LienKetWebsite.index")->with("success", "Xóa Liên Kết Thành Công!");
     }
 }

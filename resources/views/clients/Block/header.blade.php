@@ -4,7 +4,7 @@
             <ul class="list-inline">
                 @if (Auth::check())
                 <li>
-                    <a href=""><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
+                    <a href="/thong-tin-tai-khoan"><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
                 </li>
                 <li>
                     <form action="{{route('logout')}}" method="POST">
@@ -12,6 +12,11 @@
                         <button class="btn-none"><i class="fas fa-sign-out-alt"></i>Đăng Xuất</button>
                     </form>
                 </li>
+                @if (Auth::user()->role == "Admin")
+                <li>
+                    <a href="/admin/thongKe"><i class="fas fa-cog"></i> Quản Trị Viên</a>
+                </li>
+                @endif
                 @else
                 <li class="icon-user">
                     <a href="{{route('login')}}">
@@ -27,18 +32,17 @@
                 </li>
 
                 @endif
-               
-   
+
+
             </ul>
         </div>
         <div class="top-bar-right">
             <ul class="list-inline">
-                <li class="hidden-xs"><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
+                <li class="hidden-xs"><a href="/url/gioi-thieu-cua-hang">Giới thiệu</a></li>
                 <li class="hidden-xs"><a href="/danh-sach-bai-viet">Bài viết</a></li>
                 <li class="hidden-xs"><a href="/thong-tin-tai-khoan">Tài khoản</a></li>
                 <li class="hidden-xs"><a href="/lien-he">Liên hệ</a></li>
                 <li class="hidden-xs"><a href="/faq">FAQ</a></li>
-                <li class="hidden-xs"><a href="/san-pham-yeu-thich">Sản phẩm yêu thích</a></li>
                 <li>
                     <div class="gtranslate_wrapper"></div>
                 </li>
@@ -79,22 +83,21 @@
                 <ul class="nav sf-menu">
                     <li class="active"><a href="/">Trang chủ</a></li>
                     <li>
-                        <a href="#">Hàng mới về</a>
-                        <ul></ul>
+                        <a href="/hang-moi-ve">Hàng mới về</a>
                     </li>
                     <li>
                         <a href="#">Danh mục</a>
                         <ul>
                             @foreach ($danhMucSanPham as $danhMuc)
-                                {{-- <li><a
+                            {{-- <li><a
                                     href="/danh-muc/{{ xoadau($danhMuc->TenDanhMucSanPham) }}">{{ $danhMuc->TenDanhMucSanPham }}</a>
-                                </li> --}}
-                            @endforeach
-                        </ul>
-                    </li>
-                    <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
-                    <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
-                    <li><a href="/lien-he">Liên hệ</a></li>
+                    </li> --}}
+                    @endforeach
+                </ul>
+                </li>
+                <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
+                <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
+                <li><a href="/lien-he">Liên hệ</a></li>
                 </ul>
             </nav>
         </div>
