@@ -35,6 +35,7 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
+                                            <th>Hình</th>
                                             <th>Tên</th>
                                             <th>Ngày Thêm</th>
                                             <th>Ngày Sửa</th>
@@ -45,6 +46,7 @@
                                         @foreach ($danhSach as $index => $row)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
+                                            <td><img src="{{ Storage::url($row->HinhAnh) }}" style="border-radius: 5px; width: 100px" alt=""></td>
                                             <td>{{ $row->TenThuongHieu }}</td>
                                             <td>{{ $row->created_at }}</td>
                                             <td>{{ $row->updated_at }}</td>
