@@ -29,6 +29,8 @@
                                 <img src="{{ $chiTiet->hinh_anh }}" class="card-img-top img-fluid" alt="{{ $chiTiet->tieu_de }}">
                                 <p class="card-text">{{ Str::limit($chiTiet->noi_dung, 100) }}</p>
                                 <img src="{{ $chiTiet->hinh_anh }}" class="card-img-top img-fluid" alt="{{ $chiTiet->tieu_de }}">
+                                <p class="card-text">{{ Str::limit($chiTiet->noi_dung, 100) }}</p>
+
 
                                 <p class="card-text"><strong>Tác giả:</strong> {{ $chiTiet->tac_gia }}</p>
                                 <p class="text-muted">Ngày đăng: {{ date('d/m/Y', strtotime($chiTiet->ngay_dang)) }}</p>
