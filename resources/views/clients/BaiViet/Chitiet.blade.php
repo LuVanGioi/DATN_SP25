@@ -18,7 +18,7 @@
             <div class="row">
               
                 <div class="col-md-9 content" id="content">
-                    <!-- list bài viết -->
+                    <!-- list bài viết bài viết -->
 
                    
                     <div class="col-md-4">
