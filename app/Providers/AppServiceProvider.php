@@ -26,10 +26,12 @@ class AppServiceProvider extends ServiceProvider
             $danhSachLienHe = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
             $caiDatWebsite = DB::table("cai_dat_website")->where("id", 1)->first();
             $lienKetWebsiteClient = DB::table("lien_ket_ket_website")->where("Xoa", 0)->get();
+            $danhSachLienheClient = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
             $view->with('danhMucSanPham', $danhMucSanPham);
             $view->with('danhSachLienHe', $danhSachLienHe);
             $view->with('caiDatWebsite', $caiDatWebsite);
             $view->with('lienKetWebsiteClient', $lienKetWebsiteClient);
+            $view->with('danhSachLienheClient', $danhSachLienheClient);
         });
     }
 }
