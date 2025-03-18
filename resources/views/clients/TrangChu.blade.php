@@ -252,7 +252,6 @@
                             <img class="media-object" src="{{ $baiViet->hinh_anh }}" width="150px" height="100px" alt="">
                         </a>
                         <div class="media-body">
-                            <p class="media-category"><a href="#">Tác giả: {{ $baiViet->tac_gia }}</a></p>
                             <h4 class="media-heading"><a href="#">{{ $baiViet->tieu_de }}</a></h4>
                             <h4 class="media-heading"><a href="#">{{ $baiViet->noi_dung }}</a></h4>
                             <div class="media-meta">
@@ -265,6 +264,10 @@
                 </div>
             </div>
             @endforeach
+            <!-- Nút chuyển trang -->
+<div class="d-flex justify-content-center mt-4">
+    {{ $tatCaBaiViet->links() }}
+</div>
         </div>
     </div>
 </section>

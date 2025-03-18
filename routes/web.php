@@ -93,7 +93,7 @@ Route::get('/faq', function () {
 });
 
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
-
+Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
 
 
 

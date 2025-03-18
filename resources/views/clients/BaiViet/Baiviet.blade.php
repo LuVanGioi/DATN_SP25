@@ -326,7 +326,8 @@
                                 <p class="card-text"><strong>Tác giả:</strong> {{ $news->tac_gia }}</p>
                                 <p class="card-text">{{ Str::limit($news->noi_dung, 100) }}</p>
                                 <p class="text-muted">Ngày đăng: {{ date('d/m/Y', strtotime($news->ngay_dang)) }}</p>
-                                <a href="#" class="btn btn-primary">Đọc thêm</a>
+                                <a href="{{ route('news.show', $news->id) }}" class="btn btn-info btn-sm">Đọc 
+                                    thêm</a>
                             </div>
                         </div>
                     </div>
