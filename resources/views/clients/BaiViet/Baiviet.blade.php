@@ -42,7 +42,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">Denim
+                                            <a href="#">Denims
                                                 <span class="count">12</span>
                                             </a>
                                         </li>
