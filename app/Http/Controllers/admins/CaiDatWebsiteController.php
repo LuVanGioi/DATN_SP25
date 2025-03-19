@@ -108,13 +108,6 @@ class CaiDatWebsiteController extends Controller
         Config::set('mail.from.address', $request->input("smtp_email"));
         Config::set('mail.from.name', $request->input("TenCuaHang"));
 
-        // $data = [
-        //     'name' => "ManhDev",
-        //     'message' => 'test Thôi'
-        // ];
-
-        // Mail::to("gioilvph47449@fpt.edu.vn")->send(new ThongBaoMail($data));
-
         DB::table("smtp_mail")->where("id", 1)->update([
             "smtp_status" => $request->input("smtp_status"),
             "smtp_host" => $request->input("smtp_host"),

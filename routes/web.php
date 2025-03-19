@@ -62,9 +62,6 @@ Route::get('/admin', [homeController::class, 'index'])->name('home.index')->midd
 
 Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
 
-Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
-Route::get('admin/cap-nhat/{id}', [QuanLyAdminController::class, 'edit'])->name('admin.capnhat');
-
 Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 
 
@@ -73,7 +70,7 @@ Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->n
 Route::get('gioi-thieu-cua-hang', function () {
     return view('clients.GioiThieu.GioiThieu');
 });
-Route::get('danh-sach-bai-viet', function() {
+Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.BaiViet');
 });
 Route::get('danh-sach-bai-viet', function () {
@@ -171,4 +168,5 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
+    Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 });
