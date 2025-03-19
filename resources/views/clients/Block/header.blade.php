@@ -86,6 +86,9 @@
                         <a href="/hang-moi-ve">Hàng mới về</a>
                     </li>
                     <li>
+                        <a href="/hang-giam-gia">Hàng Giảm Giá</a>
+                    </li>
+                    <li>
                         <a href="#">Danh mục</a>
                         <ul>
                             @foreach ($danhMucSanPham as $danhMuc)
