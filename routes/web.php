@@ -25,6 +25,7 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
+use App\Http\Controllers\admins\QuanLyAdminController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
@@ -57,11 +58,16 @@ Route::post('dang-ky', [ClientsAuthController::class, 'register'])->name('regist
 
 Route::post('dang-xuat', [ClientsAuthController::class, 'logout'])->name('logout');
 
-Route::get('/admin', function () {
-    return  view('/admin.KhachHang');
-})->middleware('auth.admin');
+Route::get('/admin', [homeController::class, 'index'])->name('home.index')->middleware('auth.admin');
 
 Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
+
+//Quản lý admin
+Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
+Route::get('admin/cap-nhat/{id}', [QuanLyAdminController::class, 'edit'])->name('admin.capnhat');
+
+
+
 
 
 
@@ -119,12 +125,6 @@ Route::get('/quan-ao-nu', function () {
 
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 
-
-
-
-
-
-
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
@@ -139,7 +139,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/ThungRac', [ThungRacController::class, "index"])->name('ThungRac.index');
     Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"])->name('ThungRac.restore');
     Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
-
     Route::resource('admin/DanhMuc', DanhMucController::class);
     Route::resource('admin/SanPham', SanPhamController::class);
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
@@ -152,7 +151,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/Banner', BannerController::class);
     Route::resource('admin/DonHang', DonHangController::class);
-
+    Route::get('admin/profile', [QuanLyAdminController::class, 'show'])->name('admin.profile');
     Route::prefix('admin/maGiamGia')->group(function () {
         Route::resource('maGiamGia', MaGiamGiaController::class)->names([
             'index' => 'maGiamGias.index',
