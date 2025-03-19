@@ -20,7 +20,7 @@
     <div class="container-fluid">
     <div class="edit-profile">
       <div class="row">
-      <div class="col-xl-12">
+      <div class="col-xl-4">
         <div class="card">
         <div class="card-header">
 
@@ -50,6 +50,30 @@
             <input class="form-control" value="{{$chiTiet->role == 'User' ? "Khách" : 'Quản Trị'}}" disabled>
           </div>
           <div class="mb-3">
+            <label class="form-label">Giới Tính</label>
+            <input class="form-control" name="sex" type="text" value="{{$chiTiet->sex}}" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Ngày Sinh</label>
+            <input class="form-control" name="birthday" type="date" value="{{$chiTiet->birthday}}" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Giới Tính</label>
+            <input class="form-control" name="sex" type="text" value="{{$chiTiet->sex}}" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Số Điện Thoại</label>
+            <input class="form-control" name="phone" type="number" value="{{$chiTiet->phone}}" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Địa Chỉ</label>
+            <input class="form-control" name="address" type="text" value="{{$chiTiet->address}}" disabled>
+          </div>
+          
+          <div class="mb-3">
             <label class="form-label">Thời Gian Tham Gia</label>
             <input class="form-control" value="{{$chiTiet->created_at}}" disabled>
           </div>
@@ -57,7 +81,7 @@
         </div>
         </div>
       </div>
-      {{-- <div class="col-xl-8">
+      <div class="col-xl-8">
         <form class="card">
         <div class="card-header">
           <h4 class="card-title mb-0">Lịch Sử Mua Hàng</h4>
@@ -108,8 +132,9 @@
           </div>
           </div>
         </div>
-      </div> --}}
-      <div class="card-footer text-end">
+      </div>
+      <div class="card-footer ">
+        <a class="btn btn-primary " href="{{route('KhachHang.index')}}">Cập Nhật</a>
         <a class="btn btn-dark" href="{{route('KhachHang.index')}}">Quay Lại</a>
       </div>
       </form>

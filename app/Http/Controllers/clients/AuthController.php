@@ -47,10 +47,10 @@ class AuthController extends Controller
         ]);
 
         $user = User::query()->create($data);
-        Auth::login($user);
-        return redirect()->intended('/');
+        return redirect('/dang-nhap');
   
     }
+
     //Đăng xuất
 
     public function logout(Request $request){

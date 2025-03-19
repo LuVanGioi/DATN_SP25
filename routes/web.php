@@ -25,6 +25,7 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
+use App\Http\Controllers\admins\QuanLyAdminController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
@@ -51,16 +52,30 @@ Route::get('url/{code}', [ClientsLienKetWebsiteController::class, "index"]);
 
 Route::get('dang-nhap', [ClientsAuthController::class, 'showFormLogin']);
 Route::post('dang-nhap', [ClientsAuthController::class, 'login'])->name('login');
+
 Route::get('dang-ky', [ClientsAuthController::class, 'showFormRegister']);
 Route::post('dang-ky', [ClientsAuthController::class, 'register'])->name('register');
+
 Route::post('dang-xuat', [ClientsAuthController::class, 'logout'])->name('logout');
-Route::get('/admin', function () {
-    return  view('/admin.KhachHang');
-})->middleware('auth.admin');
+
+Route::get('/admin', [homeController::class, 'index'])->name('home.index')->middleware('auth.admin');
 
 Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
+
+Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
+Route::get('admin/cap-nhat/{id}', [QuanLyAdminController::class, 'edit'])->name('admin.capnhat');
+
 Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 
+
+
+
+Route::get('gioi-thieu-cua-hang', function () {
+    return view('clients.GioiThieu.GioiThieu');
+});
+Route::get('danh-sach-bai-viet', function() {
+    return view('clients.BaiViet.BaiViet');
+});
 Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.Baiviet');
 });
@@ -79,6 +94,7 @@ Route::get('/so-dia-chi', function () {
 Route::get('/lich-su-don-hang', function () {
     return view('clients.ThongTinTaiKhoan.LichSuDonHang');
 });
+
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
 });
@@ -88,8 +104,13 @@ Route::get('/yeu-cau-tra-hang', function () {
 Route::get('/lien-he', function () {
     return view('clients.LienHe.LienHe');
 });
+
 Route::get('/faq', function () {
     return view('clients.Faq.Faq');
+});
+
+Route::get('/san-pham-yeu-thich', function () {
+    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
 });
 
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
@@ -97,8 +118,15 @@ Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
 
 
 
+Route::get('/quan-ao-nam', function () {
+    return view('clients.QuanAoNam.QuanAoNam');
+});
 
+Route::get('/quan-ao-nu', function () {
+    return view('clients.QuanAoNu.QuanAoNu');
+});
 
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {
@@ -114,7 +142,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/ThungRac', [ThungRacController::class, "index"])->name('ThungRac.index');
     Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"])->name('ThungRac.restore');
     Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
-
     Route::resource('admin/DanhMuc', DanhMucController::class);
     Route::resource('admin/SanPham', SanPhamController::class);
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
@@ -127,9 +154,8 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/Banner', BannerController::class);
     Route::resource('admin/DonHang', DonHangController::class);
-
+    Route::get('admin/profile', [QuanLyAdminController::class, 'show'])->name('admin.profile');
     Route::prefix('admin/maGiamGia')->group(function () {
-
         Route::resource('maGiamGia', MaGiamGiaController::class)->names([
             'index' => 'maGiamGias.index',
             'create' => 'maGiamGias.create',
