@@ -20,7 +20,7 @@
 
                             <div class="mb-3">
                                 <label for="name">Tên Mã</label>
-                                <input class="form-control @error('name') is-invalid border-danger @enderror" type="text" id="name" name="name" placeholder="Tên Mã" value="{{ old('name') }}" required>
+                                <input class="form-control @error('name') is-invalid border-danger @enderror" type="text" id="name" name="name" placeholder="Nhập tên mã giảm giá" value="{{ old('name') }}" required>
                                 @error('name')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -28,7 +28,7 @@
 
                             <div class="mb-3">
                                 <label for="quantity">Số Lượng</label>
-                                <input class="form-control @error('quantity') is-invalid border-danger @enderror" type="number" id="quantity" name="quantity" placeholder="Số Lượng" value="{{ old('quantity') }}" required>
+                                <input class="form-control @error('quantity') is-invalid border-danger @enderror" type="number" id="quantity" name="quantity" placeholder="Nhập số lượng" value="{{ old('quantity') }}" min="1" required>
                                 @error('quantity')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -36,7 +36,7 @@
 
                             <div class="mb-3">
                                 <label for="value">Giá Trị (%)</label>
-                                <input class="form-control @error('value') is-invalid border-danger @enderror" type="number" id="value" name="value" placeholder="Giá Trị (%)" value="{{ old('value') }}" required>
+                                <input class="form-control @error('value') is-invalid border-danger @enderror" type="number" id="value" name="value" placeholder="Nhập giá trị (%)" value="{{ old('value') }}" min="1" max="100" required>
                                 @error('value')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -44,7 +44,7 @@
 
                             <div class="mb-3">
                                 <label for="min_value">Giá Trị Tối Thiểu (VNĐ)</label>
-                                <input class="form-control @error('min_value') is-invalid border-danger @enderror" type="number" id="min_value" name="min_value" placeholder="Giá Trị Tối Thiểu" value="{{ old('min_value') }}" required>
+                                <input class="form-control @error('min_value') is-invalid border-danger @enderror" type="text" id="min_value" name="min_value" placeholder="Nhập giá trị tối thiểu" value="{{ old('min_value') }}" required>
                                 @error('min_value')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -52,7 +52,7 @@
 
                             <div class="mb-3">
                                 <label for="max_value">Giá Trị Tối Đa (VNĐ)</label>
-                                <input class="form-control @error('max_value') is-invalid border-danger @enderror" type="number" id="max_value" name="max_value" placeholder="Giá Trị Tối Đa" value="{{ old('max_value') }}" required>
+                                <input class="form-control @error('max_value') is-invalid border-danger @enderror" type="text" id="max_value" name="max_value" placeholder="Nhập giá trị tối đa" value="{{ old('max_value') }}" required>
                                 @error('max_value')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -60,7 +60,7 @@
 
                             <div class="mb-3">
                                 <label for="condition">Điều Kiện</label>
-                                <input class="form-control @error('condition') is-invalid border-danger @enderror" type="text" id="condition" name="condition" placeholder="Điều Kiện" value="{{ old('condition') }}" required>
+                                <input class="form-control @error('condition') is-invalid border-danger @enderror" type="text" id="condition" name="condition" placeholder="Nhập điều kiện" value="{{ old('condition') }}" required>
                                 @error('condition')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -113,5 +113,3 @@
     </div>
 </div>
 @endsection
-
-

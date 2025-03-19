@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield("title")
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <meta name="author" content="WanderWeave">
     <link rel="icon" href="{{ Storage::url($caiDatWebsite->Favicon_website) }}" type="image/x-icon">
     <meta name="description" content="{{ $caiDatWebsite->MoTa }}">
@@ -23,7 +24,6 @@
     <meta name="twitter:title" content="{{ $caiDatWebsite->TenCuaHang }} | Cửa Hàng Quần Áo Uy Tín - Chất Lượng Số 1 Việt Nam">
     <meta name="twitter:keywords" content="{{ $caiDatWebsite->TuKhoa }}">
     <meta name="twitter:description" content="{{ $caiDatWebsite->MoTa }}">
-
 
     <link href="/clients/css/bootstrap.min.css" rel="stylesheet">
     <link href="/clients/css/bootstrap-select.min.css" rel="stylesheet">
@@ -47,8 +47,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-
-    <link rel="stylesheet" href="/clients/css/style.css?t=<?= time(); ?>">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/clients/css/style.css?t=<?=time();?>">
     @yield("css")
 </head>
 

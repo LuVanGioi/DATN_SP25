@@ -25,6 +25,8 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\admins\DonHangController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
+use App\Http\Controllers\admins\PhanHoiController;
+use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\admins\QuanLyAdminController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
@@ -65,7 +67,24 @@ Route::post('email-form', [ClientSupportController::class, 'email_event'])->name
 Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 
 
+Route::get('/phanhoi/{id}/chi-tiet', [BinhLuanBaiVietController::class, 'showPhanHoi'])->name('phanhoi.show');
+Route::get('/phanhoi/{id}/sua', [BinhLuanBaiVietController::class, 'editPhanHoi'])->name('phanhoi.edit');
+Route::put('/phanhoi/{id}/cap-nhat', [BinhLuanBaiVietController::class, 'updatePhanHoi'])->name('phanhoi.update');
+Route::post('/phanhoi/{id}/duyet', [BinhLuanBaiVietController::class, 'duyetPhanHoi'])->name('phanhoi.duyet');
+Route::delete('/phanhoi/{id}/xoa', [BinhLuanBaiVietController::class, 'destroyPhanHoi'])->name('phanhoi.destroy');
+Route::post('/phanhoi/reply', [PhanHoiController::class, 'reply'])->name('phanhoi.reply');
+Route::post('/binhluan/reply', [BaiVietChiTietController::class, 'reply'])->name('binhluan.reply');
+Route::post('/binhluan/reply', [BinhLuanBaiVietController::class, 'reply'])->name('binhluan.reply');
+Route::post('/phanhoi/{id}/duyet', [BinhLuanBaiVietController::class, 'duyetPhanHoi'])->name('phanhoi.duyet');
+Route::delete('/phanhoi/{id}/xoa', [BinhLuanBaiVietController::class, 'destroyPhanHoi'])->name('phanhoi.destroy');
+Route::post('/binhluan/{id}/like', [BaiVietChiTietController::class, 'like'])->name('binhluan.like');
+Route::post('/binhluan/reply', [BaiVietChiTietController::class, 'reply'])->name('binhluan.reply');
+Route::post('/binhluan', [BinhLuanBaiVietController::class, 'store'])->name('binhluan.store');
+Route::post('/binhluan/{id}/duyet', [BinhLuanBaiVietController::class, 'duyet'])->name('binhluan.duyet');
+Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 
+Route::get('/baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
+Route::get('gioi-thieu-cua-hang', function() {
 
 Route::get('gioi-thieu-cua-hang', function () {
     return view('clients.GioiThieu.GioiThieu');

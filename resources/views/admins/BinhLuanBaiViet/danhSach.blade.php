@@ -1,12 +1,13 @@
 @extends("admins.themes")
 
 @section("titleHead")
-    <title>Danh Sách Bình Luận Bài Viết - ADMIN</title>
+    <title>Danh Sách Bình Luận và Phản Hồi - ADMIN</title>
 @endsection
 
 @section('main')
     <div class="page-body">
         <div class="container-fluid pt-3">
+            <!-- Bảng Bình Luận -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>QUẢN LÝ BÌNH LUẬN</h5>
@@ -16,73 +17,97 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive dt-responsive">
-                        <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
-                            <table class="table table-striped table-bordered nowrap dataTable">
-                                <thead>
+                        <table class="table table-striped table-bordered nowrap dataTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID Bài Viết</th>
+                                    <th>ID Tài Khoản</th>
+                                    <th>Nội Dung</th>
+                                    <th>Ngày Bình Luận</th>
+                                    <th>Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($binhLuans as $binhLuan)
                                     <tr>
-                                        <th>#</th>
-                                        <th>ID Bài Viết</th>
-                                        <th>ID Tài Khoản</th>
-                                        <th>Nội Dung</th>
-                                        <th>Ngày Bình Luận</th>
-                                        <th>Thao Tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>101</td>
-                                        <td>202</td>
-                                        <td>Bình luận mẫu 1</td>
-                                        <td>07/03/2025</td>
+                                        <td>{{ $binhLuan->id }}</td>
+                                        <td>{{ $binhLuan->id_baiviet }}</td>
+                                        <td>{{ $binhLuan->id_users }}</td>
+                                        <td>{{ $binhLuan->noi_dung }}</td>
+                                        <td>{{ date('d/m/Y', strtotime($binhLuan->ngay_binh_luan)) }}</td>
                                         <td>
-                                            <a href="{{ route('BinhLuanBaiViet.edit', 1234) }}"
-                                                class="btn btn-primary btn-sm">Sửa</a>
-                                            <button class="btn btn-danger btn-sm">Xóa</button>
-                                            <button class="btn btn-warning btn-sm">Chặn</button>
-                                            <button class="btn btn-secondary btn-sm">Cảnh Báo</button>
-                                            <a href="{{ route('BinhLuanBaiViet.show', 1234) }}"
-                                                class="btn btn-info btn-sm">Xem Chi Tiết</a>
-                                            <button class="btn btn-success btn-sm">Phê Duyệt</button>
+                                            <a href="{{ route('binhluan.edit', $binhLuan->id) }}" class="btn btn-primary btn-sm">Sửa</a>
+                                            <form action="{{ route('binhluan.destroy', $binhLuan->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?')">Xóa</button>
+                                            </form>
+                                            <a href="{{ route('binhluan.show', $binhLuan->id) }}" class="btn btn-info btn-sm">Chi tiết bình luận</a>
+                                            @if ($binhLuan->duyet)
+                                                <button class="btn btn-secondary btn-sm" disabled>Đã duyệt</button>
+                                            @else
+                                                <form action="{{ route('binhluan.duyet', $binhLuan->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng Phản Hồi -->
+            <div class="card mt-5">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>QUẢN LÝ PHẢN HỒI</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive dt-responsive">
+                        <table class="table table-striped table-bordered nowrap dataTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID Bình Luận</th>
+                                    <th>ID Tài Khoản</th>
+                                    <th>Nội Dung</th>
+                                    <th>Ngày Phản Hồi</th>
+                                    <th>Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($phanHois as $phanHoi)
                                     <tr>
-                                        <td>2</td>
-                                        <td>102</td>
-                                        <td>203</td>
-                                        <td>Bình luận mẫu 2</td>
-                                        <td>08/03/2025</td>
+                                        <td>{{ $phanHoi->id }}</td>
+                                        <td>{{ $phanHoi->id_binh_luan }}</td>
+                                        <td>{{ $phanHoi->id_users }}</td>
+                                        <td>{{ $phanHoi->noi_dung }}</td>
+                                        <td>{{ date('d/m/Y', strtotime($phanHoi->ngay_phan_hoi)) }}</td>
                                         <td>
-                                            <a href="{{ route('BinhLuanBaiViet.edit', 1234) }}"
-                                                class="btn btn-primary btn-sm">Sửa</a>
-                                            <button class="btn btn-danger btn-sm">Xóa</button>
-                                            <button class="btn btn-warning btn-sm">Chặn</button>
-                                            <button class="btn btn-secondary btn-sm">Cảnh Báo</button>
-                                            <a href="{{ route('BinhLuanBaiViet.show', 1234) }}"
-                                                class="btn btn-info btn-sm">Xem Chi Tiết</a>
-                                            <button class="btn btn-success btn-sm">Phê Duyệt</button>
+                                            <a href="{{ route('phanhoi.edit', $phanHoi->id) }}" class="btn btn-primary btn-sm">Sửa</a>
+                                            <form action="{{ route('phanhoi.destroy', $phanHoi->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa phản hồi này?')">Xóa</button>
+                                            </form>
+                                            <a href="{{ route('phanhoi.show', $phanHoi->id) }}" class="btn btn-info btn-sm">Chi tiết phản hồi</a>
+                                            @if ($phanHoi->duyet)
+                                                <button class="btn btn-secondary btn-sm" disabled>Đã duyệt</button>
+                                            @else
+                                                <form action="{{ route('phanhoi.duyet', $phanHoi->id) }}" method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>103</td>
-                                        <td>204</td>
-                                        <td>Bình luận mẫu 3</td>
-                                        <td>09/03/2025</td>
-                                        <td>
-                                            <a href="{{ route('BinhLuanBaiViet.edit', 1234) }}"
-                                                class="btn btn-primary btn-sm">Sửa</a>
-                                            <button class="btn btn-danger btn-sm">Xóa</button>
-                                            <button class="btn btn-warning btn-sm">Chặn</button>
-                                            <button class="btn btn-secondary btn-sm">Cảnh Báo</button>
-                                            <a href="{{ route('BinhLuanBaiViet.show', 1234) }}"
-                                                class="btn btn-info btn-sm">Xem Chi Tiết</a>
-                                            <button class="btn btn-success btn-sm">Phê Duyệt</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

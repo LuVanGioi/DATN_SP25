@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('danh_muc_san_pham', function (Blueprint $table) {
-            $table->id();
-            $table->string("TenDanhMucSanPham");
-            $table->string("Xoa")->default(0);
-            $table->string("deleted_at")->nullable();
-            $table->timestamps();
+        Schema::table('binh_luan_bai_viet', function (Blueprint $table) {
+            //
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('danh_muc_san_pham');
+        Schema::table('binh_luan_bai_viet', function (Blueprint $table) {
+            //
+        });
     }
 };

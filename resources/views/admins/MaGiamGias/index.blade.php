@@ -47,7 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($maGiamGiasPaginator as $maGiamGia)
+                                @foreach($maGiamGias as $maGiamGia)
                                 <tr>
                                     <td>{{ $maGiamGia['id'] }}</td>
                                     <td>{{ $maGiamGia['name'] }}</td>
