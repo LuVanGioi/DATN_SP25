@@ -29,7 +29,7 @@ class SanPhamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -56,13 +56,13 @@ class SanPhamController extends Controller
             ->where("Xoa", 0)
             ->get();
 
-            $listKichCo = $bienTheSanPham->pluck("KichCo")->unique();
+        $listKichCo = $bienTheSanPham->pluck("KichCo")->unique();
 
-            if ($listKichCo->count() === 1) {
-                $bienTheSanPham = collect([$bienTheSanPham->first()]);
-            } else {
-                $bienTheSanPham = $bienTheSanPham->unique("KichCo")->values();
-            }
+        if ($listKichCo->count() === 1) {
+            $bienTheSanPham = collect([$bienTheSanPham->first()]);
+        } else {
+            $bienTheSanPham = $bienTheSanPham->unique("KichCo")->values();
+        }
 
 
 
