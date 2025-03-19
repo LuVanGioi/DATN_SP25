@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('support_client', function (Blueprint $table) {
             $table->id();
             $table->string("Email")->unique();
+            $table->string("HoTen")->nullable();
+            $table->string("TieuDe")->nullable();
+            $table->string("NoiDung")->nullable();
             $table->string("TrangThai")->nullable();
             $table->timestamps();
         });

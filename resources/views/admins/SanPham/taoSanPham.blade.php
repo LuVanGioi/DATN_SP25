@@ -48,7 +48,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Chất Liệu</label>
-                                        <input class="form-control @error("ChatLieu") is-invalid border-danger @enderror" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm"  value="{{ old("ChatLieu") }}" required>
+                                        <input class="form-control @error(" ChatLieu") is-invalid border-danger @enderror" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ old("ChatLieu") }}" required>
                                         @error("ChatLieu")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -80,7 +80,7 @@
                                 <div class="col" id="formInputMoney">
                                     <div class="mb-3">
                                         <label>Giá Bán</label>
-                                        <input class="form-control @error(" GiaSanPham") is-invalid border-danger @enderror" type="number" onkeyup="CapNhacGiaNhap()" name="GiaSanPham"  value="{{ old("GiaSanPham") }}" id="Gia" placeholder="Giá Khuyễn Mãi Sản Phẩm" required>
+                                        <input class="form-control @error(" GiaSanPham") is-invalid border-danger @enderror" type="number" onkeyup="CapNhacGiaNhap()" name="GiaSanPham" value="{{ old("GiaSanPham") }}" id="Gia" placeholder="Giá Khuyễn Mãi Sản Phẩm" required>
                                         @error("GiaSanPham")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -119,10 +119,16 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label>Thể Loại</label>
-                                        <select name="TheLoai" id="theLoaiSanPham" class="form-control" onchange="viewFormBienThe()" required>
-                                            <option value="thuong">Sản Phẩm Thường</option>
-                                            <option value="bienThe">Sản Phẩm Biến Thể</option>
+                                        <label>Biến Thể</label>
+                                        <input type="hidden" name="TheLoai" value="TheLoai">
+                                        <select class="form-control mb-3" id="chonKichCo" onchange="chonBienThe()">
+                                            @foreach ($danhSachBienThe as $BienTheNutBam1)
+                                            @if ($BienTheNutBam1->id == 1)
+                                            @foreach ($thongTinKichCo as $KichCo)
+                                            <option value="{{ $KichCo->TenKichCo }}">{{ $KichCo->TenKichCo }}</option>
+                                            @endforeach
+                                            @endif
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -176,54 +182,10 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="card" id="formBienThe" style="display: none">
-                        <div class="card-header">
-                            <h5>BIẾN THỂ SẢN PHẨM</h5>
-                        </div>
+                    <div class="card" style="display: none" id="formBienThe">
                         <div class="card-body">
-                            <div class="card mt-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        @foreach ($danhSachBienThe as $BienTheNutBam1)
-                                        <div class="col-md-12 view formViewBienThe" id="textM{{ $BienTheNutBam1->id }}">
-                                            @if ($BienTheNutBam1->id == 1)
-                                            @foreach ($thongTinKichCo as $KichCo)
-                                            <?php $randomId2 = rand(10000, 99999); ?>
-                                            <div class="row" id="itemKichCo_{{ $KichCo->id.$randomId2 }}">
-                                                <div class="col">
-                                                    <small for="" class="label-control">{{ $BienTheNutBam1->TenBienThe }}</small>
-                                                    <div class="colorProducts">{{ $KichCo->TenKichCo }}</div>
-                                                </div>
-                                                <input type="hidden" name="KichCo[]" value="{{ $KichCo->TenKichCo }}">
-
-                                                @foreach ($thongTinMauSac as $MauSacCon)
-                                                <?php $randomId = rand(1000, 9999); ?>
-                                                <div id="itemBienThe_{{ $MauSacCon->id.$randomId }}" class="col">
-                                                    <input type="hidden" name="ThongTinBienThe[]" value="{{ $KichCo->TenKichCo }}|{{ $MauSacCon->id }}">
-                                                    <div class="col">
-                                                        <small for="" class="label-control">Màu Sắc</small>
-                                                        <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
-                                                    </div>
-
-                                                    <div class="col">
-                                                        <small for="" class="label-control">Giá Tiền</small>
-                                                        <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" placeholder="Nhập Giá Tiền">
-                                                    </div>
-
-                                                    <div class="col">
-                                                        <small for="" class="label-control">Số Lượng</small>
-                                                        <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng">
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                            @endforeach
-                                            @else
-                                            @endif
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
+                            <div class="row">
+                                <div id="danhSachBienThe"></div>
                             </div>
                         </div>
                     </div>
@@ -237,6 +199,53 @@
 
 @section("js")
 <script>
+    function chonBienThe() {
+        document.getElementById("formBienThe").style.display = "block";
+        var chonKichCo = document.getElementById("chonKichCo").value;
+        var form = document.getElementById("danhSachBienThe");
+        
+        <?php foreach ($danhSachBienThe as $BienTheNutBam1):
+            if ($BienTheNutBam1->id == 1):
+                foreach ($thongTinKichCo as $KichCo): ?>
+                    var checkForm = document.getElementById('itemKichCo_{{ $KichCo->TenKichCo }}');
+                    if (!checkForm) {
+                        if (chonKichCo == '<?= $KichCo->TenKichCo; ?>') {
+                            <?php foreach ($thongTinMauSac as $MauSacCon): ?>
+                                <?php $randomId = rand(1000, 9999); ?>
+                                form.innerHTML += `
+                                <div class="col" id="itemKichCo_{{ $KichCo->TenKichCo }}">
+                                                <div id="itemBienThe_{{ $MauSacCon->id.$randomId }}" class="row">
+                                                    <input type="hidden" name="ThongTinBienThe[]" value="{{ $KichCo->TenKichCo }}|{{ $MauSacCon->id }}">
+                                                    <div class="col">
+                                                        <small for="" class="label-control">Màu Sắc</small>
+                                                        <div class="colorProducts1">{{ $KichCo->TenKichCo." - ".$MauSacCon->TenMauSac }}</div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <small for="" class="label-control">Giá Tiền</small>
+                                                        <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" placeholder="Nhập Giá Tiền">
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <small for="" class="label-control">Số Lượng</small>
+                                                        <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng" value="0">
+                                                    </div>
+                                                    <div class="col pt-2">
+                                                    <span class="badge bg-danger mt-4 w-100" onclick="xoaBienTheKichCo('itemKichCo_{{ $KichCo->TenKichCo }}')"><i class="fas fa-trash"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                            `;
+
+                            <?php endforeach; ?>
+                            form.innerHTML += `<hr>`;
+                        }
+                    }
+        <?php endforeach;
+            endif;
+        endforeach; ?>
+    }
+
     function CapNhacGiaNhap() {
         var Gia = document.getElementById("Gia").value;
         const GiaBienThe = document.getElementsByClassName("GiaBienThe");

@@ -62,11 +62,10 @@ Route::get('/admin', [homeController::class, 'index'])->name('home.index')->midd
 
 Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
 
-//Quản lý admin
 Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 Route::get('admin/cap-nhat/{id}', [QuanLyAdminController::class, 'edit'])->name('admin.capnhat');
 
-
+Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 
 
 
@@ -113,6 +112,10 @@ Route::get('/faq', function () {
 Route::get('/san-pham-yeu-thich', function () {
     return view('clients.SanPhamYeuThich.SanPhamYeuThich');
 });
+
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
+Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
+
 
 
 Route::get('/quan-ao-nam', function () {

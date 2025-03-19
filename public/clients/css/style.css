@@ -18,6 +18,18 @@ i {
     font-family: "Font Awesome 6 Brands" !important; 
 }
 
+.fas {
+    font-family: "Font Awesome 6 Pro" !important; 
+}
+
+.fal {
+    font-family: "Font Awesome 6 Pro" !important; 
+}
+
+.far {
+    font-family: "Font Awesome 6 Pro" !important; 
+}
+
 select {
     color: black !important;
 }
@@ -173,4 +185,24 @@ select {
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
     gap: 10px; 
+}
+
+.d-block {
+    display: block;
+}
+
+.me-3 {
+    margin-right: 30px;
+}
+
+.me-2 {
+    margin-right: 20px;
+}
+
+.me-1 {
+    margin-right: 10px;
+}
+
+.text-success {
+    color: #00b16a !important;
 }
