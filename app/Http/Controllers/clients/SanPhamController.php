@@ -38,6 +38,10 @@ class SanPhamController extends Controller
     public function show(string $id)
     {
         $thongTinSanPham = DB::table("san_pham")->where("DuongDan", $id)->where("Xoa", 0)->first();
+        if(!$thongTinSanPham) {
+            return back()->with("error","Sản Phẩm Không Tồn Tại!");
+        }
+
         $thuongHieu = DB::table("thuong_hieu")->where("id", $thongTinSanPham->ID_ThuongHieu)->where("Xoa", 0)->first();
         $danhMuc = DB::table("danh_muc_san_pham")->where("id", $thongTinSanPham->ID_DanhMuc)->where("Xoa", 0)->first();
         $allThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->get();
