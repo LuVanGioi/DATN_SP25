@@ -36,8 +36,9 @@
                 <div class="row product-thumbnails">
                     @foreach ($khoAnhSanPham as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
-                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?=$index + 1?>, 300]);">
-                            <img src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a></div>
+                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
+                            <img src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -61,52 +62,61 @@
                 <div class="product-price">{{ number_format($thongTinSanPham->GiaSanPham) }} đ - <del style="color:rgb(115, 115, 115)">{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</del></div>
                 <hr class="page-divider">
 
-                <form action="#" class="row variable">
+                <form action="{{ route("gio-hang.store") }}" method="POST" class="row variable">
+                    @csrf
+                    <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
                             <select id="exampleSelect1" name="size" class="selectpicker input-price"
                                 data-live-search="true" data-width="100%" data-toggle="tooltip"
                                 title="Select">
-                                <option>Chọn Kích Cỡ</option>
-
-                                <option>Size 1</option>
-
+                                <option value="">Chọn Kích Cỡ</option>
+                                @foreach ($bienTheSanPham as $kichCo)
+                                <option value="{{ $kichCo->KichCo }}">{{ $kichCo->KichCo }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
+
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect2">Màu Sắc</label>
-                            <select id="exampleSelect2" class="selectpicker input-price"
+                            <select id="exampleSelect2" name="color" class="selectpicker input-price"
                                 data-live-search="true" data-width="100%" data-toggle="tooltip"
                                 title="Select">
-                                <option>Màu Sắc</option>
-                                <option>Color 1</option>
-                                <option>Color 2</option>
+                                <option>Chọn Màu Sắc</option>
+                                @foreach ($mauSacBienThe as $mauSac)
+                                <option value="{{ $mauSac->id }}">{{ $mauSac->TenMauSac }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
-                </form>
-                <hr class="page-divider small">
+
+                    <div class="col-md-12">
+                        <hr class="page-divider small">
 
 
-                <div class="buttons mb-3">
-                    <div class="quantity">
-                        <button class="btn" onclick="minusAmount()"><i class="fa fa-minus"></i></button>
-                        <input class="form-control qty" type="number" step="1" min="1" name="quantity"
-                            value="1" title="Qty">
-                        <button class="btn" onclick="plusAmount()"><i class="fa fa-plus"></i></button>
+                        <div class="buttons mb-3">
+                            <div class="quantity">
+                                <button type="button" class="btn" onclick="minusAmount()"><i class="fa fa-minus"></i></button>
+                                <input class="form-control qty" type="number" step="1" min="1" name="quantity" id="quantity"
+                                    value="1" title="Số Lượng">
+                                <button type="button" class="btn" onclick="plusAmount()"><i class="fa fa-plus"></i></button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="buttons mt-3" style="margin-top: 10px;">
-                    <button class="btn btn-theme btn-cart btn-icon-left" type="button"><i
-                            class="fa fa-shopping-cart"></i> Thêm Vào Giỏ</button>
-                    <button class="btn btn-theme btn-cart btn-icon-left" type="submit"><i
-                            class="fa fa-shopping-cart"></i> Mua Ngay</button>
-                </div>
-
+                    <div class="col-md-12">
+                        <div class="buttons mt-3" style="margin-top: 10px;">
+                            <button class="btn btn-theme btn-cart" type="button">
+                                <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
+                            </button>
+                            <button class="btn btn-theme btn-cart" type="submit">
+                                <i class="fa fa-shopping-cart"></i> Mua Ngay
+                            </button>
+                        </div>
+                    </div>
+                </form>
                 <hr class="page-divider small">
 
                 <ul class="social-icons list-inline">
@@ -178,7 +188,7 @@
 
                         <div class="media comment">
                             <a href="#" class="pull-left comment-avatar">
-                                <img alt="" src="/images/avatar-1.jpg" class="media-object">
+                                <img alt="" src="" class="media-object">
                             </a>
                             <div class="media-body">
                                 <p class="comment-meta">
@@ -273,4 +283,22 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section("js")
+<script>
+    function minusAmount() {
+        var quantityInput = document.getElementById("quantity");
+        var quantity = parseInt(quantityInput.value); // Chuyển thành số nguyên
+        if (quantity > 1) { // Giới hạn min = 1
+            quantityInput.value = quantity - 1;
+        }
+    }
+
+    function plusAmount() {
+        var quantityInput = document.getElementById("quantity");
+        var quantity = parseInt(quantityInput.value); // Chuyển thành số nguyên
+        quantityInput.value = quantity + 1;
+    }
+</script>
 @endsection
