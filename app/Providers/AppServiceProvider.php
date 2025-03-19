@@ -24,8 +24,17 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $danhMucSanPham = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
             $danhSachLienHe = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
+            $caiDatWebsite = DB::table("cai_dat_website")->where("id", 1)->first();
+            $lienKetWebsiteClient = DB::table("lien_ket_ket_website")->where("Xoa", 0)->get();
+            $danhSachLienheClient = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
+            $danhSachSanPham = DB::table("san_pham")->where("Xoa", 0)->where("TrangThai", "hien")->get();
+            
             $view->with('danhMucSanPham', $danhMucSanPham);
             $view->with('danhSachLienHe', $danhSachLienHe);
+            $view->with('caiDatWebsite', $caiDatWebsite);
+            $view->with('lienKetWebsiteClient', $lienKetWebsiteClient);
+            $view->with('danhSachLienheClient', $danhSachLienheClient);
+            $view->with("danhSachSanPham", $danhSachSanPham);
         });
     }
 }

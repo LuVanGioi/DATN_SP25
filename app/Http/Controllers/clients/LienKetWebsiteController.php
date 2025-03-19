@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers\clients;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
-class GioHangController extends Controller
+class LienKetWebsiteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($code)
     {
-        return view('clients.GioHang.GioHang');
+        $lienKetWebsiteClientView = DB::table("lien_ket_ket_website")->where("Xoa", 0)->where("DuongDan", $code)->first();
+        
+        if (!$lienKetWebsiteClientView) {
+            abort(404, "Không tìm thấy liên kết!");
+        }
+
+        return view("clients.LienKet.lienKet", compact("lienKetWebsiteClientView"));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -28,7 +36,7 @@ class GioHangController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //
     }
 
     /**

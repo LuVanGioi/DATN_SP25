@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\ThongBaoMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
 
 class CaiDatWebsiteController extends Controller
 {
@@ -64,25 +67,25 @@ class CaiDatWebsiteController extends Controller
         DB::beginTransaction();
 
         $caiDatWebsite = DB::table("cai_dat_website")->find($id);
-        if(!$caiDatWebsite) {
+        if (!$caiDatWebsite) {
             return redirect()->route("CaiDatWebsite.index")->with("error", "Vui Lòng Chạy Seeder Để Sử Dụng!");
         }
-        
+
         $Favicon_website = $caiDatWebsite->Favicon_website;
         $Logo_website = $caiDatWebsite->Logo_website;
         $Bia_website = $caiDatWebsite->Bia_website;
 
-        if($request->hasFile("Favicon_website")) {
+        if ($request->hasFile("Favicon_website")) {
             $Favicon_website = $request->file("Favicon_website")->store("uploads/System", "public");
             Storage::disk('public')->delete($caiDatWebsite->Favicon_website);
         }
 
-        if($request->hasFile("Logo_website")) {
+        if ($request->hasFile("Logo_website")) {
             $Logo_website = $request->file("Logo_website")->store("uploads/System", "public");
             Storage::disk('public')->delete($caiDatWebsite->Logo_website);
         }
 
-        if($request->hasFile("Bia_website")) {
+        if ($request->hasFile("Bia_website")) {
             $Bia_website = $request->file("Bia_website")->store("uploads/System", "public");
             Storage::disk('public')->delete($caiDatWebsite->Bia_website);
         }
@@ -96,6 +99,14 @@ class CaiDatWebsiteController extends Controller
             "MoTa" => $request->input("MoTa"),
             "updated_at" => date("Y/m/d H:i:s")
         ]); // Cài Đặt Chung
+
+        Config::set('mail.mailers.smtp.host', $request->input("smtp_host"));
+        Config::set('mail.mailers.smtp.port', $request->input("smtp_port"));
+        Config::set('mail.mailers.smtp.username', $request->input("smtp_email"));
+        Config::set('mail.mailers.smtp.password', $request->input("smtp_password"));
+        Config::set('mail.mailers.smtp.encryption', $request->input("smtp_encryption"));
+        Config::set('mail.from.address', $request->input("smtp_email"));
+        Config::set('mail.from.name', $request->input("TenCuaHang"));
 
         DB::table("smtp_mail")->where("id", 1)->update([
             "smtp_status" => $request->input("smtp_status"),
@@ -113,7 +124,7 @@ class CaiDatWebsiteController extends Controller
             "reCAPTCHA_secret_key" => $request->input("reCAPTCHA_secret_key"),
             "updated_at" => date("Y/m/d H:i:s")
         ]); //Cập nhật thông tin kết nối Mail
-    
+
 
         DB::table("noi_dung_gui_mail")->where("Loai", "order_buy")->update([
             "TieuDe" => $request->input("email_temp_subject_buy_order"),
@@ -178,7 +189,7 @@ class CaiDatWebsiteController extends Controller
             "TrangThai" => $request->input("product_sale_home"),
             "updated_at" => date("Y/m/d H:i:s")
         ]); //Cập nhật giao diện
-        
+
         DB::table("cai_dat_giao_dien_website")->where("Loai", "quantity_product_home")->update([
             "GiaTri" => $request->input("amount_product_home"),
             "TrangThai" => "1",

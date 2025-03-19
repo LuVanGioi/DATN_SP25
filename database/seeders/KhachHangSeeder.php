@@ -14,16 +14,16 @@ class KhachHangSeeder extends Seeder
     public function run(): void
     {
         for($i = 1; $i<=5 ; $i++){
-            DB::table('khach_hang')->insert([
-                'HoTen' => 'Nguyễn Văn A'.$i,
-                'HinhAnh'    => null,
-                'Email' =>'nguyenvanA'.$i.'@gmail.com',
-                'SoDienThoai'=> '033808639'.$i,
-                'MatKhau' => md5('123'),
-                'NgaySinh' => date('2004/07/23'),
-                'GioiTinh' => 'nam',
-                'VaiTro' => 'khach',
-                'TrangThai' => '0',
+            DB::table('users')->insert([
+                'name' => 'Nguyễn Văn A'.$i,
+                'image'    => null,
+                'email' =>'nguyenvanA'.$i.'@gmail.com',
+                'phone'=> '033808639'.$i,
+                'password' => md5('123'),
+                'birthday' => date('2004/07/23'),
+                'sex' => 'nam',
+                'address' => 'Hải Phòng',
+                'role' => 'User',
                 'created_at' => date('Y/m/d H:i:s') 
             ]);
         }

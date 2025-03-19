@@ -19,13 +19,22 @@
                 <div class="widget">
                     <h4 class="widget-title">Tin tức</h4>
                     <p>Đăng ký nhận tin tức & khuyến mãi qua Email.</p>
-                    <form action="#">
+                    @if (session("success_support"))
+                    <div class="alert alert-success">
+                        {{ session('success_support') }}
+                    </div>
+                    @endif
+
+                    <form action="{{ route("emailForm") }}" method="POST">
+                        @csrf
                         <div class="form-group">
-                            <input class="form-control" type="text"
-                                placeholder="Nhập Email nhận thông báo của bạn">
+                            <input class="form-control" type="email" placeholder="Nhập Email nhận thông báo của bạn" name="email" value="{{ old("email") }}">
+                            @error("email")
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-theme btn-theme-transparent">Đăng ký</button>
+                            <button type="submit" class="btn btn-theme btn-theme-transparent">Đăng ký</button>
                         </div>
                     </form>
                 </div>
@@ -34,12 +43,9 @@
                 <div class="widget widget-categories">
                     <h4 class="widget-title">Liên kết</h4>
                     <ul>
-                        <li><a href="/gioi-thieu-cua-hang">Về chúng tôi</a></li>
-                        <li><a href="/tim-kiem">Tìm kiếm</a></li>
-                        <li><a href="/chinh-sach-doi-tra">Chính sách đổi trả</a></li>
-                        <li><a href="/chinh-sach-bao-mat">Chính sách bảo mật</a></li>
-                        <li><a href="/dieu-khoan-dich-vu">Điều khoản dịch vụ</a></li>
-                        <li><a href="/lien-he">Liên hệ</a></li>
+                        @foreach ($lienKetWebsiteClient as $lienKet)
+                        <li><a href="/url/{{ $lienKet->DuongDan }}">{{ $lienKet->TieuDe }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -60,7 +66,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <div class="copyright">Copyright 2025 Wanderweave | All Rights Reserved</div>
+                <div class="copyright">Copyright 2025 {{ $caiDatWebsite->TenCuaHang }} | All Rights Reserved</div>
             </div>
             <div class="col-sm-6">
                 <div class="payments">

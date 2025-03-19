@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('thuong_hieu', function (Blueprint $table) {
+        Schema::create('support_client', function (Blueprint $table) {
             $table->id();
-            $table->text("HinhAnh")->nullable();
-            $table->string("TenThuongHieu", "255");
-            $table->string("Xoa")->default(false);
-            $table->string("deleted_at")->nullable();
+            $table->string("Email")->unique();
+            $table->string("HoTen")->nullable();
+            $table->string("TieuDe")->nullable();
+            $table->string("NoiDung")->nullable();
+            $table->string("TrangThai")->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('thuong_hieu');
+        Schema::dropIfExists('support_client');
     }
 };

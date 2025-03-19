@@ -37,10 +37,36 @@ class SanPhamController extends Controller
      */
     public function show(string $id)
     {
-        $thongTinSanPham = DB::table("san_pham")->whereRaw("LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
-            TenSanPham, ' ', '-'), 'Á', 'A'), 'à', 'a'), 'Ả', 'A'), 'ã', 'a'), 'á', 'a'), 'ạ', 'a'), 
-            'ă', 'a'), 'ắ', 'a'), 'ặ', 'a') = ?", [$id])->first();
-        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham"));
+        $thongTinSanPham = DB::table("san_pham")->where("DuongDan", $id)->where("Xoa", 0)->first();
+        $thuongHieu = DB::table("thuong_hieu")->where("id", $thongTinSanPham->ID_ThuongHieu)->where("Xoa", 0)->first();
+        $danhMuc = DB::table("danh_muc_san_pham")->where("id", $thongTinSanPham->ID_DanhMuc)->where("Xoa", 0)->first();
+        $allThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->get();
+        $khoAnhSanPham = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $thongTinSanPham->id)->where("Xoa", 0)->get();
+        $bienTheSanPham = DB::table("bien_the_san_pham")
+            ->where("ID_SanPham", $thongTinSanPham->id)
+            ->where("Xoa", 0)
+            ->select("ID_MauSac", "KichCo")
+            ->distinct()
+            ->get();
+
+        $idMauSacList = $bienTheSanPham->pluck("ID_MauSac")->unique();
+
+        $mauSacBienThe = DB::table("mau_sac")
+            ->whereIn("ID", $idMauSacList)
+            ->where("Xoa", 0)
+            ->get();
+
+            $listKichCo = $bienTheSanPham->pluck("KichCo")->unique();
+
+            if ($listKichCo->count() === 1) {
+                $bienTheSanPham = collect([$bienTheSanPham->first()]);
+            } else {
+                $bienTheSanPham = $bienTheSanPham->unique("KichCo")->values();
+            }
+
+
+
+        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe"));
     }
 
     /**

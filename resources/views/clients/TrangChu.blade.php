@@ -269,6 +269,10 @@
                 </div>
             </div>
             @endforeach
+            <!-- Nút chuyển trang -->
+<div class="d-flex justify-content-center mt-4">
+    {{ $tatCaBaiViet->links() }}
+</div>
         </div>
     </div>
 </section>

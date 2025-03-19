@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('lien_ket_ket_website', function (Blueprint $table) {
             $table->id();
-            $table->string("TieuDe");
+            $table->string("DuongDan")->unique();
+            $table->string("TieuDe")->unique();
             $table->text("NoiDung")->nullable();
             $table->string("Xoa")->default(0);
             $table->string("deleted_at")->nullable();
