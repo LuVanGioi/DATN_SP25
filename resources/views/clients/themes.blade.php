@@ -5,8 +5,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield("title")
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="">
-    <link rel="shortcut icon" href="">
+    <meta name="author" content="WanderWeave">
+    <link rel="icon" href="{{ Storage::url($caiDatWebsite->Favicon_website) }}" type="image/x-icon">
+    <meta name="description" content="{{ $caiDatWebsite->MoTa }}">
+    <meta name="keywords" content="{{ $caiDatWebsite->TuKhoa }}">
+    <meta property="og:title" content="{{ $caiDatWebsite->TenCuaHang }} | Cửa Hàng Quần Áo Uy Tín - Chất Lượng Số 1 Việt Nam">
+    <meta property="og:type" content="Website">
+    <meta property="og:description" content="{{ $caiDatWebsite->MoTa }}">
+    <meta property="og:site_name" content="{{ $caiDatWebsite->TenCuaHang }} | Cửa Hàng Quần Áo Uy Tín - Chất Lượng Số 1 Việt Nam">
+    <meta property="article:section" content="{{ $caiDatWebsite->MoTa }}">
+    <meta property="article:tag" content="{{ $caiDatWebsite->TenCuaHang }} | Cửa Hàng Quần Áo Uy Tín - Chất Lượng Số 1 Việt Nam">
+    <meta property="og:image" content="{{ Storage::url($caiDatWebsite->Bia_website) }}">
+    <meta name="twitter:card" content="{{ Storage::url($caiDatWebsite->Bia_website) }}">
+    <meta name="twitter:image:src" content="{{ Storage::url($caiDatWebsite->Bia_website) }}">
+    <link rel="icon" href="{{ Storage::url($caiDatWebsite->Favicon_website) }}">
+    <link rel="apple-touch-icon" href="{{ Storage::url($caiDatWebsite->Favicon_website) }}">
+    <meta name="twitter:title" content="{{ $caiDatWebsite->TenCuaHang }} | Cửa Hàng Quần Áo Uy Tín - Chất Lượng Số 1 Việt Nam">
+    <meta name="twitter:keywords" content="{{ $caiDatWebsite->TuKhoa }}">
+    <meta name="twitter:description" content="{{ $caiDatWebsite->MoTa }}">
+
+
     <link href="/clients/css/bootstrap.min.css" rel="stylesheet">
     <link href="/clients/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/clients/css/font-awesome.min.css" rel="stylesheet">
@@ -30,7 +48,7 @@
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
-    <link rel="stylesheet" href="/clients/css/style.css?t=<?=time();?>">
+    <link rel="stylesheet" href="/clients/css/style.css?t=<?= time(); ?>">
     @yield("css")
 </head>
 

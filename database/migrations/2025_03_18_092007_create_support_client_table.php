@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lien_ket_ket_website', function (Blueprint $table) {
+        Schema::create('support_client', function (Blueprint $table) {
             $table->id();
-            $table->string("DuongDan")->unique();
-            $table->string("TieuDe")->unique();
-            $table->text("NoiDung")->nullable();
-            $table->string("Xoa")->default(0);
-            $table->string("deleted_at")->nullable();
+            $table->string("Email")->unique();
+            $table->string("TrangThai")->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lien_ket_ket_website');
+        Schema::dropIfExists('support_client');
     }
 };
