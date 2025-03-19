@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
             $lienKetWebsiteClient = DB::table("lien_ket_ket_website")->where("Xoa", 0)->get();
             $danhSachLienheClient = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
             $danhSachSanPham = DB::table("san_pham")->where("Xoa", 0)->where("TrangThai", "hien")->get();
+            
             $view->with('danhMucSanPham', $danhMucSanPham);
             $view->with('danhSachLienHe', $danhSachLienHe);
             $view->with('caiDatWebsite', $caiDatWebsite);
