@@ -195,7 +195,7 @@ class SanPhamController extends Controller
             "Nhan" => $request->input("Nhan"),
             "Mota" => $request->input("MoTaSanPham"),
             "TrangThai" => $request->input("TrangThai"),
-            "TheLoai" => $request->input("TheLoai"),
+            "TheLoai" => "thuong",
             "updated_at" => date("Y/m/d H:i:s")
         ]);
 
