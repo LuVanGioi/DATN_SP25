@@ -50,7 +50,7 @@
                     @foreach ($khoAnhSanPham as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
-                            <img src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                            <img src="{{ Storage::url($khoAnh1->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
                     @endforeach
                 </div>
