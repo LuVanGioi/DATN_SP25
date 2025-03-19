@@ -84,7 +84,6 @@ Route::post('/binhluan/{id}/duyet', [BinhLuanBaiVietController::class, 'duyet'])
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 
 Route::get('/baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
-Route::get('gioi-thieu-cua-hang', function() {
 
 Route::get('gioi-thieu-cua-hang', function () {
     return view('clients.GioiThieu.GioiThieu');
