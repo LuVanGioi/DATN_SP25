@@ -100,17 +100,25 @@ class BienTheController extends Controller
             foreach ($request->input("GiaTriBienTheMoi") as $row1) {
                 if ($row1) {
                     if ($id == 2) {
-                        DB::table("mau_sac")->insert([
-                            "TenMauSac" => $row1,
-                            "ID_BienThe" => $id,
-                            "created_at" => date("Y/m/d H:i:s")
-                        ]);
+                        if (DB::table('mau_sac')->where('TenMauSac', $row1)->exists()) {
+                            return back()->with("error", "Biến Thể " . $row1 . " Đã Tồn Tại Rồi!");
+                        } else {
+                            DB::table("mau_sac")->insert([
+                                "TenMauSac" => $row1,
+                                "ID_BienThe" => $id,
+                                "created_at" => date("Y/m/d H:i:s")
+                            ]);
+                        }
                     } else {
-                        DB::table("kich_co")->insert([
-                            "TenKichCo" => $row1,
-                            "ID_BienThe" => $id,
-                            "created_at" => date("Y/m/d H:i:s")
-                        ]);
+                        if (DB::table('kich_co')->where('TenKichCo', $row1)->exists()) {
+                            return back()->with("error", "Biến Thể " . $row1 . " Đã Tồn Tại Rồi!");
+                        } else {
+                            DB::table("kich_co")->insert([
+                                "TenKichCo" => $row1,
+                                "ID_BienThe" => $id,
+                                "created_at" => date("Y/m/d H:i:s")
+                            ]);
+                        }
                     }
                 }
             }
