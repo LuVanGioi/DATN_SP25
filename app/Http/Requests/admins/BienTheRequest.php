@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\admins;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BienTheRequest extends FormRequest
@@ -22,8 +23,8 @@ class BienTheRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "TenBienThe" => "required|max:225",
-            'GiaTriBienThe.*' => 'required|max:225'
+            'GiaTriBienThe.*' => 'required|max:225',
+            "GiaTriBienTheMoi.*" => "required|max:225|unique:san_pham,TenSanPham",
         ];
     }
 
