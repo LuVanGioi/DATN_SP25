@@ -1,39 +1,41 @@
 <?php
 
+use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\SamplingHandler;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\CheckRoleMiddleware;
 use App\Http\Controllers\admins\homeController;
-use App\Http\Controllers\clients\BangTinController;
+use App\Http\Controllers\clients\payController;
 use App\Http\Controllers\admins\BannerController;
+use App\Http\Controllers\Methods\VnPayController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
 use App\Http\Controllers\admins\DanhMucController;
+use App\Http\Controllers\admins\DonHangController;
+use App\Http\Controllers\admins\PhanHoiController;
 use App\Http\Controllers\admins\SanPhamController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\ThungRacController;
+use App\Http\Controllers\clients\BangTinController;
 use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\admins\KhachHangController;
 use App\Http\Controllers\admins\MaGiamGiaController;
 use App\Http\Controllers\admins\ThuongHieuController;
-use App\Http\Controllers\admins\BienTheSanPhamController;
-use App\Http\Controllers\admins\CaiDatWebsiteController;
-use App\Http\Controllers\admins\DanhMucBaiVietController;
-use App\Http\Controllers\admins\BinhLuanBaiVietController;
-use App\Http\Controllers\admins\ThongTinLienHeController;
-use App\Http\Controllers\clients\AuthController as ClientsAuthController;
-use App\Http\Controllers\admins\DonHangController;
-use App\Http\Controllers\admins\LienKetWebsiteController;
-use App\Http\Controllers\admins\PhanHoiController;
-use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\admins\QuanLyAdminController;
-use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
+use App\Http\Controllers\admins\CaiDatWebsiteController;
+use App\Http\Controllers\admins\BienTheSanPhamController;
+use App\Http\Controllers\admins\DanhMucBaiVietController;
+use App\Http\Controllers\admins\LienKetWebsiteController;
+use App\Http\Controllers\admins\ThongTinLienHeController;
+use App\Http\Controllers\admins\BinhLuanBaiVietController;
+use App\Http\Controllers\clients\BaiVietChiTietController;
+use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
-use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
-use App\Http\Middleware\CheckRoleMiddleware;
-use PhpParser\Node\Expr\FuncCall;
+use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
+use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,21 +53,18 @@ Route::get('/', [ClientsHomeController::class, "home"])->name("home.client");
 Route::resource('gio-hang', GioHangController::class);
 Route::resource('san-pham', ClientsSanPhamController::class);
 Route::get('url/{code}', [ClientsLienKetWebsiteController::class, "index"]);
-
 Route::get('dang-nhap', [ClientsAuthController::class, 'showFormLogin']);
 Route::post('dang-nhap', [ClientsAuthController::class, 'login'])->name('login');
-
 Route::get('dang-ky', [ClientsAuthController::class, 'showFormRegister']);
 Route::post('dang-ky', [ClientsAuthController::class, 'register'])->name('register');
-
 Route::post('dang-xuat', [ClientsAuthController::class, 'logout'])->name('logout');
-
 Route::get('/admin', [homeController::class, 'index'])->name('home.index')->middleware('auth.admin');
-
 Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
-
 Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
-
+Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
+Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
+Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
+Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
 
 Route::get('/phanhoi/{id}/chi-tiet', [BinhLuanBaiVietController::class, 'showPhanHoi'])->name('phanhoi.show');
 Route::get('/phanhoi/{id}/sua', [BinhLuanBaiVietController::class, 'editPhanHoi'])->name('phanhoi.edit');

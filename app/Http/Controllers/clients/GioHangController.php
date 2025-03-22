@@ -34,33 +34,54 @@ class GioHangController extends Controller
      */
     public function store(cartRequest $request)
     {
-        
+
         if ($request->action === 'add_to_cart') {
-            
+
             DB::beginTransaction();
-            
+
             if (Auth::check()) {
                 $userId = Auth::user()->id;
             } else {
-                $userId = request()->cookie('ID_KhachHang', Str::uuid());
-                Cookie::queue('ID_KhachHang', $userId, 60 * 24 * 365);
+                $userId = request()->cookie('ID_Guests', Str::uuid());
+                Cookie::queue('ID_Guests', $userId, 60 * 24 * 365);
             }
 
-            DB::table("cart")->insert([
-                "ID_KhachHang" => $userId,
-                "ID_SanPham" => $request->input("id_product"),
-                "KichCo" => $request->input("size"),
-                "MauSac" => $request->input("color"),
-                "SoLuong" => $request->input("quantity"),
-                "Xoa" => "0",
-                "created_at" => date("Y/m/d H:i:s")
-            ]);
+            $checkCart = DB::table('cart')
+            ->where('ID_KhachHang', $userId)
+            ->where("ID_SanPham", $request->input("id_product"))
+            ->where("KichCo", $request->input("size"))
+            ->where("MauSac", $request->input("color"))
+            ->first();
 
-            DB::commit();
+            if ($checkCart) {
+                DB::table("cart")->where("id", $checkCart->id)->update([
+                    "SoLuong" => $checkCart->SoLuong + $request->input("quantity")
+                ]);
 
-            return back()->with('success', 'Đã Thêm Sản Phẩm Vào Giỏ Hàng!');
-        } elseif ($request->action === 'buy_now') {
-            return redirect()->route('gio-hang.index')->with('success', 'Chuyển đến thanh toán!');
+                DB::commit();
+
+                return back()->with('success', 'Đã Cập Nhật Giỏ Hàng!');
+            } else {
+                DB::table("cart")->insert([
+                    "ID_KhachHang" => $userId,
+                    "ID_SanPham" => $request->input("id_product"),
+                    "KichCo" => $request->input("size"),
+                    "MauSac" => $request->input("color"),
+                    "SoLuong" => $request->input("quantity"),
+                    "Xoa" => "0",
+                    "created_at" => date("Y/m/d H:i:s")
+                ]);
+
+                DB::commit();
+
+                return back()->with('success', 'Đã Thêm Sản Phẩm Vào Giỏ Hàng!');
+            }
+        } elseif ($request->action === 'payment') {
+            DB::beginTransaction();
+            
+            dd($request->all());
+
+            //return redirect()->route('gio-hang.index')->with('success', 'Chuyển đến thanh toán!');
         }
 
         return back()->with('error', 'Hành động không hợp lệ!');
@@ -95,6 +116,13 @@ class GioHangController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $cart = DB::table("cart")->find($id);
+        if(!$cart) {
+            return back()->with("error","Sản Phẩm Trong Giỏ Hàng Không Tồn Tại Hoặc Đã Bị Xóa");
+        }
+
+        DB::table("cart")->where("id", $id)->delete();
+
+        return back()->with("success","Sản Phẩm Trong Giỏ Hàng Đã Được Xóa");
     }
 }
