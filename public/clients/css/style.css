@@ -206,3 +206,231 @@ select {
 .text-success {
     color: #00b16a !important;
 }
+
+.list-method-payment {
+    list-style: none;
+    margin: 10px 0px;
+    padding: 0px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.list-method-payment > li {
+    margin: 0px 10px;
+    width: 20%;
+    justify-content: center;
+    text-align: center;
+}
+
+.list-method-payment > li > label {
+    margin: 0 auto;
+    border-radius: 100%;
+    padding: 3px;
+    border: 1px solid #e5e5e5;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    align-items: center;
+    display: block;
+}
+
+.list-method-payment > li:hover > label {
+    border: 2px dotted #03b26c;
+}
+
+.list-method-payment > li.active > label {
+    border: 2px dotted #03b26c;
+}
+
+.list-method-payment > li > label > img {
+    width: 100%;
+    border-radius: 100%;
+}
+
+.list-method-payment > li > label > input {
+    display: none;
+}
+
+.list-method-payment > li > span {
+    margin-top: 5px;
+    display: block;
+    font-size: 13px;
+}
+
+.list-method-payment > li.active > span {
+    color: #03b26c;
+    font-weight: bold;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.mt-3 {
+    margin-top: 30px;
+}
+
+.mt-2 {
+    margin-top: 20px;
+}
+
+.mt-1 {
+    margin-top: 10px;
+}
+
+.ms-1 {
+    margin-left: 10px;
+}
+
+.ms-2 {
+    margin-left: 20px;
+}
+
+.list-address {
+    display: block;
+    list-style: none;
+    margin: 20px 0px 10px 0px;
+    padding: 0px;
+}
+
+.list-address .item-address {
+    display: flex;
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 0.5px solid #e5e5e5;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.list-address .item-address > i {
+    width: 5%;
+    color: #f73333;
+    font-size: 22px;
+    margin: 0px 5px;
+}
+
+.list-address .item-address > div {
+    width: 100%;
+}
+
+.list-address .item-address > div > .name > span {
+    font-size: 17px;
+    font-weight: bold;
+    color: black;
+    margin-right: 5px;
+}
+
+.list-address .item-address > div > .name > small {
+    font-size: 14px;
+}
+
+.list-address .item-address > div > .address > span {
+    color: #525252;
+    display: block;
+}
+
+.list-address .item-address > .icon-right {
+    text-align: right;
+    width: 10%;
+    margin: 0px 5px;
+}
+
+.input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.row div[class*="col-"], .row aside[class*="col-"] {
+    margin-top: 10px !important;
+}
+
+.d-inline {
+    display: inline;
+}
+
+.list-product-payment {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+.list-product-payment > .item-product-payment {
+    width: 100%;
+    margin: 10px 0px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+}
+
+.list-product-payment > .item-product-payment > .logo {
+    margin: 0px 10px 0px 0px;
+    padding: 0px;
+    width: 30%;
+}
+
+.list-product-payment > .item-product-payment > .logo > img {
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid #e5e5e5;
+    height: 145px;
+}
+
+.list-product-payment > .item-product-payment > .info {
+    margin: 0px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.list-product-payment > .item-product-payment > .info > .name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.list-product-payment > .item-product-payment > .info > .parameter {
+    margin: 0px;
+}
+
+.list-product-payment > .item-product-payment > .info > .parameter > small {
+    font-size: 12px;
+    color: #a2a2a2;
+}
+
+.list-product-payment > .item-product-payment > .info > .money {
+    margin: 20px 0px 0px 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-product-payment > .item-product-payment > .info > .money > .prices {
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+}
+
+.list-product-payment > .item-product-payment > .info > .money > .prices > del {
+    font-size: 16px;
+    color: #a2a2a2;
+    font-weight: 500;
+}
+
+.list-product-payment > .item-product-payment > .info > .total-money {
+    margin: 10px 0px 0px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-product-payment > .item-product-payment > .info > .total-money > span {
+    font-size: 16px;
+    color: black;
+}
+
+.list-product-payment > .item-product-payment > .info > .total-money > span:last-child {
+    font-weight: bold;
+}

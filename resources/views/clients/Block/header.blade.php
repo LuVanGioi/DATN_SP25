@@ -69,9 +69,49 @@
                     <a href="/thong-tin-tai-khoan" class="btn btn-theme-transparent hidden-xs hidden-sm"><i
                             class="fa fa-user-circle"></i></a>
                     <a href="#" class="btn btn-theme-transparent" data-toggle="modal" data-target="#popup-cart"><i
-                            class="fa fa-shopping-cart"></i> <span class="hidden-xs"> 0
-                            Sản phẩm - 0 đ </span> <i class="fa fa-angle-down"></i></a>
+                            class="fa fa-shopping-cart"></i> <span class="hidden-xs"> {{ number_format($soLuongGioHangClient) }}
+                            Sản phẩm - {{ number_format($tongTienSanPhamGioHangClient) }} đ </span> <i class="fa fa-angle-down"></i></a>
                     <a href="#" class="menu-toggle btn btn-theme-transparent"><i class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade popup-cart" id="popup-cart" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="container">
+                <div class="cart-items">
+
+                    <div class="cart-items-inner">
+                        @foreach ($danhSachGioHangClient as $gioHangClient)
+                        <div class="media">
+                            <a class="pull-left" href="/san-pham/{{ $gioHangClient->DuongDan }}">
+                                <img class="media-object item-image" src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt=""></a>
+                            <p class="pull-right item-price">{{ number_format($gioHangClient->ThanhTien) }} đ</p>
+                            <div class="media-body">
+                                <h4 class="media-heading item-title"><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ number_format($gioHangClient->SoLuong) }} x {{ $gioHangClient->TenSanPham }}</a></h4>
+                                <p class="item-desc">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</p>
+                            </div>
+                        </div>
+                        @endforeach
+                        <div class="media">
+                            <p class="pull-right item-price">{{ number_format($tongTienSanPhamGioHangClient) }} đ</p>
+                            <div class="media-body">
+                                <h4 class="media-heading item-title summary">Tổng Tiền</h4>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <div class="media-body">
+                                <div>
+                                    <a href="#" class="btn btn-theme btn-theme-dark" data-dismiss="modal">
+                                        Đóng
+                                    </a>
+                                    <a href="{{ route("gio-hang.index") }}"
+                                        class="btn btn-theme btn-theme-transparent btn-call-checkout">Giỏ Hàng
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
