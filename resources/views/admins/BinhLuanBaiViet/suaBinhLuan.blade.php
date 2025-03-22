@@ -9,33 +9,35 @@
         <div class="container-fluid pt-3">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5>CHỈNH SỬA BÌNH LUẬN</h5>
+                    <h5>CHI TIẾT BÌNH LUẬN</h5>
                 </div>
                 <div class="card-body">
-                    <form action="#" method="POST">
+                    <form action="{{ route('binhluan.update', $binhLuan->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
                         <div class="mb-3">
                             <label class="form-label">ID Bài Viết</label>
-                            <input type="text" class="form-control" value="101">
+                            <input type="text" class="form-control" value="{{ $binhLuan->id_baiviet }}" readonly>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">ID Tài Khoản</label>
-                            <input type="text" class="form-control" value="202">
+                            <input type="text" class="form-control" value="{{ $binhLuan->id_users }}" readonly>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Nội Dung Bình Luận</label>
-                            <textarea class="form-control" rows="4">Bình luận mẫu 1</textarea>
+                            <textarea class="form-control" name="noi_dung" rows="4">{{ $binhLuan->noi_dung }}</textarea>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Ngày Bình Luận</label>
-                            <input type="text" class="form-control" value="07/03/2025">
+                            <input type="text" class="form-control" value="{{ date('d/m/Y', strtotime($binhLuan->ngay_binh_luan)) }}" readonly>
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary me-2">Lưu Thay Đổi</button>
-                            <a href="{{ route("BinhLuanBaiViet.index") }}" class="btn btn-danger">Quay Lại</a>
+                            <a href="{{ route('binhluan.index') }}" class="btn btn-danger">Quay Lại</a>
+                            <button type="submit" class="btn btn-primary ms-2">Lưu Thay Đổi</button>
                         </div>
                     </form>
                 </div>

@@ -7,6 +7,19 @@
 @section('main')
 <section class="page-section">
     <div class="container">
+
+        @if(session("error"))
+        <div class="alert alert-danger">{{ session("error") }}</div>
+        @endif
+
+        @if(session("success"))
+        <div class="alert alert-success">{{ session("success") }}</div>
+        @endif
+
+        @error("id_product")
+        <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+
         <div class="row product-single">
             <div class="col-md-6">
                 <div class="badges">
@@ -37,7 +50,7 @@
                     @foreach ($khoAnhSanPham as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
-                            <img src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                            <img src="{{ Storage::url($khoAnh1->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
                     @endforeach
                 </div>
@@ -77,6 +90,9 @@
                                 @endforeach
                             </select>
                         </div>
+                        @error("size")
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="col-sm-6">
@@ -85,12 +101,15 @@
                             <select id="exampleSelect2" name="color" class="selectpicker input-price"
                                 data-live-search="true" data-width="100%" data-toggle="tooltip"
                                 title="Select">
-                                <option>Chọn Màu Sắc</option>
+                                <option value="">Chọn Màu Sắc</option>
                                 @foreach ($mauSacBienThe as $mauSac)
                                 <option value="{{ $mauSac->id }}">{{ $mauSac->TenMauSac }}</option>
                                 @endforeach
                             </select>
                         </div>
+                        @error("color")
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="col-md-12">
@@ -100,18 +119,22 @@
                         <div class="buttons mb-3">
                             <div class="quantity">
                                 <button type="button" class="btn" onclick="minusAmount()"><i class="fa fa-minus"></i></button>
-                                <input class="form-control qty" type="number" step="1" min="1" name="quantity" id="quantity"
-                                    value="1" title="Số Lượng">
+                                <input class="form-control qty" style="width: 50px; text-align: center" type="number" step="1" min="1" name="quantity" id="quantity"
+                                    value="{{ (old("quantity") ?? "1") }}" title="Số Lượng" onkeyup="checkQuantity()">
                                 <button type="button" class="btn" onclick="plusAmount()"><i class="fa fa-plus"></i></button>
+                                <p class="text-danger d-block" id="error-quantity"></p>
+                                @error("quantity")
+                                <p class="text-danger d-block">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="buttons mt-3" style="margin-top: 10px;">
-                            <button class="btn btn-theme btn-cart" type="button">
+                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="add_to_cart">
                                 <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
                             </button>
-                            <button class="btn btn-theme btn-cart" type="submit">
+                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="buy_now">
                                 <i class="fa fa-shopping-cart"></i> Mua Ngay
                             </button>
                         </div>
@@ -289,16 +312,42 @@
 <script>
     function minusAmount() {
         var quantityInput = document.getElementById("quantity");
-        var quantity = parseInt(quantityInput.value); // Chuyển thành số nguyên
-        if (quantity > 1) { // Giới hạn min = 1
+        var quantity = parseInt(quantityInput.value);
+        document.getElementById("error-quantity").innerHTML = "";
+        if (quantity > 1) {
             quantityInput.value = quantity - 1;
         }
     }
 
     function plusAmount() {
         var quantityInput = document.getElementById("quantity");
-        var quantity = parseInt(quantityInput.value); // Chuyển thành số nguyên
-        quantityInput.value = quantity + 1;
+        if (quantityInput.value >= 24) {
+            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Đa Là 24";
+            quantityInput.value = 24;
+        } else if (quantityInput.value <= 0) {
+            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Thiểu Là 1";
+            quantityInput.value = "";
+        } else if (!quantityInput.value) {
+            quantityInput.value = 1;
+        } else {
+            var quantity = parseInt(quantityInput.value);
+            quantityInput.value = quantity + 1;
+            document.getElementById("error-quantity").innerHTML = "";
+        }
+    }
+
+    function checkQuantity() {
+        var quantityInput = document.getElementById("quantity");
+        document.getElementById("error-quantity").innerHTML = "";
+        if (quantityInput.value >= 25) {
+            quantityInput.value = 24;
+            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Đa Là 24";
+        } else if (!quantityInput.value) {
+            quantityInput.value = 1;
+        } else if (quantityInput.value <= 0) {
+            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Thiểu Là 1";
+            quantityInput.value = "";
+        }
     }
 </script>
 @endsection

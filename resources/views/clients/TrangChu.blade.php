@@ -240,8 +240,7 @@
 
 <section class="page-section">
     <div class="container">
-        <a class="btn btn-theme btn-title-more btn-icon-left" href="/danh-sach-bai-viet"><i
-                class="fas fa-file-lines me-2"></i> Xem tất cả</a>
+        <a class="btn btn-theme btn-title-more btn-icon-left" href="/danh-sach-bai-viet"><i class="fas fa-file-lines me-2"></i> Xem tất cả</a>
         <h2 class="block-title"><span>Bài viết gần đây</span></h2>
         <div class="row">
             @foreach ($tatCaBaiViet as $baiViet)
@@ -249,15 +248,21 @@
                 <div class="recent-post">
                     <div class="media">
                         <a class="pull-left" href="/bai-viet/{{ ($baiViet->tieu_de) }}">
-                            <img class="media-object" src="{{ $baiViet->hinh_anh }}" width="150px" height="100px" alt="">
+                            <img class="media-object" src="{{ Storage::url($baiViet->hinh_anh) }}" width="150px" height="100px" alt="">
                         </a>
                         <div class="media-body">
-                            <h4 class="media-heading"><a href="#">{{ $baiViet->tieu_de }}</a></h4>
-                            <h4 class="media-heading"><a href="#">{{ $baiViet->noi_dung }}</a></h4>
+                            {{-- <p class="media-category"><a href="#">Tác giả: {{ $baiViet->tac_gia }}</a></p> --}}
+                           <h5 class="card-title" style="text-transform: uppercase;">{{ $baiViet->tieu_de }}</h5>
+                                <style>
+                                    .card-title {
+                                        text-transform: uppercase;
+                                    }
+                                </style>
+                            <p class="media-content">{{ Str::limit(strip_tags(html_entity_decode($baiViet->noi_dung)), 100, '...') }}</p>
                             <div class="media-meta">
                                 {{ $baiViet->ngay_dang }}
-                                <span class="divider">/</span><i class="fas fa-comment"></i> 27
-                                <span class="divider">/</span><i class="fas fa-eye"></i> 18
+                                <span class="divider">/</span><i class="fas fa-comment"></i> {{ rand(1, 100) }}
+                                <span class="divider">/</span><i class="fas fa-eye"></i> {{ rand(1, 1000) }}
                             </div>
                         </div>
                     </div>

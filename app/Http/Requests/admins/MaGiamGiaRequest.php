@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admins;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class MaGiamGiaRequest extends FormRequest
 {
@@ -24,9 +25,9 @@ class MaGiamGiaRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
-            'value' => 'required|integer',
-            'min_value' => 'required|integer',
-            'max_value' => 'required|integer',
+            'value' => 'required|integer|min:0',
+            'min_value' => 'required|string', 
+            'max_value' => 'required|string', 
             'condition' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
@@ -54,5 +55,25 @@ class MaGiamGiaRequest extends FormRequest
             'end_date.required' => 'Vui lòng chọn ngày kết thúc.',
             'status.required' => 'Vui lòng chọn trạng thái.',
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     * @return void
+     */
+    protected function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            $minValue = $this->min_value;
+            $maxValue = $this->max_value;
+
+            if (is_numeric($minValue) && is_numeric($maxValue)) {
+                if ($minValue >= $maxValue) {
+                    $validator->errors()->add('min_value', 'Giá trị tối thiểu phải nhỏ hơn giá trị tối đa.');
+                }
+            }
+        });
     }
 }

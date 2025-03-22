@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\clients;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -22,11 +24,18 @@ class AuthController extends Controller
         ]);
 
         if(Auth::attempt($user)){
-            // Kiểm tra nếu là Admin thì chuyển đến trang admin
-            if(Auth::user()->role === "Admin"){
-                return redirect()->intended('/admin/thongKe');
+            // if(Auth::user()->role === "Admin"){
+            //     return redirect()->intended('/admin/thongKe');
+            // }
+
+            $userId = request()->cookie('ID_Guests', Str::uuid());
+            if($userId) {
+                DB::table("users")->where("id", Auth::user()->id)->update([
+                    "ID_Guests" => $userId
+                ]);
             }
-            return redirect()->intended('/');    
+
+            return back();    
         }
 
         return redirect()->back()->withErrors([
@@ -64,13 +73,12 @@ class AuthController extends Controller
         session()->flash('success', 'Đăng ký tài khoản thành công !');
         return redirect('/dang-nhap');
   
-        
     }
 
     //Đăng xuất
 
     public function logout(Request $request){
         Auth::logout();
-        return redirect('/dang-nhap');
+        return back();
     }
 }

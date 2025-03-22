@@ -7,6 +7,17 @@
 @section("main")
 <div class="page-body">
     <div class="container-fluid pt-3">
+        @if (session('success'))
+        <div class="alert alert-success fade show" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+        @endif
+
+        @if (session('error'))
+        <div class="alert alert-danger fade show" role="alert">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
@@ -74,6 +85,9 @@
         var form = document.getElementById("danhSachNhapGiaTri");
         form.insertAdjacentHTML('beforeend', `
         <input class="form-control mt-1 mb-1 @error(" GiaTriBienTheMoi[]") is-invalid border-danger @enderror" type="text" name="GiaTriBienTheMoi[]" placeholder="Giá Trị Biến Thể" value="{{ old("GiaTriBienTheMoi[]") }}">
+        @error("GiaTriBienTheMoi[]")
+        <p class="text-danger">{{ $message }}</p>
+        @enderror
         `);
     }
 </script>

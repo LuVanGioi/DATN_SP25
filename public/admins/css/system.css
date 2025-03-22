@@ -76,17 +76,6 @@
 }
 
 .colorProducts {
-    border: 1px solid #006666;
-    text-align: center;
-    width: 100%;
-    border-radius: 5px;
-    margin: 10px 0px;
-    color: #006666;
-    padding: 5px 7px;
-    font-size: 12px;
-}
-
-.colorProducts1 {
     border: 1px solid #FE6A49;
     text-align: center;
     width: 100%;
@@ -95,6 +84,19 @@
     color: #FE6A49;
     padding: 5px 7px;
     font-size: 12px;
+    font-weight: bold;
+}
+
+.colorProducts1 {
+    border: 1px solid #4970fe;
+    text-align: center;
+    width: 100%;
+    border-radius: 5px;
+    margin: 10px 0px;
+    color: #4970fe;
+    padding: 5px 7px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .form-control-sm {

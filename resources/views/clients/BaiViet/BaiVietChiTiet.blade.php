@@ -1,18 +1,10 @@
 @extends("clients.themes")
 
 @section("title")
-    <title>Bài Viết - WD-14</title>
+    <title>{{ $news->tieu_de }}</title>
 @endsection
 
 @section('main')
-    <section class="page-section breadcrumbs">
-        <div class="container">
-            <div class="page-header">
-                <h1>Trang Bài Viết</h1>
-            </div>
-        </div>
-    </section>
-
     <section class="page-section with-sidebar">
         <div class="container">
             <div class="row">
@@ -32,7 +24,7 @@
                                     <a href="#">Nữ</a>
                                     <ul class="children">
                                         <li>
-                                            <a href="#">Áo Len 
+                                            <a href="#">Áo Len & Đan
                                                 <span class="count">12</span>
                                             </a>
                                         </li>
@@ -42,7 +34,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">Denims
+                                            <a href="#">Denim
                                                 <span class="count">12</span>
                                             </a>
                                         </li>
@@ -206,7 +198,7 @@
                                                     <span class="divider">/</span><a href="#"><i
                                                             class="fa fa-comment"></i>27</a>
                                                 </div>
-                                                <h4 class="media-heading"><a href="#">Tiêu đề bài viết chuẩn</a></h4>
+                                                  <h4 class="media-heading"><a href="#">Tiêu đề bài viết chuẩn</a></h4>
                                             </div>
                                         </div>
                                         <div class="media">
@@ -314,52 +306,140 @@
                     </div>
                 </aside>
                 <div class="col-md-9 content" id="content">
-                    <!-- list bài viết -->
-
-                    @foreach ($newsList as $news)
-                    <div class="col-md-4">
-                        <div class="card news-card">
-                            <img src="{{ Storage::url($news->hinh_anh) }}" class="card-img-top img-fluid" alt="{{ $news->tieu_de }}">
-
-                            <div class="card-body">
-                                <h5 class="card-title" style="text-transform: uppercase;">{{ $news->tieu_de }}</h5>
+                    <!-- chi tiết bài viết -->
+                    <div class="card news-card">
+                       <img src="{{ Storage::url($news->hinh_anh) }}" class="card-img-top img-fluid" alt="{{ $news->tieu_de }}">
+                        <div class="card-body">
+                            <h5 class="card-title" style="text-transform: uppercase;">{{ $news->tieu_de }}</h5>
                                 <style>
                                     .card-title {
                                         text-transform: uppercase;
                                     }
                                 </style>
-                                <p class="card-text"><strong>Tác giả:</strong> {{ $news->tac_gia }}</p>
-                                <p class="card-text">{{ Str::limit(strip_tags(html_entity_decode($news->noi_dung)), 100) }}</p>
-                                <p class="text-muted">Ngày đăng: {{ date('d/m/Y', strtotime($news->ngay_dang)) }}</p>
-                                <a href="{{ route('baiviet.show', $news->id) }}" class="btn btn-primary">Đọc thêm</a>
+                            <p class="card-text"><strong>Tác giả:</strong> {{ $news->tac_gia }}</p>
+                            <div>{!! $news->noi_dung !!}</div>
+                            <p class="text-muted">Ngày đăng: {{ date('d/m/Y', strtotime($news->ngay_dang)) }}</p>
+                        </div>
+                    </div>
+
+                    <!-- ô bình luận và nút gửi -->
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Bình luận</h5>
+                            @if (Auth::check())
+                                <form action="{{ route('binhluan.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id_baiviet" value="{{ $news->id }}">
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="noi_dung" rows="5" placeholder="Viết bình luận của bạn..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Gửi</button>
+                                </form>
+                            @else
+                                <p>Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để bình luận.</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    
+                    @foreach ($binhLuans as $binhLuan)
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-person-circle" style="font-size: 30px; margin-right: 10px;"></i>
+                <strong>{{ $binhLuan->user_name }}</strong>
+                <span class="text-muted ml-auto">{{ date('d/m/Y', strtotime($binhLuan->ngay_binh_luan)) }}</span>
+            </div>
+            <p class="mt-2">{{ $binhLuan->noi_dung }}</p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                    <button class="btn btn-link p-0" onclick="likeComment({{ $binhLuan->id }})">Thích</button>
+                    <button class="btn btn-link p-0" onclick="showReplyForm({{ $binhLuan->id }})">Phản hồi</button>
+                </div>
+                <div class="text-muted">
+                    {{ $binhLuan->so_luot_thich }} lượt thích
+                </div>
+            </div>
+            <!-- Form phản hồi -->
+            <div id="reply-form-{{ $binhLuan->id }}" class="mt-3" style="display: none;">
+                <form action="{{ route('binhluan.reply') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="id_binh_luan" value="{{ $binhLuan->id }}">
+                    <textarea class="form-control" name="noi_dung" rows="2" placeholder="Viết phản hồi..."></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">Gửi</button>
+                </form>
+            </div>
+
+            <!-- Hiển thị phản hồi -->
+            @foreach ($phanHois as $phanHoi)
+                @if ($phanHoi->id_binh_luan == $binhLuan->id)
+                    <div class="card mt-3 ms-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-person-circle" style="font-size: 25px; margin-right: 10px;"></i>
+                                <strong>{{ $phanHoi->user_name }}</strong>
+                                <span class="text-muted ml-auto">{{ date('d/m/Y', strtotime($phanHoi->ngay_phan_hoi)) }}</span>
+                            </div>
+                            <p class="mt-2">{{ $phanHoi->noi_dung }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div>
+                                    <button class="btn btn-link p-0" onclick="likeComment({{ $phanHoi->id }})">Thích</button>
+                                </div>
+                                <div class="text-muted">
+                                    {{ $phanHoi->so_luot_thich ?? 0 }} lượt thích
+                                </div>
                             </div>
                         </div>
                     </div>
-               
-                @endforeach
-            </div>
+                    
+                @endif
+            @endforeach
+            <style>
+                .ms-4 {
+                    margin-left: 3rem; 
+                }
+            </style>
         </div>
+    </div>
  
-     
-
-
-
-           
-
-                    <!-- Pagination -->
-                    <div class="pagination-wrapper">
-                        <ul class="pagination">
-                            <li class="disabled"><a href="#"><i class="fa fa-angle-double-left"></i> Trước</a></li>
-                            <li class="active"><a href="#">1 <span class="sr-only">(hiện tại)</span></a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">Tiếp <i class="fa fa-angle-double-right"></i></a></li>
-                        </ul>
-                    </div>
-
+    <hr class="thick-hr">
+    <style>
+        .thick-hr {
+            border: 0;
+            height: 1px; 
+            background-color: #ada6a6; 
+            
+        }
+    </style>
+@endforeach
                 </div>
             </div>
         </div>
     </section>
 @endsection
+
+<script>
+    function likeComment(id) {
+        fetch(`/binhluan/${id}/like`, { 
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); 
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function showReplyForm(id) {
+        const form = document.getElementById(`reply-form-${id}`);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+</script>

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @yield("title")
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <meta name="author" content="WanderWeave">
     <link rel="icon" href="{{ Storage::url($caiDatWebsite->Favicon_website) }}" type="image/x-icon">
     <meta name="description" content="{{ $caiDatWebsite->MoTa }}">
@@ -23,7 +24,6 @@
     <meta name="twitter:title" content="{{ $caiDatWebsite->TenCuaHang }} | Cửa Hàng Quần Áo Uy Tín - Chất Lượng Số 1 Việt Nam">
     <meta name="twitter:keywords" content="{{ $caiDatWebsite->TuKhoa }}">
     <meta name="twitter:description" content="{{ $caiDatWebsite->MoTa }}">
-
 
     <link href="/clients/css/bootstrap.min.css" rel="stylesheet">
     <link href="/clients/css/bootstrap-select.min.css" rel="stylesheet">
@@ -47,8 +47,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-
-    <link rel="stylesheet" href="/clients/css/style.css?t=<?= time(); ?>">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/clients/css/style.css?t=<?=time();?>">
     @yield("css")
 </head>
 
@@ -67,43 +68,6 @@
     </div>
 
     <div class="wrapper">
-        <div class="modal fade popup-cart" id="popup-cart" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="container">
-                    <div class="cart-items">
-                        <div class="cart-items-inner">
-                            <div class="media">
-                                <a class="pull-left" href="#"><img class="media-object item-image"
-                                        src="/clients/images/order-1s.jpg" alt=""></a>
-                                <p class="pull-right item-price">$450.00</p>
-                                <div class="media-body">
-                                    <h4 class="media-heading item-title"><a href="#">1x Standard Product</a></h4>
-                                    <p class="item-desc">Lorem ipsum dolor</p>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <p class="pull-right item-price">$450.00</p>
-                                <div class="media-body">
-                                    <h4 class="media-heading item-title summary">Subtotal</h4>
-                                </div>
-                            </div>
-                            <div class="media">
-                                <div class="media-body">
-                                    <div>
-                                        <a href="#" class="btn btn-theme btn-theme-dark" data-dismiss="modal">
-                                            Close
-                                        </a>
-                                        <a href="/gio-hang"
-                                            class="btn btn-theme btn-theme-transparent btn-call-checkout">Checkout
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         @include("clients.Block.header")
 
