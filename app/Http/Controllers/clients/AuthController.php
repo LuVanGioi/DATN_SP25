@@ -30,7 +30,8 @@ class AuthController extends Controller
         }
 
         return redirect()->back()->withErrors([
-            'email' => 'Thông tin người dùng không đúng'
+            'email' => 'Thông tin người dùng không đúng',
+            'password'   => 'Mật khẩu không hợp lệ.'
         ]);
     }
     //Đăng ký
@@ -41,14 +42,29 @@ class AuthController extends Controller
 
     public function register(Request $request){
         $data = $request->validate([
-            'name'          => 'required|string|max:255',
-            'email'         => 'required|string|email|max:255',
-            'password'      => 'required|string|min:8'
-        ]);
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8'],
+        ],[
+            'name.required'     => 'Vui lòng nhập họ và tên.',
+            'name.string'       => 'Họ và tên không hợp lệ.',
+            'name.max'          => 'Họ và tên không được vượt quá 255 ký tự.',
 
-        $user = User::query()->create($data);
+            'email.required'    => 'Vui lòng nhập email.',
+            'email.string'      => 'Email không hợp lệ.',
+            'email.email'       => 'Định dạng email không đúng.',
+            'email.max'         => 'Email không được quá 255 ký tự.',
+            'email.unique'      => 'Email này đã được sử dụng.',
+
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.string'   => 'Mật khẩu không hợp lệ.',
+            'password.min'      => 'Mật khẩu phải có ít nhất 8 ký tự.',
+        ]); 
+        $user = User::query()->create($data);       
+        session()->flash('success', 'Đăng ký tài khoản thành công !');
         return redirect('/dang-nhap');
   
+        
     }
 
     //Đăng xuất

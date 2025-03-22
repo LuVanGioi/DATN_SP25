@@ -13,6 +13,11 @@
                     <h3 class="block-title"><span>Đăng Nhập</span></h3>
                     <form action="{{route('login')}}" method="POST" class="form-login">
                         @csrf
+                        
+                        @if(session("success"))
+                        <div class="alert alert-success">{{ session("success") }}</div>
+                        @endif
+                  
                         <div class="row">
                             <div class="col-md-12 hello-text-wrap">
                                 <span class="hello-text text-thin" style="font-size: 20px">Xin chào, chào mừng bạn đến với tài khoản của bạn</span>
