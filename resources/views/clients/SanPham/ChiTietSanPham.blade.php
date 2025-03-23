@@ -9,18 +9,18 @@
     <div class="container">
 
         @if(session("error"))
-        <div class="alert alert-danger">{{ session("error") }}</div>
+        <div class="alert alert-danger mb-2">{{ session("error") }}</div>
         @endif
 
         @if(session("success"))
-        <div class="alert alert-success">{{ session("success") }}</div>
+        <div class="alert alert-success mb-2">{{ session("success") }}</div>
         @endif
 
         @error("id_product")
-        <div class="alert alert-danger">{{ $message }}</div>
+        <div class="alert alert-danger mb-2">{{ $message }}</div>
         @enderror
 
-        <div class="row product-single">
+        <div class="row product-single mt-2">
             <div class="col-md-6">
                 <div class="badges">
                     <div class="{{ $thongTinSanPham->Nhan }}">{{ $thongTinSanPham->Nhan }}</div>
@@ -35,22 +35,26 @@
                             <img class="img-responsive" src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="">
                         </a>
                     </div>
-
-                    @foreach ($khoAnhSanPham as $khoAnh)
+                    @foreach ($bienTheSanPham2 as $khoAnh)
                     <div class="item">
                         <a class="btn btn-theme btn-theme-transparent btn-zoom"
-                            href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><i
+                            href="{{ Storage::url($khoAnh->HinhAnh) }}" data-gal="prettyPhoto"><i
                                 class="fa fa-plus"></i></a>
-                        <a href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><img
-                                class="img-responsive" src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                        <a href="{{ Storage::url($khoAnh->HinhAnh) }}" data-gal="prettyPhoto"><img
+                                class="img-responsive" src="{{ Storage::url($khoAnh->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
                     @endforeach
                 </div>
+
                 <div class="row product-thumbnails">
-                    @foreach ($khoAnhSanPham as $index => $khoAnh1)
+                    <div class="col-xs-2 col-sm-2 col-md-3">
+                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
+                            <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
+                    @foreach ($bienTheSanPham2 as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
-                            <img src="{{ Storage::url($khoAnh1->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                            <img src="{{ Storage::url($khoAnh1->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
                     @endforeach
                 </div>
@@ -100,10 +104,10 @@
                             <label for="exampleSelect2">Màu Sắc</label>
                             <select id="exampleSelect2" name="color" class="selectpicker input-price"
                                 data-live-search="true" data-width="100%" data-toggle="tooltip"
-                                title="Select">
-                                <option value="">Chọn Màu Sắc</option>
-                                @foreach ($mauSacBienThe as $mauSac)
-                                <option value="{{ $mauSac->id }}">{{ $mauSac->TenMauSac }}</option>
+                                title="Màu Sắc" onchange="changeCarouselImage(this)">
+                                <option value="" data-index="0">Chọn Màu Sắc</option>
+                                @foreach ($bienTheSanPham2 as $index => $mauSac)
+                                <option value="{{ $mauSac->ID_MauSac }}" data-index="{{ $index + 1 }}">{{ $mauSac->TenMauSac }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -155,6 +159,42 @@
     </div>
 </section>
 
+<section class="page-section">
+    <div class="container">
+        <div class="tabs-wrapper content-tabs">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#item-description" data-toggle="tab">Thông Tin Sản Phẩm</a></li>
+                <li><a href="#reviews" data-toggle="tab">Đánh Giá (2)</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="item-description">
+                    <p>{!! $thongTinSanPham->Mota !!}</p>
+                </div>
+                <div class="tab-pane fade" id="reviews">
+                    <div class="comments">
+
+                        <div class="media comment">
+                            <a href="#" class="pull-left comment-avatar">
+                                <img alt="" src="" class="media-object">
+                            </a>
+                            <div class="media-body">
+                                <p class="comment-meta">
+                                    <span class="comment-author">
+                                        <a>MạnhDev</a>
+                                        <span class="comment-date"> 4 Ngày Trước <i class="fa fa-flag"></i></span>
+                                    </span>
+                                </p>
+                                <p class="comment-text">Xin Chào</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="page-section md-padding">
     <div class="container">
         <div class="row blocks shop-info-banners">
@@ -188,42 +228,6 @@
                             <h4 class="media-heading">Hoàn trả</h4>
                             Có hỗ trợ đổi trả hàng, bạn nhận lại 100% giá trị đơn hàng.
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="page-section">
-    <div class="container">
-        <div class="tabs-wrapper content-tabs">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#item-description" data-toggle="tab">Thông Tin Sản Phẩm</a></li>
-                <li><a href="#reviews" data-toggle="tab">Đánh Giá (2)</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade in active" id="item-description">
-                    <p>{!! $thongTinSanPham->Mota !!}</p>
-                </div>
-                <div class="tab-pane fade" id="reviews">
-                    <div class="comments">
-
-                        <div class="media comment">
-                            <a href="#" class="pull-left comment-avatar">
-                                <img alt="" src="" class="media-object">
-                            </a>
-                            <div class="media-body">
-                                <p class="comment-meta">
-                                    <span class="comment-author">
-                                        <a>MạnhDev</a>
-                                        <span class="comment-date"> 4 Ngày Trước <i class="fa fa-flag"></i></span>
-                                    </span>
-                                </p>
-                                <p class="comment-text">Xin Chào</p>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -347,6 +351,15 @@
         } else if (quantityInput.value <= 0) {
             document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Thiểu Là 1";
             quantityInput.value = "";
+        }
+    }
+
+    function changeCarouselImage(select) {
+        var selectedOption = select.options[select.selectedIndex];
+        var index = selectedOption.getAttribute("data-index");
+
+        if (index) {
+            jQuery('.img-carousel').trigger('to.owl.carousel', [parseInt(index), 300]);
         }
     }
 </script>

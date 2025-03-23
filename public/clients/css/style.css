@@ -434,3 +434,7 @@ select {
 .list-product-payment > .item-product-payment > .info > .total-money > span:last-child {
     font-weight: bold;
 }
+
+.mb-2 {
+    margin-bottom: 20px;
+}
