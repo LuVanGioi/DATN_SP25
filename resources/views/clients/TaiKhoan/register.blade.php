@@ -1,11 +1,15 @@
 @extends("clients.themes")
 
-
 @section("title")
 <title>Đăng Ký - WD-14</title>
 @endsection
 
 @section('main')
+@php
+if (Auth::check()) {
+die('<script>location.href="/"</script>');
+}
+@endphp
 <section class="page-section color">
     <div class="container">
         <div class="row">
@@ -73,7 +77,7 @@
     </div>
 </section>
 
-<section class="page-section no-padding-top">
+<section class="page-section">
     <div class="container">
         <div class="row blocks shop-info-banners">
             <div class="col-md-4">

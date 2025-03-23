@@ -52,7 +52,7 @@ use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsi
 Route::get('/', [ClientsHomeController::class, "home"])->name("home.client");
 Route::resource('gio-hang', GioHangController::class);
 Route::resource('san-pham', ClientsSanPhamController::class);
-Route::get('url/{code}', [ClientsLienKetWebsiteController::class, "index"]);
+Route::get('url/{code}', [ClientsLienKetWebsiteController::class, "index"])->name('client.url');
 Route::get('dang-nhap', [ClientsAuthController::class, 'showFormLogin']);
 Route::post('dang-nhap', [ClientsAuthController::class, 'login'])->name('login');
 Route::get('dang-ky', [ClientsAuthController::class, 'showFormRegister']);
@@ -66,20 +66,6 @@ Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
 Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
 
-Route::get('/phanhoi/{id}/chi-tiet', [BinhLuanBaiVietController::class, 'showPhanHoi'])->name('phanhoi.show');
-Route::get('/phanhoi/{id}/sua', [BinhLuanBaiVietController::class, 'editPhanHoi'])->name('phanhoi.edit');
-Route::put('/phanhoi/{id}/cap-nhat', [BinhLuanBaiVietController::class, 'updatePhanHoi'])->name('phanhoi.update');
-Route::post('/phanhoi/{id}/duyet', [BinhLuanBaiVietController::class, 'duyetPhanHoi'])->name('phanhoi.duyet');
-Route::delete('/phanhoi/{id}/xoa', [BinhLuanBaiVietController::class, 'destroyPhanHoi'])->name('phanhoi.destroy');
-Route::post('/phanhoi/reply', [PhanHoiController::class, 'reply'])->name('phanhoi.reply');
-Route::post('/binhluan/reply', [BaiVietChiTietController::class, 'reply'])->name('binhluan.reply');
-Route::post('/binhluan/reply', [BinhLuanBaiVietController::class, 'reply'])->name('binhluan.reply');
-Route::post('/phanhoi/{id}/duyet', [BinhLuanBaiVietController::class, 'duyetPhanHoi'])->name('phanhoi.duyet');
-Route::delete('/phanhoi/{id}/xoa', [BinhLuanBaiVietController::class, 'destroyPhanHoi'])->name('phanhoi.destroy');
-Route::post('/binhluan/{id}/like', [BaiVietChiTietController::class, 'like'])->name('binhluan.like');
-Route::post('/binhluan/reply', [BaiVietChiTietController::class, 'reply'])->name('binhluan.reply');
-Route::post('/binhluan', [BinhLuanBaiVietController::class, 'store'])->name('binhluan.store');
-Route::post('/binhluan/{id}/duyet', [BinhLuanBaiVietController::class, 'duyet'])->name('binhluan.duyet');
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 
 Route::get('/baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
@@ -115,13 +101,13 @@ Route::get('/danh-gia-va-nhan-xet', function () {
 Route::get('/yeu-cau-tra-hang', function () {
     return view('clients.ThongTinTaiKhoan.YeuCauTraHang');
 });
-Route::get('/lien-he', function () {
+Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
-});
+})->name("contact");
 
-Route::get('/faq', function () {
+Route::get('faq', function () {
     return view('clients.Faq.Faq');
-});
+})->name("faq");
 
 Route::get('/san-pham-yeu-thich', function () {
     return view('clients.SanPhamYeuThich.SanPhamYeuThich');
@@ -130,15 +116,6 @@ Route::get('/san-pham-yeu-thich', function () {
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
 
-
-
-Route::get('/quan-ao-nam', function () {
-    return view('clients.QuanAoNam.QuanAoNam');
-});
-
-Route::get('/quan-ao-nu', function () {
-    return view('clients.QuanAoNu.QuanAoNu');
-});
 
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 
