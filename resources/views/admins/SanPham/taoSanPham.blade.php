@@ -245,6 +245,11 @@
                     <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng" value="0">
                 </div>
 
+                <div class="col">
+                    <small for="" class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
+                    <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[]" requied>
+                </div>
+
                 <div class="col pt-2">
                     <span class="badge bg-danger mt-4 w-100" onclick="xoaBienTheKichCo('itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}')"><i class="fas fa-trash"></i></span>
                 </div>

@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
 
-            $danhMucSanPham = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
+            $danhMucSanPham = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->limit(5)->get();
             $danhSachLienHe = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
             $caiDatWebsite = DB::table("cai_dat_website")->where("id", 1)->first();
             $lienKetWebsiteClient = DB::table("lien_ket_ket_website")->where("Xoa", 0)->get();

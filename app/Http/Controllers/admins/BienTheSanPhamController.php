@@ -87,6 +87,7 @@ class BienTheSanPhamController extends Controller
         if (!$thongTin) {
             return redirect()->route("SanPham.edit", $thongTin->ID_SanPham)->with("error", "Biến Thể Sản Phẩm Không Tồn Tại Hoặc Đã Được Xóa");
         }
+        
 
         DB::table("bien_the_san_pham")->where("id", $id)->update([
             "Gia" => $request->input("Gia"),

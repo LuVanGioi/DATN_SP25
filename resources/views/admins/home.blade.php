@@ -7,445 +7,214 @@
 
 @section("main")
 <div class="page-body">
-    <div class="container-fluid">
+    <div class="container-fluid pt-3">
         <div class="page-title">
-            <h4>Doanh Thu Tháng {{ date("m") }}</h4>
+            <h4>Doanh Thu Hệ Thống</h4>
         </div>
+
         <div class="row">
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-primary border-2">
-                        <span class="f-light f-w-500 f-14">Tổng Đơn Hàng</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">56</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        Doanh Thu Đơn Hàng
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart"></canvas>
                     </div>
                 </div>
             </div>
-
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-warning border-2">
-                        <span class="f-light f-w-500 f-14">Chờ Giao</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">20</h2>
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-primary border-2">
+                                <span class="f-light f-w-500 f-14">Tổng Đơn Hàng</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">56</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-info border-2">
-                        <span class="f-light f-w-500 f-14">Đang Giao</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">5</h2>
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-warning border-2">
+                                <span class="f-light f-w-500 f-14">Chờ Giao</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">20</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-success border-2">
-                        <span class="f-light f-w-500 f-14">Hoàn Thành</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">31</h2>
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-info border-2">
+                                <span class="f-light f-w-500 f-14">Đang Giao</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">5</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"> </li>
-                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-secondary border-2">
-                        <span class="f-light f-w-500 f-14">Hoàn Trả</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">0</h2>
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-success border-2">
+                                <span class="f-light f-w-500 f-14">Hoàn Thành</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">31</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"> </li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-dark border-2">
-                        <span class="f-light f-w-500 f-14">Đổi Hàng</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">0</h2>
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-secondary border-2">
+                                <span class="f-light f-w-500 f-14">Hoàn Trả</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">0</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-xl-4 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-primary border-2">
-                        <span class="f-light f-w-500 f-14">Tổng thu</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">1.000.000</h2>
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-primary border-2">
+                                <span class="f-light f-w-500 f-14">Tổng thu</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">1.000.000</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-xl-4 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-success border-2">
-                        <span class="f-light f-w-500 f-14">Chờ Nhận</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">2.000.000</h2>
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-success border-2">
+                                <span class="f-light f-w-500 f-14">Chờ Nhận</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">2.000.000</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-xl-4 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-danger border-2">
-                        <span class="f-light f-w-500 f-14">Tổng hoàn</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">0</h2>
+                    <div class="col-md-3">
+                        <div class="card o-hidden small-widget">
+                            <div class="card-body border-b-danger border-2">
+                                <span class="f-light f-w-500 f-14">Tổng hoàn</span>
+                                <div class="project-details">
+                                    <div class="project-counter">
+                                        <h2 class="f-w-600">0</h2>
+                                    </div>
+                                </div>
+                                <ul class="bubbles">
+                                    <li class="bubble"> </li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                    <li class="bubble"></li>
+                                </ul>
                             </div>
                         </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="page-title">
-            <h4>Doanh Thu Ngày {{ date("d") }}</h4>
-        </div>
-        <div class="row">
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-primary border-2">
-                        <span class="f-light f-w-500 f-14">Tổng Đơn Hàng</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">56</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-warning border-2">
-                        <span class="f-light f-w-500 f-14">Chờ Giao</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">20</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-info border-2">
-                        <span class="f-light f-w-500 f-14">Đang Giao</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">5</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-success border-2">
-                        <span class="f-light f-w-500 f-14">Hoàn Thành</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">31</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"> </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-secondary border-2">
-                        <span class="f-light f-w-500 f-14">Hoàn Trả</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">0</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-dark border-2">
-                        <span class="f-light f-w-500 f-14">Đổi Hàng</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">0</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-primary border-2">
-                        <span class="f-light f-w-500 f-14">Tổng thu</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">1.000.000</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-success border-2">
-                        <span class="f-light f-w-500 f-14">Chờ Nhận</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">2.000.000</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-sm-6">
-                <div class="card o-hidden small-widget">
-                    <div class="card-body border-b-danger border-2">
-                        <span class="f-light f-w-500 f-14">Tổng hoàn</span>
-                        <div class="project-details">
-                            <div class="project-counter">
-                                <h2 class="f-w-600">0</h2>
-                            </div>
-                        </div>
-                        <ul class="bubbles">
-                            <li class="bubble"> </li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                            <li class="bubble"></li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -702,7 +471,7 @@
                     </div>
                 </div>
             </div>
- 
+
             <div class="col-xl-4 col-sm-6">
                 <div class="card o-hidden small-widget">
                     <div class="card-body border-b-secondary border-2">
@@ -879,4 +648,35 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section("js")
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: <?= json_encode($months); ?>,
+                datasets: [{
+                        label: "Doanh thu",
+                        data: <?= json_encode($revenues); ?>,
+                        backgroundColor: "#006666",
+                        borderColor: "rgb(13, 161, 161)",
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
 @endsection
