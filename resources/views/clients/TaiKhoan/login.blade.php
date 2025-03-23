@@ -6,29 +6,22 @@
 @endsection
 
 @section('main')
-<section class="page-section color">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <h3 class="block-title"><span>Đăng Nhập</span></h3>
-                @if(session("error"))
-                <div class="alert alert-danger">{{ session("error") }}</div>
-                @endif
-
-                @if(session("success"))
-                <div class="alert alert-success">{{ session("success") }}</div>
-                @endif
-                <form action="{{route('login')}}" method="POST" class="form-login">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-12 hello-text-wrap">
-                            <span class="hello-text text-thin" style="font-size: 20px">Xin chào, chào mừng bạn đến với tài khoản của bạn</span>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="email"
-                                    placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}" autocomplete="email">
+    <section class="page-section color">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3 class="block-title"><span>Đăng Nhập</span></h3>
+                    <form action="{{route('login')}}" method="POST" class="form-login">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12 hello-text-wrap">
+                                <span class="hello-text text-thin" style="font-size: 20px">Xin chào, chào mừng bạn đến với tài khoản của bạn</span>
+                            </div>
+                           
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="email" 
+                                     placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}" autocomplete="email">
 
                                 @error('email')
                                 <p class="text-danger">{{ $message}}</p>
