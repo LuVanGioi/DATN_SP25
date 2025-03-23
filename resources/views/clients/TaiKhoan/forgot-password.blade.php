@@ -8,7 +8,7 @@
 <section class="page-section">
     <div class="container">
         <h3>Quên Mật Khẩu</h3>
-        <form action="" method="POST">
+        <form action="{{ route("forgot-password-send") }}" method="POST">
             @csrf
             <div class="form-group">
                 <label>Email của bạn:</label>

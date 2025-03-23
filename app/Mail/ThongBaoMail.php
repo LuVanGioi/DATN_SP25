@@ -3,11 +3,12 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\HtmlString;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ThongBaoMail extends Mailable
 {
@@ -36,11 +37,11 @@ class ThongBaoMail extends Mailable
      * Get the message content definition.
      */
     public function content(): Content
-    {
-        return new Content(
-            html: $this->data['message']
-        );
-    }
+{
+    return new Content(
+        html: new HtmlString($this->data['message']) // Đảm bảo Laravel hiểu đây là HTML chứ không phải tên view
+    );
+}
 
     /**
      * Get the attachments for the message.

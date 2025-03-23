@@ -53,21 +53,22 @@ use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsi
 Route::get('/', [ClientsHomeController::class, "home"])->name("home.client");
 Route::resource('gio-hang', GioHangController::class);
 Route::resource('san-pham', ClientsSanPhamController::class);
-Route::get('url/{code}', [ClientsLienKetWebsiteController::class, "index"]);
+Route::get('url/{code}', [ClientsLienKetWebsiteController::class, "index"])->name("client.url");
 Route::get('dang-nhap', [ClientsAuthController::class, 'showFormLogin']);
 Route::post('dang-nhap', [ClientsAuthController::class, 'login'])->name('login');
 Route::get('dang-ky', [ClientsAuthController::class, 'showFormRegister']);
 Route::post('dang-ky', [ClientsAuthController::class, 'register'])->name('register');
 Route::post('dang-xuat', [ClientsAuthController::class, 'logout'])->name('logout');
 Route::get('/admin', [homeController::class, 'index'])->name('home.index')->middleware('auth.admin');
-
-
 Route::post('email-form', [ClientSupportController::class, 'email_event'])->name("emailForm");
 Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
 Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
 Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
+
+Route::get('quen-mat-khau', [ForgotPasswordController::class, 'showFormForgotPassword'])->name('forgot-password');
+Route::post('quen-mat-khau', [ForgotPasswordController::class, 'sendMailResetPassword'])->name('forgot-password-send');
 
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 
