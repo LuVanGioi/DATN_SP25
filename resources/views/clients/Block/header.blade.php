@@ -14,7 +14,7 @@
                 </li>
                 @if (Auth::user()->role == "Admin")
                 <li>
-                    <a href="/admin/thongKe"><i class="fas fa-cog"></i> Quản Trị Viên</a>
+                    <a href="{{ route("home.index") }}"><i class="fas fa-cog"></i> Quản Trị Viên</a>
                 </li>
                 @endif
                 @else
@@ -38,11 +38,11 @@
         </div>
         <div class="top-bar-right">
             <ul class="list-inline">
-                <li class="hidden-xs"><a href="/url/gioi-thieu-cua-hang">Giới thiệu</a></li>
+                <li class="hidden-xs"><a href="{{ route('client.url', "gioi-thieu-cua-hang") }}">Giới thiệu</a></li>
                 <li class="hidden-xs"><a href="/danh-sach-bai-viet">Bài viết</a></li>
                 <li class="hidden-xs"><a href="/thong-tin-tai-khoan">Tài khoản</a></li>
-                <li class="hidden-xs"><a href="/lien-he">Liên hệ</a></li>
-                <li class="hidden-xs"><a href="/faq">FAQ</a></li>
+                <li class="hidden-xs"><a href="{{ route("contact") }}">Liên hệ</a></li>
+                <li class="hidden-xs"><a href="{{ route("faq") }}">FAQ</a></li>
                 <li>
                     <div class="gtranslate_wrapper"></div>
                 </li>
@@ -131,16 +131,16 @@
                     <li>
                         <a href="#">Danh mục</a>
                         <ul>
-                            @foreach ($danhMucSanPham as $danhMuc)
-                            {{-- <li><a
-                                    href="/danh-muc/{{ xoadau($danhMuc->TenDanhMucSanPham) }}">{{ $danhMuc->TenDanhMucSanPham }}</a>
-                    </li> --}}
-                    @endforeach
-                </ul>
-                </li>
-                <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
-                <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
-                <li><a href="/lien-he">Liên hệ</a></li>
+                            @foreach ($danhMucSanPham as $danhMucSP)
+                            <li><a
+                                    href="/danh-muc/{{ xoadau($danhMucSP->TenDanhMucSanPham) }}">{{ $danhMucSP->TenDanhMucSanPham }}</a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
+                    <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
                 </ul>
             </nav>
         </div>

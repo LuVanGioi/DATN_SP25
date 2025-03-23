@@ -72,31 +72,36 @@ class SanPhamController extends Controller
         DB::commit();
 
         $sanPham = DB::table("san_pham")->orderByDesc("id")->first();
-        if ($request->file("images")) {
-        foreach ($request->file("images") as $row) {
-            if ($row->isValid()) {
-                $images = $row->store("uploads/SanPham", "public");
-                DB::table("hinh_anh_san_pham")->insert([
-                    "DuongDan" => $images,
-                    "ID_SanPham" => $sanPham->id,
-                    "created_at" => date("Y/m/d H:i:s")
-                ]);
-            }
-        }
-    }
+        // if ($request->file("images")) {
+        //     foreach ($request->file("images") as $row) {
+        //         if ($row->isValid()) {
+        //             $images = $row->store("uploads/SanPham", "public");
+        //             DB::table("hinh_anh_san_pham")->insert([
+        //                 "DuongDan" => $images,
+        //                 "ID_SanPham" => $sanPham->id,
+        //                 "created_at" => date("Y/m/d H:i:s")
+        //             ]);
+        //         }
+        //     }
+        // }
 
         if ($request->input("TheLoai") == "bienThe") {
             $thongTinBienThes = $request->input('ThongTinBienThe', []);
             $giaBienThes = $request->input('GiaBienThe', []);
             $soLuongBienThes = $request->input('SoLuongBienThe', []);
+            $hinhAnhBienThes = $request->file("HinhAnh", []);
 
             foreach ($thongTinBienThes as $index => $thongTin) {
                 [$kichCo, $idMauSac] = explode('|', $thongTin);
+                if (!empty($hinhAnhBienThes[$index])) {
+                    $HinhAnh = $hinhAnhBienThes[$index]->store("uploads/SanPham", "public");
+                }
 
                 DB::table('bien_the_san_pham')->insert([
                     'KichCo' => $kichCo,
                     'ID_MauSac' => $idMauSac,
                     'ID_SanPham' => $sanPham->id,
+                    'HinhAnh' => $HinhAnh,
                     'Gia' => $giaBienThes[$index],
                     'SoLuong' => $soLuongBienThes[$index],
                     'created_at' => now(),
@@ -156,7 +161,7 @@ class SanPhamController extends Controller
         $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
         $danhSachBienThe1 = DB::table("bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
-        
+
         $idKichCoDaCo = $danhSachBienThe->pluck('KichCo')->toArray();
 
         $KichCoChuaCo = DB::table('kich_co')->whereNotIn('TenKichCo', $idKichCoDaCo)->get();

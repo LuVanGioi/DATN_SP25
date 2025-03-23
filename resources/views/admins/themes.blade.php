@@ -56,7 +56,8 @@
 
 
     <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <link rel="stylesheet" href="/admins/css/system.css?m={{time()}}">
 
     @yield("css")
