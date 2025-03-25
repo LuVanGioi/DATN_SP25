@@ -22,9 +22,9 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="TenBanner">Tên Banner </label>
+                                    <label for="TenBanner">Link Đường Dẫn (Nếu Có)</label>
                                     <input class="form-control @error("TenBanner") is-invalid border-danger @enderror"
-                                        type="text" name="TenBanner" id="TenBanner" placeholder="Tên Banner"
+                                        type="text" name="TenBanner" id="TenBanner" placeholder="Link Đường Dẫn Chuyển Hướng"
                                         value="{{ $banner->TenBanner}}">
                                     @error("TenBanner")
                                         <p class="text-danger">{{ $message }}</p>

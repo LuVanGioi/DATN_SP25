@@ -56,7 +56,7 @@
         <div class="container">
 
             <div class="logo">
-                <a href="/"><img src="/clients/images/LOGO/logo.png" alt="WD - 14"></a>
+                <a href="/"><img src="{{ Storage::url($caiDatWebsite->Logo_website) }}" alt="{{ $caiDatWebsite->TenCuaHang }}"></a>
             </div>
 
             <div class="header-search">
