@@ -40,7 +40,7 @@ class GioHangController extends Controller
             DB::beginTransaction();
 
             if (Auth::check()) {
-                $userId = Auth::user()->id;
+                $userId = Auth::user()->ID_Guests ?? Auth::user()->id;
             } else {
                 $userId = request()->cookie('ID_Guests', Str::uuid());
                 Cookie::queue('ID_Guests', $userId, 60 * 24 * 365);

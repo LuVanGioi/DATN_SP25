@@ -11,7 +11,7 @@
 
         <div class="main-slider">
             <div class="owl-carousel" id="main-slider">
-            @foreach ($tatCaBanner as $Banner)
+                @foreach ($tatCaBanner as $Banner)
                 <div class="item slide1">
                     <img class="slide-img" src="{{ Storage::url($Banner->HinhAnh) }}" alt="{{ $Banner->TenBanner }}">
                 </div>
@@ -130,8 +130,8 @@
             <div class="tab-pane fade active in" id="tat-ca">
                 <div class="row">
                     @foreach ($tatCaSanPham as $sanPham)
-                    <div class="col-md-3 col-sm-6">
-                        <div class="thumbnail no-border no-padding">
+                    <div class="col-md-3 col-sm-3">
+                        <div class="thumbnail product-item">
                             <div class="media">
                                 <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">
                                     <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
@@ -139,38 +139,17 @@
                                 @if ($sanPham->Nhan)
                                 <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
                                 @endif
+                                <div class="title-time">
+                                    {{ date("d.m") }}
+                                </div>
                             </div>
                             <div class="caption text-center">
                                 <h4 class="caption-title">
                                     <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
                                 </h4>
-                                <div class="categoris-product">
-                                    <a href="">Quần áo nam</a>
-                                    <a href="">Adidas</a>
-                                    <a href="">{{ $sanPham->ChatLieu }}</a>
-                                </div>
                                 <div class="price">
                                     <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
-                                    @if ($sanPham->GiaKhuyenMai)
-                                    <del>{{ number_format($sanPham->GiaKhuyenMai) }}đ</del>
-                                    @endif
-                                </div>
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}" target="_blank">
-                                        <i class="fa fa-share"></i>
-                                    </a>
-
-                                    <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                        <form action="{{ route("gio-hang.store") }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="id_product" value="{{ $sanPham->id }}">
-                                            <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                        </form>
-                                    </a>
-                                    <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                        href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">
-                                        <i class="fa fa-circle-info"></i>
-                                    </a>
+                                    <span>Đã bán 54,3k</span>
                                 </div>
                             </div>
                         </div>
@@ -252,12 +231,12 @@
                         </a>
                         <div class="media-body">
                             {{-- <p class="media-category"><a href="#">Tác giả: {{ $baiViet->tac_gia }}</a></p> --}}
-                           <h5 class="card-title" style="text-transform: uppercase;">{{ $baiViet->tieu_de }}</h5>
-                                <style>
-                                    .card-title {
-                                        text-transform: uppercase;
-                                    }
-                                </style>
+                            <h5 class="card-title" style="text-transform: uppercase;">{{ $baiViet->tieu_de }}</h5>
+                            <style>
+                                .card-title {
+                                    text-transform: uppercase;
+                                }
+                            </style>
                             <p class="media-content">{{ Str::limit(strip_tags(html_entity_decode($baiViet->noi_dung)), 100, '...') }}</p>
                             <div class="media-meta">
                                 {{ $baiViet->ngay_dang }}
@@ -270,14 +249,14 @@
             </div>
             @endforeach
             <!-- Nút chuyển trang -->
-<div class="d-flex justify-content-center mt-4">
-    {{ $tatCaBaiViet->links() }}
-</div>
+            <div class="d-flex justify-content-center mt-4">
+                {{ $tatCaBaiViet->links() }}
+            </div>
         </div>
     </div>
 </section>
 
-<section class="page-section no-padding-top mt-3">
+<section class="page-section">
     <div class="container">
         <div class="row blocks shop-info-banners">
             <div class="col-md-4">

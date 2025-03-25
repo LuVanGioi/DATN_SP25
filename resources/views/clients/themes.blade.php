@@ -33,7 +33,7 @@
     <link href="/clients/css/owl.theme.default.min.css" rel="stylesheet">
     <link href="/clients/css/animate.min.css" rel="stylesheet">
     <link href="/clients/css/theme.css" rel="stylesheet">
-    <link href="/clients/css/theme-green-1.css" rel="stylesheet" id="theme-config-link">
+    <link href="/clients/css/theme-green-1.css?t=<?=time();?>" rel="stylesheet" id="theme-config-link">
     <script src="/clients/js/modernizr.custom.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">

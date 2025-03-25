@@ -79,11 +79,11 @@ select {
 
 .thumbnail > .media > .ribbons {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 5px;
+    right: 5px;
     background-color: rgb(237, 237, 237);
     padding: 3px 5px;
-    font-size: 13px;
+    font-size: 12px;
     text-transform: uppercase;
 }
 
@@ -437,4 +437,58 @@ select {
 
 .mb-2 {
     margin-bottom: 20px;
+}
+
+.caption-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.caption-title > a {
+    font-size: 14px;
+}
+
+.product-item {
+    padding: 0px;
+    border: 1px solid #e5e5e5;
+}
+
+.product-item > .media {
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+}
+
+.product-item > .media > .title-time {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    padding: 5px 15px;
+    background-color: #010660;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.product-item > .caption {
+    padding: 5px 10px;
+    background-color: #fcfcfc;
+}
+
+.caption > .price {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.caption > .price > span {
+    font-size: 13px;
+}
+
+.header {
+    border-bottom: 3px solid #010660;
 }
