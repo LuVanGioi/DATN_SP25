@@ -37,6 +37,8 @@ use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
+use App\Http\Controllers\clients\LocationController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +68,7 @@ Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
 Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
 Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
+Route::resource('locations', LocationController::class);
 
 Route::get('quen-mat-khau', [ForgotPasswordController::class, 'showFormForgotPassword'])->name('forgot-password');
 Route::post('quen-mat-khau', [ForgotPasswordController::class, 'sendMailResetPassword'])->name('forgot-password-send');
