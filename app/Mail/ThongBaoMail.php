@@ -4,6 +4,8 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class ThongBaoMail extends Mailable
@@ -25,7 +27,28 @@ class ThongBaoMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->data['subject'])
-            ->html($this->data['message']);
+        return new Envelope(
+            subject: $this->data['subject']
+        );
+    }
+
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
+    {
+        return new Content(
+            html: $this->data['message']
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }

@@ -43,7 +43,7 @@ die('<script>location.href="/"</script>');
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-6 text-right-lg">
-                            <a class="forgot-password" href="/forgot-password">Quên mật khẩu?</a>
+                            <a class="forgot-password" href="{{ route("forgot-password") }}">Quên mật khẩu?</a>
                         </div>
                         <div class="col-md-6">
                             <button class="btn btn-theme btn-block btn-theme-dark">Đăng Nhập</button>
