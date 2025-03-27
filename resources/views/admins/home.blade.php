@@ -25,7 +25,7 @@
             </div>
             <div class="col-md-7">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card o-hidden small-widget">
                             <div class="card-body border-b-primary border-2">
                                 <span class="f-light f-w-500 f-14">Tổng Đơn Hàng</span>
@@ -49,7 +49,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card o-hidden small-widget">
                             <div class="card-body border-b-warning border-2">
                                 <span class="f-light f-w-500 f-14">Chờ Giao</span>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card o-hidden small-widget">
                             <div class="card-body border-b-info border-2">
                                 <span class="f-light f-w-500 f-14">Đang Giao</span>
@@ -97,7 +97,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card o-hidden small-widget">
                             <div class="card-body border-b-success border-2">
                                 <span class="f-light f-w-500 f-14">Hoàn Thành</span>
@@ -121,10 +121,10 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card o-hidden small-widget">
-                            <div class="card-body border-b-secondary border-2">
-                                <span class="f-light f-w-500 f-14">Hoàn Trả</span>
+                            <div class="card-body border-b-dark border-2">
+                                <span class="f-light f-w-500 f-14">Thất Bại</span>
                                 <div class="project-details">
                                     <div class="project-counter">
                                         <h2 class="f-w-600">0</h2>
@@ -145,58 +145,10 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="card o-hidden small-widget">
-                            <div class="card-body border-b-primary border-2">
-                                <span class="f-light f-w-500 f-14">Tổng thu</span>
-                                <div class="project-details">
-                                    <div class="project-counter">
-                                        <h2 class="f-w-600">1.000.000</h2>
-                                    </div>
-                                </div>
-                                <ul class="bubbles">
-                                    <li class="bubble"> </li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card o-hidden small-widget">
-                            <div class="card-body border-b-success border-2">
-                                <span class="f-light f-w-500 f-14">Chờ Nhận</span>
-                                <div class="project-details">
-                                    <div class="project-counter">
-                                        <h2 class="f-w-600">2.000.000</h2>
-                                    </div>
-                                </div>
-                                <ul class="bubbles">
-                                    <li class="bubble"> </li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                    <li class="bubble"></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card o-hidden small-widget">
-                            <div class="card-body border-b-danger border-2">
-                                <span class="f-light f-w-500 f-14">Tổng hoàn</span>
+                            <div class="card-body border-b-secondary border-2">
+                                <span class="f-light f-w-500 f-14">Hoàn Hàng</span>
                                 <div class="project-details">
                                     <div class="project-counter">
                                         <h2 class="f-w-600">0</h2>
@@ -658,11 +610,26 @@
             type: "bar",
             data: {
                 labels: <?= json_encode($months); ?>,
-                datasets: [{
-                        label: "Doanh thu",
+                datasets: [
+                    {
+                        label: "Tổng Nhận",
                         data: <?= json_encode($revenues); ?>,
                         backgroundColor: "#006666",
                         borderColor: "rgb(13, 161, 161)",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Chờ Nhận",
+                        data: <?= json_encode($revenues); ?>,
+                        backgroundColor: "rgb(255, 169, 21)",
+                        borderColor: "rgb(213, 137, 6)",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Tổng Hoàn",
+                        data: <?= json_encode($revenues); ?>,
+                        backgroundColor: "rgb(213, 19, 19)",
+                        borderColor: "rgb(187, 0, 0)",
                         borderWidth: 1
                     }
                 ]
