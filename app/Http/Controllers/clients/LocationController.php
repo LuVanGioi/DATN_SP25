@@ -57,7 +57,7 @@ class LocationController extends Controller
         $location->MacDinh = $request->has('MacDinh') ? 1 : 0;
         $location->save();
 
-        return redirect()->route('locations.index')->with('success', 'Địa chỉ giao hàng đã được thêm thành công!');
+        return back()->with('success', 'Địa chỉ giao hàng đã được thêm thành công!');
     }
 
     /**
@@ -95,7 +95,7 @@ class LocationController extends Controller
 
         $location = Location::where('ID_User', Auth::id())->findOrFail($id);
 
-        if ($request->has('MacDinh') && $request->MacDinh) {
+        if ($request->input('MacDinh')) {
             Location::where('ID_User', Auth::id())->update(['MacDinh' => 0]);
         }
         ;
@@ -106,10 +106,10 @@ class LocationController extends Controller
         $location->Xa = $validated['Xa'];
         $location->Huyen = $validated['Huyen'];
         $location->Tinh = $validated['Tinh'];
-        $location->MacDinh = $request->has('MacDinh') ? 1 : 0;
+        $location->MacDinh = $request->input('MacDinh') ? 1 : 0;
         $location->save();
 
-        return redirect()->route('locations.index')->with('success', 'Địa chỉ giao hàng đã được cập nhật thành công!');
+        return back()->with('success', 'Địa chỉ giao hàng đã được cập nhật thành công!');
     }
 
     /**
@@ -120,6 +120,6 @@ class LocationController extends Controller
         $location = Location::where('ID_User', Auth::id())->findOrFail($id);
         $location->delete();
 
-        return redirect()->route('locations.index')->with('success', 'Địa chỉ giao hàng đã được xóa thành công!');
+        return back()->with('success', 'Địa chỉ giao hàng đã được xóa thành công!');
     }
 }

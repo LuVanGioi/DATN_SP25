@@ -19,21 +19,27 @@
 
 <section class="page-section color">
     <div class="container">
+
         <div class="row orders">
             <div class="col-md-8">
                 <h3 class="block-title"><span>Danh Sách Giỏ Hàng</span></h3>
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Sản Phẩm</th>
                             <th>Số Lượng</th>
                             <th>Giá Tiền</th>
                             <th>Tổng Tiền</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($danhSachGioHangClient as $gioHangClient)
                         <tr>
+                            <td class="inputSelectCart">
+                                <label for="inputCart_{{ $gioHangClient->cart_id }}" class="checkbox-label"></label>
+                            </td>
                             <td class="image">
                                 <a class="media-link" href="/san-pham/{{ $gioHangClient->DuongDan }}"><i class="fa fa-circle-info"></i>
                                     <img src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt="" style="width: 100px; height: 100px" />
@@ -41,10 +47,17 @@
                                 <h4><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ $gioHangClient->TenSanPham }}</a></h4>
                                 {{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}
                             </td>
-                            <td class="quantity">x{{ number_format($gioHangClient->SoLuong) }}</td>
-                            <td class="quantity">{{ number_format($gioHangClient->GiaSanPham) }} đ</td>
-                            <td class="total">{{ number_format($gioHangClient->ThanhTien) }} đ
-                                <form action="{{ route("gio-hang.destroy", $gioHangClient->cart_id) }}" method="POST" class="d-inline">
+                            <td>
+                                <div class="form-quantity">
+                                    <span class="btn-minus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-minus"></i></span>
+                                    <input type="number" class="quantity-input" data-id="{{ $gioHangClient->cart_id }}" value="{{ $gioHangClient->SoLuong }}" min="1" readonly>
+                                    <span class="btn-plus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-plus"></i></span>
+                                </div>
+                            </td>
+                            <td class="quantity money" id="GiaSanPham_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->GiaSanPham) }} đ</td>
+                            <td class="total" id="ThanhTien_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->ThanhTien) }}đ</td>
+                            <td class="total">
+                                <form action="{{ route("gio-hang.destroy", $gioHangClient->cart_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Khỏi Giỏ Hàng!')">
                                     @csrf
                                     @method("DELETE")
                                     <button type="submit" class="btn btn-none"><i class="fa fa-close"></i></button>
@@ -71,10 +84,10 @@
                             <td style="text-align: start">Tạm Tính:</td>
                             <td style="text-align: start; font-weight: bold">{{ number_format($tongTienSanPhamGioHangClient) }} đ</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td style="text-align: start">Giảm Giá:</td>
                             <td style="text-align: start; font-weight: bold">{{ number_format($giamGia) }}</td>
-                        </tr>
+                        </tr> -->
                         <tfoot>
                             <tr>
                                 <td>Tổng Tiền:</td>
@@ -84,8 +97,11 @@
                     </table>
                     <form action="{{ route("pay") }}" method="POST">
                         @csrf
+                        @foreach ($danhSachGioHangClient as $gioHangClient1)
+                        <input type="checkbox" name="selected_products[]" id="inputCart_{{ $gioHangClient1->cart_id }}" class="checkbox-cart-input" value="{{ $gioHangClient1->cart_id }}">
+                        @endforeach
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <input class="form-control" type="text" name="discount" placeholder="Nhập mã giảm giá của bạn" value="{{ old("discount") }}" />
                             @error("discount")
                             <p class="text-danger">{{ $message }}</p>
@@ -99,14 +115,15 @@
                         </div>
                         <button type="submit" name="action" value="acept_voucher" class="btn btn-primary btn-block" @if ($soLuongGioHangClient <=0)
                             disabled
-                            @endif>Áp Dụng Mã</button>
-                        <button type="submit" name="action" value="payment" class="btn btn-success btn-block" @if ($soLuongGioHangClient <=0)
+                            @endif>Áp Dụng Mã</button> -->
+                        <button type="submit" name="action" value="payment" class="btn btn-success btn-block" id="btnContinue" disabled @if ($soLuongGioHangClient <=0)
                             disabled
                             @endif>Tiếp Tục <i class="fas fa-arrow-right"></i></button>
                     </form>
                 </div>
             </div>
         </div>
+
     </div>
 </section>
 
@@ -208,4 +225,95 @@
     <a class="btn btn-theme btn-view-more-block" href="/" style="max-width: 100%;">Xem Thêm</a>
     </div>
 </section>
+@endsection
+
+@section("js")
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $(".btn-plus, .btn-minus").click(function() {
+            let id = $(this).data("id");
+            let input = $(`.quantity-input[data-id='${id}']`);
+            let quantity = parseInt(input.val());
+
+            if ($(this).hasClass("btn-plus")) {
+                quantity++;
+            } else if ($(this).hasClass("btn-minus") && quantity > 1) {
+                quantity--;
+            }
+
+            input.val(quantity);
+
+            updateCart(id, quantity);
+        });
+
+        $(".quantity-input").change(function() {
+            let id = $(this).data("id");
+            let quantity = parseInt($(this).val());
+            if (quantity < 1) {
+                $(this).val(1);
+                quantity = 1;
+            }
+            updateCart(id, quantity);
+        });
+
+        function updateCart(id, quantity) {
+            $.ajax({
+                url: "/gio-hang/" + id,
+                type: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    quantity: quantity
+                },
+                success: function(data) {
+                    document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                    
+                    console.log(data);
+                },
+                error: function(error) {
+                    let errorMessage = "Có lỗi xảy ra!";
+                    if (error.responseJSON && error.responseJSON.message) {
+                        errorMessage = error.responseJSON.message;
+                    }
+                    alert(errorMessage);
+                }
+            });
+        }
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkboxes = document.querySelectorAll(".checkbox-cart-input");
+        const btnContinue = document.getElementById("btnContinue");
+
+        function checkCheckboxSelected() {
+            let isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            btnContinue.disabled = !isChecked;
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function() {
+                const label = document.querySelector(`label[for="${checkbox.id}"]`);
+                if (label) {
+                    label.classList.toggle("active", checkbox.checked);
+                }
+                checkCheckboxSelected();
+            });
+
+            const label = document.querySelector(`label[for="${checkbox.id}"]`);
+            if (label) {
+                label.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    checkbox.checked = !checkbox.checked;
+                    label.classList.toggle("active", checkbox.checked);
+                    checkCheckboxSelected();
+                });
+            }
+        });
+
+        checkCheckboxSelected();
+    });
+</script>
 @endsection

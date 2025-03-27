@@ -23,8 +23,8 @@
                             @method('PUT')
     
                             <div class="mb-3">
-                                <label for="name">Tên Mã</label>
-                                <input class="form-control @error('name') is-invalid border-danger @enderror" type="text" id="name" name="name" placeholder="Tên Mã" value="{{ old('name', $maGiamGia->name) }}" required>
+                                <label for="name">Mã Code</label>
+                                <input class="form-control @error('name') is-invalid border-danger @enderror" type="text" id="name" name="name" placeholder="Nhập Mã Code" value="{{ old('name', $maGiamGia->name) }}" required>
                                 @error('name')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -63,8 +63,8 @@
                             </div>
     
                             <div class="mb-3">
-                                <label for="condition">Điều Kiện</label>
-                                <input class="form-control @error('condition') is-invalid border-danger @enderror" type="text" id="condition" name="condition" placeholder="Điều Kiện" value="{{ old('condition', $maGiamGia->condition) }}" required>
+                                <label for="condition">Tiêu Đề</label>
+                                <input class="form-control @error('condition') is-invalid border-danger @enderror" type="text" id="condition" name="condition" placeholder="Tiêu Đề" value="{{ old('condition', $maGiamGia->condition) }}" required>
                                 @error('condition')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -89,8 +89,8 @@
                             <div class="mb-3">
                                 <label for="status">Trạng Thái</label>
                                 <select class="form-select @error('status') is-invalid border-danger @enderror" id="status" name="status" required>
-                                    <option value="Hoạt động" {{ old('status', $maGiamGia->status) == 'Hoạt động' ? 'selected' : '' }}>Hoạt động</option>
-                                    <option value="Ngừng hoạt động" {{ old('status', $maGiamGia->status) == 'Ngừng hoạt động' ? 'selected' : '' }}>Ngừng hoạt động</option>
+                                    <option value="on" {{ old('status', $maGiamGia->status) == 'on' ? 'selected' : '' }}>Hoạt động</option>
+                                    <option value="off" {{ old('status', $maGiamGia->status) == 'off' ? 'selected' : '' }}>Ngừng hoạt động</option>
                                 </select>
                                 @error('status')
                                 <p class="text-danger">{{ $message }}</p>
