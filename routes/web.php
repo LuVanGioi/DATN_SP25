@@ -66,6 +66,10 @@ Route::post('email-form', [ClientSupportController::class, 'email_event'])->name
 Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
 Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
+Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
+Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
+
+
 Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
 Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
 Route::resource('locations', LocationController::class);
