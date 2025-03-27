@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\clients;
 
-use App\Mail\ThongBaoMail;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Mail\ThongBaoMail;
 use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordController extends Controller
