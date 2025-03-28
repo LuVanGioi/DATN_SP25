@@ -12,30 +12,66 @@
                 <div class="col-lg-9 col-md-9 col-sm-8">
                     <div class="information-title">Thông Tin Tài Khoản Của Bạn</div>
                     <div class="details-wrap">
-                        <div class="block-title alt"> <i class="fa fa-angle-down"></i> Thay Đổi Thông Tin Cá Nhân Của Bạn</div>
+                        <div class="block-title alt"> <i class="fa fa-angle-down"></i> Thay Đổi Thông Tin Cá Nhân Của Bạn
+                        </div>
                         <div class="details-box">
-                            <form class="form-delivery" action="#">
+                            <form class="form-delivery" action="{{ route('update-profile') }}" method="POST">
+                                @csrf
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Tên"
-                                                class="form-control"></div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Họ"
-                                                class="form-control"></div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Email"
-                                                class="form-control"></div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Số Điện Thoại"
-                                                class="form-control"></div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input type="text" placeholder="Fax" class="form-control">
+                                    <div class="row" style="margin-top: 10px;">
+                                        <div class="col-md-6">
+                                            <label for="name" class="font-weight-bold text-dark mb-2 d-block"
+                                                style="margin-left: 15px;">Họ Và
+                                                Tên</label>
+                                            <div class="form-group">
+                                                <input type="text" name="name" id="name" placeholder="Họ Tên"
+                                                    class="form-control @error('name') is-invalid @enderror"
+                                                    style="width: 395px; margin-left: 14px;"
+                                                    value="{{ old('name', $user->name) }}" required>
+                                                @error('name')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="email" class="font-weight-bold text-dark mb-2 d-block"
+                                                style="margin-left: 15px;">Email</label>
+                                            <div class="form-group">
+                                                <input type="email" name="email" id="email" placeholder="Email"
+                                                    class="form-control  @error('email') is-invalid @enderror"
+                                                    style="width: 395px; margin-left: 14px;"
+                                                    value="{{ old('email', $user->email) }}" required>
+                                                @error('email')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
+                                    {{-- <div class="col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <select name="Gender" id="" class="form-control">
+                                                <option value="GioiTinh">Giới Tính</option>
+                                                <option value="Nam" {{ old('gender', $user->gender) == 'Nam' ? 'selected' :
+                                                    '' }}>Nam</option>
+                                                <option value="Nữ" {{ old('gender', $user->gender) == 'Nữ' ? 'selected' : ''
+                                                    }}>Nữ</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group"> <input type="text" name="phone" placeholder="Số Điện Thoại"
+                                                class="form-control" value="{{ old('phone', $user->phone) }}"></div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="form-group"> <input type="text" name="address" placeholder="Địa Chỉ"
+                                                class="form-control" value="{{ old('address', $user->address) }}"></div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <label for="">Ngày sinh</label>
+                                        <input class="form-control" type="date" name="birthday"
+                                            value="{{ old('birthday', $user->birthday) }}">
+                                    </div> --}}
                                     <div class="col-md-12 col-sm-12">
                                         <button class="btn btn-theme btn-theme-dark" type="submit"> Cập Nhật </button>
                                     </div>
