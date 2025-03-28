@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             BienTheSeeder::class,
             CaiDatWebsiteSeeder::class,
             TinhThanhSeeder::class,
-            HuyenSeeder::class
+            HuyenSeeder::class,
+            PaymentSettingsSeeder::class
         ]);
     }
 }

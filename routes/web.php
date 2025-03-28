@@ -38,7 +38,7 @@ use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 use App\Http\Controllers\clients\LocationController;
-
+use App\Http\Controllers\Methods\MomoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +69,9 @@ Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
 Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
 
+Route::get('/momo/payment', [MomoController::class, 'createPayment'])->name('momo.payment');
+Route::get('/momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
+Route::post('/momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');
 
 Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
 Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
