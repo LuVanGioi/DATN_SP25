@@ -90,9 +90,15 @@ Route::get('danh-sach-bai-viet', function () {
 Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.Baiviet');
 });
-Route::get('thong-tin-tai-khoan', function () {
-    return view('clients.ThongTinTaiKhoan.ThongTinTaiKhoan');
-});
+
+Route::get('/thong-tin-tai-khoan', [ClientsAuthController::class, 'getProfile'])
+    ->middleware('auth')
+    ->name('ThongTinTaiKhoan');
+
+Route::post('/thong-tin-tai-khoan/update', [ClientsAuthController::class, 'updateProfile'])
+    ->middleware('auth')
+    ->name('update-profile');
+    
 Route::get('/tai-khoan-cua-toi', function () {
     return view('clients.ThongTinTaiKhoan.TaiKhoanCuaToi');
 });
