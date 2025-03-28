@@ -186,7 +186,40 @@ class payController extends Controller
             DB::commit();
 
             return redirect()->route("payment.success", $trading)->with("success", "Tạo Đơn Hàng Thành Công!");
-        elseif($request->input("method") == "COD"):
+        elseif ($request->input("method") == "Momo"):
+            $momoConfig = DB::table("method_settings")->where('NhaCungCap', 'momo')->first();
+
+            $data = [
+                'partnerCode' => $momoConfig->partner_code,
+                'accessKey' => $momoConfig->access_key,
+                'requestId' => time(),
+                'amount' => $tongTienSanPhamGioHangClient,
+                'orderId' => $trading,
+                'orderInfo' => "Thanh toán đơn hàng #{$trading}",
+                'redirectUrl' => route('momo.callback'),
+                'ipnUrl' => route('momo.ipn'),
+                'extraData' => '',
+                'requestType' => 'captureWallet',
+                'lang' => 'vi',
+            ];
+
+            $rawHash = "accessKey={$data['accessKey']}&amount={$data['amount']}&extraData={$data['extraData']}&ipnUrl={$data['ipnUrl']}&orderId={$data['orderId']}&orderInfo={$data['orderInfo']}&partnerCode={$data['partnerCode']}&redirectUrl={$data['redirectUrl']}&requestId={$data['requestId']}&requestType={$data['requestType']}";
+            $data['signature'] = hash_hmac('sha256', $rawHash, $momoConfig->secret_key);
+
+            $ch = curl_init($momoConfig->api_endpoint);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            $response = json_decode(curl_exec($ch), true);
+            curl_close($ch);
+
+            if (isset($response['payUrl'])) {
+                return redirect($response['payUrl']);
+            }
+            dd($response);
+
+
             return redirect()->route("payment.success", $trading)->with("success", "Tạo Đơn Hàng!");
         endif;
     }
