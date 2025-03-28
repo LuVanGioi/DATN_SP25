@@ -186,6 +186,8 @@ class payController extends Controller
             DB::commit();
 
             return redirect()->route("payment.success", $trading)->with("success", "Tạo Đơn Hàng Thành Công!");
+        elseif($request->input("method") == "COD"):
+            return redirect()->route("payment.success", $trading)->with("success", "Tạo Đơn Hàng!");
         endif;
     }
 
