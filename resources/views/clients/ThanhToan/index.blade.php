@@ -1,26 +1,26 @@
 @extends("clients.themes")
 
 @section("title")
-<title>Thanh Toán Đơn Hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
+    <title>Thanh Toán Đơn Hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
 @endsection
 
 @section('main')
-@php
-if ($soLuongGioHangClient <= 0):
-    abort(404, 'Dữ liệu không hợp lệ.' );
-    endif;
+    @php
+        if ($soLuongGioHangClient <= 0):
+            abort(404, 'Dữ liệu không hợp lệ.');
+        endif;
     @endphp
     <section class="page-section breadcrumbs">
-    <div class="container">
-        <div class="page-header">
-            <h1>Thanh Toán</h1>
+        <div class="container">
+            <div class="page-header">
+                <h1>Thanh Toán</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li><a href="/">Trang Chủ</a></li>
+                <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
+                <li class="active">Giỏ Hàng</li>
+            </ul>
         </div>
-        <ul class="breadcrumb">
-            <li><a href="/">Trang Chủ</a></li>
-            <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
-            <li class="active">Giỏ Hàng</li>
-        </ul>
-    </div>
     </section>
 
     <section class="page-section">
@@ -31,225 +31,293 @@ if ($soLuongGioHangClient <= 0):
 
                     <ul class="list-product-payment">
                         @foreach ($sanPhamDaChon as $sanPhamm)
-                        <li class="item-product-payment" onclick="href('/san-pham/{{ $sanPhamm->DuongDan }}')">
-                            <div class="logo">
-                                <img src="{{ Storage::url($sanPhamm->HinhAnh) }}" alt="">
-                            </div>
-                            <div class="info">
-                                <div class="name">{{ $sanPhamm->TenSanPham }}</div>
-                                <div class="parameter"><small>{{ $sanPhamm->TenKichCo }} -
-                                        {{ $sanPhamm->TenMauSac }}</small></div>
+                            <li class="item-product-payment" onclick="href('/san-pham/{{ $sanPhamm->DuongDan }}')">
+                                <div class="logo">
+                                    <img src="{{ Storage::url($sanPhamm->HinhAnh) }}" alt="">
+                                </div>
+                                <div class="info">
+                                    <div class="name">{{ $sanPhamm->TenSanPham }}</div>
+                                    <div class="parameter"><small>{{ $sanPhamm->TenKichCo }} -
+                                            {{ $sanPhamm->TenMauSac }}</small></div>
 
-                                <div class="money">
-                                    <div class="prices">
-                                        {{ number_format($sanPhamm->GiaSanPham) }} đ
-                                        <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai) : '') }}
-                                                đ</small></del>
+                                    <div class="money">
+                                        <div class="prices">
+                                            {{ number_format($sanPhamm->GiaSanPham) }} đ
+                                            <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai) : '') }}
+                                                    đ</small></del>
+                                        </div>
+                                        <div class="amount">
+                                            x{{ number_format($sanPhamm->SoLuong) }}
+                                        </div>
                                     </div>
-                                    <div class="amount">
-                                        x{{ number_format($sanPhamm->SoLuong) }}
+
+                                    <div class="total-money">
+                                        <span>Tổng Số Tiền</span>
+                                        <span>{{ number_format($sanPhamm->ThanhTien) }} đ</span>
                                     </div>
                                 </div>
-
-                                <div class="total-money">
-                                    <span>Tổng Số Tiền</span>
-                                    <span>{{ number_format($sanPhamm->ThanhTien) }} đ</span>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
                         @endforeach
                     </ul>
                 </div>
 
                 @php
-                $giamGia = session('giamGia', 0);
-                $tongTienSauGiam = $tongTienSanPhamDaChon - $giamGia;
+                    $giamGia = session('giamGia', 0);
+                    $tongTienSauGiam = $tongTienSanPhamDaChon - $giamGia;
                 @endphp
                 <div class="col-md-5">
                     @if (!Auth::check())
-                    <h3 class="block-title"><span>Đăng Nhập & Đăng Ký</span></h3>
-                    <p class="text-success">Bạn Chưa Đăng Nhập, Vui Lòng Đăng Nhập Để Thanh Toán Đơn Hàng</p>
-                    <form action="{{route('login')}}" method="POST" class="form-login">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input class="form-control" type="text" name="email"
-                                        placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}"
-                                        autocomplete="email">
-
-                                    @error('email')
-                                    <p class="text-danger">{{ $message}}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group"><input class="form-control" type="password" name="password"
-                                        placeholder="Mật khẩu của bạn"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <button class="btn btn-theme btn-block btn-theme-dark">Đăng Nhập</button>
-                            </div>
-                            <div class="col-md-6">
-                                <a class="btn btn-block btn-theme btn-theme-dark btn-create"
-                                    href="{{route('register')}}">Tạo Tài
-                                    Khoản</a>
-                            </div>
-                        </div>
-                    </form>
-                    @else
-                    <h3 class="block-title"><span>Địa Chỉ Giao Hàng</span></h3>
-                    <div role="tab" id="headingTwo" class="d-flex">
-                        <h4 class="panel-title m-1">
-                            <a class="collapsed btn btn-theme" data-toggle="collapse" data-parent="#accordion" href="#addAddress"
-                                aria-expanded="false" aria-controls="collapseTwo">
-                                <span class="text-white">Thêm Địa Chỉ Giao Hàng</span> <i class="fas fa-plus-circle text-success ms-1"></i>
-                            </a>
-                        </h4>
-
-                        <h4 class="panel-title m-1">
-                            <a class="collapsed btn btn-theme" data-toggle="collapse" data-parent="#accordion" href="#listAddress"
-                                aria-expanded="false" aria-controls="collapseTwo">
-                                <span class="text-white">Danh Sách Địa Chỉ</span> <i class="fas fa-location-dot ms-1" style="color: #ff5733;"></i>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="addAddress" class="collapse" role="tabpanel" aria-labelledby="heading2" aria-expanded="false">
-                        <form action="{{ route('locations.store') }}" method="POST" class="mt-2">
+                        <h3 class="block-title"><span>Đăng Nhập & Đăng Ký</span></h3>
+                        <p class="text-success">Bạn Chưa Đăng Nhập, Vui Lòng Đăng Nhập Để Thanh Toán Đơn Hàng</p>
+                        <form action="{{route('login')}}" method="POST" class="form-login">
                             @csrf
-                            <h3 class="block-title"><span>Thêm Địa Chỉ Giao Hàng</span></h3>
-                            <div class="row mt-3">
-                                <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" name="HoTen" placeholder="Họ Và Tên"
-                                            value="{{ old('HoTen') }}">
-                                        @error('HoTen')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" name="SoDienThoai"
-                                            placeholder="Số Điện Thoại" value="{{ old('SoDienThoai') }}">
-                                        @error('SoDienThoai')
-                                        <span class="text-danger">{{ $message }}</span>
+                                        <input class="form-control" type="text" name="email"
+                                            placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}"
+                                            autocomplete="email">
+
+                                        @error('email')
+                                            <p class="text-danger">{{ $message}}</p>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" name="DiaChi"
-                                            placeholder="Tên Đường, Tòa Nhà, Số Nhà,..." value="{{ old('DiaChi') }}">
-                                        @error('DiaChi')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                    <div class="form-group"><input class="form-control" type="password" name="password"
+                                            placeholder="Mật khẩu của bạn"></div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group selectpicker-wrapper">
-                                        <select class="selectpicker input-price" name="Tinh" id="tinhThanh"
-                                            onchange="chonTinhThanh()" data-live-search="true" data-width="100%"
-                                            data-toggle="tooltip" title="Chọn Tỉnh Thành">
-                                            <option value="">Tỉnh Thành</option>
-                                            @foreach ($danhSachTinhThanh as $tinhThanh)
-                                            <option value="{{ $tinhThanh->IdTinh }}">{{ $tinhThanh->TenThanhPho }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('Tinh')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-theme btn-block btn-theme-dark">Đăng Nhập</button>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <select class="form-control" name="Huyen" id="huyen" onchange="chonHuyen()">
-                                            <option value="">Quận / Huyện</option>
-                                        </select>
-                                        @error('Huyen')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <select class="form-control" name="Xa" id="xaPhuong">
-                                            <option value="">Xã / Phường</option>
-                                        </select>
-                                        @error('Xa')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <select class="form-control" name="MacDinh" id="macDinh">
-                                            <option value="0">Không Đặt Làm Địa Chỉ Mặc Định</option>
-                                            <option value="1">Đặt Làm Địa Chỉ Mặc Định</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 text-end mb-3">
-                                    <button type="submit" class="btn btn-theme btn-theme-dark">Thêm Ngay</button>
+                                <div class="col-md-6">
+                                    <a class="btn btn-block btn-theme btn-theme-dark btn-create"
+                                        href="{{route('register')}}">Tạo Tài
+                                        Khoản</a>
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    @else
+                                <h3 class="block-title"><span>Địa Chỉ Giao Hàng</span></h3>
+                                <div role="tab" id="headingTwo" class="d-flex">
+                                    <h4 class="panel-title m-1">
+                                        <a class="collapsed btn btn-theme" data-toggle="collapse" data-parent="#accordion"
+                                            href="#addAddress" aria-expanded="false" aria-controls="collapseTwo">
+                                            <span class="text-white">Thêm Địa Chỉ Giao Hàng</span> <i
+                                                class="fas fa-plus-circle text-success ms-1"></i>
+                                        </a>
+                                    </h4>
 
-                    <div id="listAddress" class="collapse in" role="tabpanel" aria-labelledby="heading2" aria-expanded="false">
-                        <h3 class="block-title mt-2"><span>Danh Sách Địa Chỉ</span></h3>
-
-                        <div class="list-address">
-                            @foreach ($danhSachDiaChimacDinh as $index => $diaChi)
-                            @php
-                            $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChi->Tinh)->first();
-                            $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChi->Huyen)->first();
-                            @endphp
-                            <div class="item-location {{ ($diaChi->MacDinh == 1 ? "active" : "") }}" onclick="document.getElementById('inputLocation_{{ $diaChi->id }}').click()" data-id="{{ $diaChi->id }}">
-                                <i class="fas fa-location-dot"></i>
-                                <i class="fas fa-check color-theme"></i>
-                                <label for="inputLocation_{{ $diaChi->id }}">
-                                    <div class="name" style="font-weight: bold; color: #333; font-size: 16px;">
-                                        <span>{{ $diaChi->HoTen }}</span>
-                                        <small style="color: #666; font-size: 14px; margin-left: 5px;">{{ $diaChi->SoDienThoai }}</small>
-                                    </div>
-                                    <div class="location" style="color: #555; font-size: 14px;">
-                                        <span>{{ $diaChi->DiaChi }}</span><br>
-                                        <span>{{ $diaChi->Xa }}, {{ $thongTinHuyen->TenHuyen }}, {{ $thongTinHuyenTinh->TenThanhPho }}</span>
-                                    </div>
-                                </label>
-                                <div class="icon-right">
-                                    <form action="{{ route('locations.destroy', $diaChi->id) }}" method="POST" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Địa Chỉ Này?')" class="d-inline">
+                                    <h4 class="panel-title m-1">
+                                        <a class="collapsed btn btn-theme" data-toggle="collapse" data-parent="#accordion"
+                                            href="#listAddress" aria-expanded="false" aria-controls="collapseTwo">
+                                            <span class="text-white">Danh Sách Địa Chỉ</span> <i class="fas fa-location-dot ms-1"
+                                                style="color: #ff5733;"></i>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="addAddress" class="collapse" role="tabpanel" aria-labelledby="heading2" aria-expanded="false">
+                                    <form action="{{ route('locations.store') }}" method="POST" class="mt-2">
                                         @csrf
-                                        @method("DELETE")
-                                        <button type="submit" class="btn btn-none"><i class="fas fa-times" style="color: #999; font-size: 16px;"></i></button>
+                                        <h3 class="block-title"><span>Thêm Địa Chỉ Giao Hàng</span></h3>
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" name="HoTen" placeholder="Họ Và Tên"
+                                                        value="{{ old('HoTen') }}">
+                                                    @error('HoTen')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" name="SoDienThoai"
+                                                        placeholder="Số Điện Thoại" value="{{ old('SoDienThoai') }}">
+                                                    @error('SoDienThoai')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" name="DiaChi"
+                                                        placeholder="Tên Đường, Tòa Nhà, Số Nhà,..." value="{{ old('DiaChi') }}">
+                                                    @error('DiaChi')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group selectpicker-wrapper">
+                                                    <select class="selectpicker input-price" name="Tinh" id="tinhThanh"
+                                                        onchange="chonTinhThanh()" data-live-search="true" data-width="100%"
+                                                        data-toggle="tooltip" title="Chọn Tỉnh Thành">
+                                                        <option value="">Tỉnh Thành</option>
+                                                        @foreach ($danhSachTinhThanh as $tinhThanh)
+                                                            <option value="{{ $tinhThanh->IdTinh }}">{{ $tinhThanh->TenThanhPho }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('Tinh')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <select class="form-control" name="Huyen" id="huyen" onchange="chonHuyen()">
+                                                        <option value="">Quận / Huyện</option>
+                                                    </select>
+                                                    @error('Huyen')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <select class="form-control" name="Xa" id="xaPhuong">
+                                                        <option value="">Xã / Phường</option>
+                                                    </select>
+                                                    @error('Xa')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <select class="form-control" name="MacDinh" id="macDinh">
+                                                        <option value="0">Không Đặt Làm Địa Chỉ Mặc Định</option>
+                                                        <option value="1">Đặt Làm Địa Chỉ Mặc Định</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 text-end mb-3">
+                                                <button type="submit" class="btn btn-theme btn-theme-dark">Thêm Ngay</button>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
+
+                                <div id="listAddress" class="collapse in" role="tabpanel" aria-labelledby="heading2"
+                                    aria-expanded="false">
+                                    <h3 class="block-title mt-2"><span>Danh Sách Địa Chỉ</span></h3>
+
+                                    <div class="list-address">
+                                        @foreach ($danhSachDiaChimacDinh as $index => $diaChi)
+                                                            @php
+                                                                $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChi->Tinh)->first();
+                                                                $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChi->Huyen)->first();
+                                                            @endphp
+                                                            <div class="item-location {{ ($diaChi->MacDinh == 1 ? "active" : "") }}"
+                                                                onclick="document.getElementById('inputLocation_{{ $diaChi->id }}').click()"
+                                                                data-id="{{ $diaChi->id }}">
+                                                                <i class="fas fa-location-dot"></i>
+                                                                <i class="fas fa-check color-theme"></i>
+                                                                <label for="inputLocation_{{ $diaChi->id }}">
+                                                                    <div class="name" style="font-weight: bold; color: #333; font-size: 16px;">
+                                                                        <span>{{ $diaChi->HoTen }}</span>
+                                                                        <small
+                                                                            style="color: #666; font-size: 14px; margin-left: 5px;">{{ $diaChi->SoDienThoai }}</small>
+                                                                    </div>
+                                                                    <div class="location" style="color: #555; font-size: 14px;">
+                                                                        <span>{{ $diaChi->DiaChi }}</span><br>
+                                                                        <span>{{ $diaChi->Xa }}, {{ $thongTinHuyen->TenHuyen }},
+                                                                            {{ $thongTinHuyenTinh->TenThanhPho }}</span>
+                                                                    </div>
+                                                                </label>
+                                                                <div class="icon-right" style="display: flex;">
+                                                                    <button type="button" class="btn btn-none btn-edit"
+                                                                        onclick="enableEditMode({{ $diaChi->id }})">
+                                                                        <i class="fas fa-edit" style="color: red; font-size: 16px;"></i>
+                                                                    </button>
+                                                                    <form action="{{ route('locations.destroy', $diaChi->id) }}" method="POST"
+                                                                        onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Địa Chỉ Này?')" class="d-inline">
+                                                                        @csrf
+                                                                        @method("DELETE")
+                                                                        <button type="submit" class="btn btn-none"><i class="fas fa-times"
+                                                                                style="color: #999; font-size: 16px;"></i></button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- Tạo form ẩn cho phần sửa --}}
+                                                            <div class="item-location edit-mode" id="" style="display: block;" data-id="">
+                                                                <form action="" method="POST">
+                                                                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                                                        <i class="fas fa-location-dot" style="margin-right: 10px;"></i>
+                                                                        <input type="text" name="HoTen" value="" class="form-control"
+                                                                            style="flex: 1; margin-right: 10px;" placeholder="Họ Và Tên">
+                                                                        <input type="text" name="SoDienThoai" value="" class="form-control"
+                                                                            style="width: 150px;" placeholder="Số điện thoại">
+                                                                    </div>
+
+                                                                    <div style="margin-left: 25px; margin-bottom: 8px;">
+                                                                        <input type="text" name="DiaChi" value="" class="form-control"
+                                                                            placeholder="Tên Đường, Tòa Nhà, Số Nhà,...">
+                                                                    </div>
+
+                                                                    <div style="margin-left: 25px; display: flex; gap: 10px; margin-bottom: 8px;">
+                                                                        <select class="selectpicker input-price" name="Tinh" id="tinhThanh"
+                                                                            onchange="chonTinhThanh()" data-live-search="true" data-width="100%"
+                                                                            data-toggle="tooltip" title="Chọn Tỉnh Thành">
+                                                                            <option value="">Tỉnh Thành</option>
+                                                                            @foreach ($danhSachTinhThanh as $tinhThanh)
+                                                                                <option value="{{ $tinhThanh->IdTinh }}">{{ $tinhThanh->TenThanhPho }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <select class="form-control" name="Huyen" id="huyen" onchange="chonHuyen()">
+                                                                            <option value="">Quận / Huyện</option>
+                                                                        </select>
+                                                                        <select class="form-control" name="Xa" id="xaPhuong">
+                                                                            <option value="">Xã / Phường</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                    <div
+                                                                        style="margin-left: 25px; display: flex; justify-content: space-between; align-items: center;">
+                                                                        <div class="form-group" style="margin-left: 25px; margin-bottom: 10px;">
+                                                                            <select class="form-control" name="MacDinh" id="macDinh-{{ $diaChi->id }}"
+                                                                                style="width: auto; display: inline-block;">
+                                                                                <option value="0">Không Đặt Làm Địa Chỉ Mặc Định</option>
+                                                                                <option value="1">Đặt Làm Địa Chỉ Mặc Định</option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <button type="button" class="btn btn-secondary btn-sm">Hủy</button>
+                                                                            <button type="submit" class="btn btn-primary btn-sm">Lưu</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                     @endif
                     <form action="{{ route("payment.store", $orderCode) }}" method="POST">
                         @csrf
                         @foreach ($danhSachDiaChimacDinh as $index => $diaChiInput)
-                        @php
-                        $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChiInput->Tinh)->first();
-                        $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChiInput->Huyen)->first();
-                        @endphp
-                        <input type="radio" class="d-none" name="location" id="inputLocation_{{ $diaChiInput->id }}" value="{{ $diaChiInput->id }}" {{ ($diaChiInput->MacDinh == 1 ? "checked" : "") }} onchange="checkLocation(this)">
+                                            @php
+                                                $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChiInput->Tinh)->first();
+                                                $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChiInput->Huyen)->first();
+                                            @endphp
+                                            <input type="radio" class="d-none" name="location" id="inputLocation_{{ $diaChiInput->id }}"
+                                                value="{{ $diaChiInput->id }}" {{ ($diaChiInput->MacDinh == 1 ? "checked" : "") }}
+                                                onchange="checkLocation(this)">
                         @endforeach
                         <br>
                         <h3 class="block-title"><span>Mã Giảm Giá</span></h3>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Nhập Mã Giảm Giá" name="voucher" value="{{ old("voucher") }}">
+                            <input class="form-control" placeholder="Nhập Mã Giảm Giá" name="voucher"
+                                value="{{ old("voucher") }}">
                             @if(session('voucher_error'))
-                            <small class="text-danger">{{ session('voucher_error') }}</small>
+                                <small class="text-danger">{{ session('voucher_error') }}</small>
                             @endif
                         </div>
 
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Lời Nhắn Cho Shop" name="message" rows="4">{{ old("message") }}</textarea>
+                            <textarea class="form-control" placeholder="Lời Nhắn Cho Shop" name="message"
+                                rows="4">{{ old("message") }}</textarea>
                         </div>
                         <br>
                         <h3 class="block-title"><span>Phương Thức Thanh Toán</span></h3>
@@ -318,17 +386,22 @@ if ($soLuongGioHangClient <= 0):
                         </div>
                         <div class="text-end mt-3">
                             <button type="submit" class="btn btn-theme btn-theme-dark" @if (!Auth::check()) disabled
-                                @endif>Đặt Hàng</button>
+                            @endif>Đặt Hàng</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
-    @endsection
+@endsection
 
-    @section("js")
+@section("js")
     <script>
+        function disableEditMode(id) {
+            document.getElementById(`edit-${id}`).classList.remove('active');
+            document.getElementById(`view-${id}`).style.display = 'flex';
+        }
+
         function chonPhuongThucThanhToan(id) {
             var button = document.getElementById(id + "-button");
             let items = document.querySelectorAll(".item-method");
@@ -397,4 +470,4 @@ if ($soLuongGioHangClient <= 0):
             }
         }
     </script>
-    @endsection
+@endsection
