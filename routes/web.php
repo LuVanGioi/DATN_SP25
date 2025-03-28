@@ -81,8 +81,8 @@ Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['cr
 
 Route::get('/baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
 
-Route::get('gioi-thieu-cua-hang', function () {
-    return view('clients.GioiThieu.GioiThieu');
+Route::get('chinh-sach-bao-hanh', function () {
+    return view('clients.BaoHanh.BaoHanh');
 });
 Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.BaiViet');
