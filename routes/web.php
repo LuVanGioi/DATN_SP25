@@ -79,6 +79,8 @@ Route::resource('locations', LocationController::class);
 
 Route::get('quen-mat-khau', [ForgotPasswordController::class, 'showFormForgotPassword'])->name('forgot-password');
 Route::post('quen-mat-khau', [ForgotPasswordController::class, 'sendMailResetPassword'])->name('forgot-password-send');
+Route::get('mat-khau-moi/{token}', [ForgotPasswordController::class, 'showFormResetPassword'])->name('reset-password');
+Route::post('mat-khau-moi', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
 
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 
