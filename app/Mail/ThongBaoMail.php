@@ -4,7 +4,9 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Config;
 
 class ThongBaoMail extends Mailable
 {
