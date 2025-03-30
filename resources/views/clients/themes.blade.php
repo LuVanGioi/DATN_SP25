@@ -53,7 +53,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/clients/css/style.css?t=<?= time(); ?>">
 
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
     @yield("css")
 </head>
 
@@ -144,7 +144,16 @@
         }
     </script>
     <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
+    <script>
+        const beamsClient = new PusherPushNotifications.Client({
+            instanceId: '578ce584-9ce3-46ed-b7ce-f3c02c7c8991',
+        });
 
+        beamsClient.start()
+            .then(() => beamsClient.addDeviceInterest('hello'))
+            .then(() => console.log('Successfully registered and subscribed!'))
+            .catch(console.error);
+    </script>
     @yield("js")
 </body>
 

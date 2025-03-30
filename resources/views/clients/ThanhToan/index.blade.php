@@ -18,7 +18,7 @@ if ($soLuongGioHangClient <= 0):
         <ul class="breadcrumb">
             <li><a href="/">Trang Chủ</a></li>
             <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
-            <li class="active">Giỏ Hàng</li>
+            <li class="active">Thanh Toán</li>
         </ul>
     </div>
     </section>

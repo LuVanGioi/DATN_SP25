@@ -10,19 +10,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotificationEvent
+class ImageUploaded implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
+    public $imagePath;
 
-    public $message;
-
-    public function __construct($message)
+    public function __construct($imagePath)
     {
-        $this->message = $message;
+        $this->imagePath = $imagePath;
     }
 
     /**
@@ -32,11 +31,11 @@ class NotificationEvent
      */
     public function broadcastOn()
     {
-        return ['notifications'];
+        return new Channel('bo-suu-tap');
     }
 
     public function broadcastAs()
     {
-        return 'new-notification';
+        return 'image.uploaded';
     }
 }

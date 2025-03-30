@@ -79,7 +79,7 @@
                 <div class="product-price">{{ number_format($thongTinSanPham->GiaSanPham) }} đ - <del style="color:rgb(115, 115, 115)">{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</del></div>
                 <hr class="page-divider">
 
-                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" swal="none" type="POST">
+                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="1500" swal_success="none" type="POST">
                     <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
@@ -109,7 +109,7 @@
                                 title="Màu Sắc" onchange="changeCarouselImage(this)">
                                 <option value="" data-index="0">Chọn Màu Sắc</option>
                                 @foreach ($bienTheSanPham2 as $index => $mauSac)
-                                <option value="{{ $mauSac->ID_MauSac }}" data-index="{{ $index + 1 }}">{{ $mauSac->TenMauSac }}</option>
+                                <option value="{{ $mauSac->ID_MauSac }}" data-index="{{ $index + 1 }}">{{ $mauSac->TenMauSac }} ({{ $mauSac->SoLuong }})</option>
                                 @endforeach
                             </select>
                         </div>

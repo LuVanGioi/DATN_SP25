@@ -1,7 +1,8 @@
 <?php
 
+
 use Illuminate\Http\Request;
-use App\Events\NotificationEvent;
+use Illuminate\Support\Facades\Broadcast;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\SamplingHandler;
@@ -34,6 +35,7 @@ use App\Http\Controllers\admins\DanhMucBaiVietController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
+use App\Http\Controllers\admins\BoSuuTapController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
@@ -52,6 +54,8 @@ use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsi
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Broadcast::routes();
 
 #CLIENTS
 Route::get('/', [ClientsHomeController::class, "home"])->name("home.client");
@@ -104,7 +108,7 @@ Route::get('/thong-tin-tai-khoan', [ClientsAuthController::class, 'getProfile'])
 Route::post('/thong-tin-tai-khoan/update', [ClientsAuthController::class, 'updateProfile'])
     ->middleware('auth')
     ->name('update-profile');
-    
+
 Route::get('/tai-khoan-cua-toi', function () {
     return view('clients.ThongTinTaiKhoan.TaiKhoanCuaToi');
 });
@@ -157,7 +161,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"])->name('ThungRac.restore');
     Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
     Route::resource('admin/DanhMuc', DanhMucController::class);
-    Route::resource('admin/SanPham', SanPhamController::class);
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
@@ -186,9 +189,4 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
-});
-
-Route::post('/send-notification', function (Request $request) {
-    event(new NotificationEvent($request->message));
-    return response()->json(['status' => 'Success']);
 });
