@@ -7,6 +7,7 @@
     @yield("title")
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <meta name="author" content="WanderWeave">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ Storage::url($caiDatWebsite->Favicon_website) }}" type="image/x-icon">
     <meta name="description" content="{{ $caiDatWebsite->MoTa }}">
     <meta name="keywords" content="{{ $caiDatWebsite->TuKhoa }}">
@@ -33,8 +34,9 @@
     <link href="/clients/css/owl.theme.default.min.css" rel="stylesheet">
     <link href="/clients/css/animate.min.css" rel="stylesheet">
     <link href="/clients/css/theme.css" rel="stylesheet">
-    <link href="/clients/css/theme-green-1.css?t=<?=time();?>" rel="stylesheet" id="theme-config-link">
+    <link href="/clients/css/theme-green-1.css?t=<?= time(); ?>" rel="stylesheet" id="theme-config-link">
     <script src="/clients/js/modernizr.custom.js"></script>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -47,9 +49,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/clients/css/style.css?t=<?=time();?>">
+    <link rel="stylesheet" href="/clients/css/style.css?t=<?= time(); ?>">
+
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     @yield("css")
 </head>
 
@@ -79,6 +83,8 @@
             @include("clients.Block.foot")
         </footer>
         <div id="to-top" class="to-top"><i class="fas fa-angle-up"></i></div>
+
+        <div id="alertContainer"></div>
     </div>
 
     <script src="/clients/js/jquery-1.11.1.min.js"></script>
@@ -93,12 +99,48 @@
     <script src="/clients/js/smooth-scrollbar.min.js"></script>
     <script src="/clients/js/theme.js"></script>
     <script src="/clients/js/jquery.cookie.js"></script>
+    <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
     <script>
         window.gtranslateSettings = {
             "default_language": "vi",
             "native_language_names": true,
             "detect_browser_language": true,
             "wrapper_selector": ".gtranslate_wrapper"
+        }
+
+        let alertQueue = [];
+
+        function AlertDATN(type, message) {
+            const alertContainer = document.getElementById("alertContainer");
+
+            const alertBox = document.createElement("div");
+            alertBox.classList.add("alertManhDev", "show", type === "success" ? "alertManhDevSuccess" : "alertManhDevError");
+
+            alertBox.innerHTML = `
+        <span class="icon">${type === "success" ? "<i class='fas fa-check'></i>" : "<i class='fas fa-triangle-exclamation'></i>"}</span>
+        <span class="noteAlertManhDev">${message}</span>
+        <button onclick="closeAlertManhDev(this.parentElement)"><i class='fas fa-times'></i></button>
+    `;
+
+            alertContainer.prepend(alertBox);
+            alertQueue.push(alertBox);
+
+            if (alertQueue.length > 3) {
+                let firstAlert = alertQueue.shift();
+                firstAlert.remove();
+            }
+
+            setTimeout(() => {
+                closeAlertManhDev(alertBox);
+            }, 3000);
+        }
+
+        function closeAlertManhDev(alert) {
+            alert.classList.remove("show");
+            setTimeout(() => {
+                alert.remove();
+                alertQueue = alertQueue.filter(item => item !== alert);
+            }, 500);
         }
     </script>
     <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>

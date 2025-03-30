@@ -79,9 +79,11 @@
                 <div class="product-price">{{ number_format($thongTinSanPham->GiaSanPham) }} đ - <del style="color:rgb(115, 115, 115)">{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</del></div>
                 <hr class="page-divider">
 
-                <form action="{{ route("gio-hang.store") }}" method="POST" class="row variable">
-                    @csrf
+                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" swal="none" type="POST">
                     <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" id="actionField" value="">
+
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
@@ -135,10 +137,10 @@
                     </div>
                     <div class="col-md-12">
                         <div class="buttons mt-3" style="margin-top: 10px;">
-                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="add_to_cart">
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="add_to_cart">
                                 <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
                             </button>
-                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="buy_now">
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="buy_now">
                                 <i class="fa fa-shopping-cart"></i> Mua Ngay
                             </button>
                         </div>

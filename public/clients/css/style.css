@@ -666,3 +666,66 @@ select {
 }
 
 
+#alertContainer {
+    position: fixed;
+    top: 30px;
+    right: 20px;
+    display: flex;
+    flex-direction: column-reverse; /* Để thông báo mới nhất ở trên cùng */
+    gap: 10px; /* Đảm bảo khoảng cách giữa các thông báo */
+    z-index: 1000;
+}
+
+.alertManhDev {
+    right: 20px;
+    padding: 10px 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(-30px);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease, top 0.3s ease;
+    z-index: 9000;
+    font-size: 16px;
+    color: white;
+    display: flex !important;
+    min-width: 250px;
+    max-width: 350px; /* Giới hạn độ rộng để tránh quá dài */
+    word-wrap: break-word; /* Đảm bảo chữ không bị tràn */
+}
+
+.alertManhDev.alertManhDevSuccess {
+    background: #2d9257;
+}
+
+.alertManhDev.alertManhDevError {
+    background: #cb3e2e;
+}
+
+.alertManhDev.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.alertManhDev .icon {
+    width: 10%;
+}
+
+.alertManhDev .icon > i {
+    font-size: 20px;
+}
+
+.alertManhDev button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    color: white;
+    cursor: pointer;
+    width: 10%;
+}
+
+.alertManhDev > .noteAlertManhDev {
+    width: 100%;
+}

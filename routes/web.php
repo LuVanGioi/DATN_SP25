@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use App\Events\NotificationEvent;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\SamplingHandler;
@@ -8,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Middleware\CheckRoleMiddleware;
 use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\clients\payController;
+use App\Http\Controllers\Methods\MomoController;
 use App\Http\Controllers\admins\BannerController;
 use App\Http\Controllers\Methods\VnPayController;
 use App\Http\Controllers\admins\BaiVietController;
@@ -22,6 +25,7 @@ use App\Http\Controllers\clients\BangTinController;
 use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\admins\KhachHangController;
 use App\Http\Controllers\admins\MaGiamGiaController;
+use App\Http\Controllers\clients\LocationController;
 use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\QuanLyAdminController;
 use App\Http\Controllers\admins\CaiDatWebsiteController;
@@ -37,8 +41,6 @@ use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
-use App\Http\Controllers\clients\LocationController;
-use App\Http\Controllers\Methods\MomoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,12 +71,11 @@ Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
 Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
 
-Route::get('/momo/payment', [MomoController::class, 'createPayment'])->name('momo.payment');
-Route::get('/momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
-Route::post('/momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');
+Route::get('momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
+Route::post('momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');
 
-Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
-Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
+Route::get('vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
+
 Route::resource('locations', LocationController::class);
 
 Route::get('quen-mat-khau', [ForgotPasswordController::class, 'showFormForgotPassword'])->name('forgot-password');
@@ -84,7 +85,7 @@ Route::post('mat-khau-moi', [ForgotPasswordController::class, 'resetPassword'])-
 
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 
-Route::get('/baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
+Route::get('baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
 
 Route::get('chinh-sach-bao-hanh', function () {
     return view('clients.BaoHanh.BaoHanh');
@@ -185,4 +186,9 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
+});
+
+Route::post('/send-notification', function (Request $request) {
+    event(new NotificationEvent($request->message));
+    return response()->json(['status' => 'Success']);
 });
