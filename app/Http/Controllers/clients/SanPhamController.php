@@ -50,7 +50,7 @@ class SanPhamController extends Controller
             ->select("bien_the_san_pham.ID_MauSac", "mau_sac.TenMauSac", "bien_the_san_pham.KichCo", "bien_the_san_pham.SoLuong", "bien_the_san_pham.Gia", "bien_the_san_pham.HinhAnh")
             ->distinct()
             ->get();
-// làm thêm bộ sưu tập ảnh sản phẩm
+        // làm thêm bộ sưu tập ảnh sản phẩm
 
         $idMauSacList = $bienTheSanPham2->pluck("ID_MauSac")->unique();
 

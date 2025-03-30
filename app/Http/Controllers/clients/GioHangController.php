@@ -34,9 +34,7 @@ class GioHangController extends Controller
      */
     public function store(cartRequest $request)
     {
-
         if ($request->action === 'add_to_cart') {
-
             DB::beginTransaction();
 
             if (Auth::check()) {
@@ -60,7 +58,11 @@ class GioHangController extends Controller
 
                 DB::commit();
 
-                return back()->with('success', 'Đã Cập Nhật Giỏ Hàng!');
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đã cập nhật giỏ hàng!',
+                    'redirect' => route('gio-hang.index')
+                ]);
             } else {
                 DB::table("cart")->insert([
                     "ID_KhachHang" => $userId,
@@ -69,23 +71,33 @@ class GioHangController extends Controller
                     "MauSac" => $request->input("color"),
                     "SoLuong" => $request->input("quantity"),
                     "Xoa" => "0",
-                    "created_at" => date("Y/m/d H:i:s")
+                    "created_at" => now()
                 ]);
 
                 DB::commit();
 
-                return back()->with('success', 'Đã Thêm Sản Phẩm Vào Giỏ Hàng!');
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đã thêm sản phẩm vào giỏ hàng!',
+                    'redirect' => route('gio-hang.index')
+                ]);
             }
         } elseif ($request->action === 'payment') {
             DB::beginTransaction();
 
-            dd($request->all());
-
-            //return redirect()->route('gio-hang.index')->with('success', 'Chuyển đến thanh toán!');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Chuyển đến trang thanh toán!',
+                'redirect' => route('gio-hang.index')
+            ]);
         }
 
-        return back()->with('error', 'Hành động không hợp lệ!');
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Hành động không hợp lệ!'
+        ], 400);
     }
+
 
     /**
      * Display the specified resource.
