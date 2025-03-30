@@ -6,6 +6,8 @@ $("form[submit-ajax=true]").on("submit", function (e) {
     let url = form.attr("action");
     let button = form.find('button[type=submit]:focus');
     let actionValue = button.data("action");
+    let swal_success = form.attr("swal_success");
+    let time_load = form.attr("time_load");
     $("#actionField").val(actionValue);
     let oldTextButton = button.html();
 
@@ -25,16 +27,18 @@ $("form[submit-ajax=true]").on("submit", function (e) {
             AlertDATN(response.status, response.message);
             if (response.redirect) {
                 setTimeout(function () {
-                    window.location.href = response.redirect;
-                }, 1500);
+                    if(swal_success !== "none") {
+                        window.location.href = response.redirect;
+                    }
+                }, time_load);
             }
         },
         error: function (xhr) {
-            let errorMsg = "Có lỗi xảy ra!";
+            let errorMsg = "Có Lỗi Xảy Ra!!";
             if (xhr.responseJSON && xhr.responseJSON.message) {
                 errorMsg = xhr.responseJSON.message;
             }
-
+            
             AlertDATN("error", errorMsg);
         },
         complete: function () {

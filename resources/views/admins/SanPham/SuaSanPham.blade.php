@@ -7,9 +7,22 @@
 @section("main")
 <div class="page-body">
     <div class="container-fluid pt-3">
+        @if (session('success'))
+        <div class="alert alert-success fade show" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+        @endif
+
+        @if (session('error'))
+        <div class="alert alert-danger fade show" role="alert">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
+
         <form action="{{ route("SanPham.update", $sanPham->id) }}" class="form theme-form" method="POST" enctype="multipart/form-data">
             @csrf
             @method("PUT")
+            <input type="hidden" value="TheLoai" value="bienThe">
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">
@@ -26,6 +39,9 @@
                                             <option value="{{ $DanhMuc->id }}" {{ ($sanPham->ID_DanhMuc == $DanhMuc->id ? "selected" : "") }}>{{ $DanhMuc->TenDanhMucSanPham }}</option>
                                             @endforeach
                                         </select>
+                                        @error("DanhMuc")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -37,6 +53,9 @@
                                             <option value="{{ $ThuongHieu->id }}" {{ ($sanPham->ID_ThuongHieu == $ThuongHieu->id ? "selected" : "") }}>{{ $ThuongHieu->TenThuongHieu }}</option>
                                             @endforeach
                                         </select>
+                                        @error("ThuongHieu")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -44,6 +63,9 @@
                                     <div class="mb-3">
                                         <label>Chất Liệu</label>
                                         <input class="form-control" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ $sanPham->ChatLieu }}" required>
+                                        @error("ChatLieu")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -54,6 +76,9 @@
                                         <label>Tên Sản Phẩm</label>
                                         <input class="form-control" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" value="{{ $sanPham->TenSanPham }}" required>
                                     </div>
+                                    @error("TenSanPham")
+                                    <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <div class="col" id="formInputMoney">
@@ -67,6 +92,9 @@
                                     <div class="mb-3">
                                         <label>Giá Bán</label>
                                         <input class="form-control" type="number" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" value="{{ $sanPham->GiaSanPham }}" required>
+                                        @error("GiaSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -98,6 +126,9 @@
                                             <option value="hien" {{ $sanPham->TrangThai == "hien" ? "selected" : "" }}>Hiện</option>
                                             <option value="an" {{ $sanPham->TrangThai == "an" ? "selected" : "" }}>Ẩn</option>
                                         </select>
+                                        @error("TrangThai")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -107,18 +138,6 @@
                                     <div class="mb-3">
                                         <label>Mô Tả</label>
                                         <textarea name="MoTaSanPham" class="note-DATN">{{ $sanPham->Mota }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label>Thể Loại</label>
-                                        <select name="TheLoai" id="theLoaiSanPham" class="form-control" onchange="viewFormBienThe()" required>
-                                            <option value="thuong" {{ $sanPham->TheLoai == "thuong" ? "selected" : "" }}>Sản Phẩm Thường</option>
-                                            <option value="bienThe" {{ $sanPham->TheLoai == "bienThe" ? "selected" : "" }}>Sản Phẩm Biến Thể</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -154,30 +173,9 @@
                                     </label>
                                 </div>
                             </div>
-
-                            <label for="" class="mt-3">Bộ Sưu Tập</label>
-                            <input type="file" class="d-none" id="khoAnh" name="images[]" multiple>
-                            <div class="dropzone-wrapper">
-                                <div class="dz-message">
-                                    <label for="khoAnh">
-                                        <i class="icon-cloud-up"></i>
-                                        <h6 class="mt-3 mb-3">Kéo & Thả ảnh vào đây hoặc Nhấn để chọn nhiều ảnh sản phẩm</h6>
-                                    </label>
-                                    <div class="image-preview" id="imagesPreview">
-                                    </div>
-                                    <div class="image-preview">
-                                        @foreach ($danhSachHinhAnh as $hinhAnh)
-                                        @if ($hinhAnh)
-                                        <div class="image-container">
-                                            <img src="{{ Storage::url($hinhAnh->DuongDan) }}">
-                                            <a class="delete-btn" href="{{ route("HinhAnhSanPham.destroy", $hinhAnh->id) }}"><i class="fal fa-times"></i></a>
-                                        </div>
-                                        @endif
-                                        @endforeach
-                                    </div>
-
-                                </div>
-                            </div>
+                            @error("hinhAnh")
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -200,11 +198,11 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
+                                            <th>Hình Ảnh</th>
                                             <th>Kích Cỡ</th>
                                             <th>Màu Sắc</th>
                                             <th>Giá</th>
                                             <th>Số Lượng</th>
-                                            <th>Trạng Thái</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                     </thead>
@@ -212,6 +210,7 @@
                                         @foreach ($danhSachBienThe as $index => $bienTheSanPham)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
+                                            <td><img src="{{ Storage::url($bienTheSanPham->HinhAnh) }}" alt="" width="100px"></td>
                                             <td><b>Size {{ $bienTheSanPham->KichCo }}</b></td>
                                             <td>
                                                 @foreach ($thongTinMauSac as $mauSac)
@@ -222,13 +221,6 @@
                                             </td>
                                             <td>{{ number_format($bienTheSanPham->Gia, 0, ',', '.') }}đ</td>
                                             <td>{{ number_format($bienTheSanPham->SoLuong, 0, ',', '.') }}</td>
-                                            <td>
-                                                @if ($bienTheSanPham->Xoa == "1")
-                                                <b class="text-danger w-100">Ẩn</b>
-                                                @else
-                                                <b class="text-success w-100">Hiển Thị</b>
-                                                @endif
-                                            </td>
                                             <td>
                                                 <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalEdit_{{ $bienTheSanPham->id }}">Sửa Biển Thể</button>
                                             </td>
@@ -241,6 +233,7 @@
                                                         <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
+                                                        <img src="{{ Storage::url($bienTheSanPham->HinhAnh) }}" alt="" width="100px">
                                                         <p><strong>Kích Cỡ: </strong> {{ $bienTheSanPham->KichCo }}</p>
                                                         <p><strong>Màu Sắc: </strong> @foreach ($thongTinMauSac as $mauSac)
                                                             @if ($mauSac->id == $bienTheSanPham->ID_MauSac)
@@ -252,6 +245,11 @@
                                                         <form action="{{ route("BienTheSanPham.update", $bienTheSanPham->id) }}" method="post">
                                                             @csrf
                                                             @method("PUT")
+
+                                                            <div class="form-group">
+                                                                <label for="">Hình Ảnh</label>
+                                                                <input type="file" class="form-control" name="HinhAnh">
+                                                            </div>
 
                                                             <div class="form-group">
                                                                 <label for="">Giá Tiền</label>
@@ -296,7 +294,7 @@
 <div class="modal bd-example-modal-xl fade" id="modalAddBienThe" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <form action="{{ route("BienTheSanPham.store") }}" method="POST">
+            <form action="{{ route("BienTheSanPham.store") }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="ID_SanPham" value="{{ $sanPham->id }}">
                 <div class="modal-header">
@@ -304,48 +302,46 @@
                     <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @foreach($danhSachBienThe1 as $BienTheNutBam1)
-                    @if ($BienTheNutBam1->id == 1)
-                    @foreach ($KichCoChuaCo as $KichCo)
-                    <?php $randomId2 = rand(10000, 99999); ?>
-                    <div class="row" id="itemKichCo_{{ $KichCo->id.$randomId2 }}">
+                    <div class="row">
                         <div class="col">
-                            <small for="" class="label-control">{{ $BienTheNutBam1->TenBienThe }}</small>
-                            <div class="colorProducts">{{ $KichCo->TenKichCo }}</div>
-                            <button class="btn btn-danger btn-xs w-100" onclick="xoaBienTheKichCo('itemKichCo_{{ $KichCo->id.$randomId2 }}')"><i class="fal fa-trash"></i></button>
-                        </div>
-                        <input type="hidden" name="KichCo[]" value="{{ $KichCo->TenKichCo }}">
-
-                        @foreach ($thongTinMauSac as $MauSacCon)
-                        <?php $randomId = rand(1000, 9999); ?>
-                        <div id="itemBienThe_{{ $MauSacCon->id.$randomId }}" class="col">
-                            <input type="hidden" name="ThongTinBienThe[]" value="{{ $KichCo->TenKichCo }}|{{ $MauSacCon->id }}">
-                            <div class="col">
-                                <small for="" class="label-control">Màu Sắc</small>
-                                <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
-                            </div>
-
-                            <div class="col">
-                                <small for="" class="label-control">Giá Tiền</small>
-                                <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" placeholder="Nhập Giá Tiền" value="{{ $sanPham->GiaSanPham }}">
-                            </div>
-
-                            <div class="col">
-                                <small for="" class="label-control">Số Lượng</small>
-                                <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng" value="1">
-                            </div>
-
-                            <div class="col">
-                                <br>
-                                <button class="btn btn-danger btn-xs w-100" onclick="xoaGiaTriBienThe('itemBienThe_{{ $MauSacCon->id.$randomId }}')"><i class="fal fa-trash"></i></button>
+                            <div class="mb-3">
+                                <label>Kích Cỡ</label>
+                                <select class="form-control mb-3" id="chonKichCo" name="KichCo" onchange="chonBienThe()">
+                                    <option value="">-- Chọn Kích Cỡ --</option>
+                                    @foreach ($thongTinKichCo as $KichCo)
+                                    <option value="{{ $KichCo->TenKichCo }}">Size {{ $KichCo->TenKichCo }}</option>
+                                    @endforeach
+                                </select>
+                                @error("KichCo")
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
-                        @endforeach
+
+                        <div class="col" style="display: none" id="formBienTheSelect">
+                            <div class="mb-3">
+                                <label>Màu Sắc</label>
+                                <select id="chonMauSac" class="form-control mb-3" name="MauSac" onchange="chonMauSacc()">
+                                    <option value="">-- Chọn Màu Sắc --</option>
+                                    @foreach ($thongTinMauSac as $MauSac)
+                                    <option value="{{ $MauSac->id }}">{{ $MauSac->TenMauSac }}</option>
+                                    @endforeach
+                                </select>
+                                @error("MauSac")
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
-                    @endforeach
-                    @endif
-                    @endforeach
+                    <div class="row mb-3" style="display: none;" id="formGiaTienAmount">
+                        <div class="col">
+                            <div class="row">
+                                <div id="danhSachBienThe"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Đóng</button>
                     <button class="btn btn-primary" type="submit">Thêm Ngay</button>
@@ -359,6 +355,65 @@
 
 @section("js")
 <script>
+    function chonBienThe() {
+        document.getElementById("formBienTheSelect").style.display = "block";
+    }
+
+    function chonMauSacc() {
+        var form = document.getElementById("danhSachBienThe");
+        document.getElementById("formGiaTienAmount").style.display = "block";
+        var KichCo = document.getElementById("chonKichCo").value;
+        var MauSac = document.getElementById("chonMauSac").value;
+        var Gia = document.getElementById("Gia").value;
+
+        setTimeout(() => {
+            document.getElementById("chonMauSac").selectedIndex = 0;
+        }, 500);
+
+        <?php foreach ($KichCoChuaCo as $KichCo):
+            foreach ($thongTinMauSac as $MauSacCon): ?>
+                var checkForm = document.getElementById('itemNhapAllMauSac_{{ $MauSacCon->id }}_' + KichCo);
+                if (!checkForm) {
+                    if (MauSac == "{{ $MauSacCon->id }}") {
+                        form.insertAdjacentHTML('beforeend', `
+        <div class="col" id="itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}">
+            <div class="row">
+                <div class="col">
+                    <small for="" class="label-control">Kích Cỡ</small>
+                    <div class="colorProducts">Size ${KichCo}</div>
+                </div>
+                <div class="col">
+                    <small for="" class="label-control">Màu Sắc</small>
+                    <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
+                </div>
+                <input type="hidden" name="ThongTinBienThe[]" value="${KichCo}|${MauSac}">
+                <div class="col">
+                    <small for="" class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
+                    <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" placeholder="Nhập Giá Tiền" value="${Gia}">
+                </div>
+
+                <div class="col">
+                    <small for="" class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
+                    <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng" value="0">
+                </div>
+
+                <div class="col">
+                    <small for="" class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
+                    <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[]" required>
+                </div>
+
+                <div class="col pt-2">
+                    <span class="badge bg-danger mt-4 w-100" onclick="xoaBienTheKichCo('itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}')"><i class="fas fa-trash"></i></span>
+                </div>
+            </div>
+        </div>
+        `);
+                    }
+                }
+        <?php endforeach;
+        endforeach; ?>
+    }
+
     function viewFormBienThe() {
         var theLoaiSanPham = document.getElementById("theLoaiSanPham").value;
 

@@ -58,9 +58,7 @@ class AppServiceProvider extends ServiceProvider
                 ->limit(5)
                 ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")
                 ->get();
-
-            
-
+                
             $view->with('danhMucSanPham', $danhMucSanPham);
             $view->with('danhSachLienHe', $danhSachLienHe);
             $view->with('caiDatWebsite', $caiDatWebsite);
