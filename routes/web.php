@@ -43,6 +43,7 @@ use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
+use App\Http\Controllers\Methods\PayOSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,13 @@ Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
 Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
 Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
+
+
+Route::get('payos/cancel', [PayOSController::class, 'cancel'])->name('payos.cancel');
+
+
+
+
 
 Route::get('momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
 Route::post('momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');
