@@ -38,16 +38,17 @@ class AppServiceProvider extends ServiceProvider
             $caiDatWebsite = DB::table("cai_dat_website")->where("id", 1)->first();
             $lienKetWebsiteClient = DB::table("lien_ket_ket_website")->where("Xoa", 0)->get();
             $danhSachLienheClient = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
-            $danhSachSanPham = DB::table("san_pham")->where("Xoa", 0)->where("TrangThai", "hien")->get();
+            $danhSachSanPham = DB::table("san_pham")->where("Xoa", 0)->where("TrangThai", "hien")->limit(10)->get();
             $gioHangClient = DB::table("cart")->whereIn("ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])->get();
             $danhSachTinhThanh = DB::table("tinh_thanh")->get();
             $danhSachHuyen = DB::table("huyen")->select("ID_TinhThanh", "TenHuyen", "MaHuyen")->get();
             $layGiaTienSanPham = DB::table("cart")
                 ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
-                ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
+                ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
                 ->first();
             $soLuongGioHangClient = $layGiaTienSanPham->soLuongGioHangClient;
+            $soLuongSPGioHangClient = $layGiaTienSanPham->soLuongSP ?? 0;
             $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien ?? 0;
 
             $danhSachGioHangClient = DB::table("cart")
@@ -67,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with("danhSachSanPham", $danhSachSanPham);
             $view->with("gioHangClient", $gioHangClient);
             $view->with("soLuongGioHangClient", $soLuongGioHangClient);
+            $view->with("soLuongSPGioHangClient", $soLuongSPGioHangClient);
             $view->with("tongTienSanPhamGioHangClient", $tongTienSanPhamGioHangClient);
             $view->with("danhSachGioHangClient", $danhSachGioHangClient);
             $view->with("danhSachTinhThanh", $danhSachTinhThanh);

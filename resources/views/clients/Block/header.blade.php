@@ -4,7 +4,7 @@
             <ul class="list-inline">
                 @if (Auth::check())
                 <li>
-                    <a href="/thong-tin-tai-khoan"><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
+                    <a href="{{ route("ThongTinTaiKhoan") }}"><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
                 </li>
                 <li>
                     <form action="{{route('logout')}}" method="POST">
@@ -38,9 +38,8 @@
         </div>
         <div class="top-bar-right">
             <ul class="list-inline">
-                <li class="hidden-xs"><a href="/chinh-sach-bao-hanh">Bảo Hành</a></li>
-                <li class="hidden-xs"><a href="/danh-sach-bai-viet">Bài viết</a></li>
-                <li class="hidden-xs"><a href="/thong-tin-tai-khoan">Tài khoản</a></li>
+                <li class="hidden-xs"><a href="{{ route("danhSachBaiViet.index") }}">Bài viết</a></li>
+                <li class="hidden-xs"><a href="{{ route("ThongTinTaiKhoan") }}">Tài khoản</a></li>
                 <li class="hidden-xs"><a href="{{ route("contact") }}">Liên hệ</a></li>
                 <li class="hidden-xs"><a href="{{ route("faq") }}">FAQ</a></li>
                 <li>
@@ -69,7 +68,7 @@
                     <a href="/thong-tin-tai-khoan" class="btn btn-theme-transparent hidden-xs hidden-sm"><i
                             class="fa fa-user-circle"></i></a>
                     <a href="#" class="btn btn-theme-transparent" data-toggle="modal" data-target="#popup-cart"><i
-                            class="fa fa-shopping-cart"></i> <span class="hidden-xs"> {{ number_format($soLuongGioHangClient) }}
+                            class="fa fa-shopping-cart"></i> <span class="hidden-xs" id="cart-count"> {{ number_format($soLuongGioHangClient) }}
                             Sản phẩm - {{ number_format($tongTienSanPhamGioHangClient) }} đ </span> <i class="fa fa-angle-down"></i></a>
                     <a href="#" class="menu-toggle btn btn-theme-transparent"><i class="fa fa-bars"></i></a>
                 </div>
@@ -81,7 +80,7 @@
             <div class="container">
                 <div class="cart-items">
 
-                    <div class="cart-items-inner">
+                    <div class="cart-items-inner" id="list-product-header">
                         @foreach ($danhSachGioHangClient as $gioHangClient)
                         <div class="media">
                             <a class="pull-left" href="/san-pham/{{ $gioHangClient->DuongDan }}">
@@ -138,9 +137,8 @@
                             @endforeach
                         </ul>
                     </li>
-                    <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
-                    <li><a href="/chinh-sach-bao-hanh">Bảo Hành</a></li>
-                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="{{ route("danhSachBaiViet.index") }}">Bài viết</a></li>
+                    <li><a href="{{ route("contact") }}">Liên hệ</a></li>
                 </ul>
             </nav>
         </div>

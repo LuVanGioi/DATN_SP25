@@ -38,14 +38,14 @@
                         @foreach ($danhSachGioHangClient as $gioHangClient)
                         <tr>
                             <td class="inputSelectCart">
-                                <label for="inputCart_{{ $gioHangClient->cart_id }}" class="checkbox-label"></label>
+                                <label for="inputCart_{{ $gioHangClient->cart_id }}" onclick="totalMoney('{{ $gioHangClient->cart_id }}')" class="checkbox-label"></label>
                             </td>
                             <td class="image">
                                 <a class="media-link" href="/san-pham/{{ $gioHangClient->DuongDan }}"><i class="fa fa-circle-info"></i>
                                     <img src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt="" style="width: 100px; height: 100px" />
                                 </a>
                                 <h4><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ $gioHangClient->TenSanPham }}</a></h4>
-                                {{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}
+                                <span class="parameter-product-cart">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</span>
                             </td>
                             <td>
                                 <div class="form-quantity">
@@ -68,30 +68,30 @@
                     </tbody>
                 </table>
             </div>
-            @php
-            $giamGia = session('giamGia', 0);
-            $tongTienSauGiam = $tongTienSanPhamGioHangClient - $giamGia;
-            @endphp
+
             <div class="col-md-4">
                 <h3 class="block-title"><span>Thống Kê Giỏ Hàng</span></h3>
                 <div class="shopping-cart">
                     <table>
                         <tr>
-                            <td style="text-align: start">Số Lượng:</td>
-                            <td style="text-align: start; font-weight: bold">{{ number_format($soLuongGioHangClient) }}</td>
+                            <td style="text-align: start">Số Lượng Giỏ Hàng:</td>
+                            <td style="text-align: start; font-weight: bold" id="total_amount_cart">{{ number_format($soLuongSPGioHangClient) }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: start">Tạm Tính:</td>
-                            <td style="text-align: start; font-weight: bold">{{ number_format($tongTienSanPhamGioHangClient) }} đ</td>
+                            <td style="text-align: start">Tạm Tính Tổng:</td>
+                            <td style="text-align: start; font-weight: bold" id="total_money_cart">{{ number_format($tongTienSanPhamGioHangClient) }} đ</td>
                         </tr>
-                        <!-- <tr>
-                            <td style="text-align: start">Giảm Giá:</td>
-                            <td style="text-align: start; font-weight: bold">{{ number_format($giamGia) }}</td>
-                        </tr> -->
+                        <tr>
+                            <td style="text-align: start">Số Lượng:</td>
+                            <td style="text-align: start; font-weight: bold" id="amount_checkout">0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: start">Tổng Tiền Sản Phẩm Đang Chọn:</td>
+                            <td style="text-align: start; font-weight: bold" id="total_money">0</td>
+                        </tr>
                         <tfoot>
                             <tr>
-                                <td>Tổng Tiền:</td>
-                                <td>{{ number_format($tongTienSauGiam) }} đ</td>
+                                <td colspan="2" style="text-align: center; font-weight: bold; padding: 10px 0px">Tổng Thanh Toán: <span id="total_moneys">0 đ</span></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -100,22 +100,6 @@
                         @foreach ($danhSachGioHangClient as $gioHangClient1)
                         <input type="checkbox" name="selected_products[]" id="inputCart_{{ $gioHangClient1->cart_id }}" class="checkbox-cart-input" value="{{ $gioHangClient1->cart_id }}">
                         @endforeach
-
-                        <!-- <div class="form-group">
-                            <input class="form-control" type="text" name="discount" placeholder="Nhập mã giảm giá của bạn" value="{{ old("discount") }}" />
-                            @error("discount")
-                            <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                            @if (session('error'))
-                            <p class="text-danger">{{ session('error') }}</p>
-                            @endif
-                            @if (session('success'))
-                            <p class="text-success">{{ session('success') }}</p>
-                            @endif
-                        </div>
-                        <button type="submit" name="action" value="acept_voucher" class="btn btn-primary btn-block" @if ($soLuongGioHangClient <=0)
-                            disabled
-                            @endif>Áp Dụng Mã</button> -->
                         <button type="submit" name="action" value="payment" class="btn btn-success btn-block" id="btnContinue" disabled @if ($soLuongGioHangClient <=0)
                             disabled
                             @endif>Tiếp Tục <i class="fas fa-arrow-right"></i></button>
@@ -166,71 +150,74 @@
         </div>
     </div>
 </section>
-
-<section class="page-section">
-    <div class="container">
-        <h2 class="section-title" style="font-size: 25px;padding: 20px 0px;"><span>Sản Phẩm Khác</span></h2>
-        <div class="featured-products-carousel">
-            <div class="owl-carousel" id="featured-products-carousel">
-                @foreach ($danhSachSanPham as $i => $sanPhamKhac)
-                @if ($i++ <= 10)
-                    <div class="thumbnail no-border no-padding">
-                    <div class="media">
-                        <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">
-                            <img src="{{ Storage::url($sanPhamKhac->HinhAnh) }}" alt="">
-                        </a>
-                        @if ($sanPhamKhac->Nhan)
-                        <span class="ribbons {{ $sanPhamKhac->Nhan }}">{{ nhan($sanPhamKhac->Nhan) }}</span>
-                        @endif
-                    </div>
-                    <div class="caption text-center">
-                        <h4 class="caption-title">
-                            <a href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">{{ $sanPhamKhac->TenSanPham }}</a>
-                        </h4>
-                        <div class="categoris-product">
-                            <a href="">Quần áo nam</a>
-                            <a href="">Adidas</a>
-                            <a href="">{{ $sanPhamKhac->ChatLieu }}</a>
-                        </div>
-                        <div class="price">
-                            <ins>{{ number_format($sanPhamKhac->GiaSanPham) }}đ</ins>
-                            @if ($sanPhamKhac->GiaKhuyenMai)
-                            <del>{{ number_format($sanPhamKhac->GiaKhuyenMai) }}đ</del>
-                            @endif
-                        </div>
-                        <div class="buttons">
-                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}" target="_blank">
-                                <i class="fa fa-share"></i>
-                            </a>
-
-                            <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                <form action="{{ route("gio-hang.store") }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_product" value="{{ $sanPhamKhac->id }}">
-                                    <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                </form>
-                            </a>
-                            <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">
-                                <i class="fa fa-circle-info"></i>
-                            </a>
-                        </div>
-                    </div>
-            </div>
-            @endif
-            @endforeach
-        </div>
-    </div>
-    <hr class="page-divider half">
-    <a class="btn btn-theme btn-view-more-block" href="/" style="max-width: 100%;">Xem Thêm</a>
-    </div>
-</section>
 @endsection
 
 @section("js")
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    $(document).ready(function() {
+        setInterval(function() {
+            $(".parameter-product-cart").each(function(index) {
+                var container = $(this);
+                $.get(location.href, function(data) {
+                    var newContent = $(data).find(".parameter-product-cart").eq(index).html();
+                    if (newContent) {
+                        container.html(newContent);
+                    }
+                });
+            });
+        }, 2000);
+    });
+
+    window.addEventListener("load", function() {
+        localStorage.removeItem('list_id_cart');
+    });
+
+    function totalMoney(id) {
+        let selectedCartIds = getSelectedCartIds();
+
+        if (selectedCartIds.includes(id)) {
+            selectedCartIds = selectedCartIds.filter(cartId => cartId !== id);
+        } else {
+            selectedCartIds.push(id);
+        }
+
+        localStorage.setItem('list_id_cart', JSON.stringify(selectedCartIds));
+
+        fetch("<?= route('api.client'); ?>", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    type: "total_cart",
+                    cart_id_list: selectedCartIds
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("amount_checkout").innerHTML = data.amount;
+                    document.getElementById("total_money").innerHTML = data.total_price;
+                    document.getElementById("total_moneys").innerHTML = data.total_price;
+                    //AlertDATN("success", data.message);
+                } else {
+                    AlertDATN("error", data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi API:", error);
+                AlertDATN("error", "Đã xảy ra lỗi, vui lòng thử lại.");
+            });
+    }
+
+    function getSelectedCartIds() {
+        return JSON.parse(localStorage.getItem('list_id_cart')) || [];
+    }
+
+
     $(document).ready(function() {
         $(".btn-plus, .btn-minus").click(function() {
             let id = $(this).data("id");
@@ -269,8 +256,8 @@
                 },
                 success: function(data) {
                     document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
-                    
-                    console.log(data);
+                    document.getElementById("total_amount_cart").innerHTML = data.total_cart.soLuongSP.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    document.getElementById("total_money_cart").innerHTML = data.total_cart.tongTien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
                 },
                 error: function(error) {
                     let errorMessage = "Có lỗi xảy ra!";

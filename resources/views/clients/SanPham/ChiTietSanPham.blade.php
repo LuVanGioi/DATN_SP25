@@ -87,9 +87,7 @@
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
-                            <select id="exampleSelect1" name="size" class="selectpicker input-price"
-                                data-live-search="true" data-width="100%" data-toggle="tooltip"
-                                title="Select">
+                            <select name="size" id="size-select" class="form-select" onchange="chonKickCo()">
                                 <option value="">Chọn Kích Cỡ</option>
                                 @foreach ($bienTheSanPham as $kichCo)
                                 <option value="{{ $kichCo->KichCo }}">{{ $kichCo->KichCo }}</option>
@@ -104,13 +102,8 @@
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect2">Màu Sắc</label>
-                            <select id="exampleSelect2" name="color" class="selectpicker input-price"
-                                data-live-search="true" data-width="100%" data-toggle="tooltip"
-                                title="Màu Sắc" onchange="changeCarouselImage(this)">
+                            <select name="color" id="color-select" class="form-select" onchange="changeCarouselImage(this)">
                                 <option value="" data-index="0">Chọn Màu Sắc</option>
-                                @foreach ($bienTheSanPham2 as $index => $mauSac)
-                                <option value="{{ $mauSac->ID_MauSac }}" data-index="{{ $index + 1 }}">{{ $mauSac->TenMauSac }} ({{ $mauSac->SoLuong }})</option>
-                                @endforeach
                             </select>
                         </div>
                         @error("color")
@@ -295,6 +288,13 @@
 
 @section("js")
 <script>
+    $(document).ready(function() {
+        setInterval(function() {
+            $("#cart-count").load(location.href + " #cart-count");
+            $("#list-product-header").load(location.href + " #list-product-header")
+        }, 2000);
+    });
+
     function minusAmount() {
         var quantityInput = document.getElementById("quantity");
         var quantity = parseInt(quantityInput.value);
@@ -342,6 +342,28 @@
         if (index) {
             jQuery('.img-carousel').trigger('to.owl.carousel', [parseInt(index), 300]);
         }
+    }
+
+    var danhSachMauSac = <?= json_encode($bienTheSanPham2); ?>;
+
+    function chonKickCo() {
+        var size = document.getElementById("size-select").value;
+        var colorSelect = document.getElementById("color-select");
+
+        colorSelect.innerHTML = "";
+
+        danhSachMauSac.forEach(function(mauSac, index) {
+            if (mauSac.KichCo === size) {
+                var option = document.createElement("option");
+                option.value = mauSac.ID_MauSac;
+                option.textContent = mauSac.TenMauSac + " (" + mauSac.SoLuong + ")";
+                option.setAttribute("data-index", index + 1);
+                if (mauSac.SoLuong <= 0) {
+                    option.disabled = true;
+                }
+                colorSelect.appendChild(option);
+            }
+        });
     }
 </script>
 @endsection
