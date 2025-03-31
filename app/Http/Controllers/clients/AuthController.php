@@ -111,23 +111,9 @@ class AuthController extends Controller
             'email.unique' => 'Email này đã được sử dụng.',
         ]);
 
-        // if ($request->filled('phone')) {
-        //     $user->phone = $request->phone;
-        // }
-        // if ($request->filled('address')) {
-        //     $user->address = $request->address;
-        // }
-        // if ($request->filled('birthday')) {
-        //     $user->birthday = $request->birthday;
-        // }
-        // if ($request->filled('sex')) {
-        //     $user->sex = $request->sex;
-        // }
-
-        // $user->name = $validatedData['name'];
-        // $user->email = $validatedData['email'];
-
-        $user->update($validatedData);
+        // Cập nhật thông tin người dùng
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email']; 
         return back()->with('success', 'Cập nhật thông tin thành công !');
     }
 }

@@ -2,12 +2,12 @@
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Broadcast;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\SamplingHandler;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Broadcast;
 use App\Http\Middleware\CheckRoleMiddleware;
 use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\clients\payController;
@@ -20,6 +20,7 @@ use App\Http\Controllers\admins\DanhMucController;
 use App\Http\Controllers\admins\DonHangController;
 use App\Http\Controllers\admins\PhanHoiController;
 use App\Http\Controllers\admins\SanPhamController;
+use App\Http\Controllers\admins\BoSuuTapController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\ThungRacController;
 use App\Http\Controllers\clients\BangTinController;
@@ -29,22 +30,21 @@ use App\Http\Controllers\admins\MaGiamGiaController;
 use App\Http\Controllers\clients\LocationController;
 use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\QuanLyAdminController;
+use App\Http\Controllers\clients\DoiMatKhauController;
 use App\Http\Controllers\admins\CaiDatWebsiteController;
 use App\Http\Controllers\admins\BienTheSanPhamController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
-use App\Http\Controllers\admins\BoSuuTapController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\ForgotPasswordController;
+use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
-use App\Http\Controllers\clients\DoiMatKhauController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
-use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -172,7 +172,10 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/BienThe', BienTheController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/Banner', BannerController::class);
+
     Route::resource('admin/DonHang', DonHangController::class);
+
+
     Route::get('admin/profile', [QuanLyAdminController::class, 'show'])->name('admin.profile');
     Route::prefix('admin/maGiamGia')->group(function () {
         Route::resource('maGiamGia', MaGiamGiaController::class)->names([
@@ -191,4 +194,5 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
+
 });

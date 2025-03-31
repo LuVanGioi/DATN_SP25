@@ -20,27 +20,17 @@
                                         <th>#</th>
                                         <th>Mã Đơn Hàng</th>
                                         <th>Sản Phẩm</th>
-                                        <th>Kích Cỡ</th>
-                                        <th>Màu Sắc</th>
-                                        <th>Giá</th>
-                                        <th>Số Lượng</th>
-                                        <th>Tổng Tiền</th>
                                         <th>Trạng thái</th>
                                         <th>Phương Thức Thanh Toán</th>
-                                        <th>Ghi Chú</th>
                                         <th>Thao Tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>#123456</td>
-                                        <td>Áo cộc Nike</td>
-                                        <td>M</td>
-                                        <td>Đỏ</td>
-                                        <td>120.000đ</td>
-                                        <td>1</td>
-                                        <td>120.000đ</td>
+                                  @foreach ($donHang as $item)
+                                      <tr>
+                                        <td>{{$item->id}}</td>
+                                        <td>{{$item->MaDonHang}}</td>
+                                        <td>{{$item->TenSanPham}}</td>
                                         <td>
                                             <select name="" class="form-control">
                                                 <option value="">Chờ Xác Nhận</option>
@@ -52,13 +42,13 @@
                                                 <option value="">Hoàn Hàng</option>
                                             </select>
                                         </td>
-                                        <td>Thanh Toán Khi Nhận Hàng</td>
-                                        <td>Ghi Chú</td>
+                                        <td>{{$item->PhuongThucThanhToan}}</td>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', 1234) }}">Xem Chi
-                                                Tiết</a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', 1234) }}">Xem Chi Tiết</a>
                                         </td>
                                     </tr>
+                                  @endforeach
+                                    
                                 </tbody>
                             </table>
                         </div>

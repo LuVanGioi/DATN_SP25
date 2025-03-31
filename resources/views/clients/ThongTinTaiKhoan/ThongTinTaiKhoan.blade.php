@@ -15,31 +15,57 @@
                         <div class="block-title alt"> <i class="fa fa-angle-down"></i> Thay Đổi Thông Tin Cá Nhân Của Bạn
                         </div>
                         <div class="details-box">
-                            <form class="form-delivery" action="#">
+                            <form class="form-delivery" action="{{route('thong-tin-tai-khoan.update',Auth::user()->id)}}" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                @if(session('success'))
+                                    <script>
+                                        alert("{{ session('success') }}");
+                                    </script>
+                                @endif
+                                
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+
                                 <div class="row">
+                                   
                                     <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Tên"
-                                                class="form-control"></div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Họ"
-                                                class="form-control"></div>
+                                        <span style="color:#111111; font-weight: bold;">Họ Và Tên :</span>
+                                        <div class="form-group"><input required type="text" name="name"  class="form-control" value="{{Auth::user()->name}}"></div>
                                     </div>
 
                                     <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Email"
-                                                class="form-control"></div>
+                                        <span style="color:#111111; font-weight: bold;">Email :</span>
+                                        <div class="form-group"><input required type="email" name="email"  class="form-control" value="{{Auth::user()->email}}"></div>
                                     </div>
 
                                     <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input required type="text" placeholder="Số Điện Thoại"
-                                                class="form-control"></div>
+                                        <span style="color:#111111; font-weight: bold;">Giới Tính :</span>
+                                        <select name="sex" class="form-control">
+                                            <option value="Nam" {{ Auth::user()->sex == 'Nam' ? 'selected' : '' }}>Nam</option>
+                                            <option value="Nữ" {{ Auth::user()->sex == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                                        </select>
                                     </div>
 
                                     <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"><input type="text" placeholder="Fax" class="form-control">
-                                        </div>
+                                        <span style="color:#111111; font-weight: bold;">Số Điện Thoại :</span>
+                                        <div class="form-group"><input required type="number" name="phone" class="form-control" value="{{Auth::user()->phone}}"></div>
                                     </div>
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <span style="color:#111111; font-weight: bold;">Ngày Sinh :</span>
+                                        <div class="form-group"><input required type="date" name="birthday" class="form-control" value="{{Auth::user()->birthday}}"></div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-6">
+                                        <span style="color:#111111; font-weight: bold;">Ngày Tham Gia :</span>
+                                        <div class="form-group"><input required   class="form-control" value="{{Auth::user()->created_at}}"></div>
+                                    </div>
+
                                     <div class="col-md-12 col-sm-12">
                                         <button class="btn btn-theme btn-theme-dark" type="submit"> Cập Nhật </button>
                                     </div>
