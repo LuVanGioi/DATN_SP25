@@ -19,8 +19,14 @@
 
 <section class="page-section color">
     <div class="container">
+        @if(session("error"))
+        <div class="alert alert-danger mb-2">{{ session("error") }}</div>
+        @endif
 
-        <div class="row orders">
+        @if(session("success"))
+        <div class="alert alert-success mb-2">{{ session("success") }}</div>
+        @endif
+        <div class="row orders mt-3">
             <div class="col-md-8">
                 <h3 class="block-title"><span>Danh Sách Giỏ Hàng</span></h3>
                 <table class="table">
