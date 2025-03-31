@@ -38,7 +38,7 @@
         </div>
         <div class="top-bar-right">
             <ul class="list-inline">
-                <li class="hidden-xs"><a href="{{ route('client.url', "gioi-thieu-cua-hang") }}">Giới thiệu</a></li>
+                <li class="hidden-xs"><a href="/chinh-sach-bao-hanh">Bảo Hành</a></li>
                 <li class="hidden-xs"><a href="/danh-sach-bai-viet">Bài viết</a></li>
                 <li class="hidden-xs"><a href="/thong-tin-tai-khoan">Tài khoản</a></li>
                 <li class="hidden-xs"><a href="{{ route("contact") }}">Liên hệ</a></li>
@@ -56,7 +56,7 @@
         <div class="container">
 
             <div class="logo">
-                <a href="/"><img src="/clients/images/LOGO/logo.png" alt="WD - 14"></a>
+                <a href="/"><img src="{{ Storage::url($caiDatWebsite->Logo_website) }}" alt="{{ $caiDatWebsite->TenCuaHang }}"></a>
             </div>
 
             <div class="header-search">
@@ -139,7 +139,7 @@
                         </ul>
                     </li>
                     <li><a href="/danh-sach-bai-viet">Bài viết</a></li>
-                    <li><a href="/gioi-thieu-cua-hang">Giới thiệu</a></li>
+                    <li><a href="/chinh-sach-bao-hanh">Bảo Hành</a></li>
                     <li><a href="/lien-he">Liên hệ</a></li>
                 </ul>
             </nav>

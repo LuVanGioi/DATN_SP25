@@ -6,9 +6,9 @@
 
 @section('main')
 @php
-if($soLuongGioHangClient <= 0) {
+if ($soLuongGioHangClient <= 0):
     abort(404, 'Dữ liệu không hợp lệ.' );
-    }
+    endif;
     @endphp
     <section class="page-section breadcrumbs">
     <div class="container">
@@ -18,7 +18,7 @@ if($soLuongGioHangClient <= 0) {
         <ul class="breadcrumb">
             <li><a href="/">Trang Chủ</a></li>
             <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
-            <li class="active">Giỏ Hàng</li>
+            <li class="active">Thanh Toán</li>
         </ul>
     </div>
     </section>
@@ -30,27 +30,30 @@ if($soLuongGioHangClient <= 0) {
                     <h3 class="block-title"><span>Sản Phẩm</span></h3>
 
                     <ul class="list-product-payment">
-                        @foreach ($danhSachGioHangClient as $gioHangClient)
-                        <li class="item-product-payment" onclick="href('/san-pham/{{ $gioHangClient->DuongDan }}')">
+                        @foreach ($sanPhamDaChon as $sanPhamm)
+                        <li class="item-product-payment" onclick="href('/san-pham/{{ $sanPhamm->DuongDan }}')">
                             <div class="logo">
-                                <img src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt="">
+                                <img src="{{ Storage::url($sanPhamm->HinhAnh) }}" alt="">
                             </div>
                             <div class="info">
-                                <div class="name">{{ $gioHangClient->TenSanPham }}</div>
-                                <div class="parameter"><small>{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</small></div>
+                                <div class="name">{{ $sanPhamm->TenSanPham }}</div>
+                                <div class="parameter"><small>{{ $sanPhamm->TenKichCo }} -
+                                        {{ $sanPhamm->TenMauSac }}</small></div>
 
                                 <div class="money">
                                     <div class="prices">
-                                    {{ number_format($gioHangClient->GiaSanPham) }} đ <del><small>{{ ($gioHangClient->GiaKhuyenMai ? number_format($gioHangClient->GiaKhuyenMai) : '') }} đ</small></del>
+                                        {{ number_format($sanPhamm->GiaSanPham) }} đ
+                                        <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai) : '') }}
+                                                đ</small></del>
                                     </div>
                                     <div class="amount">
-                                        x{{ number_format($gioHangClient->SoLuong) }}
+                                        x{{ number_format($sanPhamm->SoLuong) }}
                                     </div>
                                 </div>
 
                                 <div class="total-money">
                                     <span>Tổng Số Tiền</span>
-                                    <span>{{ number_format($gioHangClient->ThanhTien) }} đ</span>
+                                    <span>{{ number_format($sanPhamm->ThanhTien) }} đ</span>
                                 </div>
                             </div>
                         </li>
@@ -60,7 +63,7 @@ if($soLuongGioHangClient <= 0) {
 
                 @php
                 $giamGia = session('giamGia', 0);
-                $tongTienSauGiam = $tongTienSanPhamGioHangClient - $giamGia;
+                $tongTienSauGiam = $tongTienSanPhamDaChon - $giamGia;
                 @endphp
                 <div class="col-md-5">
                     @if (!Auth::check())
@@ -72,7 +75,8 @@ if($soLuongGioHangClient <= 0) {
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <input class="form-control" type="text" name="email"
-                                        placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}" autocomplete="email">
+                                        placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}"
+                                        autocomplete="email">
 
                                     @error('email')
                                     <p class="text-danger">{{ $message}}</p>
@@ -87,111 +91,186 @@ if($soLuongGioHangClient <= 0) {
                                 <button class="btn btn-theme btn-block btn-theme-dark">Đăng Nhập</button>
                             </div>
                             <div class="col-md-6">
-                                <a class="btn btn-block btn-theme btn-theme-dark btn-create" href="{{route('register')}}">Tạo Tài
+                                <a class="btn btn-block btn-theme btn-theme-dark btn-create"
+                                    href="{{route('register')}}">Tạo Tài
                                     Khoản</a>
                             </div>
                         </div>
                     </form>
                     @else
                     <h3 class="block-title"><span>Địa Chỉ Giao Hàng</span></h3>
-                    <div role="tab" id="headingTwo">
-                        <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#addAddress" aria-expanded="false" aria-controls="collapseTwo">
-                                <span>Thêm Địa Chỉ Giao Hàng</span> <i class="fas fa-plus-circle text-success ms-1"></i>
+                    <div role="tab" id="headingTwo" class="d-flex">
+                        <h4 class="panel-title m-1">
+                            <a class="collapsed btn btn-theme" data-toggle="collapse" data-parent="#accordion"
+                                href="#addAddress" aria-expanded="false" aria-controls="collapseTwo">
+                                <span class="text-white">Thêm Địa Chỉ Giao Hàng</span> <i
+                                    class="fas fa-plus-circle text-success ms-1"></i>
+                            </a>
+                        </h4>
+
+                        <h4 class="panel-title m-1">
+                            <a class="collapsed btn btn-theme" data-toggle="collapse" data-parent="#accordion"
+                                href="#listAddress" aria-expanded="false" aria-controls="collapseTwo">
+                                <span class="text-white">Danh Sách Địa Chỉ</span> <i class="fas fa-location-dot ms-1"
+                                    style="color: #ff5733;"></i>
                             </a>
                         </h4>
                     </div>
                     <div id="addAddress" class="collapse" role="tabpanel" aria-labelledby="heading2" aria-expanded="false">
-                        <form action="" class="mt-2">
+                        <form action="{{ route('locations.store') }}" method="POST" class="mt-2">
+                            @csrf
                             <h3 class="block-title"><span>Thêm Địa Chỉ Giao Hàng</span></h3>
                             <div class="row mt-3">
                                 <div class="col-md-6">
-                                    <div class="form-group"><input class="form-control" type="text" placeholder="Họ Và Tên"></div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="HoTen" placeholder="Họ Và Tên"
+                                            value="{{ old('HoTen') }}">
+                                        @error('HoTen')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group"><input class="form-control" type="text" placeholder="Số Điện Thoại"></div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="SoDienThoai"
+                                            placeholder="Số Điện Thoại" value="{{ old('SoDienThoai') }}">
+                                        @error('SoDienThoai')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group"><input class="form-control" type="text" placeholder="Tên Đường, Tòa Nhà, Số Nhà,..."></div>
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="DiaChi"
+                                            placeholder="Tên Đường, Tòa Nhà, Số Nhà,..." value="{{ old('DiaChi') }}">
+                                        @error('DiaChi')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group selectpicker-wrapper">
-                                        <select class="selectpicker input-price" name="tinhThanh" id="tinhThanh" onchange="chonTinhThanh()" data-live-search="true" data-width="100%" data-toggle="tooltip" title="Chọn Tỉnh Thành">
+                                        <select class="selectpicker input-price" name="Tinh" id="tinhThanh"
+                                            onchange="chonTinhThanh()" data-live-search="true" data-width="100%"
+                                            data-toggle="tooltip" title="Chọn Tỉnh Thành">
                                             <option value="">Tỉnh Thành</option>
                                             @foreach ($danhSachTinhThanh as $tinhThanh)
                                             <option value="{{ $tinhThanh->IdTinh }}">{{ $tinhThanh->TenThanhPho }}</option>
                                             @endforeach
                                         </select>
+                                        @error('Tinh')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
-
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <select class="form-control" name="huyen" id="huyen" onchange="chonHuyen()">
+                                        <select class="form-control" name="Huyen" id="huyen" onchange="chonHuyen()">
                                             <option value="">Quận / Huyện</option>
                                         </select>
+                                        @error('Huyen')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
-
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <select class="form-control" name="xaPhuong" id="xaPhuong">
-                                            <option>Xã / Phường</option>
+                                        <select class="form-control" name="Xa" id="xaPhuong">
+                                            <option value="">Xã / Phường</option>
                                         </select>
+                                        @error('Xa')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
-
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <select class="form-control" name="huyen" id="huyen" onchange="chonHuyen()">
+                                        <select class="form-control" name="MacDinh" id="macDinh">
+                                            <option value="0">Không Đặt Làm Địa Chỉ Mặc Định</option>
                                             <option value="1">Đặt Làm Địa Chỉ Mặc Định</option>
-                                            <option value="0">Không</option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-md-12 text-end mb-3">
                                     <button type="submit" class="btn btn-theme btn-theme-dark">Thêm Ngay</button>
                                 </div>
                             </div>
-                            <hr>
                         </form>
                     </div>
 
-                    <ul class="list-address">
-                        <li class="item-address">
-                            <i class="fas fa-location-dot"></i>
-                            <div>
-                                <div class="name">
-                                    <span>Lư Văn Giỏi</span> <small>0333293290</small>
-                                </div>
-                                <div class="address">
-                                    <span>Nhà Số 19, Thôn Linh Tràng</span>
-                                    <span>Xã Trường Lương, Thị Xã Đông Triều, Tỉnh Quảng Ninh</span>
+                    <div id="listAddress" class="collapse in" role="tabpanel" aria-labelledby="heading2"
+                        aria-expanded="false">
+                        <h3 class="block-title mt-2"><span>Danh Sách Địa Chỉ</span></h3>
+
+                        <div class="list-address">
+                            @foreach ($danhSachDiaChimacDinh as $index => $diaChi)
+                            @php
+                            $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChi->Tinh)->first();
+                            $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChi->Huyen)->first();
+                            @endphp
+                            <div class="item-location {{ ($diaChi->MacDinh == 1 ? "active" : "") }}"
+                                onclick="document.getElementById('inputLocation_{{ $diaChi->id }}').click()"
+                                data-id="{{ $diaChi->id }}">
+                                <i class="fas fa-location-dot"></i>
+                                <i class="fas fa-check color-theme"></i>
+                                <label for="inputLocation_{{ $diaChi->id }}">
+                                    <div class="name" style="font-weight: bold; color: #333; font-size: 16px;">
+                                        <span>{{ $diaChi->HoTen }}</span>
+                                        <small
+                                            style="color: #666; font-size: 14px; margin-left: 5px;">{{ $diaChi->SoDienThoai }}</small>
+                                    </div>
+                                    <div class="location" style="color: #555; font-size: 14px;">
+                                        <span>{{ $diaChi->DiaChi }}</span><br>
+                                        <span>{{ $diaChi->Xa }}, {{ $thongTinHuyen->TenHuyen }},
+                                            {{ $thongTinHuyenTinh->TenThanhPho }}</span>
+                                    </div>
+                                </label>
+                                <div class="icon-right" style="display: flex;">
+                                    <form action="{{ route('locations.destroy', $diaChi->id) }}" method="POST"
+                                        onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Địa Chỉ Này?')" class="d-inline">
+                                        @csrf
+                                        @method("DELETE")
+                                        <button type="submit" class="btn btn-none"><i class="fas fa-times"
+                                                style="color: #999; font-size: 16px;"></i></button>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="icon-right">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
-                        </li>
-                    </ul>
+                            @endforeach
+                        </div>
+                    </div>
                     @endif
-                    <br>
-                    <form action="" method="POST">
+                    <form action="{{ route("payment.store", $orderCode) }}" method="POST">
+                        @csrf
+                        @foreach ($danhSachDiaChimacDinh as $index => $diaChiInput)
+                        @php
+                        $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChiInput->Tinh)->first();
+                        $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChiInput->Huyen)->first();
+                        @endphp
+                        <input type="radio" class="d-none" name="location" id="inputLocation_{{ $diaChiInput->id }}"
+                            value="{{ $diaChiInput->id }}" {{ ($diaChiInput->MacDinh == 1 ? "checked" : "") }}
+                            onchange="checkLocation(this)">
+                        @endforeach
+                        <br>
                         <h3 class="block-title"><span>Mã Giảm Giá</span></h3>
                         <div class="form-group">
-                            <input class="form-control" placeholder="Nhập Mã Giảm Giá" name="name" id="id">
+                            <input class="form-control" placeholder="Nhập Mã Giảm Giá" name="voucher"
+                                value="{{ old("voucher") }}">
+                            @if(session('voucher_error'))
+                            <small class="text-danger">{{ session('voucher_error') }}</small>
+                            @endif
                         </div>
 
                         <div class="form-group">
-                            <textarea class="form-control" placeholder="Lời Nhắn Cho Shop" name="name" id="id" rows="4"></textarea>
+                            <textarea class="form-control" placeholder="Lời Nhắn Cho Shop" name="message"
+                                rows="4">{{ old("message") }}</textarea>
                         </div>
                         <br>
                         <h3 class="block-title"><span>Phương Thức Thanh Toán</span></h3>
                         <ul class="list-method-payment">
                             <li class="item-method active" onclick="chonPhuongThucThanhToan('shipCod')" id="shipCod-button">
                                 <label for="shipCod">
-                                    <img src="https://otothangloi.com/wp-content/uploads/2019/04/icon-thanh-toan.png" alt="">
+                                    <img src="https://otothangloi.com/wp-content/uploads/2019/04/icon-thanh-toan.png"
+                                        alt="">
                                     <input type="radio" id="shipCod" name="method" value="COD" checked>
                                 </label>
                                 <span>Thanh Toán Khi Nhận Hàng</span>
@@ -207,7 +286,8 @@ if($soLuongGioHangClient <= 0) {
 
                             <li class="item-method" onclick="chonPhuongThucThanhToan('momo')" id="momo-button">
                                 <label for="momo">
-                                    <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Circle.png" alt="">
+                                    <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Circle.png"
+                                        alt="">
                                     <input type="radio" id="momo" name="method" value="Momo">
                                 </label>
                                 <span>Thanh Toán Ví Momo</span>
@@ -215,7 +295,8 @@ if($soLuongGioHangClient <= 0) {
 
                             <li class="item-method" onclick="chonPhuongThucThanhToan('vnpay')" id="vnpay-button">
                                 <label for="vnpay">
-                                    <img src="https://vnpay.vn/s1/statics.vnpay.vn/2023/9/06ncktiwd6dc1694418196384.png" alt="">
+                                    <img src="https://vnpay.vn/s1/statics.vnpay.vn/2023/9/06ncktiwd6dc1694418196384.png"
+                                        alt="">
                                     <input type="radio" id="vnpay" name="method" value="VNPay">
                                 </label>
                                 <span>Thanh Toán Ví VNPay</span>
@@ -227,7 +308,9 @@ if($soLuongGioHangClient <= 0) {
                             <table>
                                 <tr>
                                     <td style="text-align: start">Tổng Tiền Hàng:</td>
-                                    <td style="text-align: end; font-weight: bold">{{ number_format($tongTienSanPhamGioHangClient) }} VND</td>
+                                    <td style="text-align: end; font-weight: bold">
+                                        {{ number_format($tongTienSanPhamDaChon) }} VND
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="text-align: start">Tổng Tiền Phí Vận Chuyển:</td>
@@ -239,14 +322,15 @@ if($soLuongGioHangClient <= 0) {
                                 </tr>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="2" style="padding: 5px 0px; margin: 0px">Tổng Thanh Toán: {{ number_format($tongTienSauGiam) }} VND</td>
+                                        <td colspan="2" style="padding: 5px 0px; margin: 0px">Tổng Thanh Toán:
+                                            {{ number_format($tongTienSauGiam) }} VND
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
                         <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-theme btn-theme-dark" @if (!Auth::check())
-                                disabled
+                            <button type="submit" class="btn btn-theme btn-theme-dark" @if (!Auth::check()) disabled
                                 @endif>Đặt Hàng</button>
                         </div>
                     </form>
@@ -258,6 +342,11 @@ if($soLuongGioHangClient <= 0) {
 
     @section("js")
     <script>
+        function disableEditMode(id) {
+            document.getElementById(`edit-${id}`).classList.remove('active');
+            document.getElementById(`view-${id}`).style.display = 'flex';
+        }
+
         function chonPhuongThucThanhToan(id) {
             var button = document.getElementById(id + "-button");
             let items = document.querySelectorAll(".item-method");
@@ -284,7 +373,7 @@ if($soLuongGioHangClient <= 0) {
                     xaPhuong.innerHTML = '<option value="">Xã / Phường</option>';
 
                     data.wards.forEach(ward => {
-                        let option = new Option(ward.name, ward.code);
+                        let option = new Option(ward.name, ward.name);
                         xaPhuong.add(option);
                     });
                 })
@@ -313,6 +402,17 @@ if($soLuongGioHangClient <= 0) {
 
         function href(link) {
             location.href = link;
+        }
+
+        function checkLocation(radio) {
+            document.querySelectorAll('.item-location.active').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            const item = document.querySelector(`.item-location[data-id='${radio.value}']`);
+            if (item) {
+                item.classList.add('active');
+            }
         }
     </script>
     @endsection

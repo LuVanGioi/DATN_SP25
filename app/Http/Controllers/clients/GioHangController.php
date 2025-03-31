@@ -34,24 +34,22 @@ class GioHangController extends Controller
      */
     public function store(cartRequest $request)
     {
-
         if ($request->action === 'add_to_cart') {
-
             DB::beginTransaction();
 
             if (Auth::check()) {
-                $userId = Auth::user()->id;
+                $userId = Auth::user()->ID_Guests ?? Auth::user()->id;
             } else {
                 $userId = request()->cookie('ID_Guests', Str::uuid());
                 Cookie::queue('ID_Guests', $userId, 60 * 24 * 365);
             }
 
             $checkCart = DB::table('cart')
-            ->where('ID_KhachHang', $userId)
-            ->where("ID_SanPham", $request->input("id_product"))
-            ->where("KichCo", $request->input("size"))
-            ->where("MauSac", $request->input("color"))
-            ->first();
+                ->where('ID_KhachHang', $userId)
+                ->where("ID_SanPham", $request->input("id_product"))
+                ->where("KichCo", $request->input("size"))
+                ->where("MauSac", $request->input("color"))
+                ->first();
 
             if ($checkCart) {
                 DB::table("cart")->where("id", $checkCart->id)->update([
@@ -60,7 +58,11 @@ class GioHangController extends Controller
 
                 DB::commit();
 
-                return back()->with('success', 'Đã Cập Nhật Giỏ Hàng!');
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đã cập nhật giỏ hàng!',
+                    'redirect' => route('gio-hang.index')
+                ]);
             } else {
                 DB::table("cart")->insert([
                     "ID_KhachHang" => $userId,
@@ -69,23 +71,33 @@ class GioHangController extends Controller
                     "MauSac" => $request->input("color"),
                     "SoLuong" => $request->input("quantity"),
                     "Xoa" => "0",
-                    "created_at" => date("Y/m/d H:i:s")
+                    "created_at" => now()
                 ]);
 
                 DB::commit();
 
-                return back()->with('success', 'Đã Thêm Sản Phẩm Vào Giỏ Hàng!');
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Đã thêm sản phẩm vào giỏ hàng!',
+                    'redirect' => route('gio-hang.index')
+                ]);
             }
         } elseif ($request->action === 'payment') {
             DB::beginTransaction();
-            
-            dd($request->all());
 
-            //return redirect()->route('gio-hang.index')->with('success', 'Chuyển đến thanh toán!');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Chuyển đến trang thanh toán!',
+                'redirect' => route('gio-hang.index')
+            ]);
         }
 
-        return back()->with('error', 'Hành động không hợp lệ!');
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Hành động không hợp lệ!'
+        ], 400);
     }
+
 
     /**
      * Display the specified resource.
@@ -108,7 +120,19 @@ class GioHangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $cart = DB::table("cart")->find($id);
+        if (!$cart):
+            return response()->json(['message' => 'Không tìm thấy sản phẩm'], 500);
+        endif;
+
+        DB::table("cart")->where("id", $id)->update([
+            "SoLuong" => $request->input("quantity")
+        ]);
+
+        $cartUpdate = DB::table("cart")->find($cart->id);
+        $productUpdate = DB::table("san_pham")->find($cartUpdate->ID_SanPham);
+        $money = $cartUpdate->SoLuong * $productUpdate->GiaSanPham;
+        return response()->json(['message' => 'Cập nhật thành công', 'id' => $id, 'total' => $money]);
     }
 
     /**
@@ -117,12 +141,12 @@ class GioHangController extends Controller
     public function destroy(string $id)
     {
         $cart = DB::table("cart")->find($id);
-        if(!$cart) {
-            return back()->with("error","Sản Phẩm Trong Giỏ Hàng Không Tồn Tại Hoặc Đã Bị Xóa");
+        if (!$cart) {
+            return back()->with("error", "Sản Phẩm Trong Giỏ Hàng Không Tồn Tại Hoặc Đã Bị Xóa");
         }
 
         DB::table("cart")->where("id", $id)->delete();
 
-        return back()->with("success","Sản Phẩm Trong Giỏ Hàng Đã Được Xóa");
+        return back()->with("success", "Sản Phẩm Trong Giỏ Hàng Đã Được Xóa");
     }
 }

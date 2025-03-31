@@ -79,9 +79,11 @@
                 <div class="product-price">{{ number_format($thongTinSanPham->GiaSanPham) }} đ - <del style="color:rgb(115, 115, 115)">{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</del></div>
                 <hr class="page-divider">
 
-                <form action="{{ route("gio-hang.store") }}" method="POST" class="row variable">
-                    @csrf
+                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="1500" swal_success="none" type="POST">
                     <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" id="actionField" value="">
+
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
@@ -107,7 +109,7 @@
                                 title="Màu Sắc" onchange="changeCarouselImage(this)">
                                 <option value="" data-index="0">Chọn Màu Sắc</option>
                                 @foreach ($bienTheSanPham2 as $index => $mauSac)
-                                <option value="{{ $mauSac->ID_MauSac }}" data-index="{{ $index + 1 }}">{{ $mauSac->TenMauSac }}</option>
+                                <option value="{{ $mauSac->ID_MauSac }}" data-index="{{ $index + 1 }}">{{ $mauSac->TenMauSac }} ({{ $mauSac->SoLuong }})</option>
                                 @endforeach
                             </select>
                         </div>
@@ -135,10 +137,10 @@
                     </div>
                     <div class="col-md-12">
                         <div class="buttons mt-3" style="margin-top: 10px;">
-                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="add_to_cart">
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="add_to_cart">
                                 <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
                             </button>
-                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="buy_now">
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="buy_now">
                                 <i class="fa fa-shopping-cart"></i> Mua Ngay
                             </button>
                         </div>
@@ -242,7 +244,7 @@
             <div class="owl-carousel" id="featured-products-carousel">
                 @foreach ($danhSachSanPham as $i => $sanPhamKhac)
                 @if ($sanPhamKhac->DuongDan !== $thongTinSanPham->DuongDan && $i++ <= 10)
-                    <div class="thumbnail no-border no-padding">
+                    <div class="thumbnail product-item">
                     <div class="media">
                         <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">
                             <img src="{{ Storage::url($sanPhamKhac->HinhAnh) }}" alt="">
@@ -250,38 +252,17 @@
                         @if ($sanPhamKhac->Nhan)
                         <span class="ribbons {{ $sanPhamKhac->Nhan }}">{{ nhan($sanPhamKhac->Nhan) }}</span>
                         @endif
+                        <div class="title-time">
+                            {{ date("d.m") }}
+                        </div>
                     </div>
                     <div class="caption text-center">
                         <h4 class="caption-title">
                             <a href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">{{ $sanPhamKhac->TenSanPham }}</a>
                         </h4>
-                        <div class="categoris-product">
-                            <a href="">Quần áo nam</a>
-                            <a href="">Adidas</a>
-                            <a href="">{{ $sanPhamKhac->ChatLieu }}</a>
-                        </div>
                         <div class="price">
                             <ins>{{ number_format($sanPhamKhac->GiaSanPham) }}đ</ins>
-                            @if ($sanPhamKhac->GiaKhuyenMai)
-                            <del>{{ number_format($sanPhamKhac->GiaKhuyenMai) }}đ</del>
-                            @endif
-                        </div>
-                        <div class="buttons">
-                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}" target="_blank">
-                                <i class="fa fa-share"></i>
-                            </a>
-
-                            <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                <form action="{{ route("gio-hang.store") }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_product" value="{{ $sanPhamKhac->id }}">
-                                    <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                </form>
-                            </a>
-                            <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">
-                                <i class="fa fa-circle-info"></i>
-                            </a>
+                            <span>Đã bán 54,3k</span>
                         </div>
                     </div>
             </div>

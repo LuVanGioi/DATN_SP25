@@ -20,11 +20,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            KhachHangSeeder::class,
             BienTheSeeder::class,
             CaiDatWebsiteSeeder::class,
             TinhThanhSeeder::class,
-            HuyenSeeder::class
+            HuyenSeeder::class,
+            PaymentSettingsSeeder::class,
+            VnpaySettingSeeder::class,
         ]);
     }
 }

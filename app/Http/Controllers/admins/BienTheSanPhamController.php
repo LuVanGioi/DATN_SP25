@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admins\BienTheSanPhamRequest;
 
 class BienTheSanPhamController extends Controller
 {
@@ -27,7 +28,7 @@ class BienTheSanPhamController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BienTheSanPhamRequest $request)
     {
         DB::beginTransaction();
 
@@ -40,16 +41,38 @@ class BienTheSanPhamController extends Controller
         $thongTinBienThes = $request->input('ThongTinBienThe', []);
         $giaBienThes = $request->input('GiaBienThe', []);
         $soLuongBienThes = $request->input('SoLuongBienThe', []);
+        $hinhAnhBienThes = $request->file("HinhAnh", []);
+
+        if(count($thongTinBienThes) <= 0) {
+            return redirect()->back()->with("error", "Chọn Đầy Đủ Thông Tin Biến Thể Đểm Thêm");
+        }
 
         foreach ($thongTinBienThes as $index => $thongTin) {
             [$kichCo, $idMauSac] = explode('|', $thongTin);
+
+            $checkBienTheSanPham = DB::table("bien_the_san_pham")->where('ID_SanPham', $request->input("ID_SanPham"))
+            ->where('ID_MauSac', $idMauSac)
+            ->where('KichCo', $kichCo)
+            ->exists();
+
+            $thongTinMauSac = DB::table("mau_sac")->where('id', $idMauSac)
+            ->first();
+
+            if($checkBienTheSanPham) {
+                return redirect()->back()->with("error", "Biến Thể ".$kichCo." - ".$thongTinMauSac->TenMauSac." Đã Tồn Tại!");
+            }
+
+            if (!empty($hinhAnhBienThes[$index])) {
+                $HinhAnh = $hinhAnhBienThes[$index]->store("uploads/SanPham", "public");
+            }
 
             DB::table('bien_the_san_pham')->insert([
                 'KichCo' => $kichCo,
                 'ID_MauSac' => $idMauSac,
                 'ID_SanPham' => $request->input("ID_SanPham"),
-                'Gia' => $giaBienThes[$index],
-                'SoLuong' => $soLuongBienThes[$index],
+                'HinhAnh' => $HinhAnh,
+                'Gia' => ($giaBienThes[$index] ?? 0),
+                'SoLuong' => ($soLuongBienThes[$index] ?? 0),
                 'created_at' => now(),
             ]);
         }
@@ -87,7 +110,7 @@ class BienTheSanPhamController extends Controller
         if (!$thongTin) {
             return redirect()->route("SanPham.edit", $thongTin->ID_SanPham)->with("error", "Biến Thể Sản Phẩm Không Tồn Tại Hoặc Đã Được Xóa");
         }
-        
+
 
         DB::table("bien_the_san_pham")->where("id", $id)->update([
             "Gia" => $request->input("Gia"),

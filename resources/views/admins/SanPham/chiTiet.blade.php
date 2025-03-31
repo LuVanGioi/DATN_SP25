@@ -19,9 +19,6 @@
                         <div class="list-group" id="list-tab" role="tablist">
                             <a class="list-group-item list-group-item-action active" data-bs-toggle="list" href="#thongTin" role="tab">Thông Tin</a>
                             <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#hinhAnh" role="tab">Hình Ảnh</a>
-                            @if ($sanPham->TheLoai == "bienThe")
-                            <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#bienThe" role="tab">Biển Thể</a>
-                            @endif
                         </div>
                     </div>
                     <div class="col-md-9">
@@ -87,10 +84,42 @@
                                     @if ($sanPham->TheLoai == "bienThe")
                                     <div class="col-md-12 mb-3">
                                         <label class="label-control">Biến Thể:</label>
+                                        @foreach ($danhSachKichCo as $kichCo)
+                                        <div class="row border-bottom pb-3">
+                                            <div class="col-md-2">
+                                                <b class="btn-size">Size {{ $kichCo->TenKichCo }}</b>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="row">
+                                                    @foreach ($danhSachBienThe as $bienThe)
+                                                    @if ($bienThe->KichCo == $kichCo->TenKichCo)
+                                                    @foreach ($danhSachMauSac as $mauSac)
+                                                    @if ($mauSac->id == $bienThe->ID_MauSac)
+                                                    <div class="col-md-12 mb-2">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <span class="btn-color">{{ $mauSac->TenMauSac }}</span>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <span class="btn-amount">Số Lượng: <b>{{ number_format($bienThe->SoLuong) }}</b></span>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <span class="btn-price">Giá Tiền: <b>{{ number_format($bienThe->Gia) }}đ</b></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
                                     </div>
                                     @endif
 
-                                    <div class="col-md-12 border-top pt-3 mb-3">
+                                    <div class="col-md-12 pt-3 mb-3">
                                         <label class="label-control">Mô Tả Sản Phẩm:</label>
                                         <div class="border border-1 border-r-7 card-body">
                                             {!! $sanPham->Mota !!}
@@ -112,50 +141,15 @@
                                         <div class="owl-carousel owl-theme owl-loaded owl-drag" id="owl-carousel-13">
                                             <div class="owl-stage-outer">
                                                 <div class="owl-stage">
-                                                    @foreach ($danhSachHinhAnh as $hinhAnh)
+                                                    @foreach ($danhSachBienThe as $bienThe1)
                                                     <div class="owl-item active">
                                                         <div class="item">
-                                                            <img src="{{ Storage::url($hinhAnh->DuongDan) }}" alt="{{ $sanPham->TenSanPham }}">
+                                                            <img src="{{ Storage::url($bienThe1->HinhAnh) }}" alt="{{ $sanPham->TenSanPham }}">
                                                         </div>
                                                     </div>
                                                     @endforeach
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade list-behaviors" id="bienThe" role="tabpanel">
-                                <div class="disabled-container">
-                                    <div class="treejs">
-                                        <div class="treejs-nodes row">
-
-                                            @foreach ($danhSachKichCo as $kichCo)
-                                            <div class="col-md-3 mb-3 mt-3">
-                                                <div class="treejs-node treejs-node__halfchecked treejs-node__disabled border border-1 border-r-7 p-2">
-                                                    <i class="fa-solid fa-circle-radiation"></i>
-                                                    <b class="treejs-label text-primary">Size {{ $kichCo->TenKichCo }}</b>
-                                                    <ul class="treejs-nodes">
-                                                        @foreach ($danhSachBienThe as $bienThe)
-                                                        @if ($bienThe->KichCo == $kichCo->TenKichCo)
-                                                        @foreach ($danhSachMauSac as $mauSac)
-                                                        @if ($mauSac->id == $bienThe->ID_MauSac)
-                                                        <li class="treejs-node treejs-node__halfchecked treejs-node__disabled">
-                                                            <span class="treejs-label title">{{ $mauSac->TenMauSac }}</span>
-                                                            <ul class="treejs-nodes">
-                                                                <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Số Lượng: <b>{{ number_format($bienThe->SoLuong) }}</b></li>
-                                                                <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Giá Tiền: <b class="text-primary">{{ number_format($bienThe->Gia) }}đ</b></li>
-                                                            </ul>
-                                                        </li>
-                                                        @endif
-                                                        @endforeach
-                                                        @endif
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -171,72 +165,42 @@
 
 @section("css")
 <style type="text/css">
-    .treejs {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        font-size: 14px;
+    .btn-size {
+        border: 1px solid #016666;
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: #016666;
+        display: block;
     }
 
-    .treejs *:after,
-    .treejs *:before {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
+    .btn-color {
+        border: 1px solid rgb(1, 50, 102);
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: rgb(1, 50, 102);
+        display: block;
     }
 
-    .treejs>.treejs-node {
-        padding-left: 0;
+    .btn-amount {
+        border: 1px solid rgb(180, 12, 226);
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: rgb(180, 12, 226);
+        display: block;
+        width: 100%;
     }
 
-    .treejs .treejs-nodes {
-        list-style: none;
-        padding-left: 20px;
-        overflow: hidden;
-        -webkit-transition: height 150ms ease-out, opacity 150ms ease-out;
-        -o-transition: height 150ms ease-out, opacity 150ms ease-out;
-        transition: height 150ms ease-out, opacity 150ms ease-out;
-    }
-
-    .treejs .treejs-node {
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    .treejs .treejs-node.treejs-placeholder {
-        padding-left: 20px;
-    }
-
-    .treejs i {
-        font-size: 12px;
-        color: #1890ff;
-    }
-
-    .treejs .treejs-node__close>.treejs-switcher {
-        -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
-        transform: rotate(-90deg);
-    }
-
-    .treejs .treejs-node__close>.treejs-nodes {
-        height: 0;
-    }
-
-    .treejs .treejs-checkbox {
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        position: relative;
-    }
-
-    .treejs .treejs-label {
-        vertical-align: middle;
-    }
-
-    .treejs .treejs-label.title {
-        font-weight: bold;
-        margin-left: 10px;
-        color: #006666;
+    .btn-price {
+        border: 1px solid rgb(225, 47, 47);
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: rgb(225, 47, 47);
+        display: block;
+        width: 100%;
     }
 </style>
 @endsection

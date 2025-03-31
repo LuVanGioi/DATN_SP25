@@ -1,5 +1,8 @@
 <?php
 
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\SamplingHandler;
@@ -8,6 +11,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Middleware\CheckRoleMiddleware;
 use App\Http\Controllers\admins\homeController;
 use App\Http\Controllers\clients\payController;
+use App\Http\Controllers\Methods\MomoController;
 use App\Http\Controllers\admins\BannerController;
 use App\Http\Controllers\Methods\VnPayController;
 use App\Http\Controllers\admins\BaiVietController;
@@ -22,6 +26,7 @@ use App\Http\Controllers\clients\BangTinController;
 use App\Http\Controllers\clients\GioHangController;
 use App\Http\Controllers\admins\KhachHangController;
 use App\Http\Controllers\admins\MaGiamGiaController;
+use App\Http\Controllers\clients\LocationController;
 use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\QuanLyAdminController;
 use App\Http\Controllers\admins\CaiDatWebsiteController;
@@ -30,6 +35,7 @@ use App\Http\Controllers\admins\DanhMucBaiVietController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
+use App\Http\Controllers\admins\BoSuuTapController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
@@ -51,6 +57,8 @@ use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 |
 */
 
+Broadcast::routes();
+
 #CLIENTS
 Route::get('/', [ClientsHomeController::class, "home"])->name("home.client");
 Route::resource('gio-hang', GioHangController::class);
@@ -66,8 +74,15 @@ Route::post('email-form', [ClientSupportController::class, 'email_event'])->name
 Route::post('contact-form', [ClientSupportController::class, 'contact_form'])->name("contactForm");
 Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
 Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
-Route::post('/vnpay-payment', [VnPayController::class, 'createPayment'])->name('vnpay.payment');
-Route::get('/vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
+Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
+Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
+
+Route::get('momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
+Route::post('momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');
+
+Route::get('vnpay-return', [VnPayController::class, 'paymentReturn'])->name('vnpay.return');
+
+Route::resource('locations', LocationController::class);
 
 Route::get('quen-mat-khau', [ForgotPasswordController::class, 'showFormForgotPassword'])->name('forgot-password');
 Route::post('quen-mat-khau', [ForgotPasswordController::class, 'sendMailResetPassword'])->name('forgot-password-send');
@@ -85,10 +100,10 @@ Route::put('doi-mat-khau/update/{id}', [DoiMatKhauController::class, 'update'])-
 
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 
-Route::get('/baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
+Route::get('baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
 
-Route::get('gioi-thieu-cua-hang', function () {
-    return view('clients.GioiThieu.GioiThieu');
+Route::get('chinh-sach-bao-hanh', function () {
+    return view('clients.BaoHanh.BaoHanh');
 });
 Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.BaiViet');
@@ -96,9 +111,15 @@ Route::get('danh-sach-bai-viet', function () {
 Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.Baiviet');
 });
-Route::get('thong-tin-tai-khoan', function () {
-    return view('clients.ThongTinTaiKhoan.ThongTinTaiKhoan');
-});
+
+Route::get('/thong-tin-tai-khoan', [ClientsAuthController::class, 'getProfile'])
+    ->middleware('auth')
+    ->name('ThongTinTaiKhoan');
+
+Route::post('/thong-tin-tai-khoan/update', [ClientsAuthController::class, 'updateProfile'])
+    ->middleware('auth')
+    ->name('update-profile');
+
 Route::get('/tai-khoan-cua-toi', function () {
     return view('clients.ThongTinTaiKhoan.TaiKhoanCuaToi');
 });
@@ -151,7 +172,6 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"])->name('ThungRac.restore');
     Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
     Route::resource('admin/DanhMuc', DanhMucController::class);
-    Route::resource('admin/SanPham', SanPhamController::class);
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);

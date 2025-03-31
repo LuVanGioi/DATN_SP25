@@ -1,7 +1,6 @@
-
-@if (Auth::check() && Auth::user()->role !== "Admin") 
-   {{  redirect('/admin/thongKe') }}
-     {{abort(403)}}
+@if (Auth::check() && Auth::user()->role !== "Admin")
+{{ redirect('/admin/thongKe') }}
+{{abort(403)}}
 @endif
 
 <!DOCTYPE html>
@@ -37,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="/admins/css/style.css">
     <link id="color" rel="stylesheet" href="/admins/css/color-1.css" media="screen">
     <link rel="stylesheet" type="text/css" href="/admins/css/responsive.css">
-    
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -60,6 +59,9 @@
 
     <link rel="stylesheet" href="/admins/css/system.css?m={{time()}}">
 
+    <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
+
+    <script src="https://js.pusher.com/8.4.0/pusher.min.js"></script>
     @yield("css")
 </head>
 
@@ -102,7 +104,7 @@
     <script src="/admins/js/header-slick.js"></script>
     <script src="/admins/js/owl.carousel.js"></script>
     <script src="/admins/js/owl-custom.js"></script>
-    
+
     <script src="/admins/js/apex-chart.js"></script>
     <script src="/admins/js/stock-prices.js"></script>
     <script src="/admins/js/moment.min.js"></script>
@@ -124,6 +126,17 @@
         document.querySelectorAll('.note-DATN').forEach((el) => {
             CKEDITOR.replace(el);
         });
+    </script>
+
+    <script>
+        const beamsClient = new PusherPushNotifications.Client({
+            instanceId: '578ce584-9ce3-46ed-b7ce-f3c02c7c8991',
+        });
+
+        beamsClient.start()
+            .then(() => beamsClient.addDeviceInterest('hello'))
+            .then(() => console.log('Xin Chào! Đây Là Dự Án Tốt Nghiệp Của Nhóm WD-14'))
+            .catch(console.error);
     </script>
 
     @yield("js")

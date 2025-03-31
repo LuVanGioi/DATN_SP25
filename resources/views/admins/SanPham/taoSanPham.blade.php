@@ -182,18 +182,6 @@
                                     </label>
                                 </div>
                             </div>
-
-                            <label for="" class="mt-3">Bộ Sưu Tập</label>
-                            <input type="file" class="d-none" id="khoAnh" name="images[]" multiple>
-                            <div class="dropzone-wrapper">
-                                <div class="dz-message">
-                                    <label for="khoAnh">
-                                        <i class="icon-cloud-up"></i>
-                                        <h6 class="mt-3 mb-3">Kéo & Thả ảnh vào đây hoặc Nhấn để chọn nhiều ảnh sản phẩm</h6>
-                                    </label>
-                                    <div class="image-preview" id="imagesPreview"></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,7 +200,7 @@
         var KichCo = document.getElementById("chonKichCo").value;
         var MauSac = document.getElementById("chonMauSac").value;
         var Gia = document.getElementById("Gia").value;
-        
+
         setTimeout(() => {
             document.getElementById("chonMauSac").selectedIndex = 0;
         }, 500);

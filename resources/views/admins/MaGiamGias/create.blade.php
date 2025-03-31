@@ -19,8 +19,8 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label for="name">Tên Mã</label>
-                                <input class="form-control @error('name') is-invalid border-danger @enderror" type="text" id="name" name="name" placeholder="Nhập tên mã giảm giá" value="{{ old('name') }}" required>
+                                <label for="name">Mã Code</label>
+                                <input class="form-control @error('name') is-invalid border-danger @enderror" type="text" id="name" name="name" placeholder="Nhập mã giảm giá" value="{{ old('name') }}" required>
                                 @error('name')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -59,8 +59,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="condition">Điều Kiện</label>
-                                <input class="form-control @error('condition') is-invalid border-danger @enderror" type="text" id="condition" name="condition" placeholder="Nhập điều kiện" value="{{ old('condition') }}" required>
+                                <label for="condition">Tiêu Đề</label>
+                                <input class="form-control @error('condition') is-invalid border-danger @enderror" type="text" id="condition" name="condition" placeholder="Nhập tiêu đề" value="{{ old('condition') }}" required>
                                 @error('condition')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -85,8 +85,8 @@
                             <div class="mb-3">
                                 <label for="status">Trạng Thái</label>
                                 <select class="form-select @error('status') is-invalid border-danger @enderror" id="status" name="status" required>
-                                    <option value="Hoạt động" {{ old('status') == 'Hoạt động' ? 'selected' : '' }}>Hoạt động</option>
-                                    <option value="Ngừng hoạt động" {{ old('status') == 'Ngừng hoạt động' ? 'selected' : '' }}>Ngừng hoạt động</option>
+                                    <option value="on" {{ old('status') == 'on' ? 'selected' : '' }}>Hoạt động</option>
+                                    <option value="off" {{ old('status') == 'off' ? 'selected' : '' }}>Ngừng hoạt động</option>
                                 </select>
                                 @error('status')
                                 <p class="text-danger">{{ $message }}</p>
