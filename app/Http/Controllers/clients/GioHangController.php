@@ -120,6 +120,13 @@ class GioHangController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (Auth::check()) {
+            $userId = Auth::user()->ID_Guests ?? Auth::user()->id;
+        } else {
+            $userId = request()->cookie('ID_Guests', Str::uuid());
+            Cookie::queue('ID_Guests', $userId, 60 * 24 * 365);
+        }
+
         $cart = DB::table("cart")->find($id);
         if (!$cart):
             return response()->json(['message' => 'Không tìm thấy sản phẩm'], 500);
@@ -132,7 +139,19 @@ class GioHangController extends Controller
         $cartUpdate = DB::table("cart")->find($cart->id);
         $productUpdate = DB::table("san_pham")->find($cartUpdate->ID_SanPham);
         $money = $cartUpdate->SoLuong * $productUpdate->GiaSanPham;
-        return response()->json(['message' => 'Cập nhật thành công', 'id' => $id, 'total' => $money]);
+
+        $layGiaTienSanPham = DB::table("cart")
+            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
+            ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
+            ->first();
+
+        return response()->json([
+            'message' => 'Cập nhật thành công',
+            'id' => $id,
+            'total' => $money,
+            'total_cart' => $layGiaTienSanPham
+        ]);
     }
 
     /**
