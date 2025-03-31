@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
@@ -48,7 +49,7 @@ class payController extends Controller
                 'selected_products' => $request->input('selected_products', [])
             ]);
 
-            return redirect()->route('payent', $orderCode)->with('success', 'Đã chuyển đến thanh toán!');
+            return redirect()->route('payent', $orderCode);
         }
     }
 
@@ -75,7 +76,7 @@ class payController extends Controller
         $danhSachDiaChimacDinh = DB::table("location")->where('ID_User', (Auth::id() ?? ""))->get();
 
         $selectedCartIds = session('selected_products', []);
-        $sanPhamDaChon = $danhSachSanPhamThanhToan = DB::table("cart")
+        $sanPhamDaChon = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
             ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
             ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
@@ -85,14 +86,7 @@ class payController extends Controller
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw("
-            cart.id as cart_id, 
-            cart.*, 
-            san_pham.*, 
-            kich_co.*, 
-            mau_sac.*, 
-            cart.SoLuong * san_pham.GiaSanPham as ThanhTien
-        ")->get();
+            ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
 
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
@@ -102,10 +96,7 @@ class payController extends Controller
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw("
-            COUNT(cart.ID_SanPham) as soLuongGioHangClient, 
-            SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien
-        ")->first();
+            ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
 
         $tongTienSanPhamDaChon = $layGiaTienSanPham->tongTien ?? 0;
 
@@ -118,16 +109,34 @@ class payController extends Controller
         if (Auth::check()) {
             $userId = Auth::user()->ID_Guests ?? Auth::user()->id;
         } else {
-            $userId = request()->cookie('ID_Guests', Str::uuid());
-            Cookie::queue('ID_Guests', $userId, 60 * 24 * 365);
+            return redirect()->back()->with('error', 'Vui Lòng Đăng Nhập Để Thanh Toán');
         }
+
         DB::beginTransaction();
+
+        $selectedCartIds = session('selected_products', []);
+
+        $sanPhamDaChon = DB::table("cart")
+            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
+            ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
+            ->whereIn("cart.id", $selectedCartIds)
+            ->where(function ($query) use ($userId) {
+                if ($userId) {
+                    $query->where("cart.ID_KhachHang", $userId);
+                }
+            })
+            ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
+
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
-            ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
-            ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
-            ->first();
-
+            ->whereIn("cart.id", $selectedCartIds)
+            ->where(function ($query) use ($userId) {
+                if ($userId) {
+                    $query->where("cart.ID_KhachHang", $userId);
+                }
+            })
+            ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
         $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien ?? 0;
         $tinhPhanTram = 0;
 
@@ -157,6 +166,7 @@ class payController extends Controller
 
         if ($request->input("method") == "COD"):
             DB::table("don_hang")->insert([
+                "orderCode" => time(),
                 "MaDonHang" => $trading,
                 "ID_User" => Auth::user()->id,
                 "TrangThai" => "choxacnhan",
@@ -169,7 +179,7 @@ class payController extends Controller
                 "created_at" => date("Y-m-d H:i:s"),
             ]);
 
-            foreach (DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->get() as $cart):
+            foreach ($sanPhamDaChon as $cart):
                 DB::table("san_pham_don_hang")->insert([
                     "MaDonHang" => $trading,
                     "Id_SanPham" => $cart->id,
@@ -181,7 +191,7 @@ class payController extends Controller
                 ]);
             endforeach;
 
-            DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->delete();
+            DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
 
             DB::commit();
 
@@ -221,62 +231,94 @@ class payController extends Controller
 
 
             return redirect()->route("payment.success", $trading)->with("success", "Tạo Đơn Hàng!");
-        elseif ($request->input("method") == "VNPay"):
-            $vnpay = DB::table("vnpay_settings")->where("id", 1)->first();
+        elseif ($request->input("method") == "Banking"):
 
-            $vnp_TmnCode = $vnpay->vnp_tmn_code;
-            $vnp_HashSecret = $vnpay->vnp_hash_secret;
-            $vnp_Url = $vnpay->vnp_url;
-            $vnp_Returnurl = route('vnpay.return');
-            $vnp_TxnRef = time();
-            $vnp_OrderInfo = "Thanh toán đơn hàng";
-            $vnp_OrderType = "billpayment";
-            $vnp_Amount = $tongTienSanPhamGioHangClient * 100; // Phải nhân 100
-            $vnp_Locale = "vn";
-            $vnp_BankCode = $request->bank_code ?? "";
-            $vnp_IpAddr = $request->ip();
+            $PayOS = DB::table("pay_os")->where("id", 1)->first();
+            $apiKey = $PayOS->API_Key;
+            $clientId = $PayOS->Client_ID;
+            $checksumKey = $PayOS->Checksum_Key;
+            $orderCode = time();
 
-            $inputData = [
-                "vnp_Version" => "2.1.0",
-                "vnp_TmnCode" => $vnp_TmnCode,
-                "vnp_Amount" => $vnp_Amount,
-                "vnp_Command" => "pay",
-                "vnp_CreateDate" => date('YmdHis'),
-                "vnp_CurrCode" => "VND",
-                "vnp_IpAddr" => $vnp_IpAddr,
-                "vnp_Locale" => $vnp_Locale,
-                "vnp_OrderInfo" => $vnp_OrderInfo,
-                "vnp_OrderType" => $vnp_OrderType,
-                "vnp_ReturnUrl" => $vnp_Returnurl,
-                "vnp_TxnRef" => $vnp_TxnRef
+            $data = [
+                "amount" => (int) $tongTienSanPhamGioHangClient,
+                "cancelUrl" => route('payos.cancel'),
+                "description" => $trading,
+                "orderCode" => $orderCode,
+                "returnUrl" => url('/payos/callback'),
             ];
 
-            if (!empty($vnp_BankCode)) {
-                $inputData['vnp_BankCode'] = $vnp_BankCode;
+            $signatureString = "amount={$data['amount']}&cancelUrl={$data['cancelUrl']}&description={$data['description']}&orderCode={$data['orderCode']}&returnUrl={$data['returnUrl']}";
+            $signature = hash_hmac('sha256', $signatureString, $checksumKey);
+            $data["signature"] = $signature;
+
+            $response = Http::withHeaders([
+                "x-client-id" => $clientId,
+                "x-api-key" => $apiKey,
+                "Content-Type" => "application/json"
+            ])->post("https://api-merchant.payos.vn/v2/payment-requests", $data);
+            $result = $response->json();
+
+            if (isset($result['data']['checkoutUrl'])) {
+
+                $selectedCartIds = session('selected_products', []);
+
+                $sanPhamDaChon = DB::table("cart")
+                    ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                    ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
+                    ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
+                    ->whereIn("cart.id", $selectedCartIds)
+                    ->where(function ($query) use ($userId) {
+                        if ($userId) {
+                            $query->where("cart.ID_KhachHang", $userId);
+                        }
+                    })
+                    ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
+
+                $layGiaTienSanPham = DB::table("cart")
+                    ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                    ->whereIn("cart.id", $selectedCartIds)
+                    ->where(function ($query) use ($userId) {
+                        if ($userId) {
+                            $query->where("cart.ID_KhachHang", $userId);
+                        }
+                    })
+                    ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
+                $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien ?? 0;
+
+                DB::table("don_hang")->insert([
+                    "orderCode" => $orderCode,
+                    "MaDonHang" => $trading,
+                    "ID_User" => Auth::user()->id,
+                    "TrangThai" => "chuathanhtoan",
+                    "PhuongThucThanhToan" => "Chuyển Khoản Ngân Hàng",
+                    "DiaChiNhan" => $request->input("location"),
+                    "TongTien" => $tongTienSanPhamGioHangClient,
+                    "GiamGia" => $tinhPhanTram,
+                    "MaGiamGia" => ($request->input('voucher') ?? ""),
+                    "GhiChu" => $request->input("message"),
+                    "created_at" => date("Y-m-d H:i:s"),
+                ]);
+
+                foreach ($sanPhamDaChon as $cart):
+                    DB::table("san_pham_don_hang")->insert([
+                        "MaDonHang" => $trading,
+                        "Id_SanPham" => $cart->id,
+                        "KichCo" => $cart->KichCo,
+                        "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
+                        "GiaTien" => DB::table("san_pham")->where("id", $cart->ID_SanPham)->first()->GiaSanPham,
+                        "SoLuong" => $cart->SoLuong,
+                        "created_at" => date("Y-m-d H:i:s"),
+                    ]);
+                endforeach;
+
+                DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
+
+                DB::commit();
+
+                return redirect($result['data']['checkoutUrl']);
+            } else {
+                return redirect()->back()->with('error', 'Lỗi, Vui Lòng Thanh Toán Lại');
             }
-
-            // Sắp xếp theo bảng chữ cái
-            ksort($inputData);
-
-            // Tạo chuỗi hashdata (không urlencode)
-            $hashdata = "";
-            foreach ($inputData as $key => $value) {
-                $hashdata .= '&' . $key . "=" . $value;
-            }
-            $hashdata = ltrim($hashdata, '&'); // Xóa ký tự '&' đầu tiên
-
-            // Tạo SecureHash
-            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
-
-
-            dd([
-                'inputData' => $inputData,
-                'generated_hash' => $vnpSecureHash,
-                'expected_secret' => $vnp_HashSecret
-            ]);
-
-
-            return redirect($vnp_Url);
         endif;
     }
 

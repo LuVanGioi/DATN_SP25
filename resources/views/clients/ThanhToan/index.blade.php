@@ -9,22 +9,37 @@
 if ($soLuongGioHangClient <= 0):
     abort(404, 'Dữ liệu không hợp lệ.' );
     endif;
+
+    if (!Auth::check()) {
+    die('<script>location.href="/gio-hang"</script>');
+    }
     @endphp
     <section class="page-section breadcrumbs">
-    <div class="container">
-        <div class="page-header">
-            <h1>Thanh Toán</h1>
+        <div class="container">
+            <div class="page-header">
+                <h1>Thanh Toán</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li><a href="/">Trang Chủ</a></li>
+                <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
+                <li class="active">Thanh Toán</li>
+            </ul>
         </div>
-        <ul class="breadcrumb">
-            <li><a href="/">Trang Chủ</a></li>
-            <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
-            <li class="active">Thanh Toán</li>
-        </ul>
-    </div>
     </section>
 
     <section class="page-section">
         <div class="container">
+            @if(session("error"))
+            <div class="alert alert-danger mb-2">{{ session("error") }}</div>
+            @endif
+
+            @if(session("success"))
+            <div class="alert alert-success mb-2">{{ session("success") }}</div>
+            @endif
+
+            @error("id_product")
+            <div class="alert alert-danger mb-2">{{ $message }}</div>
+            @enderror
             <div class="row orders">
                 <div class="col-md-7">
                     <h3 class="block-title"><span>Sản Phẩm</span></h3>
@@ -186,8 +201,8 @@ if ($soLuongGioHangClient <= 0):
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <select class="form-control" name="MacDinh" id="macDinh">
-                                            <option value="0">Không Đặt Làm Địa Chỉ Mặc Định</option>
                                             <option value="1">Đặt Làm Địa Chỉ Mặc Định</option>
+                                            <option value="0">Không Đặt Làm Địa Chỉ Mặc Định</option>
                                         </select>
                                     </div>
                                 </div>
@@ -203,7 +218,7 @@ if ($soLuongGioHangClient <= 0):
                         <h3 class="block-title mt-2"><span>Danh Sách Địa Chỉ</span></h3>
 
                         <div class="list-address">
-                            @foreach ($danhSachDiaChimacDinh as $index => $diaChi)
+                            @foreach ($danhSachDiaChimacDinh as $diaChi)
                             @php
                             $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChi->Tinh)->first();
                             $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChi->Huyen)->first();
@@ -241,7 +256,7 @@ if ($soLuongGioHangClient <= 0):
                     @endif
                     <form action="{{ route("payment.store", $orderCode) }}" method="POST">
                         @csrf
-                        @foreach ($danhSachDiaChimacDinh as $index => $diaChiInput)
+                        @foreach ($danhSachDiaChimacDinh as $diaChiInput)
                         @php
                         $thongTinHuyenTinh = DB::table("tinh_thanh")->where("IdTinh", $diaChiInput->Tinh)->first();
                         $thongTinHuyen = DB::table("huyen")->where("MaHuyen", $diaChiInput->Huyen)->first();
@@ -269,7 +284,7 @@ if ($soLuongGioHangClient <= 0):
                         <ul class="list-method-payment">
                             <li class="item-method active" onclick="chonPhuongThucThanhToan('shipCod')" id="shipCod-button">
                                 <label for="shipCod">
-                                    <img src="https://otothangloi.com/wp-content/uploads/2019/04/icon-thanh-toan.png"
+                                    <img src="/clients/images/LOGO/cod.png"
                                         alt="">
                                     <input type="radio" id="shipCod" name="method" value="COD" checked>
                                 </label>
@@ -278,7 +293,7 @@ if ($soLuongGioHangClient <= 0):
 
                             <li class="item-method" onclick="chonPhuongThucThanhToan('banking')" id="banking-button">
                                 <label for="banking">
-                                    <img src="https://images.icon-icons.com/1091/PNG/512/bank_78392.png" alt="">
+                                    <img src="/clients/images/LOGO/banking.webp" alt="">
                                     <input type="radio" id="banking" name="method" value="Banking">
                                 </label>
                                 <span>Thanh Toán Ngân Hàng</span>
@@ -286,20 +301,11 @@ if ($soLuongGioHangClient <= 0):
 
                             <li class="item-method" onclick="chonPhuongThucThanhToan('momo')" id="momo-button">
                                 <label for="momo">
-                                    <img src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Circle.png"
+                                    <img src="/clients/images/LOGO/momo.webp"
                                         alt="">
                                     <input type="radio" id="momo" name="method" value="Momo">
                                 </label>
                                 <span>Thanh Toán Ví Momo</span>
-                            </li>
-
-                            <li class="item-method" onclick="chonPhuongThucThanhToan('vnpay')" id="vnpay-button">
-                                <label for="vnpay">
-                                    <img src="https://vnpay.vn/s1/statics.vnpay.vn/2023/9/06ncktiwd6dc1694418196384.png"
-                                        alt="">
-                                    <input type="radio" id="vnpay" name="method" value="VNPay">
-                                </label>
-                                <span>Thanh Toán Ví VNPay</span>
                             </li>
                         </ul>
                         <br>
