@@ -150,65 +150,6 @@
         </div>
     </div>
 </section>
-
-<section class="page-section">
-    <div class="container">
-        <h2 class="section-title" style="font-size: 25px;padding: 20px 0px;"><span>Sản Phẩm Khác</span></h2>
-        <div class="featured-products-carousel">
-            <div class="owl-carousel" id="featured-products-carousel">
-                @foreach ($danhSachSanPham as $i => $sanPhamKhac)
-                @if ($i++ <= 10)
-                    <div class="thumbnail no-border no-padding">
-                    <div class="media">
-                        <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">
-                            <img src="{{ Storage::url($sanPhamKhac->HinhAnh) }}" alt="">
-                        </a>
-                        @if ($sanPhamKhac->Nhan)
-                        <span class="ribbons {{ $sanPhamKhac->Nhan }}">{{ nhan($sanPhamKhac->Nhan) }}</span>
-                        @endif
-                    </div>
-                    <div class="caption text-center">
-                        <h4 class="caption-title">
-                            <a href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">{{ $sanPhamKhac->TenSanPham }}</a>
-                        </h4>
-                        <div class="categoris-product">
-                            <a href="">Quần áo nam</a>
-                            <a href="">Adidas</a>
-                            <a href="">{{ $sanPhamKhac->ChatLieu }}</a>
-                        </div>
-                        <div class="price">
-                            <ins>{{ number_format($sanPhamKhac->GiaSanPham) }}đ</ins>
-                            @if ($sanPhamKhac->GiaKhuyenMai)
-                            <del>{{ number_format($sanPhamKhac->GiaKhuyenMai) }}đ</del>
-                            @endif
-                        </div>
-                        <div class="buttons">
-                            <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u={{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}" target="_blank">
-                                <i class="fa fa-share"></i>
-                            </a>
-
-                            <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                <form action="{{ route("gio-hang.store") }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_product" value="{{ $sanPhamKhac->id }}">
-                                    <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                </form>
-                            </a>
-                            <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">
-                                <i class="fa fa-circle-info"></i>
-                            </a>
-                        </div>
-                    </div>
-            </div>
-            @endif
-            @endforeach
-        </div>
-    </div>
-    <hr class="page-divider half">
-    <a class="btn btn-theme btn-view-more-block" href="/" style="max-width: 100%;">Xem Thêm</a>
-    </div>
-</section>
 @endsection
 
 @section("js")

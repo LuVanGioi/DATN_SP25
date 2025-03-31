@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             $caiDatWebsite = DB::table("cai_dat_website")->where("id", 1)->first();
             $lienKetWebsiteClient = DB::table("lien_ket_ket_website")->where("Xoa", 0)->get();
             $danhSachLienheClient = DB::table("thong_tin_lien_he")->where("Xoa", 0)->get();
-            $danhSachSanPham = DB::table("san_pham")->where("Xoa", 0)->where("TrangThai", "hien")->get();
+            $danhSachSanPham = DB::table("san_pham")->where("Xoa", 0)->where("TrangThai", "hien")->limit(10)->get();
             $gioHangClient = DB::table("cart")->whereIn("ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])->get();
             $danhSachTinhThanh = DB::table("tinh_thanh")->get();
             $danhSachHuyen = DB::table("huyen")->select("ID_TinhThanh", "TenHuyen", "MaHuyen")->get();
