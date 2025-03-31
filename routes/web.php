@@ -33,10 +33,12 @@ use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
+use App\Http\Controllers\clients\DoiMatKhauController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
+use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +73,15 @@ Route::get('quen-mat-khau', [ForgotPasswordController::class, 'showFormForgotPas
 Route::post('quen-mat-khau', [ForgotPasswordController::class, 'sendMailResetPassword'])->name('forgot-password-send');
 Route::get('mat-khau-moi/{token}', [ForgotPasswordController::class, 'showFormResetPassword'])->name('reset-password');
 Route::post('mat-khau-moi', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
+
+Route::get('thong-tin-tai-khoan',[ThongTinTaiKhoanController::class, 'index'])->name('thong-tin-tai-khoan');
+Route::get('thong-tin-tai-khoan/edit/{id}', [ThongTinTaiKhoanController::class, 'edit'])->name('thong-tin-tai-khoan.edit');
+Route::put('thong-tin-tai-khoan/update/{id}', [ThongTinTaiKhoanController::class, 'update'])->name('thong-tin-tai-khoan.update');
+
+Route::get('doi-mat-khau',[DoiMatKhauController::class, 'index'])->name('doi-mat-khau');
+Route::get('doi-mat-khau/edit/{id}', [DoiMatKhauController::class, 'edit'])->name('doi-mat-khau.edit');
+Route::put('doi-mat-khau/update/{id}', [DoiMatKhauController::class, 'update'])->name('doi-mat-khau.update');
+
 
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
 

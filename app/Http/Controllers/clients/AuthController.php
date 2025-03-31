@@ -19,8 +19,18 @@ class AuthController extends Controller
 
     public function login(Request $request){
         $user = $request->validate([
-            'email'     => ['required', 'string', 'email', 'max:255'],
-            'password'  => ['required', 'string']
+            'email'    => ['required', 'string', 'email', 'max:255'],
+            'password' => ['required', 'string', 'min:8'],
+        ],
+            [
+                'email.required'    => 'Vui lòng nhập email.',
+                'email.string'      => 'Email không hợp lệ.',
+                'email.email'       => 'Định dạng email không đúng.',
+                'email.max'         => 'Email không được quá 255 ký tự.',
+    
+                'password.required' => 'Vui lòng nhập mật khẩu.',
+                'password.string'   => 'Mật khẩu không hợp lệ.',
+                'password.min'      => 'Mật khẩu phải có ít nhất 8 ký tự.'
         ]);
 
         if(Auth::attempt($user)){
@@ -79,6 +89,8 @@ class AuthController extends Controller
 
     public function logout(Request $request){
         Auth::logout();
-        return back();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/'); 
     }
 }

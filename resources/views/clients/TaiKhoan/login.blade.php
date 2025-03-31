@@ -37,12 +37,8 @@ die('<script>location.href="/"</script>');
                             <div class="form-group"><input class="form-control" type="password" name="password"
                                     placeholder="Mật khẩu của bạn"></div>
                         </div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="checkbox">
-                                <label><input type="checkbox" style="font-size: 20px"> Nhớ mật khẩu</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-6 text-right-lg">
+                       
+                        <div class="col-md-12 col-lg-12 text-right-lg">
                             <a class="forgot-password" href="{{ route("forgot-password") }}">Quên mật khẩu?</a>
                         </div>
                         <div class="col-md-6">
