@@ -94,12 +94,6 @@ Route::get('baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('bai
 Route::get('chinh-sach-bao-hanh', function () {
     return view('clients.BaoHanh.BaoHanh');
 });
-Route::get('danh-sach-bai-viet', function () {
-    return view('clients.BaiViet.BaiViet');
-});
-Route::get('danh-sach-bai-viet', function () {
-    return view('clients.BaiViet.Baiviet');
-});
 
 Route::get('/thong-tin-tai-khoan', [ClientsAuthController::class, 'getProfile'])
     ->middleware('auth')
@@ -140,11 +134,8 @@ Route::get('/san-pham-yeu-thich', function () {
     return view('clients.SanPhamYeuThich.SanPhamYeuThich');
 });
 
-Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");
 Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
-
-
-Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {
