@@ -64,7 +64,7 @@ class payController extends Controller
 
         $orderCode = $request->query('order_code', Session::get('order_code'));
         if (!$orderCode) {
-            return redirect()->route('gio-hang.index')->with('error','Đơn Hàng Đã Được Xử Lý Hoặc Không Tồn Tại');
+            return redirect()->route('gio-hang.index')->with('error', 'Đơn Hàng Đã Được Xử Lý Hoặc Không Tồn Tại');
         }
 
         if ($code !== $orderCode) {
@@ -154,6 +154,17 @@ class payController extends Controller
                 return redirect()->back()->with('voucher_error', 'Mã Giảm Giá Đã Hết Hạn Sử Dụng');
             endif;
 
+            $kiemTraSuDung = DB::table('su_dung_ma_giam_gia')->where('ID_User', Auth::user()->id)->where('MaGiamGia', $request->input('voucher'))->first();
+
+            if ($kiemTraSuDung):
+                return redirect()->back()->with('voucher_error', 'Mã Giảm Giá Đã Được Sử Dụng');
+            endif;
+
+            $soLanSuDung = DB::table('su_dung_ma_giam_gia')->where('MaGiamGia', $request->input('voucher'))->count();
+            if ($soLanSuDung > $discount->quantity):
+                return redirect()->back()->with('voucher_error', 'Mã Giảm Giá Hết Lượt Sử Dụng');
+            endif;
+
             $tinhPhanTram = ($tongTienSanPhamDaChon * $discount->value) / 100;
             $tinhPhanTram = min($tinhPhanTram, $discount->max_value);
             $tongTienSanPhamDaChon = max(0, ceil($tongTienSanPhamDaChon - $tinhPhanTram));
@@ -167,7 +178,7 @@ class payController extends Controller
                 "MaDonHang" => $trading,
                 "ID_User" => Auth::user()->id,
                 "TrangThai" => "choxacnhan",
-                "PhuongThucThanhToan" => $request->input("method"),
+                "PhuongThucThanhToan" => "Thanh Toán Khi Nhận Hàng",
                 "DiaChiNhan" => $request->input("location"),
                 "TongTien" => $tongTienSanPhamDaChon,
                 "GiamGia" => $tinhPhanTram,
@@ -189,6 +200,14 @@ class payController extends Controller
             endforeach;
 
             DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
+
+            if ($request->input("voucher")):
+                DB::table("su_dung_ma_giam_gia")->insert([
+                    "ID_User" => Auth::user()->id,
+                    "MaGiamGia" => $request->input('voucher'),
+                    "created_at" => date("Y-m-d H:i:s"),
+                ]);
+            endif;
 
             DB::commit();
 
@@ -266,9 +285,17 @@ class payController extends Controller
 
                 DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
 
+                if ($request->input("voucher")):
+                    DB::table("su_dung_ma_giam_gia")->insert([
+                        "ID_User" => Auth::user()->id,
+                        "MaGiamGia" => $request->input('voucher'),
+                        "created_at" => date("Y-m-d H:i:s"),
+                    ]);
+                endif;
+
                 DB::commit();
 
-                Session::forget('order_code'); 
+                Session::forget('order_code');
 
                 return redirect($result['data']['checkoutUrl']);
             } else {
