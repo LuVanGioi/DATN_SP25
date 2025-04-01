@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\admins;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admins\MaGiamGiaRequest;
-use App\Models\MaGiamGia; 
+use App\Models\MaGiamGia;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
@@ -11,13 +12,10 @@ use Illuminate\Support\Facades\Log;
 class MaGiamGiaController extends Controller
 {
     public function index(Request $request)
-{
-    // Lấy tất cả các mã giảm giá
-    $maGiamGias = MaGiamGia::all(); 
-
-    // Trả về view với danh sách tất cả mã giảm giá
-    return view('admins.maGiamGias.index', compact('maGiamGias'));
-}
+    {
+        $maGiamGias = MaGiamGia::all();
+        return view('admins.maGiamGias.index', compact('maGiamGias'));
+    }
 
     public function create()
     {
@@ -33,7 +31,7 @@ class MaGiamGiaController extends Controller
 
     public function edit($id)
     {
-        $maGiamGia = MaGiamGia::findOrFail($id); 
+        $maGiamGia = MaGiamGia::findOrFail($id);
         return view('admins.maGiamGias.edit', compact('maGiamGia'));
     }
 

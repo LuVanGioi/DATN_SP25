@@ -5,26 +5,17 @@
 @endsection
 
 @section('main')
-@php
-if ($soLuongGioHangClient <= 0):
-    abort(404, 'Dữ liệu không hợp lệ.' );
-    endif;
-
-    if (!Auth::check()) {
-    die('<script>location.href="/gio-hang"</script>');
-    }
-    @endphp
     <section class="page-section breadcrumbs">
-        <div class="container">
-            <div class="page-header">
-                <h1>Thanh Toán</h1>
-            </div>
-            <ul class="breadcrumb">
-                <li><a href="/">Trang Chủ</a></li>
-                <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
-                <li class="active">Thanh Toán</li>
-            </ul>
+    <div class="container">
+        <div class="page-header">
+            <h1>Thanh Toán</h1>
         </div>
+        <ul class="breadcrumb">
+            <li><a href="/">Trang Chủ</a></li>
+            <li><a href="{{ route("gio-hang.index") }}">Giỏ Hàng</a></li>
+            <li class="active">Thanh Toán</li>
+        </ul>
+    </div>
     </section>
 
     <section class="page-section">
@@ -269,7 +260,7 @@ if ($soLuongGioHangClient <= 0):
                         <h3 class="block-title"><span>Mã Giảm Giá</span></h3>
                         <div class="form-group">
                             <input class="form-control" placeholder="Nhập Mã Giảm Giá" name="voucher"
-                                value="{{ old("voucher") }}">
+                                value="{{ old("voucher") }}" onchange="checkVoucher(this)">
                             @if(session('voucher_error'))
                             <small class="text-danger">{{ session('voucher_error') }}</small>
                             @endif
@@ -282,8 +273,8 @@ if ($soLuongGioHangClient <= 0):
                         <br>
                         <h3 class="block-title"><span>Phương Thức Thanh Toán</span></h3>
                         <ul class="list-method-payment">
-                            <li class="item-method active" onclick="chonPhuongThucThanhToan('shipCod')" id="shipCod-button">
-                                <label for="shipCod">
+                            <li>
+                                <label for="shipCod" class="item-method active" onclick="chonPhuongThucThanhToan('shipCod')" id="shipCod-button">
                                     <img src="/clients/images/LOGO/cod.png"
                                         alt="">
                                     <input type="radio" id="shipCod" name="method" value="COD" checked>
@@ -291,22 +282,22 @@ if ($soLuongGioHangClient <= 0):
                                 <span>Thanh Toán Khi Nhận Hàng</span>
                             </li>
 
-                            <li class="item-method" onclick="chonPhuongThucThanhToan('banking')" id="banking-button">
-                                <label for="banking">
+                            <li>
+                                <label for="banking" class="item-method" onclick="chonPhuongThucThanhToan('banking')" id="banking-button">
                                     <img src="/clients/images/LOGO/banking.webp" alt="">
                                     <input type="radio" id="banking" name="method" value="Banking">
                                 </label>
                                 <span>Thanh Toán Ngân Hàng</span>
                             </li>
 
-                            <li class="item-method" onclick="chonPhuongThucThanhToan('momo')" id="momo-button">
+                            <!-- <li class="item-method" onclick="chonPhuongThucThanhToan('momo')" id="momo-button">
                                 <label for="momo">
                                     <img src="/clients/images/LOGO/momo.webp"
                                         alt="">
                                     <input type="radio" id="momo" name="method" value="Momo">
                                 </label>
                                 <span>Thanh Toán Ví Momo</span>
-                            </li>
+                            </li> -->
                         </ul>
                         <br>
                         <h3 class="block-title"><span>Chi Tiết Thanh Toán</span></h3>
@@ -324,12 +315,12 @@ if ($soLuongGioHangClient <= 0):
                                 </tr>
                                 <tr>
                                     <td style="text-align: start">Giảm Giá Tiền Hàng:</td>
-                                    <td style="text-align: end; font-weight: bold">{{ number_format($giamGia) }} VND</td>
+                                    <td style="text-align: end; font-weight: bold" id="discountForm">0 VND</td>
                                 </tr>
                                 <tfoot>
                                     <tr>
                                         <td colspan="2" style="padding: 5px 0px; margin: 0px">Tổng Thanh Toán:
-                                            {{ number_format($tongTienSauGiam) }} VND
+                                            <span id="total_price">{{ number_format($tongTienSauGiam) }}</span> VND
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -348,6 +339,47 @@ if ($soLuongGioHangClient <= 0):
 
     @section("js")
     <script>
+        function checkVoucher(e) {
+            let selectedCartIds = getSelectedCartIds();
+
+            localStorage.setItem('list_id_cart', JSON.stringify(selectedCartIds));
+
+            var voucher = e.value;
+
+            if (voucher || voucher !== null) {
+                fetch("<?= route('api.client'); ?>", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            type: "check_voucher",
+                            voucher: voucher,
+                            cart_id_list: selectedCartIds
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            document.getElementById("discountForm").innerHTML = data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+                            document.getElementById("total_price").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+                            AlertDATN("success", data.message);
+                        } else {
+                            AlertDATN("error", data.message);
+                            document.getElementById("discountForm").innerHTML = "0 VND";
+                        }
+                    })
+                    .catch(error => {
+                        AlertDATN("error", "Đã xảy ra lỗi, vui lòng thử lại.");
+                    });
+            }
+        }
+
+        function getSelectedCartIds() {
+            return JSON.parse(localStorage.getItem('list_id_cart')) || [];
+        }
+
         function disableEditMode(id) {
             document.getElementById(`edit-${id}`).classList.remove('active');
             document.getElementById(`view-${id}`).style.display = 'flex';

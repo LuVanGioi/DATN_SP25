@@ -45,19 +45,19 @@
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
-    
+
                             <div class="mb-3">
-                                <label for="min_value">Giá Trị Tối Thiểu (VNĐ)</label>
-                                <input class="form-control @error('min_value') is-invalid border-danger @enderror" type="number" id="min_value" name="min_value" placeholder="Giá Trị Tối Thiểu" value="{{ old('min_value', $maGiamGia->min_value) }}" required>
-                                @error('min_value')
+                                <label for="max_value">Giá Trị Giảm Giá Tối Đa</label>
+                                <input class="form-control @error('max_value') is-invalid border-danger @enderror" type="number" id="max_value" name="max_value" placeholder="Giá Trị Giảm Giá Tối Đa" value="{{ old('max_value', $maGiamGia->max_value) }}" required>
+                                @error('max_value')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
     
                             <div class="mb-3">
-                                <label for="max_value">Giá Trị Tối Đa (VNĐ)</label>
-                                <input class="form-control @error('max_value') is-invalid border-danger @enderror" type="number" id="max_value" name="max_value" placeholder="Giá Trị Tối Đa" value="{{ old('max_value', $maGiamGia->max_value) }}" required>
-                                @error('max_value')
+                                <label for="min_value">Giá Trị Đơn Hàng Tối Thiểu (VNĐ)</label>
+                                <input class="form-control @error('min_value') is-invalid border-danger @enderror" type="number" id="min_value" name="min_value" placeholder="Giá Trị Đơn Hàng Tối Thiểu" value="{{ old('min_value', $maGiamGia->min_value) }}" required>
+                                @error('min_value')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
