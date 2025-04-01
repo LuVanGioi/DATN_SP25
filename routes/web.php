@@ -133,6 +133,7 @@ Route::get('faq', function () {
 
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");
 Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
+Route::get('/bai-viet/{id}', [BangTinController::class, 'show'])->name('news.show');
 
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {
