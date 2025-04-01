@@ -44,6 +44,7 @@ use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
+use App\Http\Controllers\clients\LichSuDonHangController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
@@ -82,9 +83,6 @@ Route::get('payment/success/{trading}', [payController::class, 'payment_success'
 Route::get('payos/cancel', [PayOSController::class, 'cancel'])->name('payos.cancel');
 
 
-
-
-
 Route::get('momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
 Route::post('momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');
 
@@ -108,15 +106,22 @@ Route::post('/thong-tin-tai-khoan/update', [ClientsAuthController::class, 'updat
     ->middleware('auth')
     ->name('update-profile');
 
-Route::get('/doi-mat-khau', function () {
-    return view('clients.ThongTinTaiKhoan.DoiMatKhau');
-});
-Route::get('/so-dia-chi', function () {
-    return view('clients.ThongTinTaiKhoan.DiaChi');
-});
-Route::get('/lich-su-don-hang', function () {
-    return view('clients.ThongTinTaiKhoan.LichSuDonHang');
-});
+
+
+Route::get('thong-tin-tai-khoan/edit/{id}', [ThongTinTaiKhoanController::class, 'edit'])->name('thong-tin-tai-khoan.edit');
+Route::put('thong-tin-tai-khoan/update/{id}', [ThongTinTaiKhoanController::class, 'update'])->name('thong-tin-tai-khoan.update');
+
+Route::get('doi-mat-khau', [DoiMatKhauController::class, 'index'])->name('doi-mat-khau');
+Route::get('doi-mat-khau/edit/{id}', [DoiMatKhauController::class, 'edit'])->name('doi-mat-khau.edit');
+Route::put('doi-mat-khau/update/{id}', [DoiMatKhauController::class, 'update'])->name('doi-mat-khau.update');
+
+
+Route::resource('lich-su-don-hang', LichSuDonHangController::class);
+
+
+
+
+
 
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
@@ -165,6 +170,5 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
-
 });
 Route::post("client", [clientController::class, "get_all"])->name("api.client");

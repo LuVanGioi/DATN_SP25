@@ -14,7 +14,7 @@ class DoiMatKhauController extends Controller
      */
     public function index()
     {
-        //
+        return view('clients.ThongTinTaiKhoan.DoiMatKhau');
     }
 
     /**
