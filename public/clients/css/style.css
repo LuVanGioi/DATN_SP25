@@ -783,6 +783,7 @@ select {
     background: white;
     width: 280px;
     display: none;
+    box-shadow: 0px 0px 5px black;
 }
 
 .form-contact-DATN > .form-chat.show {
@@ -830,6 +831,7 @@ select {
     justify-content: flex-end;
     padding: 10px;
     border-bottom: 1px solid black;
+    flex-direction: column-reverse;
 }
 
 .form-contact-DATN > .form-chat > .content-chat::-webkit-scrollbar {
