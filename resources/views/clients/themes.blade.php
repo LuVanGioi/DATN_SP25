@@ -82,7 +82,43 @@
         <footer class="footer">
             @include("clients.Block.foot")
         </footer>
-        <div id="to-top" class="to-top"><i class="fas fa-angle-up"></i></div>
+        <!-- <div id="to-top" class="to-top"><i class="fas fa-angle-up"></i></div> -->
+
+        <div class="form-contact-DATN">
+            <div class="form-chat" id="form-chat">
+                <div class="header-chat">
+                    <div>
+                        <img src="/clients/images/LOGO/favicon.png" alt="">
+                    </div>
+                    <div>
+                        <span>Hỗ Trợ Khách Hàng</span>
+                        <span>Online</span>
+                    </div>
+                </div>
+                <div class="content-chat"></div>
+                <div class="list-image-chat" style="display: none;"></div>
+                <div class="button-chat">
+                    <span>
+                        <label for="images-chat">
+                            <img src="/clients/images/icon/image-add.png" alt="">
+                            <input type="file" class="d-none" name="images_chat" id="images-chat" multiple>
+                        </label>
+                    </span>
+                    <span><input type="text" placeholder="Nhập Nội Dung" id="content-chat"></span>
+                    <span>
+                        <button onclick="guiTinNhan(this)">Gửi</button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="button-chat-contact" onclick="viewFormChat()">
+                <span>
+                    <img src="/clients/images/icon/contact.gif" alt="">
+                </span>
+                <span>Tư Vấn Khách Hàng</span>
+            </div>
+        </div>
+
 
         <div id="alertContainer"></div>
     </div>
@@ -100,9 +136,213 @@
     <script src="/clients/js/theme.js"></script>
     <script src="/clients/js/jquery.cookie.js"></script>
     <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
-    
+
     <script>
-        
+        setInterval(getTinNhan, 2000);
+
+        function getTinNhan() {
+            const contentChat = document.querySelector('.content-chat');
+            const formData = new FormData();
+            formData.append('_token', "{{ csrf_token() }}");
+            formData.append('type', 'get_chat_user');
+            $.ajax({
+                url: "<?= route('api.client'); ?>",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.status === "success") {
+                        contentChat.innerHTML = "";
+                        if (data.message !== "ok") {
+                            data.data.forEach(message => {
+                                const newMessage = document.createElement('div');
+                                newMessage.classList.add('item-chat', message.user === 'my' ? 'user' : 'system');
+
+                                let messageHTML = message.content ? `<span class="content-item">${message.content}</span>` : '';
+                                if (message.images) {
+                                    let imageList = JSON.parse(message.images);
+                                    if (Array.isArray(imageList)) {
+                                        imageList.forEach(imageUrl => {
+                                            messageHTML += `<img src="${imageUrl}" alt="Ảnh" style="max-width: 100px; margin-top: 5px;">`;
+                                        });
+                                    }
+                                }
+
+                                let formattedTime = "";
+                                if (message.time) {
+                                    const messageTime = new Date(message.time);
+                                    if (!isNaN(messageTime.getTime())) {
+                                        formattedTime = messageTime.toLocaleTimeString("vi-VN", {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) +
+                                            " " +
+                                            messageTime.toLocaleDateString("vi-VN");
+                                    } else {
+                                        console.error("Lỗi chuyển đổi thời gian:", message.time);
+                                    }
+                                }
+
+                                messageHTML += `<span class="time-item">${formattedTime}</span>`;
+                                newMessage.innerHTML = messageHTML;
+
+                                contentChat.appendChild(newMessage);
+                                scrollToBottom();
+                            });
+                        }
+                    } else {
+                        AlertDATN("error", data.message);
+                    }
+
+                },
+                error: function(error) {
+                    let errorMessage = "Có lỗi xảy ra!";
+                    if (error.responseJSON && error.responseJSON.message) {
+                        errorMessage = error.responseJSON.message;
+                    }
+                    AlertDATN(errorMessage);
+                }
+            });
+        }
+
+        let selectedFiles = [];
+        document.getElementById('images-chat').addEventListener('change', function(event) {
+            const files = Array.from(event.target.files);
+            selectedFiles = [...files];
+            displayImages(selectedFiles);
+        });
+
+        function displayImages(files) {
+            const listImageChat = document.querySelector('.list-image-chat');
+            listImageChat.innerHTML = '';
+
+            if (files.length === 0) {
+                listImageChat.style.display = 'none';
+            } else {
+                listImageChat.style.display = "flex";
+                files.forEach((file, index) => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            const span = document.createElement('span');
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = file.name;
+
+                            const removeBtn = document.createElement('span');
+                            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                            removeBtn.onclick = function() {
+                                selectedFiles.splice(index, 1);
+                                displayImages(selectedFiles);
+                                updateInputFiles();
+                            };
+
+                            span.appendChild(removeBtn);
+                            span.appendChild(img);
+                            listImageChat.appendChild(span);
+                        };
+
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        }
+
+        function updateInputFiles() {
+            const input = document.getElementById('images-chat');
+            const dataTransfer = new DataTransfer();
+
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+
+            input.files = dataTransfer.files;
+        }
+
+        function viewFormChat() {
+            var formChat = document.getElementById("form-chat");
+            if (formChat.classList.contains("show")) {
+                formChat.classList.remove("show");
+            } else {
+                formChat.classList.add("show");
+            }
+        }
+
+        function scrollToBottom() {
+            const contentChat = document.querySelector('.content-chat');
+            contentChat.scrollTop = contentChat.scrollHeight;
+        }
+
+        function viewFormChat() {
+            var formChat = document.getElementById("form-chat");
+
+            if (formChat.classList.contains("show")) {
+                formChat.classList.remove("show");
+            } else {
+                formChat.classList.add("show");
+                scrollToBottom();
+            }
+        }
+
+        function guiTinNhan(button) {
+            const contentChat = document.querySelector('.content-chat');
+            const content = document.getElementById('content-chat').value;
+            const imageInput = document.getElementById('images-chat');
+            const files = selectedFiles;
+            const originalText = button.innerHTML;
+            button.innerHTML = "...";
+
+            if (content.trim() === '' && files.length === 0) return;
+
+            const formData = new FormData();
+            formData.append('_token', "{{ csrf_token() }}");
+            formData.append('type', 'chat_support');
+            formData.append('content', content);
+
+            files.forEach(file => {
+                formData.append('images[]', file);
+            });
+
+            $.ajax({
+                url: "<?= route('api.client'); ?>",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.status === "success") {
+                        document.getElementById('content-chat').value = '';
+                        selectedFiles = [];
+                        imageInput.value = '';
+                        displayImages(selectedFiles);
+                        scrollToBottom();
+
+                        getTinNhan();
+
+                        button.disabled = false;
+                    } else {
+                        AlertDATN("error", data.message);
+                    }
+                },
+                error: function(error) {
+                    let errorMessage = "Có lỗi xảy ra!";
+                    if (error.responseJSON && error.responseJSON.message) {
+                        errorMessage = error.responseJSON.message;
+                    }
+                    AlertDATN(errorMessage);
+                },
+                complete: function() {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            scrollToBottom();
+        });
 
         window.gtranslateSettings = {
             "default_language": "vi",

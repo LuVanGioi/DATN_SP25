@@ -71,7 +71,6 @@
 
 <section class="page-section">
     <div class="container">
-
         <div class="tabs">
             <ul id="tabs" class="nav nav-justified-off">
                 <li class=""><a href="#ban-chay" data-toggle="tab">Bán chạy</a></li>

@@ -31,7 +31,7 @@
         @error("id_product")
         <div class="alert alert-danger mb-2">{{ $message }}</div>
         @enderror
-        <div class="row orders">
+        <div class="row orders mt-2">
             <div class="col-md-7">
                 <h3 class="block-title"><span>Sản Phẩm</span></h3>
                 <ul class="list-product-payment">
@@ -324,6 +324,11 @@
                                 </tr>
                             </tfoot>
                         </table>
+                    </div>
+                    <div class="termsAndServices">
+                        <label for="termsAndServices">
+                            <input type="checkbox" id="termsAndServices" name="termsAndServices" value="on" required> <span>Chấp Nhận <a href="/url/dieu-khoan-va-dich-vu" target="_blank">Điều Khoản Và Dịch Vụ</a></span>
+                        </label>
                     </div>
                     <div class="text-end mt-3">
                         <button type="submit" class="btn btn-theme btn-theme-dark" @if (!Auth::check()) disabled

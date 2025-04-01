@@ -24,13 +24,17 @@ $("form[submit-ajax=true]").on("submit", function (e) {
         data: form.serialize(),
         dataType: "json",
         success: function (response) {
-            AlertDATN(response.status, response.message);
-            if (response.redirect) {
-                setTimeout(function () {
-                    if(swal_success !== "none") {
+            if (response.status == "success") {
+                if (swal_success !== "none") {
+                    AlertDATN(response.status, response.message);
+                }
+                if (response.redirect) {
+                    setTimeout(function () {
                         window.location.href = response.redirect;
-                    }
-                }, time_load);
+                    }, time_load);
+                }
+            } else {
+                AlertDATN("error", response.message);
             }
         },
         error: function (xhr) {
@@ -38,7 +42,7 @@ $("form[submit-ajax=true]").on("submit", function (e) {
             if (xhr.responseJSON && xhr.responseJSON.message) {
                 errorMsg = xhr.responseJSON.message;
             }
-            
+
             AlertDATN("error", errorMsg);
         },
         complete: function () {
