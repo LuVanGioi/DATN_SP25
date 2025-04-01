@@ -222,7 +222,7 @@ class payController extends Controller
                 if ($thongTinBienThe->SoLuong >= 1):
                     DB::table("san_pham_don_hang")->insert([
                         "MaDonHang" => $trading,
-                        "Id_SanPham" => $cart->id,
+                        "Id_SanPham" => $cart->ID_SanPham,
                         "KichCo" => $cart->KichCo,
                         "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
                         "GiaTien" => DB::table("san_pham")->where("id", $cart->ID_SanPham)->first()->GiaSanPham,
@@ -320,7 +320,7 @@ class payController extends Controller
                     if ($thongTinBienThe->SoLuong >= 1):
                         DB::table("san_pham_don_hang")->insert([
                             "MaDonHang" => $trading,
-                            "Id_SanPham" => $cart->id,
+                            "Id_SanPham" => $cart->ID_SanPham,
                             "KichCo" => $cart->KichCo,
                             "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
                             "GiaTien" => DB::table("san_pham")->where("id", $cart->ID_SanPham)->first()->GiaSanPham,
