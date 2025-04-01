@@ -37,8 +37,8 @@
                                     <th>Tên Mã</th>
                                     <th>Số Lượng</th>
                                     <th>Giá Trị</th>
-                                    <th>Giá Trị Tối Thiểu</th>
-                                    <th>Giá Trị Tối Đa</th>
+                                    <th>Giá Trị Đơn Hàng Tối Thiểu</th>
+                                    <th>Giá Trị Giảm Giá Tối Thiểu </th>
                                     <th>Điều Kiện</th>
                                     <th>Ngày Bắt Đầu</th>
                                     <th>Ngày Kết Thúc</th>
@@ -53,8 +53,8 @@
                                     <td>{{ $maGiamGia['name'] }}</td>
                                     <td>{{ $maGiamGia['quantity'] }}</td>
                                     <td>{{ $maGiamGia['value'] }}%</td>
-                                    <td>{{ $maGiamGia['min_value'] }} VNĐ</td>
                                     <td>{{ $maGiamGia['max_value'] }} VNĐ</td>
+                                    <td>{{ $maGiamGia['min_value'] }} VNĐ</td>
                                     <td>{{ $maGiamGia['condition'] }}</td>
                                     <td>{{ $maGiamGia['start_date'] }}</td>
                                     <td>{{ $maGiamGia['end_date'] }}</td>
