@@ -288,10 +288,25 @@
 
 @section("js")
 <script>
-    $(document).ready(function() {
+    document.addEventListener("DOMContentLoaded", function() {
         setInterval(function() {
-            $("#cart-count").load(location.href + " #cart-count");
-            $("#list-product-header").load(location.href + " #list-product-header")
+            fetch(location.href)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+
+                    const newCartCount = doc.querySelector("#cart-count");
+                    if (newCartCount) {
+                        document.getElementById("cart-count").innerHTML = newCartCount.innerHTML;
+                    }
+
+                    const newListHeader = doc.querySelector("#list-product-header");
+                    if (newListHeader) {
+                        document.getElementById("list-product-header").innerHTML = newListHeader.innerHTML;
+                    }
+                })
+                .catch(error => console.log("Lỗi: ", error));
         }, 2000);
     });
 
