@@ -54,23 +54,17 @@
                                 </a>
                                 <h4><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ $gioHangClient->TenSanPham }}</a></h4>
                                 @if ($gioHangClient->soLuongBienThe <= 0)
-                                    <span class="text-danger">Sản Phẩm Đã Hết Hàng</span>
+                                    <span class="parameter-product-cart"><b class="text-danger">Sản Phẩm Đã Hết Hàng</b></span>
                                     @else
                                     <span class="parameter-product-cart">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</span>
                                     @endif
                             </td>
-                            <td>
-                                @if ($gioHangClient->soLuongBienThe >= 1)
+                            <td class="form-soLuong">
                                 <div class="form-quantity">
                                     <span class="btn-minus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-minus"></i></span>
                                     <input type="number" class="quantity-input" data-id="{{ $gioHangClient->cart_id }}" value="{{ $gioHangClient->SoLuong }}" min="1" readonly>
                                     <span class="btn-plus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-plus"></i></span>
                                 </div>
-                                @else
-                                <div style="font-size: 18px; font-weight: bold; color: black; align-items: center; padding-top: 10px">
-                                    <span>x{{ $gioHangClient->SoLuong }}</span>
-                                </div>
-                                @endif
                             </td>
                             <td class="quantity money" id="GiaSanPham_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->GiaSanPham) }} đ</td>
                             <td class="total" id="ThanhTien_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->ThanhTien) }}đ</td>
@@ -176,12 +170,26 @@
 <script>
     $(document).ready(function() {
         setInterval(function() {
-            $(".parameter-product-cart").each(function(index) {
-                var container = $(this);
-                $.get(location.href, function(data) {
-                    var newContent = $(data).find(".parameter-product-cart").eq(index).html();
+            $.get(location.href, function(data) {
+                var $data = $(data);
+
+                $(".parameter-product-cart").each(function(index) {
+                    var newContent = $data.find(".parameter-product-cart").eq(index).html();
                     if (newContent) {
-                        container.html(newContent);
+                        $(this).html(newContent);
+                    }
+                });
+
+                $(".inputSelectCart").each(function(index) {
+                    var newContent = $data.find(".inputSelectCart").eq(index);
+                    if (newContent) {
+                        var isActive = $(this).find(".checkbox-label").hasClass("active");
+
+                        $(this).html(newContent.html());
+
+                        if (isActive) {
+                            $(this).find(".checkbox-label").addClass("active");
+                        }
                     }
                 });
             });
@@ -273,9 +281,18 @@
                     quantity: quantity
                 },
                 success: function(data) {
-                    document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
-                    document.getElementById("total_amount_cart").innerHTML = data.total_cart.soLuongSP.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("total_money_cart").innerHTML = data.total_cart.tongTien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                    if (data.status == "success") {
+                        document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                        document.getElementById("total_amount_cart").innerHTML = data.total_cart.soLuongSP.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        document.getElementById("total_money_cart").innerHTML = data.total_cart.tongTien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                    } else {
+                        AlertDATN("error", data.message);
+                        let input = $(`.quantity-input[data-id='${id}']`);
+                        input.val(1);
+                        document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                        document.getElementById("total_amount_cart").innerHTML = data.total_cart.soLuongSP.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        document.getElementById("total_money_cart").innerHTML = data.total_cart.tongTien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                    }
                 },
                 error: function(error) {
                     let errorMessage = "Có lỗi xảy ra!";
