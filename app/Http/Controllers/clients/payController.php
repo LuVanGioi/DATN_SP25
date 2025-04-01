@@ -92,17 +92,22 @@ class payController extends Controller
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw("cart.id as cart_id, cart.soLuong as SoLuongSanPham, cart.*, bien_the_san_pham.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
+            ->selectRaw("cart.id as cart_id, cart.soLuong as SoLuongSanPham, cart.*, bien_the_san_pham.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien")->get();
 
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("bien_the_san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                    ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                    ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+            })
             ->whereIn("cart.id", $selectedCartIds)
             ->where(function ($query) use ($userId) {
                 if ($userId) {
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
+            ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")->first();
 
         $tongTienSanPhamDaChon = $layGiaTienSanPham->tongTien ?? 0;
 
@@ -124,6 +129,11 @@ class payController extends Controller
 
         $sanPhamDaChon = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("bien_the_san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                    ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                    ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+            })
             ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
             ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
             ->whereIn("cart.id", $selectedCartIds)
@@ -132,19 +142,28 @@ class payController extends Controller
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
+            ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien")->get();
 
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("bien_the_san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                    ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                    ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+            })
             ->whereIn("cart.id", $selectedCartIds)
             ->where(function ($query) use ($userId) {
                 if ($userId) {
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
+            ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")->first();
         $tongTienSanPhamDaChon = $layGiaTienSanPham->tongTien ?? 0;
         $tinhPhanTram = 0;
+
+        if (!$request->input("location")):
+            return redirect()->back()->with("error", "Vui Lòng Thêm Địa Chỉ Nhận Hàng");
+        endif;
 
         if ($request->input("voucher")):
             $discount = DB::table('magiamgia')->where('name', $request->input('voucher'))->first();
@@ -178,6 +197,9 @@ class payController extends Controller
 
         $trading = strtoupper(Str::random(8));
 
+        if (!$request->input('termsAndServices') || $request->input('termsAndServices') !== "on"):
+            return redirect()->back()->with("error", "Vui Lòng Chấp Nhận Điều Khoản Và Dịch Vụ");
+        endif;
         if ($request->input("method") == "COD"):
             DB::table("don_hang")->insert([
                 "orderCode" => time(),
@@ -194,18 +216,29 @@ class payController extends Controller
             ]);
 
             foreach ($sanPhamDaChon as $cart):
-                DB::table("san_pham_don_hang")->insert([
-                    "MaDonHang" => $trading,
-                    "Id_SanPham" => $cart->id,
-                    "KichCo" => $cart->KichCo,
-                    "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
-                    "GiaTien" => DB::table("san_pham")->where("id", $cart->ID_SanPham)->first()->GiaSanPham,
-                    "SoLuong" => $cart->SoLuong,
-                    "created_at" => date("Y-m-d H:i:s"),
-                ]);
-            endforeach;
+                $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
+                    ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
+                    ->where("KichCo", $cart->KichCo)->first();
+                if ($thongTinBienThe->SoLuong >= 1):
+                    DB::table("san_pham_don_hang")->insert([
+                        "MaDonHang" => $trading,
+                        "Id_SanPham" => $cart->id,
+                        "KichCo" => $cart->KichCo,
+                        "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
+                        "GiaTien" => DB::table("san_pham")->where("id", $cart->ID_SanPham)->first()->GiaSanPham,
+                        "SoLuong" => $cart->SoLuong,
+                        "created_at" => date("Y-m-d H:i:s"),
+                    ]);
 
-            DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
+                    DB::table("bien_the_san_pham")
+                        ->where("ID_SanPham", $cart->ID_SanPham)
+                        ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
+                        ->where("KichCo", $cart->KichCo)
+                        ->update([
+                            "SoLuong" => $thongTinBienThe->SoLuong - $cart->SoLuong
+                        ]);
+                endif;
+            endforeach;
 
             if ($request->input("voucher")):
                 DB::table("su_dung_ma_giam_gia")->insert([
@@ -214,6 +247,8 @@ class payController extends Controller
                     "created_at" => date("Y-m-d H:i:s"),
                 ]);
             endif;
+
+            DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
 
             DB::commit();
 
@@ -278,18 +313,30 @@ class payController extends Controller
                 ]);
 
                 foreach ($sanPhamDaChon as $cart):
-                    DB::table("san_pham_don_hang")->insert([
-                        "MaDonHang" => $trading,
-                        "Id_SanPham" => $cart->id,
-                        "KichCo" => $cart->KichCo,
-                        "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
-                        "GiaTien" => DB::table("san_pham")->where("id", $cart->ID_SanPham)->first()->GiaSanPham,
-                        "SoLuong" => $cart->SoLuong,
-                        "created_at" => date("Y-m-d H:i:s"),
-                    ]);
-                endforeach;
+                    $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
+                        ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
+                        ->where("KichCo", $cart->KichCo)->first();
 
-                DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
+                    if ($thongTinBienThe->SoLuong >= 1):
+                        DB::table("san_pham_don_hang")->insert([
+                            "MaDonHang" => $trading,
+                            "Id_SanPham" => $cart->id,
+                            "KichCo" => $cart->KichCo,
+                            "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
+                            "GiaTien" => DB::table("san_pham")->where("id", $cart->ID_SanPham)->first()->GiaSanPham,
+                            "SoLuong" => $cart->SoLuong,
+                            "created_at" => date("Y-m-d H:i:s"),
+                        ]);
+
+                        DB::table("bien_the_san_pham")
+                            ->where("ID_SanPham", $cart->ID_SanPham)
+                            ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
+                            ->where("KichCo", $cart->KichCo)
+                            ->update([
+                                "SoLuong" => $thongTinBienThe->SoLuong - $cart->SoLuong
+                            ]);
+                    endif;
+                endforeach;
 
                 if ($request->input("voucher")):
                     DB::table("su_dung_ma_giam_gia")->insert([
@@ -298,6 +345,8 @@ class payController extends Controller
                         "created_at" => date("Y-m-d H:i:s"),
                     ]);
                 endif;
+
+                DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
 
                 DB::commit();
 
