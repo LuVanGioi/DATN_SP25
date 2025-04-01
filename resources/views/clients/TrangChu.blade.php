@@ -13,7 +13,7 @@
             <div class="owl-carousel" id="main-slider">
                 @foreach ($tatCaBanner as $Banner)
                 <div class="item slide1">
-                    <a href="<?=$Banner->TenBanner;?>"><img class="slide-img" src="{{ Storage::url($Banner->HinhAnh) }}" alt=""></a>
+                    <a href="<?= $Banner->TenBanner; ?>"><img class="slide-img" src="{{ Storage::url($Banner->HinhAnh) }}" alt=""></a>
                 </div>
                 @endforeach
             </div>
@@ -73,62 +73,17 @@
     <div class="container">
         <div class="tabs">
             <ul id="tabs" class="nav nav-justified-off">
-                <li class=""><a href="#ban-chay" data-toggle="tab">Bán chạy</a></li>
-                <li class="active"><a href="#tat-ca" data-toggle="tab">Tất cả</a></li>
-                <li class=""><a href="#giam-gia" data-toggle="tab">Giảm giá</a></li>
+                <li class="active"><a href="#tat-ca" data-toggle="tab">Danh Sách Sản Phẩm</a></li>
             </ul>
         </div>
 
         <div class="tab-content">
-
-            <div class="tab-pane fade" id="ban-chay">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6">
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" href="/san-pham/">
-                                    <img src="https://www.sport9.vn/images/thumbs/002/0021481_bo-quan-ao-bong-da-doi-tuyen-quoc-gia-duc-mau-xam.jpeg?preset=large&watermark=default" alt="">
-                                </a>
-                                <span class="ribbons hot-sale">Flash Sale</span>
-                            </div>
-                            <div class="caption text-center">
-
-                                <h4 class="caption-title">
-                                    <a href="/san-pham/">Áo Bóng Đá Nam Thương Hiệu Adidas, Chất Liệu Da Cá
-                                        Sấu Siêu Vip, Hết Từ Để Tả</a>
-                                </h4>
-                                <div class="categoris-product">
-                                    <a href="">Quần áo nam</a>
-                                    <a href="">Adidas</a>
-                                    <a href="">Da Cá Sấu</a>
-                                </div>
-                                <div class="price"><ins>550.000đ</ins> <del>610.000đ</del></div>
-
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank">
-                                        <i class="fa fa-share"></i>
-                                    </a>
-
-                                    <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                        <form action="" method="POST">
-                                            <input type="hidden" name="id_product" value="1">
-                                            <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                        </form>
-                                    </a>
-                                    <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                        href="/san-pham/">
-                                        <i class="fa fa-circle-info"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="tab-pane fade active in" id="tat-ca">
                 <div class="row">
                     @foreach ($tatCaSanPham as $sanPham)
+                    @php
+                    $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
+                    @endphp
                     <div class="col-md-3 col-sm-3">
                         <div class="thumbnail product-item">
                             <div class="media">
@@ -139,66 +94,21 @@
                                 <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
                                 @endif
                                 <div class="title-time">
-                                    {{ date("d.m") }}
+                                    {{ $sanPham->ChatLieu }}
                                 </div>
                             </div>
                             <div class="caption text-center">
                                 <h4 class="caption-title">
                                     <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
                                 </h4>
-                                <div class="price">
+                                <div class="price" style="align-items: center; margin-top: 10px">
                                     <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
-                                    <span>Đã bán 54,3k</span>
+                                    <span>Đã bán {{ soGon($luotMua) }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     @endforeach
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="giam-gia">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6">
-                        <div class="thumbnail no-border no-padding">
-                            <div class="media">
-                                <a class="media-link" href="/san-pham/">
-                                    <img src="https://www.sport9.vn/images/thumbs/002/0021481_bo-quan-ao-bong-da-doi-tuyen-quoc-gia-duc-mau-xam.jpeg?preset=large&watermark=default" alt="">
-                                </a>
-                                <span class="ribbons hot-sale">Flash Sale</span>
-                            </div>
-                            <div class="caption text-center">
-
-                                <h4 class="caption-title">
-                                    <a href="/san-pham/">Áo Bóng Đá Nam Thương Hiệu Adidas, Chất Liệu Da Cá
-                                        Sấu Siêu Vip, Hết Từ Để Tả</a>
-                                </h4>
-                                <div class="categoris-product">
-                                    <a href="">Quần áo nam</a>
-                                    <a href="">Adidas</a>
-                                    <a href="">Da Cá Sấu</a>
-                                </div>
-                                <div class="price"><ins>550.000đ</ins> <del>610.000đ</del></div>
-
-                                <div class="buttons">
-                                    <a class="btn btn-theme btn-theme-transparent btn-wish-list" href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank">
-                                        <i class="fa fa-share"></i>
-                                    </a>
-
-                                    <a class="btn btn-theme btn-theme-transparent btn-icon-left">
-                                        <form action="" method="POST">
-                                            <input type="hidden" name="id_product" value="1">
-                                            <button type="submit" class="btn-none"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                        </form>
-                                    </a>
-                                    <a class="btn btn-theme btn-theme-transparent btn-compare"
-                                        href="/san-pham/">
-                                        <i class="fa fa-circle-info"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

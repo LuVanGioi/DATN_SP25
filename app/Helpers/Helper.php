@@ -76,7 +76,6 @@ if (!function_exists('nhan')) {
     if (!function_exists('trangthai')) {
         function trangThaiDonHang($trangthai)
         {
-        
             if ($trangthai == 'choxacnhan')
                 return '<span class="badge bg-warning">Chờ Xác Nhận</span>';
             else if ($trangthai == 'daxacnhan')
@@ -100,6 +99,20 @@ if (!function_exists('nhan')) {
             else {
                 return '<span class="badge bg-info">Khác</span>';
             }
+        }
+    }
+
+    if (!function_exists('soGon')) {
+        function soGon($number)
+        {
+            if ($number >= 1000000000) {
+                return round($number / 1000000000, 1) . "B";
+            } elseif ($number >= 1000000) {
+                return round($number / 1000000, 1) . "M";
+            } elseif ($number >= 1000) {
+                return round($number / 1000, 1) . "K";
+            }
+            return $number;
         }
     }
 }
