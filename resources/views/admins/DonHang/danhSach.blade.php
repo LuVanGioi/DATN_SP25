@@ -20,7 +20,7 @@
                                         <th>#</th>
                                         <th>Mã Đơn Hàng</th>
                                         <th>Sản Phẩm</th>
-                                        <th>Trạng thái</th>
+                                        <th>Trạng Thái</th>
                                         <th>Phương Thức Thanh Toán</th>
                                         <th>Thao Tác</th>
                                     </tr>
@@ -31,20 +31,10 @@
                                         <td>{{$item->id}}</td>
                                         <td>{{$item->MaDonHang}}</td>
                                         <td>{{$item->TenSanPham}}</td>
-                                        <td>
-                                            <select name="" class="form-control">
-                                                <option value="">Chờ Xác Nhận</option>
-                                                <option value="">Đã Xác Nhận</option>
-                                                <option value="">Đang Giao Hàng</option>
-                                                <option value="">Đã Giao Hàng</option>
-                                                <option value="">Giao Thất Bại</option>
-                                                <option value="">Đã Hủy</option>
-                                                <option value="">Hoàn Hàng</option>
-                                            </select>
-                                        </td>
+                                        <td><?=trangThaiDonHang($item->TrangThai); ?></td>
                                         <td>{{$item->PhuongThucThanhToan}}</td>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', 1234) }}">Xem Chi Tiết</a>
+                                            <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', $item->MaDonHang) }}">Xem Chi Tiết</a>
                                         </td>
                                     </tr>
                                   @endforeach
@@ -52,7 +42,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div>  
                 </div>
             </div>
         </div>

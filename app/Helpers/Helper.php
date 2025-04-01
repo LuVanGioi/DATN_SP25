@@ -50,24 +50,56 @@ if (!function_exists('xoadau1')) {
     }
 }
 
+
 if (!function_exists('nhan')) {
-    function nhan($nhan) {
-        if($nhan == "hot") {
+    function nhan($nhan)
+    {
+        if ($nhan == "hot") {
             return "HOT";
-        } else if($nhan == "sale") {
+        } else if ($nhan == "sale") {
             return "Giảm Giá";
-        } else if($nhan == "new") {
+        } else if ($nhan == "new") {
             return "Sản Phẩm Mới";
-        } else if($nhan == "featured") {
+        } else if ($nhan == "featured") {
             return "Nổi Bật";
-        } else if($nhan == "clearance") {
+        } else if ($nhan == "clearance") {
             return "Xả Kho";
-        } else if($nhan == "limited") {
+        } else if ($nhan == "limited") {
             return "Bản Giới Hạn";
-        } else if($nhan == "discount") {
+        } else if ($nhan == "discount") {
             return "Ưu Đãi Đặc Biệt";
         } else {
             return "";
+        }
+    }
+
+    if (!function_exists('trangthai')) {
+        function trangThaiDonHang($trangthai)
+        {
+        
+            if ($trangthai == 'choxacnhan')
+                return '<span class="badge bg-warning">Chờ Xác Nhận</span>';
+            else if ($trangthai == 'daxacnhan')
+                return '<span class="badge bg-dark">Đã Xác Nhận</span>';
+            else if ($trangthai == 'danggiao')
+                return '<span class="badge bg-primary">Đang Giao</span>';
+            else if ($trangthai == 'huydon')
+                return '<span class="badge bg-danger">Hủy Đơn</span>';
+            else if ($trangthai == 'dagiao')
+                return '<span class="badge bg-success">Đã Giao</span>';
+            else if ($trangthai == 'thatbai')
+                return '<span class="badge bg-danger">Giao Thất Bại</span>';
+            else if ($trangthai == 'chuathanhtoan')
+                return '<span class="badge bg-warning">Chưa Thanh Toán</span>';
+            else if ($trangthai == 'dathanhtoan')
+                return '<span class="badge bg-success">Đã Thanh Toán</span>';
+            else if ($trangthai == 'huythanhtoan')
+                return '<span class="badge bg-danger">Đã Thanh Toán</span>';
+            else if ($trangthai == 'hoanhang')
+                return '<span class="badge bg-danger">Hoàn Hàng</span>';
+            else {
+                return '<span class="badge bg-info">Khác</span>';
+            }
         }
     }
 }
