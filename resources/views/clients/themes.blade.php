@@ -82,7 +82,63 @@
         <footer class="footer">
             @include("clients.Block.foot")
         </footer>
-        <div id="to-top" class="to-top"><i class="fas fa-angle-up"></i></div>
+        <!-- <div id="to-top" class="to-top"><i class="fas fa-angle-up"></i></div> -->
+
+        <div class="form-contact-DATN">
+            <div class="form-chat" id="form-chat">
+                <div class="header-chat">
+                    <div>
+                        <img src="/clients/images/LOGO/favicon.png" alt="">
+                    </div>
+                    <div>
+                        <span>Hỗ Trợ Khách Hàng</span>
+                        <span>Online</span>
+                    </div>
+                </div>
+                <div class="content-chat">
+                    <div class="item-chat system">
+                        <span class="content-item">Nội Dung Nè</span>
+                        <span class="time-item">15:13 01/04/2025</span>
+                    </div>
+
+                    <div class="item-chat user">
+                        <span class="content-item">Nội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung Nè</span>
+                        <span class="time-item">15:13 01/04/2025</span>
+                    </div>
+
+                    <div class="item-chat user">
+                        <span class="content-item">Nội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung NèNội Dung Nè</span>
+                        <span class="time-item">15:13 01/04/2025</span>
+                    </div>
+
+                    <div class="item-chat system">
+                        <span class="content-item">Nội Dung Nè</span>
+                        <span class="time-item">15:13 01/04/2025</span>
+                    </div>
+                </div>
+                <div class="list-image-chat" style="display: none;"></div>
+                <div class="button-chat">
+                    <span>
+                        <label for="images-chat">
+                            <img src="/clients/images/icon/image-add.png" alt="">
+                            <input type="file" class="d-none" name="images_chat" id="images-chat" multiple>
+                        </label>
+                    </span>
+                    <span><input type="text" placeholder="Nhập Nội Dung" id="content-chat"></span>
+                    <span>
+                        <button onclick="guiTinNhan()">Gửi</button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="button-chat-contact" onclick="viewFormChat()">
+                <span>
+                    <img src="/clients/images/icon/contact.gif" alt="">
+                </span>
+                <span>Tư Vấn Khách Hàng</span>
+            </div>
+        </div>
+
 
         <div id="alertContainer"></div>
     </div>
@@ -100,9 +156,87 @@
     <script src="/clients/js/theme.js"></script>
     <script src="/clients/js/jquery.cookie.js"></script>
     <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
-    
+
     <script>
-        
+        let selectedFiles = [];
+
+        document.getElementById('images-chat').addEventListener('change', function(event) {
+            const files = Array.from(event.target.files);
+            selectedFiles = [...files];
+            displayImages(selectedFiles);
+        });
+
+        function displayImages(files) {
+            const listImageChat = document.querySelector('.list-image-chat');
+            listImageChat.innerHTML = '';
+
+            if (files.length === 0) {
+                listImageChat.style.display = 'none';
+            } else {
+                listImageChat.style.display = "flex";
+                files.forEach((file, index) => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            const span = document.createElement('span');
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = file.name;
+
+                            const removeBtn = document.createElement('span');
+                            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                            removeBtn.onclick = function() {
+                                selectedFiles.splice(index, 1);
+                                displayImages(selectedFiles);
+                                updateInputFiles();
+                            };
+
+                            span.appendChild(removeBtn);
+                            span.appendChild(img);
+                            listImageChat.appendChild(span);
+                        };
+
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        }
+
+        function updateInputFiles() {
+            const input = document.getElementById('images-chat');
+            const dataTransfer = new DataTransfer();
+
+            selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+
+            input.files = dataTransfer.files;
+        }
+
+        function viewFormChat() {
+            var formChat = document.getElementById("form-chat");
+            if (formChat.classList.contains("show")) {
+                formChat.classList.remove("show");
+            } else {
+                formChat.classList.add("show");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const contentChat = document.querySelector('.form-contact-DATN > .form-chat > .content-chat');
+
+            function scrollToBottom() {
+                contentChat.scrollTop = contentChat.scrollHeight;
+            }
+
+            scrollToBottom();
+            const observer = new MutationObserver(scrollToBottom);
+            observer.observe(contentChat, {
+                childList: true,
+                subtree: true
+            });
+        });
 
         window.gtranslateSettings = {
             "default_language": "vi",

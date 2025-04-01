@@ -25,8 +25,13 @@ class clientController extends Controller
 
             $thongTinGioHang = DB::table('cart')
                 ->whereIn('cart.id', $cart_id_list)
+                ->join("bien_the_san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                        ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                        ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+                })
                 ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
-                ->selectRaw("SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
+                ->selectRaw("SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")
                 ->first();
             $tongTienSanPhamGioHangClient = $thongTinGioHang->tongTien ?? 0;
 
@@ -60,10 +65,15 @@ class clientController extends Controller
             }
 
             $thongTinGioHang = DB::table('cart')
-                    ->whereIn('cart.id', $cart_id_list)
-                    ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
-                    ->selectRaw("SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
-                    ->first();
+                ->whereIn('cart.id', $cart_id_list)
+                ->join("bien_the_san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                        ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                        ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+                })
+                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->selectRaw("SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")
+                ->first();
             $tongTienSanPhamDaChon = $thongTinGioHang->tongTien ?? 0;
 
             if ($request->input("voucher")):
@@ -118,22 +128,22 @@ class clientController extends Controller
                 $tinhPhanTram = ($tongTienSanPhamDaChon * $discount->value) / 100;
                 $tinhPhanTram = min($tinhPhanTram, $discount->max_value);
                 $tongGiaTien = max(0, ceil($tongTienSanPhamDaChon - $tinhPhanTram));
-            
 
-            return response()->json([
-                "status" => "success",
-                "message" => "Áp Dụng Mã Giảm Giá Thành Công!",
-                "discount" => $tinhPhanTram,
-                "total_price" => $tongGiaTien
-            ]);
-        else:
-            return response()->json([
-                "status" => "success",
-                "message" => "Hủy Bỏ Sử Dụng Mã Giảm Giá Thành Công!",
-                "discount" => 0,
-                "total_price" => $tongTienSanPhamDaChon
-            ]);
-        endif;
+
+                return response()->json([
+                    "status" => "success",
+                    "message" => "Áp Dụng Mã Giảm Giá Thành Công!",
+                    "discount" => $tinhPhanTram,
+                    "total_price" => $tongGiaTien
+                ]);
+            else:
+                return response()->json([
+                    "status" => "success",
+                    "message" => "Hủy Bỏ Sử Dụng Mã Giảm Giá Thành Công!",
+                    "discount" => 0,
+                    "total_price" => $tongTienSanPhamDaChon
+                ]);
+            endif;
         }
     }
 }

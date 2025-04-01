@@ -66,7 +66,7 @@
                                     <span class="btn-plus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-plus"></i></span>
                                 </div>
                             </td>
-                            <td class="quantity money" id="GiaSanPham_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->GiaSanPham) }} đ</td>
+                            <td class="quantity money" id="GiaSanPham_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->GiaSanPhamBienThe) }} đ</td>
                             <td class="total" id="ThanhTien_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->ThanhTien) }}đ</td>
                             <td class="total">
                                 <form action="{{ route("gio-hang.destroy", $gioHangClient->cart_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Khỏi Giỏ Hàng!')">

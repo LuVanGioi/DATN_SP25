@@ -52,8 +52,13 @@ class AppServiceProvider extends ServiceProvider
             $danhSachHuyen = DB::table("huyen")->select("ID_TinhThanh", "TenHuyen", "MaHuyen")->get();
             $layGiaTienSanPham = DB::table("cart")
                 ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->join("bien_the_san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                        ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                        ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+                })
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
-                ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
+                ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")
                 ->first();
             $soLuongGioHangClient = $layGiaTienSanPham->soLuongGioHangClient;
             $soLuongSPGioHangClient = $layGiaTienSanPham->soLuongSP ?? 0;
@@ -70,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
                 ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
                 ->select("bien_the_san_pham.SoLuong as soLuongBienThe")
-                ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")
+                ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien, bien_the_san_pham.Gia as GiaSanPhamBienThe")
                 ->get();
 
             $view->with('danhMucSanPham', $danhMucSanPham);
