@@ -44,6 +44,7 @@ use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
+use App\Http\Controllers\clients\DanhMucSanPhamController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
@@ -119,7 +120,7 @@ Route::put('doi-mat-khau/update/{id}', [DoiMatKhauController::class, 'update'])-
 Route::resource('lich-su-don-hang', LichSuDonHangController::class);
 
 
-
+Route::get('danh-muc/{code}',[DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
 
 
 

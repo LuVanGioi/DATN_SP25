@@ -3,33 +3,33 @@
         <div class="top-bar-left">
             <ul class="list-inline">
                 @if (Auth::check())
-                <li>
-                    <a href="{{ route("ThongTinTaiKhoan") }}"><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
-                </li>
-                <li>
-                    <form action="{{route('logout')}}" method="POST">
-                        @csrf
-                        <button class="btn-none"><i class="fas fa-sign-out-alt"></i>Đăng Xuất</button>
-                    </form>
-                </li>
-                @if (Auth::user()->role == "Admin")
-                <li>
-                    <a href="{{ route("home.index") }}"><i class="fas fa-cog"></i> Quản Trị Viên</a>
-                </li>
-                @endif
+                    <li>
+                        <a href="{{ route("ThongTinTaiKhoan") }}"><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
+                    </li>
+                    <li>
+                        <form action="{{route('logout')}}" method="POST">
+                            @csrf
+                            <button class="btn-none"><i class="fas fa-sign-out-alt"></i>Đăng Xuất</button>
+                        </form>
+                    </li>
+                    @if (Auth::user()->role == "Admin")
+                        <li>
+                            <a href="{{ route("home.index") }}"><i class="fas fa-cog"></i> Quản Trị Viên</a>
+                        </li>
+                    @endif
                 @else
-                <li class="icon-user">
-                    <a href="{{route('login')}}">
-                        <img src="/clients/images/icon-1.png" alt="">
-                        <span>Đăng Nhập</span>
+                    <li class="icon-user">
+                        <a href="{{route('login')}}">
+                            <img src="/clients/images/icon-1.png" alt="">
+                            <span>Đăng Nhập</span>
 
-                    </a>
-                </li>
-                <li class="icon-form">
-                    <a href="{{route('register')}}"><img src="/clients/images/icon-2.png" alt="">
-                        <span>Tạo tài khoản</span>
-                    </a>
-                </li>
+                        </a>
+                    </li>
+                    <li class="icon-form">
+                        <a href="{{route('register')}}"><img src="/clients/images/icon-2.png" alt="">
+                            <span>Tạo tài khoản</span>
+                        </a>
+                    </li>
 
                 @endif
 
@@ -55,7 +55,8 @@
         <div class="container">
 
             <div class="logo">
-                <a href="/"><img src="{{ Storage::url($caiDatWebsite->Logo_website) }}" alt="{{ $caiDatWebsite->TenCuaHang }}"></a>
+                <a href="/"><img src="{{ Storage::url($caiDatWebsite->Logo_website) }}"
+                        alt="{{ $caiDatWebsite->TenCuaHang }}"></a>
             </div>
 
             <div class="header-search">
@@ -68,8 +69,10 @@
                     <a href="/thong-tin-tai-khoan" class="btn btn-theme-transparent hidden-xs hidden-sm"><i
                             class="fa fa-user-circle"></i></a>
                     <a href="#" class="btn btn-theme-transparent" data-toggle="modal" data-target="#popup-cart"><i
-                            class="fa fa-shopping-cart"></i> <span class="hidden-xs" id="cart-count"> {{ number_format($soLuongGioHangClient) }}
-                            Sản phẩm - {{ number_format($tongTienSanPhamGioHangClient) }} đ </span> <i class="fa fa-angle-down"></i></a>
+                            class="fa fa-shopping-cart"></i> <span class="hidden-xs" id="cart-count">
+                            {{ number_format($soLuongGioHangClient) }}
+                            Sản phẩm - {{ number_format($tongTienSanPhamGioHangClient) }} đ </span> <i
+                            class="fa fa-angle-down"></i></a>
                     <a href="#" class="menu-toggle btn btn-theme-transparent"><i class="fa fa-bars"></i></a>
                 </div>
             </div>
@@ -82,15 +85,19 @@
 
                     <div class="cart-items-inner" id="list-product-header">
                         @foreach ($danhSachGioHangClient as $gioHangClient)
-                        <div class="media">
-                            <a class="pull-left" href="/san-pham/{{ $gioHangClient->DuongDan }}">
-                                <img class="media-object item-image" src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt=""></a>
-                            <p class="pull-right item-price">{{ number_format($gioHangClient->ThanhTien) }} đ</p>
-                            <div class="media-body">
-                                <h4 class="media-heading item-title"><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ number_format($gioHangClient->SoLuong) }} x {{ $gioHangClient->TenSanPham }}</a></h4>
-                                <p class="item-desc">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</p>
+                            <div class="media">
+                                <a class="pull-left" href="/san-pham/{{ $gioHangClient->DuongDan }}">
+                                    <img class="media-object item-image" src="{{ Storage::url($gioHangClient->HinhAnh) }}"
+                                        alt=""></a>
+                                <p class="pull-right item-price">{{ number_format($gioHangClient->ThanhTien) }} đ</p>
+                                <div class="media-body">
+                                    <h4 class="media-heading item-title"><a
+                                            href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ number_format($gioHangClient->SoLuong) }}
+                                            x {{ $gioHangClient->TenSanPham }}</a></h4>
+                                    <p class="item-desc">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
                         @endforeach
                         <div class="media">
                             <p class="pull-right item-price">{{ number_format($tongTienSanPhamGioHangClient) }} đ</p>
@@ -131,9 +138,10 @@
                         <a href="#">Danh mục</a>
                         <ul>
                             @foreach ($danhMucSanPham as $danhMucSP)
-                            <li><a
-                                    href="/danh-muc/{{ xoadau($danhMucSP->TenDanhMucSanPham) }}">{{ $danhMucSP->TenDanhMucSanPham }}</a>
-                            </li>
+                                <li>
+                                    <a
+                                        href="{{route('danh-muc.show', xoadau($danhMucSP->TenDanhMucSanPham))}}">{{ $danhMucSP->TenDanhMucSanPham }}</a>
+                                </li>
                             @endforeach
                         </ul>
                     </li>
