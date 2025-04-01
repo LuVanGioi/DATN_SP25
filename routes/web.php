@@ -10,9 +10,11 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Broadcast;
 use App\Http\Middleware\CheckRoleMiddleware;
 use App\Http\Controllers\admins\homeController;
+use App\Http\Controllers\apis\clientController;
 use App\Http\Controllers\clients\payController;
 use App\Http\Controllers\Methods\MomoController;
 use App\Http\Controllers\admins\BannerController;
+use App\Http\Controllers\Methods\PayOSController;
 use App\Http\Controllers\Methods\VnPayController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
@@ -45,7 +47,6 @@ use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
-use App\Http\Controllers\Methods\PayOSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +79,6 @@ Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
 Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
 
-
 Route::get('payos/cancel', [PayOSController::class, 'cancel'])->name('payos.cancel');
 
 
@@ -97,22 +97,8 @@ Route::post('quen-mat-khau', [ForgotPasswordController::class, 'sendMailResetPas
 Route::get('mat-khau-moi/{token}', [ForgotPasswordController::class, 'showFormResetPassword'])->name('reset-password');
 Route::post('mat-khau-moi', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
 
-Route::get('thong-tin-tai-khoan',[ThongTinTaiKhoanController::class, 'index'])->name('thong-tin-tai-khoan');
-Route::get('thong-tin-tai-khoan/edit/{id}', [ThongTinTaiKhoanController::class, 'edit'])->name('thong-tin-tai-khoan.edit');
-Route::put('thong-tin-tai-khoan/update/{id}', [ThongTinTaiKhoanController::class, 'update'])->name('thong-tin-tai-khoan.update');
-
-Route::get('doi-mat-khau',[DoiMatKhauController::class, 'index'])->name('doi-mat-khau');
-Route::get('doi-mat-khau/edit/{id}', [DoiMatKhauController::class, 'edit'])->name('doi-mat-khau.edit');
-Route::put('doi-mat-khau/update/{id}', [DoiMatKhauController::class, 'update'])->name('doi-mat-khau.update');
-
-
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
-
 Route::get('baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
-
-Route::get('chinh-sach-bao-hanh', function () {
-    return view('clients.BaoHanh.BaoHanh');
-});
 
 Route::get('/thong-tin-tai-khoan', [ClientsAuthController::class, 'getProfile'])
     ->middleware('auth')
@@ -122,9 +108,6 @@ Route::post('/thong-tin-tai-khoan/update', [ClientsAuthController::class, 'updat
     ->middleware('auth')
     ->name('update-profile');
 
-Route::get('/tai-khoan-cua-toi', function () {
-    return view('clients.ThongTinTaiKhoan.TaiKhoanCuaToi');
-});
 Route::get('/doi-mat-khau', function () {
     return view('clients.ThongTinTaiKhoan.DoiMatKhau');
 });
@@ -138,9 +121,11 @@ Route::get('/lich-su-don-hang', function () {
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
 });
+
 Route::get('/yeu-cau-tra-hang', function () {
     return view('clients.ThongTinTaiKhoan.YeuCauTraHang');
 });
+
 Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
 })->name("contact");
@@ -149,18 +134,13 @@ Route::get('faq', function () {
     return view('clients.Faq.Faq');
 })->name("faq");
 
-Route::get('/san-pham-yeu-thich', function () {
-    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
-});
-
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");
 Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
+Route::get('/bai-viet/{id}', [BangTinController::class, 'show'])->name('news.show');
 
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/thongKe', [homeController::class, "index"])->name('home.index');
-    Route::get('admin/ThungRac', [ThungRacController::class, "index"]);
-    Route::get('admin/ThungRac/{id}/restore', [ThungRacController::class, "restore"]);
     Route::resource('admin/KhachHang', KhachHangController::class);
     Route::resource('admin/SanPham', SanPhamController::class);
     Route::resource('admin/BaiViet', BaiVietController::class);
@@ -172,35 +152,19 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
     Route::resource('admin/DanhMuc', DanhMucController::class);
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
-    Route::resource('admin/BaiViet', BaiVietController::class);
-    Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
     Route::resource('admin/BinhLuanBaiViet', BinhLuanBaiVietController::class);
-    Route::resource('admin/ChatLieu', ChatLieuController::class);
-    Route::resource('admin/ThuongHieu', ThuongHieuController::class);
     Route::resource('admin/BienThe', BienTheController::class);
-    Route::resource('admin/BaiViet', BaiVietController::class);
     Route::resource('admin/Banner', BannerController::class);
 
     Route::resource('admin/DonHang', DonHangController::class);
 
 
     Route::get('admin/profile', [QuanLyAdminController::class, 'show'])->name('admin.profile');
-    Route::prefix('admin/maGiamGia')->group(function () {
-        Route::resource('maGiamGia', MaGiamGiaController::class)->names([
-            'index' => 'maGiamGias.index',
-            'create' => 'maGiamGias.create',
-            'store' => 'maGiamGias.store',
-            'edit' => 'maGiamGias.edit',
-            'update' => 'maGiamGias.update',
-            'destroy' => 'maGiamGias.destroy',
-        ]);
-    });
-    Route::resource('admin/DanhMucBaiViet', DanhMucBaiVietController::class);
-    Route::resource('admin/ChatLieu', ChatLieuController::class);
-    Route::resource('admin/ThuongHieu', ThuongHieuController::class);
+    Route::resource('admin/maGiamGias', MaGiamGiaController::class);
     Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 
 });
+Route::post("client", [clientController::class, "get_all"])->name("api.client");

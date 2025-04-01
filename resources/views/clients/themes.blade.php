@@ -100,7 +100,7 @@
     <script src="/clients/js/theme.js"></script>
     <script src="/clients/js/jquery.cookie.js"></script>
     <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <script>
         
 
@@ -153,8 +153,8 @@
         });
 
         beamsClient.start()
-            .then(() => beamsClient.addDeviceInterest('hello'))
-            .then(() => console.log('Successfully registered and subscribed!'))
+            .then(() => beamsClient.addDeviceInterest('DATN2025'))
+            .then(() => console.log('Dự Án Tốt Nghiệp 2025 - Nhóm WD-14'))
             .catch(console.error);
     </script>
     @yield("js")

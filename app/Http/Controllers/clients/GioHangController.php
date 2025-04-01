@@ -135,18 +135,41 @@ class GioHangController extends Controller
         DB::table("cart")->where("id", $id)->update([
             "SoLuong" => $request->input("quantity")
         ]);
-
+        
         $cartUpdate = DB::table("cart")->find($cart->id);
         $productUpdate = DB::table("san_pham")->find($cartUpdate->ID_SanPham);
+        $checkBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cartUpdate->ID_SanPham)->where("ID_MauSac", $cartUpdate->MauSac)->where("KichCo", $cartUpdate->KichCo)->first();
+        $layMauBienThe = DB::table("mau_sac")->where("id", $checkBienThe->ID_MauSac)->first();
+
         $money = $cartUpdate->SoLuong * $productUpdate->GiaSanPham;
 
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("bien_the_san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                    ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                    ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+            })
             ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
+            ->where("bien_the_san_pham.SoLuong", ">", 0)
             ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
             ->first();
+        
+        if ($checkBienThe->SoLuong <= 0) {
 
+            DB::table("cart")->where("id", $id)->update([
+                "SoLuong" => 1
+            ]);
+            return response()->json([
+                'status' => "error",
+                'message' => 'Kích Cỡ ' . $cartUpdate->KichCo . ' - ' . $layMauBienThe->TenMauSac . " Đã Hết, Vui Lòng Chọn Màu Khác",
+                'id' => $id,
+                'total' => $money,
+                'total_cart' => $layGiaTienSanPham
+            ]);
+        }
         return response()->json([
+            'status' => "success",
             'message' => 'Cập nhật thành công',
             'id' => $id,
             'total' => $money,

@@ -64,7 +64,7 @@ class payController extends Controller
 
         $orderCode = $request->query('order_code', Session::get('order_code'));
         if (!$orderCode) {
-            abort(404, 'Dữ liệu không hợp lệ.');
+            return redirect()->route('gio-hang.index')->with('error', 'Đơn Hàng Đã Được Xử Lý Hoặc Không Tồn Tại');
         }
 
         if ($code !== $orderCode) {
@@ -80,13 +80,19 @@ class payController extends Controller
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
             ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
             ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
+            ->join("bien_the_san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                    ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                    ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+            })
+            ->select("bien_the_san_pham.SoLuong as soLuongBienThe")
             ->whereIn("cart.id", $selectedCartIds)
             ->where(function ($query) use ($userId) {
                 if ($userId) {
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
+            ->selectRaw("cart.id as cart_id, cart.soLuong as SoLuongSanPham, cart.*, bien_the_san_pham.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
 
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
@@ -137,7 +143,7 @@ class payController extends Controller
                 }
             })
             ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
-        $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien ?? 0;
+        $tongTienSanPhamDaChon = $layGiaTienSanPham->tongTien ?? 0;
         $tinhPhanTram = 0;
 
         if ($request->input("voucher")):
@@ -146,20 +152,28 @@ class payController extends Controller
                 return redirect()->back()->with('voucher_error', 'Mã giảm giá không hợp lệ!');
             endif;
 
-            if ($tongTienSanPhamGioHangClient < $discount->min_value):
+            if ($tongTienSanPhamDaChon < $discount->min_value):
                 return redirect()->back()->with('voucher_error', 'Áp Dụng Tối Thiểu Là ' . number_format($discount->min_value) . 'đ');
-            endif;
-
-            if ($tongTienSanPhamGioHangClient > $discount->max_value):
-                return redirect()->back()->with('voucher_error', 'Áp Dụng Tối Đa Là ' . number_format($discount->max_value) . 'đ');
             endif;
 
             if (time() < strtotime($discount->start_date . ' 00:00:00') || time() > strtotime($discount->end_date . ' 23:59:59')):
                 return redirect()->back()->with('voucher_error', 'Mã Giảm Giá Đã Hết Hạn Sử Dụng');
             endif;
 
-            $tinhPhanTram = $tongTienSanPhamGioHangClient / $discount->value;
-            $tongTienSanPhamGioHangClient = $tongTienSanPhamGioHangClient - $tinhPhanTram;
+            $kiemTraSuDung = DB::table('su_dung_ma_giam_gia')->where('ID_User', Auth::user()->id)->where('MaGiamGia', $request->input('voucher'))->first();
+
+            if ($kiemTraSuDung):
+                return redirect()->back()->with('voucher_error', 'Mã Giảm Giá Đã Được Sử Dụng');
+            endif;
+
+            $soLanSuDung = DB::table('su_dung_ma_giam_gia')->where('MaGiamGia', $request->input('voucher'))->count();
+            if ($soLanSuDung > $discount->quantity):
+                return redirect()->back()->with('voucher_error', 'Mã Giảm Giá Hết Lượt Sử Dụng');
+            endif;
+
+            $tinhPhanTram = ($tongTienSanPhamDaChon * $discount->value) / 100;
+            $tinhPhanTram = min($tinhPhanTram, $discount->max_value);
+            $tongTienSanPhamDaChon = max(0, ceil($tongTienSanPhamDaChon - $tinhPhanTram));
         endif;
 
         $trading = strtoupper(Str::random(8));
@@ -170,9 +184,9 @@ class payController extends Controller
                 "MaDonHang" => $trading,
                 "ID_User" => Auth::user()->id,
                 "TrangThai" => "choxacnhan",
-                "PhuongThucThanhToan" => $request->input("method"),
+                "PhuongThucThanhToan" => "Thanh Toán Khi Nhận Hàng",
                 "DiaChiNhan" => $request->input("location"),
-                "TongTien" => $tongTienSanPhamGioHangClient,
+                "TongTien" => $tongTienSanPhamDaChon,
                 "GiamGia" => $tinhPhanTram,
                 "MaGiamGia" => ($request->input('voucher') ?? ""),
                 "GhiChu" => $request->input("message"),
@@ -193,44 +207,19 @@ class payController extends Controller
 
             DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
 
+            if ($request->input("voucher")):
+                DB::table("su_dung_ma_giam_gia")->insert([
+                    "ID_User" => Auth::user()->id,
+                    "MaGiamGia" => $request->input('voucher'),
+                    "created_at" => date("Y-m-d H:i:s"),
+                ]);
+            endif;
+
             DB::commit();
 
+            Session::forget('order_code');
+
             return redirect()->route("payment.success", $trading)->with("success", "Tạo Đơn Hàng Thành Công!");
-        elseif ($request->input("method") == "Momo"):
-            $momoConfig = DB::table("method_settings")->where('NhaCungCap', 'momo')->first();
-
-            $data = [
-                'partnerCode' => $momoConfig->partner_code,
-                'accessKey' => $momoConfig->access_key,
-                'requestId' => time(),
-                'amount' => $tongTienSanPhamGioHangClient,
-                'orderId' => $trading,
-                'orderInfo' => "Thanh toán đơn hàng #{$trading}",
-                'redirectUrl' => route('momo.callback'),
-                'ipnUrl' => route('momo.ipn'),
-                'extraData' => '',
-                'requestType' => 'captureWallet',
-                'lang' => 'vi',
-            ];
-
-            $rawHash = "accessKey={$data['accessKey']}&amount={$data['amount']}&extraData={$data['extraData']}&ipnUrl={$data['ipnUrl']}&orderId={$data['orderId']}&orderInfo={$data['orderInfo']}&partnerCode={$data['partnerCode']}&redirectUrl={$data['redirectUrl']}&requestId={$data['requestId']}&requestType={$data['requestType']}";
-            $data['signature'] = hash_hmac('sha256', $rawHash, $momoConfig->secret_key);
-
-            $ch = curl_init($momoConfig->api_endpoint);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            $response = json_decode(curl_exec($ch), true);
-            curl_close($ch);
-
-            if (isset($response['payUrl'])) {
-                return redirect($response['payUrl']);
-            }
-            dd($response);
-
-
-            return redirect()->route("payment.success", $trading)->with("success", "Tạo Đơn Hàng!");
         elseif ($request->input("method") == "Banking"):
 
             $PayOS = DB::table("pay_os")->where("id", 1)->first();
@@ -240,7 +229,7 @@ class payController extends Controller
             $orderCode = time();
 
             $data = [
-                "amount" => (int) $tongTienSanPhamGioHangClient,
+                "amount" => (int) $tongTienSanPhamDaChon,
                 "cancelUrl" => route('payos.cancel'),
                 "description" => $trading,
                 "orderCode" => $orderCode,
@@ -274,17 +263,6 @@ class payController extends Controller
                     })
                     ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
 
-                $layGiaTienSanPham = DB::table("cart")
-                    ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
-                    ->whereIn("cart.id", $selectedCartIds)
-                    ->where(function ($query) use ($userId) {
-                        if ($userId) {
-                            $query->where("cart.ID_KhachHang", $userId);
-                        }
-                    })
-                    ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
-                $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien ?? 0;
-
                 DB::table("don_hang")->insert([
                     "orderCode" => $orderCode,
                     "MaDonHang" => $trading,
@@ -292,7 +270,7 @@ class payController extends Controller
                     "TrangThai" => "chuathanhtoan",
                     "PhuongThucThanhToan" => "Chuyển Khoản Ngân Hàng",
                     "DiaChiNhan" => $request->input("location"),
-                    "TongTien" => $tongTienSanPhamGioHangClient,
+                    "TongTien" => $tongTienSanPhamDaChon,
                     "GiamGia" => $tinhPhanTram,
                     "MaGiamGia" => ($request->input('voucher') ?? ""),
                     "GhiChu" => $request->input("message"),
@@ -313,7 +291,17 @@ class payController extends Controller
 
                 DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
 
+                if ($request->input("voucher")):
+                    DB::table("su_dung_ma_giam_gia")->insert([
+                        "ID_User" => Auth::user()->id,
+                        "MaGiamGia" => $request->input('voucher'),
+                        "created_at" => date("Y-m-d H:i:s"),
+                    ]);
+                endif;
+
                 DB::commit();
+
+                Session::forget('order_code');
 
                 return redirect($result['data']['checkoutUrl']);
             } else {

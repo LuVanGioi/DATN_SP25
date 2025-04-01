@@ -13,7 +13,7 @@
             <div class="owl-carousel" id="main-slider">
                 @foreach ($tatCaBanner as $Banner)
                 <div class="item slide1">
-                    <img class="slide-img" src="{{ Storage::url($Banner->HinhAnh) }}" alt="{{ $Banner->TenBanner }}">
+                    <a href="<?=$Banner->TenBanner;?>"><img class="slide-img" src="{{ Storage::url($Banner->HinhAnh) }}" alt=""></a>
                 </div>
                 @endforeach
             </div>
@@ -220,23 +220,17 @@
 <section class="page-section">
     <div class="container">
         <a class="btn btn-theme btn-title-more btn-icon-left" href="/danh-sach-bai-viet"><i class="fas fa-file-lines me-2"></i> Xem tất cả</a>
-        <h2 class="block-title"><span>Bài viết gần đây</span></h2>
+        <h2 class="block-title"><span>Bài Viết</span></h2>
         <div class="row">
             @foreach ($tatCaBaiViet as $baiViet)
             <div class="col-md-6">
                 <div class="recent-post">
                     <div class="media">
-                        <a class="pull-left" href="/bai-viet/{{ ($baiViet->tieu_de) }}">
+                        <a class="pull-left" href="/bai-viet/{{ ($baiViet->id) }}">
                             <img class="media-object" src="{{ Storage::url($baiViet->hinh_anh) }}" width="150px" height="100px" alt="">
                         </a>
                         <div class="media-body">
-                            {{-- <p class="media-category"><a href="#">Tác giả: {{ $baiViet->tac_gia }}</a></p> --}}
-                            <h5 class="card-title" style="text-transform: uppercase;">{{ $baiViet->tieu_de }}</h5>
-                            <style>
-                                .card-title {
-                                    text-transform: uppercase;
-                                }
-                            </style>
+                            <h5 class="card-title media-category" style="text-transform: uppercase;">{{ $baiViet->tieu_de }}</h5>
                             <p class="media-content">{{ Str::limit(strip_tags(html_entity_decode($baiViet->noi_dung)), 100, '...') }}</p>
                             <div class="media-meta">
                                 {{ $baiViet->ngay_dang }}
