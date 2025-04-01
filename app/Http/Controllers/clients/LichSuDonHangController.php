@@ -23,7 +23,6 @@ class LichSuDonHangController extends Controller
         ->where('don_hang.ID_User', $userId)
         ->selectRaw('don_hang.TrangThai as TrangThaiDonHang,don_hang.*,san_pham_don_hang.*,huyen.*,tinh_thanh.*,san_pham.*,location.*')->get();
 
-           
         if (!$lichSu) {
             return redirect()->route('DonHang.index')->with('error', 'Bạn chưa có đơn hàng nào.');
         }
