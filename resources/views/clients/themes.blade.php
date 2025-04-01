@@ -100,7 +100,7 @@
     <script src="/clients/js/theme.js"></script>
     <script src="/clients/js/jquery.cookie.js"></script>
     <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <script>
         
 
