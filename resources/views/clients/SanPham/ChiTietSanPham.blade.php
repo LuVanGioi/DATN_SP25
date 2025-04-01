@@ -74,12 +74,13 @@
                 <div class="product-availability">Danh Mục: <strong>{{ $danhMuc->TenDanhMucSanPham }}</strong></div>
                 <div class="product-availability">Thương Hiệu: <strong>{{ $thuongHieu->TenThuongHieu }}</strong></div>
                 <div class="product-availability">Chất Liệu: <strong>{{ $thongTinSanPham->ChatLieu }}</strong></div>
+                <div class="product-availability">Sản Phẩm Có Sẵn: <strong id="soLuongSanPham">{{ number_format($tongSoLuongBienThe->soLuongSanPhamBienTheAll) }}</strong></div>
                 <hr class="page-divider small">
 
-                <div class="product-price">{{ number_format($thongTinSanPham->GiaSanPham) }} đ - <del style="color:rgb(115, 115, 115)">{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</del></div>
+                <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del></div>
                 <hr class="page-divider">
 
-                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="1500" swal_success="none" type="POST">
+                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="0" swal_success="none" type="POST">
                     <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
@@ -113,15 +114,12 @@
 
                     <div class="col-md-12">
                         <hr class="page-divider small">
-
-
                         <div class="buttons mb-3">
                             <div class="quantity">
                                 <button type="button" class="btn" onclick="minusAmount()"><i class="fa fa-minus"></i></button>
                                 <input class="form-control qty" style="width: 50px; text-align: center" type="number" step="1" min="1" name="quantity" id="quantity"
                                     value="{{ (old("quantity") ?? "1") }}" title="Số Lượng" onkeyup="checkQuantity()">
                                 <button type="button" class="btn" onclick="plusAmount()"><i class="fa fa-plus"></i></button>
-                                <p class="text-danger d-block" id="error-quantity"></p>
                                 @error("quantity")
                                 <p class="text-danger d-block">{{ $message }}</p>
                                 @enderror
@@ -353,10 +351,15 @@
     function changeCarouselImage(select) {
         var selectedOption = select.options[select.selectedIndex];
         var index = selectedOption.getAttribute("data-index");
+        var amount = selectedOption.getAttribute("data-amount");
+        var price = selectedOption.getAttribute("data-price");
 
         if (index) {
             jQuery('.img-carousel').trigger('to.owl.carousel', [parseInt(index), 300]);
         }
+
+        document.getElementById("soLuongSanPham").innerHTML = amount;
+        document.getElementById("GiaTienSP").innerHTML = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     var danhSachMauSac = <?= json_encode($bienTheSanPham2); ?>;
@@ -367,12 +370,20 @@
 
         colorSelect.innerHTML = "";
 
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Chọn Màu Sắc";
+        defaultOption.setAttribute("data-index", "0");
+        colorSelect.appendChild(defaultOption);
+
         danhSachMauSac.forEach(function(mauSac, index) {
             if (mauSac.KichCo === size) {
                 var option = document.createElement("option");
                 option.value = mauSac.ID_MauSac;
-                option.textContent = mauSac.TenMauSac + " (" + mauSac.SoLuong + ")";
+                option.textContent = mauSac.TenMauSac;
                 option.setAttribute("data-index", index + 1);
+                option.setAttribute("data-amount", mauSac.SoLuong);
+                option.setAttribute("data-price", mauSac.Gia);
                 if (mauSac.SoLuong <= 0) {
                     option.disabled = true;
                 }
