@@ -80,13 +80,19 @@ class payController extends Controller
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
             ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
             ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
+            ->join("bien_the_san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
+                    ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
+                    ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
+            })
+            ->select("bien_the_san_pham.SoLuong as soLuongBienThe")
             ->whereIn("cart.id", $selectedCartIds)
             ->where(function ($query) use ($userId) {
                 if ($userId) {
                     $query->where("cart.ID_KhachHang", $userId);
                 }
             })
-            ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
+            ->selectRaw("cart.id as cart_id, cart.soLuong as SoLuongSanPham, cart.*, bien_the_san_pham.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
 
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")

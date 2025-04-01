@@ -153,8 +153,8 @@
         });
 
         beamsClient.start()
-            .then(() => beamsClient.addDeviceInterest('hello'))
-            .then(() => console.log('Successfully registered and subscribed!'))
+            .then(() => beamsClient.addDeviceInterest('DATN2025'))
+            .then(() => console.log('Dự Án Tốt Nghiệp 2025 - Nhóm WD-14'))
             .catch(console.error);
     </script>
     @yield("js")

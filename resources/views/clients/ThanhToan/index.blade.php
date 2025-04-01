@@ -34,7 +34,6 @@
         <div class="row orders">
             <div class="col-md-7">
                 <h3 class="block-title"><span>Sản Phẩm</span></h3>
-
                 <ul class="list-product-payment">
                     @foreach ($sanPhamDaChon as $sanPhamm)
                     <li class="item-product-payment" onclick="href('/san-pham/{{ $sanPhamm->DuongDan }}')">
@@ -53,7 +52,7 @@
                                             đ</small></del>
                                 </div>
                                 <div class="amount">
-                                    x{{ number_format($sanPhamm->SoLuong) }}
+                                    x{{ number_format($sanPhamm->SoLuongSanPham) }}
                                 </div>
                             </div>
 
