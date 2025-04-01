@@ -2,17 +2,19 @@
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Broadcast;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\SamplingHandler;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Broadcast;
 use App\Http\Middleware\CheckRoleMiddleware;
 use App\Http\Controllers\admins\homeController;
+use App\Http\Controllers\apis\clientController;
 use App\Http\Controllers\clients\payController;
 use App\Http\Controllers\Methods\MomoController;
 use App\Http\Controllers\admins\BannerController;
+use App\Http\Controllers\Methods\PayOSController;
 use App\Http\Controllers\Methods\VnPayController;
 use App\Http\Controllers\admins\BaiVietController;
 use App\Http\Controllers\admins\BienTheController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\admins\DanhMucController;
 use App\Http\Controllers\admins\DonHangController;
 use App\Http\Controllers\admins\PhanHoiController;
 use App\Http\Controllers\admins\SanPhamController;
+use App\Http\Controllers\admins\BoSuuTapController;
 use App\Http\Controllers\admins\ChatLieuController;
 use App\Http\Controllers\admins\ThungRacController;
 use App\Http\Controllers\clients\BangTinController;
@@ -35,7 +38,6 @@ use App\Http\Controllers\admins\DanhMucBaiVietController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
-use App\Http\Controllers\admins\BoSuuTapController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
@@ -43,7 +45,6 @@ use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
-use App\Http\Controllers\Methods\PayOSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -158,3 +159,4 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 });
+Route::post("client", [clientController::class, "get_all"])->name("api.client");
