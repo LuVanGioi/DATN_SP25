@@ -15,69 +15,64 @@
                         <div class="block-title alt"> <i class="fa fa-angle-down"></i> Thay Đổi Thông Tin Cá Nhân Của Bạn
                         </div>
                         <div class="details-box">
-                            <form class="form-delivery" action="{{ route('update-profile') }}" method="POST">
+                            <form class="form-delivery" action="{{route('thong-tin-tai-khoan.update',Auth::user()->id)}}" method="POST">
                                 @csrf
-                                <div class="row">
-                                    <div class="row" style="margin-top: 10px;">
-                                        <div class="col-md-6">
-                                            <label for="name" class="font-weight-bold text-dark mb-2 d-block"
-                                                style="margin-left: 15px;">Họ Và
-                                                Tên</label>
-                                            <div class="form-group">
-                                                <input type="text" name="name" id="name" placeholder="Họ Tên"
-                                                    class="form-control @error('name') is-invalid @enderror"
-                                                    style="width: 395px; margin-left: 14px;"
-                                                    value="{{ old('name', $user->name) }}" required>
-                                                @error('name')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                @method('PUT')
 
-                                        <div class="col-md-6">
-                                            <label for="email" class="font-weight-bold text-dark mb-2 d-block"
-                                                style="margin-left: 15px;">Email</label>
-                                            <div class="form-group">
-                                                <input type="email" name="email" id="email" placeholder="Email"
-                                                    class="form-control  @error('email') is-invalid @enderror"
-                                                    style="width: 395px; margin-left: 14px;"
-                                                    value="{{ old('email', $user->email) }}" required>
-                                                @error('email')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                @if(session('success'))
+                                    <script>
+                                        alert("{{ session('success') }}");
+                                    </script>
+                                @endif
+                                
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
                                     </div>
-                                    {{-- <div class="col-md-6 col-sm-6">
-                                        <div class="form-group">
-                                            <select name="Gender" id="" class="form-control">
-                                                <option value="GioiTinh">Giới Tính</option>
-                                                <option value="Nam" {{ old('gender', $user->gender) == 'Nam' ? 'selected' :
-                                                    '' }}>Nam</option>
-                                                <option value="Nữ" {{ old('gender', $user->gender) == 'Nữ' ? 'selected' : ''
-                                                    }}>Nữ</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                @endif
+
+                                <div class="row">
+                                   
                                     <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"> <input type="text" name="phone" placeholder="Số Điện Thoại"
-                                                class="form-control" value="{{ old('phone', $user->phone) }}"></div>
+                                        <span style="color:#111111; font-weight: bold;">Họ Và Tên :</span>
+                                        <div class="form-group"><input required type="text" name="name"  class="form-control" value="{{Auth::user()->name}}"></div>
                                     </div>
+
                                     <div class="col-md-6 col-sm-6">
-                                        <div class="form-group"> <input type="text" name="address" placeholder="Địa Chỉ"
-                                                class="form-control" value="{{ old('address', $user->address) }}"></div>
+                                        <span style="color:#111111; font-weight: bold;">Email :</span>
+                                        <div class="form-group"><input required type="email" name="email"  class="form-control" value="{{Auth::user()->email}}"></div>
                                     </div>
+
                                     <div class="col-md-6 col-sm-6">
-                                        <label for="">Ngày sinh</label>
-                                        <input class="form-control" type="date" name="birthday"
-                                            value="{{ old('birthday', $user->birthday) }}">
-                                    </div> --}}
+                                        <span style="color:#111111; font-weight: bold;">Giới Tính :</span>
+                                        <select name="sex" class="form-control">
+                                            <option value="Nam" {{ Auth::user()->sex == 'Nam' ? 'selected' : '' }}>Nam</option>
+                                            <option value="Nữ" {{ Auth::user()->sex == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <span style="color:#111111; font-weight: bold;">Số Điện Thoại :</span>
+                                        <div class="form-group"><input required type="number" name="phone" class="form-control" value="{{Auth::user()->phone}}"></div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6">
+                                        <span style="color:#111111; font-weight: bold;">Ngày Sinh :</span>
+                                        <div class="form-group"><input required type="date" name="birthday" class="form-control" value="{{Auth::user()->birthday}}"></div>
+                                    </div>
+                                    
+                                    <div class="col-md-6 col-sm-6">
+                                        <span style="color:#111111; font-weight: bold;">Ngày Tham Gia :</span>
+                                        <div class="form-group"><input required   class="form-control" value="{{Auth::user()->created_at}}"></div>
+                                    </div>
+
                                     <div class="col-md-12 col-sm-12">
                                         <button class="btn btn-theme btn-theme-dark" type="submit"> Cập Nhật </button>
                                     </div>
-                                </div>
+                               
                             </form>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-4">
@@ -85,9 +80,7 @@
                         <h2 class="widget-title">Tài Khoản</h2>
                         <ul>
                             <li class="active"><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
-                            <li><a href="/tai-khoan-cua-toi">Tài Khoản Của Tôi</a></li>
                             <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
-                            <li><a href="/so-dia-chi">Sổ Địa Chỉ</a></li>
                             <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
                             <li><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
                             <li><a href="/yeu-cau-tra-hang">Yêu Cầu Trả Hàng</a></li>
