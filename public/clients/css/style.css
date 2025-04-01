@@ -220,6 +220,7 @@ select {
     width: 20%;
     justify-content: center;
     text-align: center;
+    padding: 0px;
 }
 
 .list-method-payment>li>label {
@@ -238,7 +239,7 @@ select {
     border: 2px dotted #03b26c;
 }
 
-.list-method-payment>li.active>label {
+.list-method-payment>li>label.active {
     border: 2px dotted #03b26c;
 }
 
@@ -257,7 +258,7 @@ select {
     font-size: 13px;
 }
 
-.list-method-payment>li.active>span {
+.list-method-payment>li>span.active {
     color: #03b26c;
     font-weight: bold;
 }

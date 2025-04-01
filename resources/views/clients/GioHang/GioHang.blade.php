@@ -51,6 +51,7 @@
                                     <img src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt="" style="width: 100px; height: 100px" />
                                 </a>
                                 <h4><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ $gioHangClient->TenSanPham }}</a></h4>
+                                {{ $gioHangClient->SoLuong }}
                                 <span class="parameter-product-cart">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</span>
                             </td>
                             <td>
@@ -205,9 +206,9 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === "success") {
-                    document.getElementById("amount_checkout").innerHTML = data.amount;
-                    document.getElementById("total_money").innerHTML = data.total_price;
-                    document.getElementById("total_moneys").innerHTML = data.total_price;
+                    document.getElementById("amount_checkout").innerHTML = data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    document.getElementById("total_money").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    document.getElementById("total_moneys").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     //AlertDATN("success", data.message);
                 } else {
                     AlertDATN("error", data.message);
