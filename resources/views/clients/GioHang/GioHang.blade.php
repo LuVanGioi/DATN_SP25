@@ -44,22 +44,33 @@
                         @foreach ($danhSachGioHangClient as $gioHangClient)
                         <tr>
                             <td class="inputSelectCart">
+                                @if ($gioHangClient->soLuongBienThe >= 1)
                                 <label for="inputCart_{{ $gioHangClient->cart_id }}" onclick="totalMoney('{{ $gioHangClient->cart_id }}')" class="checkbox-label"></label>
+                                @endif
                             </td>
                             <td class="image">
                                 <a class="media-link" href="/san-pham/{{ $gioHangClient->DuongDan }}"><i class="fa fa-circle-info"></i>
                                     <img src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt="" style="width: 100px; height: 100px" />
                                 </a>
                                 <h4><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ $gioHangClient->TenSanPham }}</a></h4>
-                                {{ $gioHangClient->SoLuong }}
-                                <span class="parameter-product-cart">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</span>
+                                @if ($gioHangClient->soLuongBienThe <= 0)
+                                    <span class="text-danger">Sản Phẩm Đã Hết Hàng</span>
+                                    @else
+                                    <span class="parameter-product-cart">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</span>
+                                    @endif
                             </td>
                             <td>
+                                @if ($gioHangClient->soLuongBienThe >= 1)
                                 <div class="form-quantity">
                                     <span class="btn-minus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-minus"></i></span>
                                     <input type="number" class="quantity-input" data-id="{{ $gioHangClient->cart_id }}" value="{{ $gioHangClient->SoLuong }}" min="1" readonly>
                                     <span class="btn-plus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-plus"></i></span>
                                 </div>
+                                @else
+                                <div style="font-size: 18px; font-weight: bold; color: black; align-items: center; padding-top: 10px">
+                                    <span>x{{ $gioHangClient->SoLuong }}</span>
+                                </div>
+                                @endif
                             </td>
                             <td class="quantity money" id="GiaSanPham_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->GiaSanPham) }} đ</td>
                             <td class="total" id="ThanhTien_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->ThanhTien) }}đ</td>
