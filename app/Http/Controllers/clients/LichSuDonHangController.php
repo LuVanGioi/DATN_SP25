@@ -15,13 +15,11 @@ class LichSuDonHangController extends Controller
         $userId = Auth::user()->id;
 
         $lichSu = DB::table('don_hang')
-        ->join('location', 'don_hang.DiaChiNhan', '=', 'location.id')
-        ->join('san_pham_don_hang', 'don_hang.MaDonHang', '=', 'san_pham_don_hang.MaDonHang')
-        ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
-        ->join('huyen', 'location.Huyen', '=', 'huyen.MaHuyen')            
-        ->join('tinh_thanh', 'location.Tinh', '=', 'tinh_thanh.IdTinh')
-        ->where('don_hang.ID_User', $userId)
-        ->selectRaw('don_hang.TrangThai as TrangThaiDonHang,don_hang.*,san_pham_don_hang.*,huyen.*,tinh_thanh.*,san_pham.*,location.*')->get();
+            ->join('location', 'don_hang.DiaChiNhan', '=', 'location.id')
+            ->join('huyen', 'location.Huyen', '=', 'huyen.MaHuyen')
+            ->join('tinh_thanh', 'location.Tinh', '=', 'tinh_thanh.IdTinh')
+            ->where('don_hang.ID_User', $userId)
+            ->selectRaw('don_hang.TrangThai as TrangThaiDonHang, don_hang.*,huyen.*,tinh_thanh.*,location.*')->get();
 
         if (!$lichSu) {
             return redirect()->route('DonHang.index')->with('error', 'Bạn chưa có đơn hàng nào.');
@@ -34,23 +32,23 @@ class LichSuDonHangController extends Controller
         $userId = Auth::user()->id;
 
         $chiTietDonHang = DB::table('don_hang')
-        ->join('location', 'don_hang.DiaChiNhan', '=', 'location.id')
-        ->join('san_pham_don_hang', 'don_hang.MaDonHang', '=', 'san_pham_don_hang.MaDonHang')
-        ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
-        ->join('huyen', 'location.Huyen', '=', 'huyen.MaHuyen')            
-        ->join('tinh_thanh', 'location.Tinh', '=', 'tinh_thanh.IdTinh')
-        ->where('don_hang.ID_User', $userId)
-        ->where('don_hang.MaDonHang', $id)
-        ->selectRaw('don_hang.TrangThai as TrangThaiDonHang,don_hang.*,san_pham_don_hang.*,huyen.*,tinh_thanh.*,san_pham.*,location.*')->first();
+            ->join('location', 'don_hang.DiaChiNhan', '=', 'location.id')
+            ->join('san_pham_don_hang', 'don_hang.MaDonHang', '=', 'san_pham_don_hang.MaDonHang')
+            ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
+            ->join('huyen', 'location.Huyen', '=', 'huyen.MaHuyen')
+            ->join('tinh_thanh', 'location.Tinh', '=', 'tinh_thanh.IdTinh')
+            ->where('don_hang.ID_User', $userId)
+            ->where('don_hang.MaDonHang', $id)
+            ->selectRaw('don_hang.TrangThai as TrangThaiDonHang,don_hang.*,san_pham_don_hang.*,huyen.*,tinh_thanh.*,san_pham.*,location.*')->first();
 
         $sanPhamMua = DB::table('san_pham_don_hang')
-        ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
-        ->where('MaDonHang', $id)->get();
-       
-        if (!$chiTietDonHang) { 
+            ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
+            ->where('MaDonHang', $id)->get();
+
+        if (!$chiTietDonHang) {
             return redirect()->route('DonHang.index')->with('error', 'Bạn chưa có đơn hàng nào.');
         }
-        
+
         return view('clients.ThongTinTaiKhoan.ChiTietDonHang', compact('chiTietDonHang', 'sanPhamMua'));
     }
 
