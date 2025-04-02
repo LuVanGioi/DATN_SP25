@@ -62,7 +62,7 @@
                             <td class="form-soLuong">
                                 <div class="form-quantity">
                                     <span class="btn-minus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-minus"></i></span>
-                                    <input type="number" class="quantity-input" data-id="{{ $gioHangClient->cart_id }}" value="{{ $gioHangClient->SoLuong }}" min="1" readonly>
+                                    <input type="number" class="quantity-input" data-id="{{ $gioHangClient->cart_id }}" value="{{ $gioHangClient->SoLuong ?? $gioHangClient->soLuongGioHang }}" min="1" readonly>
                                     <span class="btn-plus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-plus"></i></span>
                                 </div>
                             </td>
@@ -70,6 +70,36 @@
                             <td class="total" id="ThanhTien_{{ $gioHangClient->cart_id }}">{{ number_format($gioHangClient->ThanhTien) }}đ</td>
                             <td class="total">
                                 <form action="{{ route("gio-hang.destroy", $gioHangClient->cart_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Khỏi Giỏ Hàng!')">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit" class="btn btn-none"><i class="fa fa-close"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+
+                        @foreach ($danhSachGioHangThuong as $gioHangThuongClient)
+                        <tr>
+                            <td class="inputSelectCart">
+                                <label for="inputCart_{{ $gioHangThuongClient->cart_id }}" onclick="totalMoney('{{ $gioHangThuongClient->cart_id }}')" class="checkbox-label"></label>
+                            </td>
+                            <td class="image">
+                                <a class="media-link" href="/san-pham/{{ $gioHangThuongClient->DuongDan }}"><i class="fa fa-circle-info"></i>
+                                    <img src="{{ Storage::url($gioHangThuongClient->HinhAnh) }}" alt="" style="width: 100px; height: 100px" />
+                                </a>
+                                <h4><a href="/san-pham/{{ $gioHangThuongClient->DuongDan }}">{{ $gioHangThuongClient->TenSanPham }}</a></h4>
+                            </td>
+                            <td class="form-soLuong">
+                                <div class="form-quantity">
+                                    <span class="btn-minus" data-id="{{ $gioHangThuongClient->cart_id }}"><i class="fas fa-minus"></i></span>
+                                    <input type="number" class="quantity-input" data-id="{{ $gioHangThuongClient->cart_id }}" value="{{ $gioHangThuongClient->soLuongGioHang ?? $gioHangThuongClient->SoLuong }}" min="1" readonly>
+                                    <span class="btn-plus" data-id="{{ $gioHangThuongClient->cart_id }}"><i class="fas fa-plus"></i></span>
+                                </div>
+                            </td>
+                            <td class="quantity money" id="GiaSanPham_{{ $gioHangThuongClient->cart_id }}">{{ number_format($gioHangThuongClient->GiaSanPham) }} đ</td>
+                            <td class="total" id="ThanhTien_{{ $gioHangThuongClient->cart_id }}">{{ number_format($gioHangThuongClient->ThanhTien) }}đ</td>
+                            <td class="total">
+                                <form action="{{ route("gio-hang.destroy", $gioHangThuongClient->cart_id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Khỏi Giỏ Hàng!')">
                                     @csrf
                                     @method("DELETE")
                                     <button type="submit" class="btn btn-none"><i class="fa fa-close"></i></button>
@@ -111,6 +141,9 @@
                         @csrf
                         @foreach ($danhSachGioHangClient as $gioHangClient1)
                         <input type="checkbox" name="selected_products[]" id="inputCart_{{ $gioHangClient1->cart_id }}" class="checkbox-cart-input" value="{{ $gioHangClient1->cart_id }}">
+                        @endforeach
+                        @foreach ($danhSachGioHangThuong as $gioHangThuongClient1)
+                        <input type="checkbox" name="selected_products[]" id="inputCart_{{ $gioHangThuongClient1->cart_id }}" class="checkbox-cart-input" value="{{ $gioHangThuongClient1->cart_id }}">
                         @endforeach
                         <button type="submit" name="action" value="payment" class="btn btn-success btn-block" id="btnContinue" disabled @if ($soLuongGioHangClient <=0)
                             disabled
@@ -288,7 +321,7 @@
                     } else {
                         AlertDATN("error", data.message);
                         let input = $(`.quantity-input[data-id='${id}']`);
-                        input.val(1);
+                        input.val((data.input ?? 1));
                         document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
                         document.getElementById("total_amount_cart").innerHTML = data.total_cart.soLuongSP.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         document.getElementById("total_money_cart").innerHTML = data.total_cart.tongTien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
@@ -299,7 +332,7 @@
                     if (error.responseJSON && error.responseJSON.message) {
                         errorMessage = error.responseJSON.message;
                     }
-                    alert(errorMessage);
+                    AlertDATN(errorMessage);
                 }
             });
         }

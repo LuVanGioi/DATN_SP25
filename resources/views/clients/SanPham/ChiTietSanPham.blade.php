@@ -76,17 +76,19 @@
                 <div class="product-availability">Chất Liệu: <strong>{{ $thongTinSanPham->ChatLieu }}</strong></div>
                 @if ($soLuongBienTheSanPham >= 1)
                 <div class="product-availability">Sản Phẩm Có Sẵn: <strong id="soLuongSanPham">{{ number_format($tongSoLuongBienThe->soLuongSanPhamBienTheAll) }}</strong></div>
+                @else
+                <div class="product-availability">Sản Phẩm Có Sẵn: <strong>{{ number_format($thongTinSanPham->SoLuong) }}</strong></div>
                 @endif
                 <hr class="page-divider small">
 
                 <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ
-                @if ($thongTinSanPham->GiaKhuyenMai)
+                    @if ($thongTinSanPham->GiaKhuyenMai)
                     - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
                     @endif
                 </div>
                 <hr class="page-divider">
 
-                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="0" swal_success="none" type="POST">
+                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="0" swal_success="" type="POST">
                     <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
@@ -159,7 +161,7 @@
         <div class="tabs-wrapper content-tabs">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#item-description" data-toggle="tab">Thông Tin Sản Phẩm</a></li>
-                <li><a href="#reviews" data-toggle="tab">Đánh Giá (2)</a></li>
+                <li><a href="#reviews" data-toggle="tab">Đánh Giá (0)</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="item-description">
@@ -313,7 +315,6 @@
     function minusAmount() {
         var quantityInput = document.getElementById("quantity");
         var quantity = parseInt(quantityInput.value);
-        document.getElementById("error-quantity").innerHTML = "";
         if (quantity > 1) {
             quantityInput.value = quantity - 1;
         }
@@ -321,31 +322,23 @@
 
     function plusAmount() {
         var quantityInput = document.getElementById("quantity");
-        if (quantityInput.value >= 24) {
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Đa Là 24";
-            quantityInput.value = 24;
-        } else if (quantityInput.value <= 0) {
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Thiểu Là 1";
+        if (quantityInput.value <= 0) {
+            AlertDATN("error", "Số Lượng Tối Thiểu Là 1");
             quantityInput.value = "";
         } else if (!quantityInput.value) {
             quantityInput.value = 1;
         } else {
             var quantity = parseInt(quantityInput.value);
             quantityInput.value = quantity + 1;
-            document.getElementById("error-quantity").innerHTML = "";
         }
     }
 
     function checkQuantity() {
         var quantityInput = document.getElementById("quantity");
-        document.getElementById("error-quantity").innerHTML = "";
-        if (quantityInput.value >= 25) {
-            quantityInput.value = 24;
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Đa Là 24";
-        } else if (!quantityInput.value) {
+        if (!quantityInput.value) {
             quantityInput.value = 1;
         } else if (quantityInput.value <= 0) {
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Thiểu Là 1";
+            AlertDATN("error", "Số Lượng Tối Thiểu Là 1");
             quantityInput.value = "";
         }
     }
@@ -360,7 +353,9 @@
             jQuery('.img-carousel').trigger('to.owl.carousel', [parseInt(index), 300]);
         }
 
-        document.getElementById("soLuongSanPham").innerHTML = amount;
+        if (amount) {
+            document.getElementById("soLuongSanPham").innerHTML = amount;
+        }
         document.getElementById("GiaTienSP").innerHTML = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 

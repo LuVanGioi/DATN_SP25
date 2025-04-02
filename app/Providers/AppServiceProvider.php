@@ -60,9 +60,29 @@ class AppServiceProvider extends ServiceProvider
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
                 ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")
                 ->first();
-            $soLuongGioHangClient = $layGiaTienSanPham->soLuongGioHangClient;
-            $soLuongSPGioHangClient = $layGiaTienSanPham->soLuongSP ?? 0;
-            $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien ?? 0;
+            $soLuongGioHangBienThe = $layGiaTienSanPham->soLuongGioHangClient;
+
+            $danhSachGioHangThuong = DB::table("cart")
+                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->where("KichCo", "=", null)
+                ->where("MauSac", "=", null)
+                ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
+                ->select("cart.SoLuong as soLuongGioHang")
+                ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")
+                ->get();
+
+            $layGiaTienSanPhamThuong = DB::table("cart")
+                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->where("KichCo", "=", null)
+                ->where("MauSac", "=", null)
+                ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
+                ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
+                ->first();
+
+                $soLuongGioHangClient = $soLuongGioHangBienThe + $layGiaTienSanPhamThuong->soLuongGioHangClient;
+
+            $soLuongSPGioHangClient = $layGiaTienSanPham->soLuongSP + $layGiaTienSanPhamThuong->soLuongSP ?? 0;
+            $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien + $layGiaTienSanPhamThuong->tongTien ?? 0;
 
             $danhSachGioHangClient = DB::table("cart")
                 ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
@@ -74,8 +94,16 @@ class AppServiceProvider extends ServiceProvider
                 ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
                 ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
-                ->select("bien_the_san_pham.SoLuong as soLuongBienThe")
+                ->select("bien_the_san_pham.SoLuong as soLuongBienThe", "cart.SoLuong as soLuongGioHang")
                 ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien, bien_the_san_pham.Gia as GiaSanPhamBienThe")
+                ->get();
+
+                $danhSachGioHangClient2 = DB::table("cart")
+                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->where("cart.KichCo", "=", null)
+                ->where("cart.KichCo", "=", null)
+                ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
+                ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")
                 ->get();
 
             $view->with('danhMucSanPham', $danhMucSanPham);
@@ -89,8 +117,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with("soLuongSPGioHangClient", $soLuongSPGioHangClient);
             $view->with("tongTienSanPhamGioHangClient", $tongTienSanPhamGioHangClient);
             $view->with("danhSachGioHangClient", $danhSachGioHangClient);
+            $view->with("danhSachGioHangClient2", $danhSachGioHangClient2);
             $view->with("danhSachTinhThanh", $danhSachTinhThanh);
             $view->with("danhSachHuyen", $danhSachHuyen);
+            $view->with("danhSachGioHangThuong", $danhSachGioHangThuong);
+            $view->with("layGiaTienSanPhamThuong", $layGiaTienSanPhamThuong);
         });
     }
 }
