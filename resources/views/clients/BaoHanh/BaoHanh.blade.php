@@ -8,7 +8,7 @@
     <section class="page-section breadcrumbs">
         <div class="container">
             <div class="page-header">
-                <h1>Thông tin bảo hành</h1>
+                <h1>Chính sách bảo hành</h1>
             </div>
         </div>
     </section>

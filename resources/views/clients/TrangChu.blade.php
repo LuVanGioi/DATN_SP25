@@ -85,7 +85,7 @@
             <div class="tab-pane fade" id="ban-chay">
                 <div class="row">
                     <div class="col-md-3 col-sm-6">
-                        <div class="thumbnail no-border no-padding">
+                        <div class="thumbnail no-border no-padding"  >
                             <div class="media">
                                 <a class="media-link" href="/san-pham/">
                                     <img src="https://www.sport9.vn/images/thumbs/002/0021481_bo-quan-ao-bong-da-doi-tuyen-quoc-gia-duc-mau-xam.jpeg?preset=large&watermark=default" alt="">
