@@ -10,10 +10,8 @@ class BaiVietChiTietController extends Controller
 {
     public function show($id)
 {
-  
-    $news = DB::table('bai_viet')->where('id', $id)->first();
+    $chiTiet = DB::table('bai_viet')->where('id', $id)->first();
 
-    
     $binhLuans = DB::table('binh_luan_bai_viet')
         ->leftJoin('users', 'binh_luan_bai_viet.id_users', '=', 'users.id')
         ->where('id_baiviet', $id)
@@ -22,16 +20,18 @@ class BaiVietChiTietController extends Controller
         ->orderBy('ngay_binh_luan', 'desc')
         ->get();
 
-    
     $phanHois = DB::table('phan_hoi_binh_luan')
         ->leftJoin('users', 'phan_hoi_binh_luan.id_users', '=', 'users.id')
-        ->whereIn('id_binh_luan', $binhLuans->pluck('id')) 
+        ->whereIn('id_binh_luan', $binhLuans->pluck('id'))
         ->where('duyet', 1)
         ->select('phan_hoi_binh_luan.*', 'users.name as user_name')
         ->orderBy('ngay_phan_hoi', 'asc')
         ->get();
 
-    return view('clients.BaiViet.BaiVietChiTiet', compact('news', 'binhLuans', 'phanHois'));
+    // Lấy tất cả bài viết
+    $tatCaBaiViet = DB::table('bai_viet')->orderBy('ngay_dang', 'desc')->get();
+
+    return view('clients.BaiViet.ChiTiet', compact('chiTiet', 'binhLuans', 'phanHois', 'tatCaBaiViet'));
 }
     
 public function like($id)
