@@ -82,7 +82,7 @@ Route::post('payment/{code}', [payController::class, 'payment_store'])->name("pa
 Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
 
 Route::get('payos/cancel', [PayOSController::class, 'cancel'])->name('payos.cancel');
-
+Route::get('payos/callback', [PayOSController::class, 'callback'])->name('payos.callback');
 
 Route::get('momo/callback', [MomoController::class, 'callback'])->name('momo.callback');
 Route::post('momo/ipn', [MomoController::class, 'ipn'])->name('momo.ipn');

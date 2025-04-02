@@ -12,7 +12,11 @@ class LichSuDonHangController extends Controller
 
     public function index()
     {
-        $userId = Auth::user()->id;
+        if (Auth::check()) {
+            $userId = Auth::user()->id;
+        } else {
+            return redirect()->route('login')->with('error', 'Vui Lòng Đăng Nhập');
+        }
 
         $lichSu = DB::table('don_hang')
             ->join('location', 'don_hang.DiaChiNhan', '=', 'location.id')
@@ -29,7 +33,11 @@ class LichSuDonHangController extends Controller
 
     public function show(string $id)
     {
-        $userId = Auth::user()->id;
+        if (Auth::check()) {
+            $userId = Auth::user()->id;
+        } else {
+            return redirect()->route('login')->with('error', 'Vui Lòng Đăng Nhập');
+        }
 
         $chiTietDonHang = DB::table('don_hang')
             ->join('location', 'don_hang.DiaChiNhan', '=', 'location.id')
