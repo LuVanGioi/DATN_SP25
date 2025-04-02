@@ -26,7 +26,16 @@ class SanPhamRequest extends FormRequest
             'ThuongHieu' => 'required',
             'ChatLieu' => 'required|max:225',
             'TenSanPham' => 'required|max:225|unique:san_pham,TenSanPham',
-            'GiaSanPham' => 'required|integer|min:0',
+            'GiaSanPham' => [
+                'required',
+                'integer',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    if (!empty($this->GiaKhuyenMai) && $value >= $this->GiaKhuyenMai) {
+                        $fail('Giá Bán Phải Nhỏ Hơn Giá Gốc');
+                    }
+                },
+            ],
             'hinhAnh' => 'image',
             'images.*' => 'image'
         ];

@@ -26,18 +26,29 @@ class clientController extends Controller
                     "total_price" => 0
                 ]);
             }
+            
+            $tinh = 0;
+            foreach ($cart_id_list as $cart) {
+                $thongTinGioHang = DB::table('cart')
+                    ->where('id', $cart)
+                    ->first();
+                $sanPham = DB::table("san_pham")->where("id", $thongTinGioHang->ID_SanPham)->first();
+                $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
+                    ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
+                    ->count();
+                if ($soLuongBienTheSanPham >= 1) {
+                    $sanPhamBienThe = DB::table("bien_the_san_pham")
+                        ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
+                        ->where("KichCo", $thongTinGioHang->KichCo)
+                        ->where("ID_MauSac", $thongTinGioHang->MauSac)
+                        ->first();
+                    $tinh += $sanPhamBienThe->Gia * $thongTinGioHang->SoLuong;
+                } else {
+                    $tinh += $thongTinGioHang->SoLuong * $sanPham->GiaSanPham;
+                }
+            }
 
-            $thongTinGioHang = DB::table('cart')
-                ->whereIn('cart.id', $cart_id_list)
-                ->join("bien_the_san_pham", function ($join) {
-                    $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
-                        ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
-                        ->on("cart.MauSac", "=", "bien_the_san_pham.ID_MauSac");
-                })
-                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
-                ->selectRaw("SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")
-                ->first();
-            $tongTienSanPhamGioHangClient = $thongTinGioHang->tongTien ?? 0;
+            $tongTienSanPhamGioHangClient = $tinh;
 
             return response()->json([
                 "status" => "success",

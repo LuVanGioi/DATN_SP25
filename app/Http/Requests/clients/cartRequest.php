@@ -23,9 +23,7 @@ class cartRequest extends FormRequest
     {
         return [
             "id_product" => "required|integer|exists:san_pham,id",
-            "size"  => "required",
-            "color"  => "required",
-            "quantity"  => "required|integer|min:1|max:24",
+            "quantity"  => "required|integer|min:1",
         ];
     }
 
@@ -36,14 +34,9 @@ class cartRequest extends FormRequest
             "id_product.integer" => "Dữ Liệu Không Hợp Lệ",
             "id_product.exists" => "Sản Phẩm Không Tồn Tại",
 
-            "size.required" => "Vui Lòng Chọn Kích Cỡ",
-
-            "color.required" => "Vui Lòng Chọn Màu Sắc",
-
             "quantity.required" => "Vui Lòng Nhập Số Lượng",
             "quantity.integer" => "Số Lượng Phải Là Số Nguyên",
-            "quantity.min" => "Số Lượng Mua Tối Thiểu Là 1",
-            "quantity.max" => "Số Lượng Mua Tối Đa Là 24"
+            "quantity.min" => "Số Lượng Tối Thiểu Là 1"
         ];
     }
 

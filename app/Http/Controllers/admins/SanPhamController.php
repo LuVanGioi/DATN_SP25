@@ -45,9 +45,6 @@ class SanPhamController extends Controller
         DB::beginTransaction();
 
         $image = null;
-        $images = null;
-
-        // dd($request->all());
 
         if ($request->hasFile("hinhAnh")) {
             $image = $request->file("hinhAnh")->store("uploads/SanPham", "public");
@@ -62,6 +59,7 @@ class SanPhamController extends Controller
             "ChatLieu" => $request->input("ChatLieu"),
             "GiaSanPham" => $request->input("GiaSanPham"),
             "GiaKhuyenMai" => $request->input("GiaKhuyenMai"),
+            "SoLuong" => $request->input("SoLuong"),
             "Nhan" => $request->input("Nhan"),
             "Mota" => $request->input("MoTaSanPham"),
             "TrangThai" => "hien",
@@ -72,18 +70,19 @@ class SanPhamController extends Controller
         DB::commit();
 
         $sanPham = DB::table("san_pham")->orderByDesc("id")->first();
-        // if ($request->file("images")) {
-        //     foreach ($request->file("images") as $row) {
-        //         if ($row->isValid()) {
-        //             $images = $row->store("uploads/SanPham", "public");
-        //             DB::table("hinh_anh_san_pham")->insert([
-        //                 "DuongDan" => $images,
-        //                 "ID_SanPham" => $sanPham->id,
-        //                 "created_at" => date("Y/m/d H:i:s")
-        //             ]);
-        //         }
-        //     }
-        // }
+
+        if ($request->file("images")) {
+            foreach ($request->file("images") as $row) {
+                if ($row->isValid()) {
+                    $images = $row->store("uploads/SanPham", "public");
+                    DB::table("hinh_anh_san_pham")->insert([
+                        "DuongDan" => $images,
+                        "ID_SanPham" => $sanPham->id,
+                        "created_at" => date("Y/m/d H:i:s")
+                    ]);
+                }
+            }
+        }
 
         if ($request->input("TheLoai") == "bienThe") {
             $thongTinBienThes = $request->input('ThongTinBienThe', []);

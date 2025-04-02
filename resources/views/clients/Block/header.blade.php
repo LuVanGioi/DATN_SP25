@@ -87,8 +87,18 @@
                                 <img class="media-object item-image" src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt=""></a>
                             <p class="pull-right item-price">{{ number_format($gioHangClient->ThanhTien) }} đ</p>
                             <div class="media-body">
-                                <h4 class="media-heading item-title"><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ number_format($gioHangClient->SoLuong) }} x {{ $gioHangClient->TenSanPham }}</a></h4>
+                                <h4 class="media-heading item-title"><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ number_format(($gioHangClient->SoLuong ?? $gioHangClient->soLuongGioHang)) }} x {{ $gioHangClient->TenSanPham }}</a></h4>
                                 <p class="item-desc">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</p>
+                            </div>
+                        </div>
+                        @endforeach
+                        @foreach ($danhSachGioHangClient2 as $gioHangClient2)
+                        <div class="media">
+                            <a class="pull-left" href="/san-pham/{{ $gioHangClient2->DuongDan }}">
+                                <img class="media-object item-image" src="{{ Storage::url($gioHangClient2->HinhAnh) }}" alt=""></a>
+                            <p class="pull-right item-price">{{ number_format($gioHangClient2->ThanhTien) }} đ</p>
+                            <div class="media-body">
+                                <h4 class="media-heading item-title"><a href="/san-pham/{{ $gioHangClient2->DuongDan }}">{{ number_format(($gioHangClient2->SoLuong ?? $gioHangClient2->soLuongGioHang)) }} x {{ $gioHangClient2->TenSanPham }}</a></h4>
                             </div>
                         </div>
                         @endforeach
