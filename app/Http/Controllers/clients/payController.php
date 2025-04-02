@@ -358,7 +358,7 @@ class payController extends Controller
             }
         endif;
     }
-
+    
     public function payment_success($trading)
     {
         return view("clients.ThanhToan.ThanhToanThanhCong", compact("trading"));

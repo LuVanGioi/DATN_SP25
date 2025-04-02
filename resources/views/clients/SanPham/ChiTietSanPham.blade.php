@@ -74,10 +74,16 @@
                 <div class="product-availability">Danh Mục: <strong>{{ $danhMuc->TenDanhMucSanPham }}</strong></div>
                 <div class="product-availability">Thương Hiệu: <strong>{{ $thuongHieu->TenThuongHieu }}</strong></div>
                 <div class="product-availability">Chất Liệu: <strong>{{ $thongTinSanPham->ChatLieu }}</strong></div>
+                @if ($soLuongBienTheSanPham >= 1)
                 <div class="product-availability">Sản Phẩm Có Sẵn: <strong id="soLuongSanPham">{{ number_format($tongSoLuongBienThe->soLuongSanPhamBienTheAll) }}</strong></div>
+                @endif
                 <hr class="page-divider small">
 
-                <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del></div>
+                <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ
+                @if ($thongTinSanPham->GiaKhuyenMai)
+                    - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
+                    @endif
+                </div>
                 <hr class="page-divider">
 
                 <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="0" swal_success="none" type="POST">
@@ -85,6 +91,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
 
+                    @if ($soLuongBienTheSanPham >= 1)
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
@@ -95,9 +102,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        @error("size")
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div class="col-sm-6">
@@ -107,10 +111,8 @@
                                 <option value="" data-index="0">Chọn Màu Sắc</option>
                             </select>
                         </div>
-                        @error("color")
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
                     </div>
+                    @endif
 
                     <div class="col-md-12">
                         <hr class="page-divider small">

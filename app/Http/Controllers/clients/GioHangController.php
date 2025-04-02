@@ -33,7 +33,7 @@ class GioHangController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(cartRequest $request)
+    public function store(Request $request)
     {
         if ($request->action === 'add_to_cart') {
             DB::beginTransaction();
@@ -52,82 +52,191 @@ class GioHangController extends Controller
                 ->where("MauSac", $request->input("color"))
                 ->first();
 
-            if ($checkCart) {
-                $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $request->input("id_product"))
-                    ->where("ID_MauSac", DB::table("mau_sac")->where("id", $checkCart->MauSac)->first()->id)
-                    ->where("KichCo", $checkCart->KichCo)->first();
-                if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
-                    return response()->json([
-                        "status" => "error",
-                        "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinBienThe->SoLuong)
-                    ]);
-                }
-
-                if ($checkCart->SoLuong >= $thongTinBienThe->SoLuong) {
-                    return response()->json([
-                        "status" => "error",
-                        "message" => "Bạn đã có " . number_format($checkCart->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
-                    ]);
-                }
-
-                $congSoLuong = $checkCart->SoLuong + $request->input("quantity");
-                if ($congSoLuong > $thongTinBienThe->SoLuong) {
-                    $congSoLuong = $thongTinBienThe->SoLuong;
-                }
-
-                DB::table("cart")->where("id", $checkCart->id)->update([
-                    "SoLuong" => $congSoLuong
-                ]);
-
-                DB::commit();
-
+            if (!$request->input("quantity")) {
                 return response()->json([
-                    'status' => 'success',
-                    'message' => 'Đã cập nhật giỏ hàng!',
-                    'redirect' => route('gio-hang.index')
+                    "status" => "error",
+                    "message" => "Vui Lòng Nhập Số Lượng"
                 ]);
+            }
+
+            if ($request->input("quantity") <= 0) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Số Lượng Tối Thiểu Là 1"
+                ]);
+            }
+
+            $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
+                ->where("ID_SanPham", $request->input("id_product"))
+                ->count();
+            if ($soLuongBienTheSanPham >= 1) {
+                if (!$request->input("size")) {
+                    return response()->json([
+                        "status" => "error",
+                        "message" => "Vui Lòng Chọn Kích Cỡ"
+                    ]);
+                }
+
+                if (!$request->input("color")) {
+                    return response()->json([
+                        "status" => "error",
+                        "message" => "Vui Lòng Chọn Màu Sắc"
+                    ]);
+                }
+
+                if ($checkCart) {
+                    $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $request->input("id_product"))
+                        ->where("ID_MauSac", DB::table("mau_sac")->where("id", $checkCart->MauSac)->first()->id)
+                        ->where("KichCo", $checkCart->KichCo)->first();
+                    if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinBienThe->SoLuong)
+                        ]);
+                    }
+
+                    if ($checkCart->SoLuong >= $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Bạn đã có " . number_format($checkCart->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
+                        ]);
+                    }
+
+                    $congSoLuong = $checkCart->SoLuong + $request->input("quantity");
+                    if ($congSoLuong > $thongTinBienThe->SoLuong) {
+                        $congSoLuong = $thongTinBienThe->SoLuong;
+                    }
+
+                    DB::table("cart")->where("id", $checkCart->id)->update([
+                        "SoLuong" => $congSoLuong
+                    ]);
+
+                    DB::commit();
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Đã cập nhật giỏ hàng!',
+                        'redirect' => route('gio-hang.index')
+                    ]);
+                } else {
+                    DB::table("cart")->insert([
+                        "ID_KhachHang" => $userId,
+                        "ID_SanPham" => $request->input("id_product"),
+                        "KichCo" => $request->input("size"),
+                        "MauSac" => $request->input("color"),
+                        "SoLuong" => $request->input("quantity"),
+                        "Xoa" => "0",
+                        "created_at" => now()
+                    ]);
+
+                    $thongTinGioHangMoi = DB::table('cart')
+                        ->where('ID_KhachHang', $userId)
+                        ->where("ID_SanPham", $request->input("id_product"))
+                        ->where("KichCo", $request->input("size"))
+                        ->where("MauSac", $request->input("color"))
+                        ->first();
+
+                    $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinGioHangMoi->ID_SanPham)
+                        ->where("ID_MauSac", DB::table("mau_sac")->where("id", $thongTinGioHangMoi->MauSac)->first()->id)
+                        ->where("KichCo", $thongTinGioHangMoi->KichCo)->first();
+
+                    if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinBienThe->SoLuong)
+                        ]);
+                    }
+                    if ($thongTinGioHangMoi->SoLuong >= $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Bạn đã có " . number_format($thongTinGioHangMoi->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
+                        ]);
+                    }
+
+                    DB::commit();
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Đã thêm sản phẩm vào giỏ hàng!',
+                        'redirect' => route('gio-hang.index')
+                    ]);
+                }
             } else {
-                DB::table("cart")->insert([
-                    "ID_KhachHang" => $userId,
-                    "ID_SanPham" => $request->input("id_product"),
-                    "KichCo" => $request->input("size"),
-                    "MauSac" => $request->input("color"),
-                    "SoLuong" => $request->input("quantity"),
-                    "Xoa" => "0",
-                    "created_at" => now()
-                ]);
+                if ($checkCart) {
+                    $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $request->input("id_product"))
+                        ->where("ID_MauSac", DB::table("mau_sac")->where("id", $checkCart->MauSac)->first()->id)
+                        ->where("KichCo", $checkCart->KichCo)->first();
+                    if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinBienThe->SoLuong)
+                        ]);
+                    }
 
-                $thongTinGioHangMoi = DB::table('cart')
-                    ->where('ID_KhachHang', $userId)
-                    ->where("ID_SanPham", $request->input("id_product"))
-                    ->where("KichCo", $request->input("size"))
-                    ->where("MauSac", $request->input("color"))
-                    ->first();
+                    if ($checkCart->SoLuong >= $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Bạn đã có " . number_format($checkCart->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
+                        ]);
+                    }
 
-                $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinGioHangMoi->ID_SanPham)
-                    ->where("ID_MauSac", DB::table("mau_sac")->where("id", $thongTinGioHangMoi->MauSac)->first()->id)
-                    ->where("KichCo", $thongTinGioHangMoi->KichCo)->first();
+                    $congSoLuong = $checkCart->SoLuong + $request->input("quantity");
+                    if ($congSoLuong > $thongTinBienThe->SoLuong) {
+                        $congSoLuong = $thongTinBienThe->SoLuong;
+                    }
 
-                if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
+                    DB::table("cart")->where("id", $checkCart->id)->update([
+                        "SoLuong" => $congSoLuong
+                    ]);
+
+                    DB::commit();
+
                     return response()->json([
-                        "status" => "error",
-                        "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinBienThe->SoLuong)
+                        'status' => 'success',
+                        'message' => 'Đã cập nhật giỏ hàng!'
+                    ]);
+                } else {
+                    DB::table("cart")->insert([
+                        "ID_KhachHang" => $userId,
+                        "ID_SanPham" => $request->input("id_product"),
+                        "KichCo" => $request->input("size"),
+                        "MauSac" => $request->input("color"),
+                        "SoLuong" => $request->input("quantity"),
+                        "Xoa" => "0",
+                        "created_at" => now()
+                    ]);
+
+                    $thongTinGioHangMoi = DB::table('cart')
+                        ->where('ID_KhachHang', $userId)
+                        ->where("ID_SanPham", $request->input("id_product"))
+                        ->where("KichCo", $request->input("size"))
+                        ->where("MauSac", $request->input("color"))
+                        ->first();
+
+                    $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinGioHangMoi->ID_SanPham)
+                        ->where("ID_MauSac", DB::table("mau_sac")->where("id", $thongTinGioHangMoi->MauSac)->first()->id)
+                        ->where("KichCo", $thongTinGioHangMoi->KichCo)->first();
+
+                    if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinBienThe->SoLuong)
+                        ]);
+                    }
+                    if ($thongTinGioHangMoi->SoLuong >= $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Bạn đã có " . number_format($thongTinGioHangMoi->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
+                        ]);
+                    }
+
+                    DB::commit();
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Đã thêm sản phẩm vào giỏ hàng!'
                     ]);
                 }
-                if ($thongTinGioHangMoi->SoLuong >= $thongTinBienThe->SoLuong) {
-                    return response()->json([
-                        "status" => "error",
-                        "message" => "Bạn đã có " . number_format($thongTinGioHangMoi->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
-                    ]);
-                }
-
-                DB::commit();
-
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Đã thêm sản phẩm vào giỏ hàng!',
-                    'redirect' => route('gio-hang.index')
-                ]);
             }
         } elseif ($request->action === 'buy_now') {
             DB::beginTransaction();

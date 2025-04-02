@@ -23,9 +23,6 @@ class cartRequest extends FormRequest
     {
         return [
             "id_product" => "required|integer|exists:san_pham,id",
-            "size"  => "required",
-            "color"  => "required",
-            "quantity"  => "required|integer|min:1|max:24",
         ];
     }
 

@@ -45,7 +45,6 @@ class SanPhamController extends Controller
         DB::beginTransaction();
 
         $image = null;
-        $images = null;
 
         // dd($request->all());
 
@@ -72,18 +71,6 @@ class SanPhamController extends Controller
         DB::commit();
 
         $sanPham = DB::table("san_pham")->orderByDesc("id")->first();
-        // if ($request->file("images")) {
-        //     foreach ($request->file("images") as $row) {
-        //         if ($row->isValid()) {
-        //             $images = $row->store("uploads/SanPham", "public");
-        //             DB::table("hinh_anh_san_pham")->insert([
-        //                 "DuongDan" => $images,
-        //                 "ID_SanPham" => $sanPham->id,
-        //                 "created_at" => date("Y/m/d H:i:s")
-        //             ]);
-        //         }
-        //     }
-        // }
 
         if ($request->input("TheLoai") == "bienThe") {
             $thongTinBienThes = $request->input('ThongTinBienThe', []);
