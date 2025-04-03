@@ -263,8 +263,17 @@ class GioHangController extends Controller
             }
 
             $sanPham = DB::table("san_pham")
-                ->where("id", $request->input("id_product"))->first();
+                ->where("id", $request->input("id_product"))
+                ->where("san_pham.Xoa", "=", 0)
+                ->where("TrangThai", "hien")
+                ->first();
 
+            if (!$sanPham) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sản Phẩm Không Tồn Tại'
+                ]);
+            }
             if ($sanPham->TheLoai == "bienThe") {
                 $checkCart = DB::table('cart')
                     ->join("san_pham", function ($join) {
