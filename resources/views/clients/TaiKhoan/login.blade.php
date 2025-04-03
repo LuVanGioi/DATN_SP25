@@ -10,6 +10,10 @@
 if (Auth::check()) {
 die('<script>location.href="/"</script>');
 }
+
+if(AUth::user()->role == "Admin") {
+    die('<script>location.href="/admin/thongKe"</script>');
+}
 @endphp
 <section class="page-section color">
     <div class="container">
