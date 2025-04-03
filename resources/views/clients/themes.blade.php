@@ -138,7 +138,9 @@
     <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
 
     <script>
-        setInterval(getTinNhan, 2000);
+        <?php if ($_SERVER['REQUEST_URI'] !== "/dang-nhap" || $_SERVER['REQUEST_URI'] !== "/dang-ky") { ?>
+            setInterval(getTinNhan, 2000);
+        <?php } ?>
 
         function getTinNhan() {
             const contentChat = document.querySelector('.content-chat');
@@ -205,6 +207,8 @@
                 }
             });
         }
+
+
 
         let selectedFiles = [];
         document.getElementById('images-chat').addEventListener('change', function(event) {
