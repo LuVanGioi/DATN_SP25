@@ -231,8 +231,6 @@ class payController extends Controller
         $tongTien2 = $layGiaTienSanPham2->tongTien ?? 0;
         $tongTienSanPhamDaChon = $tongTien1 + $tongTien2;
 
-
-
         if (!$request->input("location")):
             return response()->json([
                 "status" => "error",
@@ -374,6 +372,12 @@ class payController extends Controller
         elseif ($request->input("method") == "Banking"):
 
             $PayOS = DB::table("pay_os")->where("id", 1)->first();
+            if(!$PayOS) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Thanh Toán Ngân Hàng Đang Bảo Trì, Vui Lòng Quay Lại Sau!"
+                ]);
+            }
             $apiKey = $PayOS->API_Key;
             $clientId = $PayOS->Client_ID;
             $checksumKey = $PayOS->Checksum_Key;
@@ -390,7 +394,7 @@ class payController extends Controller
             $signatureString = "amount={$data['amount']}&cancelUrl={$data['cancelUrl']}&description={$data['description']}&orderCode={$data['orderCode']}&returnUrl={$data['returnUrl']}";
             $signature = hash_hmac('sha256', $signatureString, $checksumKey);
             $data["signature"] = $signature;
-
+            
             $response = Http::withHeaders([
                 "x-client-id" => $clientId,
                 "x-api-key" => $apiKey,
@@ -398,6 +402,7 @@ class payController extends Controller
             ])->post("https://api-merchant.payos.vn/v2/payment-requests", $data);
             $result = $response->json();
 
+            
             if (isset($result['data']['checkoutUrl'])) {
 
                 $selectedCartIds = session('selected_products', []);
@@ -441,7 +446,6 @@ class payController extends Controller
                             ]);
                     endif;
                 endforeach;
-
 
                 foreach ($sanPhamDaChon2 as $cart):
                     $thongTinSanPham = DB::table("san_pham")->where("id", $cart->ID_SanPham)->first();

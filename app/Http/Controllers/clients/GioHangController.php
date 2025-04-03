@@ -57,10 +57,9 @@ class GioHangController extends Controller
                 ]);
             }
 
-            $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
-                ->where("ID_SanPham", $request->input("id_product"))
-                ->count();
-            if ($soLuongBienTheSanPham >= 1) {
+            $sanPhamAdd = DB::table("san_pham")
+                ->where("id", $request->input("id_product"))->first();
+            if ($sanPhamAdd->TheLoai == "bienThe") {
                 if (!$request->input("size")) {
                     return response()->json([
                         "status" => "error",
@@ -79,10 +78,20 @@ class GioHangController extends Controller
                     $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $request->input("id_product"))
                         ->where("ID_MauSac", DB::table("mau_sac")->where("id", $checkCart->MauSac)->first()->id)
                         ->where("KichCo", $checkCart->KichCo)->first();
+
+                    $checkGioHang = DB::table("cart")->where("ID_SanPham", $request->input("id_product"))->where("KichCo", $request->input("size"))->where("MauSac", $request->input("color"))->first();
+
                     if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
                         return response()->json([
                             "status" => "error",
                             "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinBienThe->SoLuong)
+                        ]);
+                    }
+
+                    if ($checkGioHang->SoLuong > $thongTinBienThe->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Bạn đã có " . number_format($checkGioHang->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
                         ]);
                     }
 
@@ -157,6 +166,26 @@ class GioHangController extends Controller
                         return response()->json([
                             "status" => "error",
                             "message" => "Sản Phẩm Chỉ Còn " . number_format($thongTinSanPhamThuong->SoLuong)
+                        ]);
+                    }
+                    $checkGioHang = DB::table("cart")
+                        ->where("ID_SanPham", $request->input("id_product"))
+                        ->where("KichCo", "=", null)
+                        ->where("MauSac", "=", null)
+                        ->first();
+
+                    if ($checkGioHang->SoLuong > $thongTinSanPhamThuong->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Bạn đã có " . number_format($checkGioHang->SoLuong) . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn."
+                        ]);
+                    }
+
+                    $tinhGioHang = $checkGioHang->SoLuong + $request->input("quantity");
+                    if ($tinhGioHang > $thongTinSanPhamThuong->SoLuong) {
+                        return response()->json([
+                            "status" => "error",
+                            "message" => "Bạn đã có " . number_format($checkGioHang->SoLuong) . " sản phẩm trong giỏ hàng. " . ($thongTinSanPhamThuong->SoLuong - $checkGioHang->SoLuong == 0 ? "Bạn không thể thêm nữa vì quá số lượng sản phẩm tồn kho" : "Bạn chỉ có thể thêm " . number_format($thongTinSanPhamThuong->SoLuong - $checkGioHang->SoLuong) . " vào giỏ hàng")
                         ]);
                     }
 
@@ -243,7 +272,25 @@ class GioHangController extends Controller
             $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
                 ->where("ID_SanPham", $request->input("id_product"))
                 ->count();
-            if ($soLuongBienTheSanPham >= 1) {
+
+            $sanPham = DB::table("san_pham")
+                ->where("id", $request->input("id_product"))->first();
+
+            if ($sanPham->TheLoai == "bienThe") {
+                if (!$request->input("size")) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Vui Lòng Chọn Kích Cỡ'
+                    ]);
+                }
+
+                if (!$request->input("color")) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Vui Lòng Chọn Màu Sắc'
+                    ]);
+                }
+
                 if ($checkCart) {
                     DB::table("cart")->where("id", $checkCart->id)->update([
                         "SoLuong" => $checkCart->SoLuong + $request->input("quantity")
@@ -265,7 +312,6 @@ class GioHangController extends Controller
                         ]
                     ]);
 
-                    //dd(route('payent', $orderCode), $layLaiThongTin);
                     DB::commit();
 
                     return response()->json([
@@ -275,6 +321,7 @@ class GioHangController extends Controller
                         'redirect' => route('payent', $orderCode)
                     ]);
                 } else {
+
                     DB::table("cart")->insert([
                         "ID_KhachHang" => $userId,
                         "ID_SanPham" => $request->input("id_product"),
@@ -343,7 +390,7 @@ class GioHangController extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Chuyển đến trang thanh toán!',
+                        'message' => '',
                         'type' => 'payment',
                         'redirect' => route('payent', $orderCode)
                     ]);
@@ -463,7 +510,7 @@ class GioHangController extends Controller
                 ]);
                 return response()->json([
                     'status' => "error",
-                    'message' => "Bạn đã có " . number_format($layGiaTienSanPham->soLuongSP) - 1 . " sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.",
+                    'message' => "Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.",
                     'input' => $b
                 ]);
             }

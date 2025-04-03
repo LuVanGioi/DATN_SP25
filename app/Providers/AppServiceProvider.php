@@ -53,7 +53,9 @@ class AppServiceProvider extends ServiceProvider
             $layGiaTienSanPham = DB::table("cart")
                 ->join("san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                        ->where("san_pham.TheLoai", "=", "bienThe")
+                        ->where("san_pham.Xoa", "=", 0)
+                        ->where("TrangThai", "hien");
                 })
                 ->join("bien_the_san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
@@ -68,7 +70,9 @@ class AppServiceProvider extends ServiceProvider
             $danhSachGioHangThuong = DB::table("cart")
                 ->join("san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                        ->where("san_pham.TheLoai", "=", "thuong")
+                        ->where("san_pham.Xoa", "=", 0)
+                        ->where("TrangThai", "hien");
                 })
                 ->where("KichCo", "=", null)
                 ->where("MauSac", "=", null)
@@ -80,7 +84,9 @@ class AppServiceProvider extends ServiceProvider
             $layGiaTienSanPhamThuong = DB::table("cart")
                 ->join("san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                        ->where("san_pham.TheLoai", "=", "thuong")
+                        ->where("san_pham.Xoa", "=", 0)
+                        ->where("TrangThai", "hien");
                 })
                 ->where("KichCo", "=", null)
                 ->where("MauSac", "=", null)
@@ -96,7 +102,9 @@ class AppServiceProvider extends ServiceProvider
             $danhSachGioHangClient = DB::table("cart")
                 ->join("san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                        ->where("san_pham.TheLoai", "=", "bienThe")
+                        ->where("san_pham.Xoa", "=", 0)
+                        ->where("TrangThai", "hien");
                 })
                 ->join("bien_the_san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
@@ -106,7 +114,7 @@ class AppServiceProvider extends ServiceProvider
                 ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
                 ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
-                ->select("bien_the_san_pham.SoLuong as soLuongBienThe", "cart.SoLuong as soLuongGioHang")
+                ->select("bien_the_san_pham.SoLuong as soLuongBienThe", "cart.SoLuong as soLuongGioHang", "cart.SoLuong as SoLuong")
                 ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien, bien_the_san_pham.Gia as GiaSanPhamBienThe")
                 ->get();
 
@@ -114,11 +122,14 @@ class AppServiceProvider extends ServiceProvider
             $danhSachGioHangClient2 = DB::table("cart")
                 ->join("san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                        ->where("san_pham.TheLoai", "=", "thuong")
+                        ->where("san_pham.Xoa", "=", 0)
+                        ->where("TrangThai", "hien");
                 })
                 ->where("cart.KichCo", "=", null)
-                ->where("cart.KichCo", "=", null)
-                ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
+                ->where("cart.MauSac", "=", null)
+                ->where("cart.ID_KhachHang", $userId)
+                ->select("cart.SoLuong as SoLuongGioHang")
                 ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")
                 ->get();
 

@@ -35,7 +35,8 @@
                             <img class="img-responsive" src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="">
                         </a>
                     </div>
-                    @if ($soLuongBienTheSanPham >= 1)
+
+                    @if ($thongTinSanPham->TheLoai == "bienThe")
                     @foreach ($bienTheSanPham2 as $khoAnh)
                     <div class="item">
                         <a class="btn btn-theme btn-theme-transparent btn-zoom"
@@ -59,7 +60,7 @@
                 </div>
 
                 <div class="row product-thumbnails">
-                    @if ($soLuongBienTheSanPham >= 1)
+                    @if ($thongTinSanPham->TheLoai == "bienThe")
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
                             <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
@@ -95,14 +96,22 @@
                 <div class="product-availability">Danh Mục: <strong>{{ $danhMuc->TenDanhMucSanPham }}</strong></div>
                 <div class="product-availability">Thương Hiệu: <strong>{{ $thuongHieu->TenThuongHieu }}</strong></div>
                 <div class="product-availability">Chất Liệu: <strong>{{ $thongTinSanPham->ChatLieu }}</strong></div>
-                @if ($soLuongBienTheSanPham >= 1)
+                @if ($thongTinSanPham->TheLoai == "bienThe")
                 <div class="product-availability">Sản Phẩm Có Sẵn: <strong id="soLuongSanPham">{{ number_format($tongSoLuongBienThe->soLuongSanPhamBienTheAll) }}</strong></div>
                 @else
+                @if ($thongTinSanPham->SoLuong > 1)
                 <div class="product-availability">Sản Phẩm Có Sẵn: <strong>{{ number_format($thongTinSanPham->SoLuong) }}</strong></div>
+                @endif
                 @endif
                 <hr class="page-divider small">
 
-                <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ
+                <div class="product-price"><span id="GiaTienSP">
+                        @if ($thongTinSanPham->TheLoai == "bienThe")
+                        ₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinSanPham->id)->where("Xoa", 0)->min("Gia")) }}
+                        @else
+                        ₫{{ number_format($thongTinSanPham->GiaSanPham) }}
+                        @endif
+                    </span>
                     @if ($thongTinSanPham->GiaKhuyenMai)
                     - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
                     @endif
@@ -114,7 +123,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
 
-                    @if ($soLuongBienTheSanPham >= 1)
+                    @if ($thongTinSanPham->TheLoai == "bienThe")
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
@@ -151,6 +160,7 @@
                             </div>
                         </div>
                     </div>
+                    @if ($thongTinSanPham->TheLoai == "bienThe")
                     <div class="col-md-12">
                         <div class="buttons mt-3" style="margin-top: 10px;">
                             <button class="btn btn-theme btn-cart" type="submit" data-action="add_to_cart">
@@ -161,6 +171,28 @@
                             </button>
                         </div>
                     </div>
+                    @else
+                    @if ($thongTinSanPham->SoLuong > 1)
+                    <div class="col-md-12">
+                        <div class="buttons mt-3" style="margin-top: 10px;">
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="add_to_cart">
+                                <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
+                            </button>
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="buy_now">
+                                <i class="fa fa-shopping-cart"></i> Mua Ngay
+                            </button>
+                        </div>
+                    </div>
+                    @else
+                    <div class="col-md-12">
+                        <div class="buttons mt-3" style="margin-top: 10px;">
+                            <button class="btn btn-theme btn-cart btn-block" disabled>
+                                <i class="fa fa-shopping-cart"></i> Sản Phẩm Đã Hết Hàng
+                            </button>
+                        </div>
+                    </div>
+                    @endif
+                    @endif
                 </form>
                 <hr class="page-divider small">
 
