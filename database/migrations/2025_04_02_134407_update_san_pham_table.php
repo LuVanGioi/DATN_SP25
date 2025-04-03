@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('san_pham', function (Blueprint $table) {
             $table->string('SoLuong')->nullable()->after('GiaKhuyenMai');
+            $table->string('GiaSanPham')->nullable()->change();
         });
     }
 
@@ -22,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('san_pham', function (Blueprint $table) {
-            $table->dropColumn('SoLuong');
+            $table->dropColumn('SoLuong')->change();
+            $table->string('GiaSanPham')->nullable(value: false)->change();
         });
     }
 };

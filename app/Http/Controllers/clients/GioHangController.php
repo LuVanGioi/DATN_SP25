@@ -265,11 +265,12 @@ class GioHangController extends Controller
                         ]
                     ]);
 
+                    //dd(route('payent', $orderCode), $layLaiThongTin);
                     DB::commit();
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Chuyển đến trang thanh toán!',
+                        'message' => '',
                         'type' => 'payment',
                         'redirect' => route('payent', $orderCode)
                     ]);
@@ -305,7 +306,7 @@ class GioHangController extends Controller
                     return response()->json([
                         'status' => 'success',
                         'type' => 'payment',
-                        'message' => 'Chuyển đến trang thanh toán!',
+                        'message' => '',
                         'redirect' => route('payent', $orderCode)
                     ]);
                 }

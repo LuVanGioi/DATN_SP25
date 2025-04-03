@@ -23,3 +23,29 @@
     </div>
 </section>
 @endsection
+
+@section("js")
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setInterval(function() {
+            fetch(location.href)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+
+                    const newCartCount = doc.querySelector("#cart-count");
+                    if (newCartCount) {
+                        document.getElementById("cart-count").innerHTML = newCartCount.innerHTML;
+                    }
+
+                    const newListHeader = doc.querySelector("#list-product-header");
+                    if (newListHeader) {
+                        document.getElementById("list-product-header").innerHTML = newListHeader.innerHTML;
+                    }
+                })
+                .catch(error => console.log("Lỗi: ", error));
+        }, 2000);
+    });
+</script>
+@endsection

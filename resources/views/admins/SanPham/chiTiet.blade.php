@@ -47,15 +47,22 @@
                                         <input type="text" class="form-control" value="{{ $sanPham->ChatLieu }}" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-3">
+                                    @if($sanPham->TheLoai == "thuong")
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Giá Gốc:</label>
                                         <input type="text" class="form-control" value="{{ ($sanPham->GiaKhuyenMai ? number_format($sanPham->GiaKhuyenMai) : "0") }}đ" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Giá Bán:</label>
                                         <input type="text" class="form-control" value="{{ number_format($sanPham->GiaSanPham) }}đ" readonly>
                                     </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="label-control">Số Lượng:</label>
+                                        <input type="text" class="form-control" value="{{ number_format($sanPham->SoLuong) }}" readonly>
+                                    </div>
+                                    @endif
 
                                     <div class="col-md-4 mb-3">
                                         <label class="label-control">Nhãn:</label>
@@ -141,6 +148,7 @@
                                         <div class="owl-carousel owl-theme owl-loaded owl-drag" id="owl-carousel-13">
                                             <div class="owl-stage-outer">
                                                 <div class="owl-stage">
+                                                @if ($sanPham->TheLoai == "bienThe")
                                                     @foreach ($danhSachBienThe as $bienThe1)
                                                     <div class="owl-item active">
                                                         <div class="item">
@@ -148,6 +156,15 @@
                                                         </div>
                                                     </div>
                                                     @endforeach
+                                                    @else
+                                                    @foreach ($danhSachHinhAnh as $hinhAnh)
+                                                    <div class="owl-item active">
+                                                        <div class="item">
+                                                            <img src="{{ Storage::url($hinhAnh->DuongDan) }}" alt="{{ $sanPham->TenSanPham }}">
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
