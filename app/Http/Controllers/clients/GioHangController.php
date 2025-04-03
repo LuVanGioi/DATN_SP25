@@ -269,10 +269,6 @@ class GioHangController extends Controller
                 ->where("MauSac", $request->input("color"))
                 ->first();
 
-            $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
-                ->where("ID_SanPham", $request->input("id_product"))
-                ->count();
-
             $sanPham = DB::table("san_pham")
                 ->where("id", $request->input("id_product"))->first();
 
@@ -359,21 +355,73 @@ class GioHangController extends Controller
                 }
             } else {
                 $checkCart = DB::table('cart')
-                    ->where('ID_KhachHang', $userId)
-                    ->where("ID_SanPham", $request->input("id_product"))
+                    ->join("san_pham", function ($join) {
+                        $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                            ->where("san_pham.TheLoai", "=", "thuong")
+                            ->where("san_pham.Xoa", "=", 0)
+                            ->where("TrangThai", "hien");
+                    })
+                    ->where('cart.KichCo', "=", null)
+                    ->where('cart.MauSac', "=", null)
+                    ->where('cart.ID_KhachHang', $userId)
+                    ->where("cart.ID_SanPham", $request->input("id_product"))
+                    ->selectRaw("cart.id as idCart, cart.SoLuong as SoLuongCart, cart.*, san_pham.*")
                     ->first();
 
                 if ($checkCart) {
                     $layLaiThongTin = DB::table('cart')
-                        ->where('ID_KhachHang', $userId)
-                        ->where("ID_SanPham", $request->input("id_product"))
+                        ->join("san_pham", function ($join) {
+                            $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                                ->where("san_pham.TheLoai", "=", "thuong")
+                                ->where("san_pham.Xoa", "=", 0)
+                                ->where("TrangThai", "hien");
+                        })
+                        ->where('cart.KichCo', "=", null)
+                        ->where('cart.MauSac', "=", null)
+                        ->where('cart.ID_KhachHang', $userId)
+                        ->where("cart.ID_SanPham", $request->input("id_product"))
+                        ->selectRaw("cart.id as idCart, cart.SoLuong as SoLuongCart, cart.*, san_pham.*")
                         ->first();
 
                     $thongTinSanPhamThuong = DB::table("san_pham")->where("id", $request->input("id_product"))->first();
 
-                    if ($layLaiThongTin->SoLuong < $thongTinSanPhamThuong->SoLuong) {
-                        DB::table("cart")->where("id", $checkCart->id)->update([
-                            "SoLuong" => $checkCart->SoLuong + $request->input("quantity")
+                    $layLaiThongTinNe = DB::table('cart')
+                        ->join("san_pham", function ($join) {
+                            $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                                ->where("san_pham.TheLoai", "=", "thuong")
+                                ->where("san_pham.Xoa", "=", 0)
+                                ->where("TrangThai", "hien");
+                        })
+                        ->where('cart.KichCo', "=", null)
+                        ->where('cart.MauSac', "=", null)
+                        ->where('cart.ID_KhachHang', $userId)
+                        ->where("cart.ID_SanPham", $request->input("id_product"))
+                        ->selectRaw("cart.id as idCart, cart.SoLuong as SoLuongCart, cart.*, san_pham.*")
+                        ->first();
+
+                    if ($request->input("quantity") > $thongTinSanPhamThuong->SoLuong) {
+                        if ($layLaiThongTin->SoLuongCart < $thongTinSanPhamThuong->SoLuong) {
+                            DB::table("cart")->where("id", $checkCart->idCart)->update([
+                                "SoLuong" => $checkCart->SoLuongCart + $request->input("quantity")
+                            ]);
+                        }
+
+
+                        if ($layLaiThongTinNe->SoLuongCart > $thongTinSanPhamThuong->SoLuong) {
+                            DB::table("cart")->where("id", $layLaiThongTinNe->idCart)->update([
+                                "SoLuong" => $thongTinSanPhamThuong->SoLuong
+                            ]);
+                        }
+
+                        if ($request->input("quantity") > $thongTinSanPhamThuong->SoLuong) {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => 'Sản Phẩm Chỉ Còn ' . number_format($thongTinSanPhamThuong->SoLuong)
+                            ]);
+                        }
+                    } else {
+                        DB::table("cart")->where("id", $layLaiThongTinNe->idCart)->update([
+                            "SoLuong" => $request->input("quantity")
                         ]);
                     }
 
@@ -382,7 +430,7 @@ class GioHangController extends Controller
                     session()->forget('selected_products');
                     session([
                         'selected_products' => [
-                            $layLaiThongTin->id
+                            $layLaiThongTinNe->idCart
                         ]
                     ]);
 
@@ -406,8 +454,14 @@ class GioHangController extends Controller
                     ]);
 
                     $layLaiThongTin = DB::table('cart')
-                        ->where('ID_KhachHang', $userId)
-                        ->where("ID_SanPham", $request->input("id_product"))
+                        ->join("san_pham", function ($join) {
+                            $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                                ->where("san_pham.TheLoai", "=", "thuong")
+                                ->where("san_pham.Xoa", "=", 0)
+                                ->where("TrangThai", "hien");
+                        })
+                        ->where('cart.ID_KhachHang', $userId)
+                        ->where("cart.ID_SanPham", $request->input("id_product"))
                         ->first();
 
                     $orderCode = strtoupper(Str::random(40));
