@@ -10,10 +10,7 @@ class homeController extends Controller
 {
     public function home()
     {
-        $tatCaSanPham = DB::table("san_pham")->where("Xoa", 0)->where(
-            "TrangThai",
-            "hien"
-        )->orderByDesc("id")->limit(12)->get();
+        $tatCaSanPham = DB::table("san_pham")->where("Xoa", 0)->where("TrangThai", "hien")->orderByDesc("id")->limit(12)->get();
         $sanPhamMoiNhat = DB::table("san_pham")->where("Xoa", 0)->orderByDesc("id")->where("TrangThai", "hien")->orderByDesc("id")->limit(12)->get();
         $sanPhamBanChay = DB::table("san_pham")
             ->orderByDesc("id")
@@ -50,6 +47,7 @@ class homeController extends Controller
             ->orderByDesc("id")
             ->limit(12)
             ->paginate(2);
+
         $tatCaBanner = DB::table("banner")->where("Xoa", 0)->where("TrangThai", "hien")->orderByDesc("id")->get();
         return view('clients.TrangChu', compact("tatCaSanPham", "tongSanPhamBanChay", "tongSanPhamHetHang", "sanPhamBanChay", "tatCaBaiViet", "tatCaBanner", "sanPhamMoiNhat", "sanPhamSapHetHang"));
     }

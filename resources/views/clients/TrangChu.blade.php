@@ -69,6 +69,7 @@
     </div>
 </section>
 
+@if (count($sanPhamMoiNhat) >= 1)
 <section class="page-section">
     <div class="container">
         <div class="tabs">
@@ -100,7 +101,11 @@
                             <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
                         </h4>
                         <div class="price" style="align-items: center; margin-top: 10px">
-                            <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                            @if ($sanPham->TheLoai == "bienThe")
+                            <ins>₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->where("Xoa", 0)->min("Gia")) }}</ins>
+                            @else
+                            <ins>₫{{ number_format($sanPham->GiaSanPham) }}</ins>
+                            @endif
                             <span>Đã bán {{ soGon($luotMua) }}</span>
                         </div>
                     </div>
@@ -111,6 +116,7 @@
 
     </div>
 </section>
+@endif
 
 @if ($tongSanPhamBanChay >= 1)
 <section class="page-section">
@@ -147,7 +153,11 @@
                                 <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
                             </h4>
                             <div class="price" style="align-items: center; margin-top: 10px">
-                                <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                                @if ($sanPham->TheLoai == "bienThe")
+                                <ins>₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->where("Xoa", 0)->min("Gia")) }}</ins>
+                                @else
+                                <ins>₫{{ number_format($sanPham->GiaSanPham) }}</ins>
+                                @endif
                                 <span>Đã bán {{ soGon($luotMua) }}</span>
                             </div>
                         </div>
@@ -182,7 +192,7 @@
                 $view=1;
                 }
                 } else {
-                if($sanPham->SoLuong >= 1 && $sanPham->SoLuong <= 10) {
+                if($sanPham->SoLuong >= 1 && $sanPham->SoLuong <= 5) {
                     $view=1;
                     }
                     }
@@ -218,7 +228,11 @@
                                 <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
                             </h4>
                             <div class="price" style="align-items: center; margin-top: 10px">
-                                <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                                @if ($sanPham->TheLoai == "bienThe")
+                                <ins>₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->where("Xoa", 0)->min("Gia")) }}</ins>
+                                @else
+                                <ins>₫{{ number_format($sanPham->GiaSanPham) }}</ins>
+                                @endif
                                 <span>Đã bán {{ soGon($luotMua) }}</span>
                             </div>
                         </div>
