@@ -269,7 +269,7 @@
                     </div>
                 </div>
                 @endif
-                <form class="row variable" submit-ajax="true" action="{{ route("payment.store", $orderCode) }}" method="POST" time_load="0" swal_success="none" type="POST">
+                <form submit-ajax="true" action="{{ route("payment.store", $orderCode) }}" method="POST" time_load="0" swal_success="none" type="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
                     @csrf
