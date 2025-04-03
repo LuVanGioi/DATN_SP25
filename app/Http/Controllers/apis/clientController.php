@@ -33,9 +33,7 @@ class clientController extends Controller
                     ->where('id', $cart)
                     ->first();
                 $sanPham = DB::table("san_pham")->where("id", $thongTinGioHang->ID_SanPham)->first();
-                $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
-                    ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
-                    ->count();
+                
                 if ($sanPham->TheLoai == "bienThe") {
                     $sanPhamBienThe = DB::table("bien_the_san_pham")
                         ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)

@@ -105,7 +105,13 @@
                 @endif
                 <hr class="page-divider small">
 
-                <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ
+                <div class="product-price"><span id="GiaTienSP">
+                        @if ($thongTinSanPham->TheLoai == "bienThe")
+                        ₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinSanPham->id)->where("Xoa", 0)->min("Gia")) }}
+                        @else
+                        ₫{{ number_format($thongTinSanPham->GiaSanPham) }}
+                        @endif
+                    </span>
                     @if ($thongTinSanPham->GiaKhuyenMai)
                     - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
                     @endif

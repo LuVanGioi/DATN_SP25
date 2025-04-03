@@ -46,8 +46,9 @@
                                     {{ $sanPhamm->TenMauSac }}</small></div>
                             <div class="money">
                                 <div class="prices">
-                                    {{ number_format($sanPhamm->GiaSanPham) }} đ
-                                    <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai).'đ' : '') }}
+                                    {{ ($sanPhamm->Gia ? number_format($sanPhamm->Gia) : number_format($sanPhamm->GiaSanPham) ) }} đ
+                                    <del>
+                                        <small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai).'đ' : '') }}
                                         </small></del>
                                 </div>
                                 <div class="amount">
@@ -72,7 +73,7 @@
                             <div class="money">
                                 <div class="prices">
                                     {{ number_format($sanPhamm->GiaSanPham) }} đ
-                                    <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai).'đ' : '') }}
+                                    <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai).'đ' : number_format($sanPhamm->Gia)) }}
                                         </small></del>
                                 </div>
                                 <div class="amount">

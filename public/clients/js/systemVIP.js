@@ -7,6 +7,7 @@ $("form[submit-ajax=true]").on("submit", function (e) {
     let button = form.find('button[type=submit]:focus');
     let actionValue = button.data("action");
     let swal_success = form.attr("swal_success");
+    let method = form.attr("method");
     let time_load = form.attr("time_load");
     $("#actionField").val(actionValue);
     let oldTextButton = button.html();
@@ -19,7 +20,7 @@ $("form[submit-ajax=true]").on("submit", function (e) {
     button.html('Đang Xử Lý...').prop('disabled', true);
 
     $.ajax({
-        type: "POST",
+        type: method,
         url: url,
         data: form.serialize(),
         dataType: "json",
