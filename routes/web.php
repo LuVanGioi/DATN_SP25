@@ -125,8 +125,9 @@ Route::prefix('dia-chi-nhan-hang')->group(function () {
     Route::post('/set-default/{id}', [DiaChiNhanHangController::class, 'setDefault'])->name('dia-chi-nhan-hang.set-default');
 });
 Route::resource('lich-su-don-hang', LichSuDonHangController::class);
-Route::resource('chi-tiet-huy-don', ChiTietHuyDonController::class);
-Route::get('danh-muc/{code}', [DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
+Route::resource('huy-don', ChiTietHuyDonController::class);
+Route::get('danh-muc/{code}',[DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
+
 
 
 
