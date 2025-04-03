@@ -13,14 +13,13 @@ class BienTheSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('bien_the')->insert([
+            'TenBienThe' => 'Màu Sắc',
+            'created_at' => date('Y/m/d H:i:s') 
+        ]);
 
         DB::table('bien_the')->insert([
             'TenBienThe' => 'Kích Cỡ',
-            'created_at' => date('Y/m/d H:i:s') 
-        ]);
-        
-        DB::table('bien_the')->insert([
-            'TenBienThe' => 'Màu Sắc',
             'created_at' => date('Y/m/d H:i:s') 
         ]);
     }

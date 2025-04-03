@@ -12,7 +12,7 @@ $("form[submit-ajax=true]").on("submit", function (e) {
     let oldTextButton = button.html();
 
     if (!actionValue) {
-        Swal.fire("Lỗi", "Không xác định được hành động!", "error");
+        AlertDATN("error", "Không xác định được hành động!");
         return false;
     }
 

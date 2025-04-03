@@ -44,12 +44,36 @@
                             <div class="name">{{ $sanPhamm->TenSanPham }}</div>
                             <div class="parameter"><small>{{ $sanPhamm->TenKichCo }} -
                                     {{ $sanPhamm->TenMauSac }}</small></div>
-
                             <div class="money">
                                 <div class="prices">
                                     {{ number_format($sanPhamm->GiaSanPham) }} đ
-                                    <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai) : '') }}
-                                            đ</small></del>
+                                    <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai).'đ' : '') }}
+                                        </small></del>
+                                </div>
+                                <div class="amount">
+                                    x{{ number_format($sanPhamm->SoLuongSanPham) }}
+                                </div>
+                            </div>
+
+                            <div class="total-money">
+                                <span>Tổng Số Tiền</span>
+                                <span>{{ number_format($sanPhamm->ThanhTien) }} đ</span>
+                            </div>
+                        </div>
+                    </li>
+                    @endforeach
+                    @foreach ($sanPhamDaChon2 as $sanPhamm)
+                    <li class="item-product-payment" onclick="href('/san-pham/{{ $sanPhamm->DuongDan }}')">
+                        <div class="logo">
+                            <img src="{{ Storage::url($sanPhamm->HinhAnh) }}" alt="">
+                        </div>
+                        <div class="info">
+                            <div class="name">{{ $sanPhamm->TenSanPham }}</div>
+                            <div class="money">
+                                <div class="prices">
+                                    {{ number_format($sanPhamm->GiaSanPham) }} đ
+                                    <del><small>{{ ($sanPhamm->GiaKhuyenMai ? number_format($sanPhamm->GiaKhuyenMai).'đ' : '') }}
+                                        </small></del>
                                 </div>
                                 <div class="amount">
                                     x{{ number_format($sanPhamm->SoLuongSanPham) }}
@@ -244,7 +268,9 @@
                     </div>
                 </div>
                 @endif
-                <form action="{{ route("payment.store", $orderCode) }}" method="POST">
+                <form class="row variable" submit-ajax="true" action="{{ route("payment.store", $orderCode) }}" method="POST" time_load="0" swal_success="none" type="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" id="actionField" value="">
                     @csrf
                     @foreach ($danhSachDiaChimacDinh as $diaChiInput)
                     @php
@@ -331,7 +357,7 @@
                         </label>
                     </div>
                     <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-theme btn-theme-dark" @if (!Auth::check()) disabled
+                        <button type="submit" data-action="payment" class="btn btn-theme btn-theme-dark" @if (!Auth::check()) disabled
                             @endif>Đặt Hàng</button>
                     </div>
                 </form>

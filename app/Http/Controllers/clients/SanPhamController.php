@@ -9,27 +9,6 @@ use App\Http\Controllers\Controller;
 class SanPhamController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
      * Display the specified resource.
      */
     public function show(string $id)
@@ -52,6 +31,10 @@ class SanPhamController extends Controller
             ->distinct()
             ->get();
 
+        $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
+            ->where("ID_SanPham", $thongTinSanPham->id)
+            ->count();
+
         $idMauSacList = $bienTheSanPham2->pluck("ID_MauSac")->unique();
 
         $mauSacBienThe = DB::table("mau_sac")
@@ -68,33 +51,9 @@ class SanPhamController extends Controller
         }
 
         $tongSoLuongBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinSanPham->id)
-        ->selectRaw("SUM(SoLuong) as soLuongSanPhamBienTheAll")
-        ->first();
+            ->selectRaw("SUM(SoLuong) as soLuongSanPhamBienTheAll")
+            ->first();
 
-        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe"));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
     }
 }

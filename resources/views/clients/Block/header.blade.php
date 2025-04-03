@@ -85,19 +85,15 @@
 
                     <div class="cart-items-inner" id="list-product-header">
                         @foreach ($danhSachGioHangClient as $gioHangClient)
-                            <div class="media">
-                                <a class="pull-left" href="/san-pham/{{ $gioHangClient->DuongDan }}">
-                                    <img class="media-object item-image" src="{{ Storage::url($gioHangClient->HinhAnh) }}"
-                                        alt=""></a>
-                                <p class="pull-right item-price">{{ number_format($gioHangClient->ThanhTien) }} đ</p>
-                                <div class="media-body">
-                                    <h4 class="media-heading item-title"><a
-                                            href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ number_format($gioHangClient->SoLuong) }}
-                                            x {{ $gioHangClient->TenSanPham }}</a></h4>
-                                    <p class="item-desc">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}
-                                    </p>
-                                </div>
+                        <div class="media">
+                            <a class="pull-left" href="/san-pham/{{ $gioHangClient->DuongDan }}">
+                                <img class="media-object item-image" src="{{ Storage::url($gioHangClient->HinhAnh) }}" alt=""></a>
+                            <p class="pull-right item-price">{{ number_format($gioHangClient->ThanhTien) }} đ</p>
+                            <div class="media-body">
+                                <h4 class="media-heading item-title"><a href="/san-pham/{{ $gioHangClient->DuongDan }}">{{ number_format($gioHangClient->SoLuong) }} x {{ $gioHangClient->TenSanPham }}</a></h4>
+                                <p class="item-desc">{{ $gioHangClient->TenKichCo }} - {{ $gioHangClient->TenMauSac }}</p>
                             </div>
+                        </div>
                         @endforeach
                         <div class="media">
                             <p class="pull-right item-price">{{ number_format($tongTienSanPhamGioHangClient) }} đ</p>
