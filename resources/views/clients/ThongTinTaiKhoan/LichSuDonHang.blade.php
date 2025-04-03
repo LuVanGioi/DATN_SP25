@@ -34,22 +34,57 @@ use Illuminate\Support\Facades\Storage;
                                 <span class="amount-product">x{{ $sanPhamDonHang->SoLuong }}</span>
                             </div>
                             <div class="prices-product">
-                                <span><del>₫{{ number_format($sanPhamDonHang->GiaTien) }}</del></span>
+                                <span><del>₫{{ number_format($sanPhamDonHang->GiaKhuyenMai) }}</del></span>
                                 <span>₫{{ number_format($sanPhamDonHang->GiaSanPham) }}</span>
                             </div>
                         </div>
                         @endforeach
                         <div class="item-footer">
                             <div class="total-item">Thành Tiền: <span>₫{{ number_format($item->TongTien) }}</span></div>
-                            <div class="note">
-                                <span>Đã Hủy Bởi Bạn</span>
+                            <div class="item-header">
+                                <span>
+                                    @if ($item->TrangThaiDonHang == "choxacnhan")
+                                        <span><i class="fa-solid fa-hourglass-start"></i> Chờ Xác Nhận</span>
+                                    @elseif ($item->TrangThaiDonHang == "danggiao")
+                                        <span><i class="fa-solid fa-truck-fast"></i> Đang Giao</span>
+                                    @elseif ($item->TrangThaiDonHang == "dagiao")
+                                        <span><i class="fa-solid fa-circle-check"></i> Đã Giao</span>
+                                    @elseif ($item->TrangThaiDonHang == "hoanhang")
+                                        <span><i class="fa-solid fa-right-left"></i> Hoàn Hàng</span>
+                                    @elseif($item->TrangThaiDonHang == "thatbai")
+                                        <span><i class="fa-solid fa-circle-exclamation"></i> Giao Thất Bại</span>    
+                                    @elseif($item->TrangThaiDonHang == "huydon")
+                                        <span><i class="fa-solid fa-xmark"></i> Đã Hủy Bởi Bạn</span>
+                                    @endif
+                                </span>
                             </div>
                             <div class="list-button">
-                                <button class="btn btn-theme btn-vip">Mua Lại</button>
-                                <a class="btn btn-theme btn-donHang">Xem Chi Tiết Hủy Đơn</a>
-                                <a class="btn btn-theme btn-donHang">Đánh Giá</a>
-                                <a class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
-                                <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
+                            @if ($item->TrangThaiDonHang == "choxacnhan")
+                            <a href="{{route('chi-tiet-huy-don.index')}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
+
+                            @elseif ($item->TrangThaiDonHang == "dagiao")
+                               <button class="btn btn-theme btn-vip">Mua Lại</button>
+                               <a class="btn btn-theme btn-donHang">Hoàn Hàng</a>
+                            @if (1)
+                               <a class="btn btn-theme btn-donHang">Đánh Giá</a>
+                            @else
+                               <a class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
+                            @endif
+
+                            @elseif ($item->TrangThaiDonHang == "hoanhang")
+                            <button class="btn btn-theme btn-vip">Mua Lại</button>
+                            <button class="btn btn-theme btn-donHang">Chi Tiết Hoàn Hàng</button>
+
+                            @elseif($item->TrangThaiDonHang == "thatbai")
+                               <button class="btn btn-theme btn-vip">Mua Lại</button>
+
+                            @elseif($item->TrangThaiDonHang == "huydon")
+                               <button class="btn btn-theme btn-vip">Mua Lại</button>
+                               <a href="" class="btn btn-theme btn-donHang">Chi Tiết Hủy Đơn</a>
+
+                               
+                            @endif
+                            <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
                             </div>
                         </div>
                     </div>
