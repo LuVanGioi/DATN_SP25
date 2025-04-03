@@ -140,4 +140,15 @@ class DiaChiNhanHangController extends Controller
             ->with('success', 'Xóa địa chỉ thành công');
     }
 
+    public function setDefault($id)
+    {
+        $user = Auth::user();
+
+        DiaChiNhanHang::where('ID_User', $user->id)->update(['MacDinh' => false]);
+
+        $address = DiaChiNhanHang::where('ID_User', $user->id)->findOrFail($id);
+        $address->update(['MacDinh' => true]);
+
+        return redirect()->route('dia-chi-nhan-hang.index')->with('success', 'Địa chỉ mặc định đã được cập nhật.');
+    }
 }
