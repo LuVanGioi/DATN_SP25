@@ -14,12 +14,16 @@ class homeController extends Controller
         $sanPhamMoiNhat = DB::table("san_pham")->where("Xoa", 0)->orderByDesc("id")->where("TrangThai", "hien")->orderByDesc("id")->limit(12)->get();
         $sanPhamBanChay = DB::table("san_pham")
             ->orderByDesc("id")
+            ->where("Xoa", 0)
+            ->where("TrangThai", "hien")
             ->limit(12)
             ->get();
         $tongSanPhamBanChay = DB::table("san_pham")
             ->join("san_pham_don_hang", "san_pham.id", "=", "san_pham_don_hang.Id_SanPham")
             ->orderByDesc("id")
             ->select("san_pham_bien_the.*")
+            ->where("Xoa", 0)
+            ->where("TrangThai", "hien")
             ->count();
 
         $sanPhamSapHetHang = DB::table("san_pham")

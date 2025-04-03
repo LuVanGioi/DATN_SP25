@@ -249,7 +249,8 @@ class payController extends Controller
         if ($checkSPGH <= 0) {
             return response()->json([
                 "status" => "error",
-                "message" => "Không Có Sản Phẩm Thanh Toán!"
+                "message" => "Không Có Sản Phẩm Thanh Toán!",
+                'redirect' => route('gio-hang.index')
             ]);
         }
         $tongTien1 = $layGiaTienSanPham->tongTien ?? 0;
