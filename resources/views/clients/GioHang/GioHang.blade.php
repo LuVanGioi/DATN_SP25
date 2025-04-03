@@ -128,7 +128,7 @@
                             <td style="text-align: start; font-weight: bold" id="amount_checkout">0</td>
                         </tr>
                         <tr>
-                            <td style="text-align: start">Tổng Tiền Sản Phẩm Đang Chọn:</td>
+                            <td style="text-align: start">Tổng Tiền Sản Phẩm Chọn:</td>
                             <td style="text-align: start; font-weight: bold" id="total_money">0</td>
                         </tr>
                         <tfoot>
@@ -222,7 +222,7 @@
                 .catch(error => console.log("Lỗi: ", error));
         }, 2000);
     });
-    
+
     $(document).ready(function() {
         setInterval(function() {
             $.get(location.href, function(data) {
@@ -326,26 +326,33 @@
         });
 
         function updateCart(id, quantity) {
+            let selectedCartIds = getSelectedCartIds();
+
             $.ajax({
                 url: "/gio-hang/" + id,
                 type: "PUT",
                 data: {
                     _token: "{{ csrf_token() }}",
                     id: id,
-                    quantity: quantity
+                    quantity: quantity,
+                    cartIdList: selectedCartIds
                 },
                 success: function(data) {
                     if (data.status == "success") {
                         document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
                         document.getElementById("total_amount_cart").innerHTML = data.total_cart.soLuongSP.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         document.getElementById("total_money_cart").innerHTML = data.total_cart.tongTien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
-                    } else {
+                        document.getElementById("total_money").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                    }
+                    
+                    if (data.status == "error") {
                         AlertDATN("error", data.message);
                         let input = $(`.quantity-input[data-id='${id}']`);
                         input.val((data.input ?? 1));
                         document.getElementById("ThanhTien_" + data.id).innerHTML = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
                         document.getElementById("total_amount_cart").innerHTML = data.total_cart.soLuongSP.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         document.getElementById("total_money_cart").innerHTML = data.total_cart.tongTien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+                        document.getElementById("total_money").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
                     }
                 },
                 error: function(error) {
