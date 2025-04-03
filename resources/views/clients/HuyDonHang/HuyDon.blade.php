@@ -27,7 +27,6 @@
                             <div class="col-md-12">
                                 <h3 class="block-title"><span>Đơn Hàng Hủy Của Bạn</span></h3>
                                 <form class="row variable" submit-ajax="true" action="{{route('huy-don.update',$id)}}" method="PUT" time_load="0" swal_success="" type="POST">
-                                    <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="action" id="actionField" value="">
                                     
