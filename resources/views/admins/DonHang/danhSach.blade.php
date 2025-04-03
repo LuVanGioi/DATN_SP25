@@ -17,22 +17,24 @@
                             <table class="table table-striped table-bordered nowrap dataTable">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th></th>
                                         <th>Mã Đơn Hàng</th>
                                         <th>Sản Phẩm</th>
                                         <th>Trạng Thái</th>
                                         <th>Phương Thức Thanh Toán</th>
+                                        <th>Trạng Thái Thanh Toán</th>
                                         <th>Thao Tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  @foreach ($donHang as $item)
+                                  @foreach ($donHang as  $index =>$item)
                                       <tr>
-                                        <td>{{$item->id}}</td>
+                                        <td>{{$index + 1}}</td>
                                         <td>{{$item->MaDonHang}}</td>
                                         <td>{{$item->TenSanPham}}</td>
                                         <td><?=trangThaiDonHang($item->TrangThai); ?></td>
                                         <td>{{$item->PhuongThucThanhToan}}</td>
+                                        <td>{{$item->TrangThaiThanhToan}}</td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', $item->MaDonHang) }}">Xem Chi Tiết</a>
                                         </td>

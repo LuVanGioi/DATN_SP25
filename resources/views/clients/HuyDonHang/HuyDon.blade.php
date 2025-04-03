@@ -25,7 +25,7 @@
                 
                 <div class="row orders mt-3" >
                             <div class="col-md-12">
-                                <h3 class="block-title"><span>Đơn Hàng Hủy Của Bạn</span></h3>
+                                <h3 class="block-title mb-3"><span>Đơn Hàng Hủy Của Bạn</span></h3>
                                 <form class="row variable" submit-ajax="true" action="{{route('huy-don.update',$id)}}" method="PUT" time_load="1500" swal_success="" type="POST">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="action" id="actionField" value="">
@@ -53,8 +53,29 @@
                                                     </div>
                                                 </td>
                                                 <td class="quantity money">{{ $sanPhamDonHang->SoLuong }}</td>
-                                                <td class="quantity money">₫{{ number_format($sanPhamDonHang->GiaSanPham) }}</td>
-                                                <td class="quantity money">₫{{ number_format($sanPhamDonHang->GiaSanPham * $sanPhamDonHang->SoLuong) }}</td>
+                                                @php
+                                                $bienthe = DB::table('bien_the_san_pham')
+                                                ->where('ID_SanPham', $sanPhamDonHang->idSP)
+                                                ->where('ID_MauSac', DB::table('mau_sac')->where('TenMauSac', $sanPhamDonHang->MauSac)->first()->id)
+                                                ->where('KichCo', $sanPhamDonHang->KichCo)
+                                                ->where('Xoa', 0)
+                                                ->first();
+                                                @endphp
+                                                <td class="quantity money">
+                                                    @if ($sanPhamDonHang->TheLoai == "thuong")
+                                                    <span>₫{{ number_format($sanPhamDonHang->GiaSanPham) }}</span>
+                                                    @else
+                                                    <span>₫{{ number_format($bienthe->Gia) }}</span>
+                                                    @endif
+                                                </td>
+
+                                                <td class="quantity money">
+                                                    @if ($sanPhamDonHang->TheLoai == "thuong")
+                                                    <span>₫{{ number_format($sanPhamDonHang->GiaSanPham * $sanPhamDonHang->SoLuong) }}</span>
+                                                    @else
+                                                    <span>₫{{ number_format($bienthe->Gia * $sanPhamDonHang->SoLuong) }}</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
