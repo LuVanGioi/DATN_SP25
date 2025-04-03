@@ -23,7 +23,7 @@ class LichSuDonHangController extends Controller
             ->join('huyen', 'location.Huyen', '=', 'huyen.MaHuyen')
             ->join('tinh_thanh', 'location.Tinh', '=', 'tinh_thanh.IdTinh')
             ->where('don_hang.ID_User', $userId)
-            ->selectRaw('don_hang.TrangThai as TrangThaiDonHang, don_hang.*,huyen.*,tinh_thanh.*,location.*')->orderBygit ('don_hang.MaDonHang')->get();
+            ->selectRaw('don_hang.TrangThai as TrangThaiDonHang, don_hang.*,huyen.*,tinh_thanh.*,location.*')->orderBy('don_hang.MaDonHang')->get();
 
         if (!$lichSu) {
             return redirect()->route('DonHang.index')->with('error', 'Bạn chưa có đơn hàng nào.');

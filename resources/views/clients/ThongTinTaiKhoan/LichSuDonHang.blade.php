@@ -15,15 +15,25 @@ use Illuminate\Support\Facades\Storage;
             <div class="col-md-9">
                 <div class="information-title">Lịch Sử Đơn Hàng Của Bạn</div>
                 <div class="list-order-client" id="list-order-client">
+                    
                     @foreach ($lichSu as $item)
-                    <div class="item-order-client" >
+                    <div class="item-order-client">
                         <div class="item-header">
                             <span>WanderWeave</span>
                             <span><?= trangThaiDonHang($item->TrangThaiDonHang); ?></span>
                         </div>
                         @foreach (DB::table('san_pham_don_hang')
                         ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
-                        ->where('MaDonHang', $item->MaDonHang)->selectRaw('san_pham.*, san_pham_don_hang.*')->get() as $sanPhamDonHang)
+                        ->where('MaDonHang', $item->MaDonHang)
+                        ->selectRaw('san_pham.id as idSP, san_pham.*, san_pham_don_hang.*')->get() as $sanPhamDonHang)
+                        @php
+                        $bienthe = DB::table('bien_the_san_pham')
+                        ->where('ID_SanPham', $sanPhamDonHang->idSP)
+                        ->where('ID_MauSac', DB::table('mau_sac')->where('TenMauSac', $sanPhamDonHang->MauSac)->first()->id)
+                        ->where('KichCo', $sanPhamDonHang->KichCo)
+                        ->where('Xoa', 0)
+                        ->first();
+                        @endphp
                         <div class="item-product">
                             <div class="img-product">
                                 <img src="<?= Storage::url($sanPhamDonHang->HinhAnh); ?>" alt="">
@@ -34,8 +44,13 @@ use Illuminate\Support\Facades\Storage;
                                 <span class="amount-product">x{{ $sanPhamDonHang->SoLuong }}</span>
                             </div>
                             <div class="prices-product">
-                                <span><del>₫{{ number_format($sanPhamDonHang->GiaKhuyenMai) }}</del></span>
+                                @if ($sanPhamDonHang->TheLoai == "thuong")
+                                <span><del>{{ ($sanPhamDonHang->GiaKhuyenMai ? "₫". number_format($sanPhamDonHang->GiaKhuyenMai) : "") }}</del></span>
                                 <span>₫{{ number_format($sanPhamDonHang->GiaSanPham) }}</span>
+                                @else
+                                <span><del>{{ ($sanPhamDonHang->GiaKhuyenMai ? "₫". number_format($sanPhamDonHang->GiaKhuyenMai) : "") }}</del></span>
+                                <span>₫{{ number_format($bienthe->Gia) }}</span>
+                                @endif
                             </div>
                         </div>
                         @endforeach
