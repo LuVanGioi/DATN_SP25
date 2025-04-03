@@ -19,6 +19,10 @@ return new class extends Migration
             ])->default('choxacnhan')->change();
             $table->string('orderCode')->nullable()->after('id');
         });
+
+        Schema::table('don_hang', function (Blueprint $table) {
+            $table->text('LyDoHuy')->nullable()->after('TrangThai');
+        });
     }
 
     /**

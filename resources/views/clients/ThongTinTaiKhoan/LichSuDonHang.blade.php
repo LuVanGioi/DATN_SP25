@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Storage;
         <div class="row">
             <div class="col-md-9">
                 <div class="information-title">Lịch Sử Đơn Hàng Của Bạn</div>
-                <div class="list-order-client">
+                <div class="list-order-client" id="list-order-client">
                     @foreach ($lichSu as $item)
-                    <div class="item-order-client">
+                    <div class="item-order-client" >
                         <div class="item-header">
                             <span>WanderWeave</span>
                             <span><?= trangThaiDonHang($item->TrangThaiDonHang); ?></span>
@@ -60,8 +60,8 @@ use Illuminate\Support\Facades\Storage;
                             </div>
                             <div class="list-button">
                             @if ($item->TrangThaiDonHang == "choxacnhan")
-                            <a href="{{route('chi-tiet-huy-don.index')}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
-
+                            <a href="{{route('huy-don.edit',$item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
+                            
                             @elseif ($item->TrangThaiDonHang == "dagiao")
                                <button class="btn btn-theme btn-vip">Mua Lại</button>
                                <a class="btn btn-theme btn-donHang">Hoàn Hàng</a>
@@ -107,4 +107,26 @@ use Illuminate\Support\Facades\Storage;
         </div>
     </div>
 </section>
+@endsection
+
+@section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setInterval(function() {
+            fetch(location.href)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+
+                    const newCartCount = doc.querySelector("#list-order-client");
+                    if (newCartCount) {
+                        document.getElementById("list-order-client").innerHTML = newCartCount.innerHTML;
+                    }
+                })
+                .catch(error => console.log("Lỗi: ", error));
+        }, 2000);
+    });
+
+</script>
 @endsection
