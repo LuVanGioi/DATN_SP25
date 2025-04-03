@@ -25,7 +25,7 @@ $("form[submit-ajax=true]").on("submit", function (e) {
         dataType: "json",
         success: function (response) {
             if (response.status == "success") {
-                if (swal_success !== "none") {
+                if (swal_success !== "none" && response.message) {
                     AlertDATN(response.status, response.message);
                 }
                 if (response.redirect) {
@@ -43,6 +43,12 @@ $("form[submit-ajax=true]").on("submit", function (e) {
                 errorMsg = xhr.responseJSON.message;
             }
 
+            if (response.redirect) {
+                setTimeout(function () {
+                    window.location.href = response.redirect;
+                }, time_load);
+            }
+            
             AlertDATN("error", errorMsg);
         },
         complete: function () {

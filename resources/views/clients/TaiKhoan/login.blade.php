@@ -8,11 +8,9 @@
 @section('main')
 @php
 if (Auth::check()) {
-die('<script>location.href="/"</script>');
-}
-
-if(AUth::user()->role == "Admin") {
-    die('<script>location.href="/admin/thongKe"</script>');
+die('<script>
+    location.href = "/"
+</script>');
 }
 @endphp
 <section class="page-section color">
@@ -41,7 +39,7 @@ if(AUth::user()->role == "Admin") {
                             <div class="form-group"><input class="form-control" type="password" name="password"
                                     placeholder="Mật khẩu của bạn"></div>
                         </div>
-                       
+
                         <div class="col-md-12 col-lg-12 text-right-lg">
                             <a class="forgot-password" href="{{ route("forgot-password") }}">Quên mật khẩu?</a>
                         </div>

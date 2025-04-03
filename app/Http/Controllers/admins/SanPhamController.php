@@ -196,14 +196,13 @@ class SanPhamController extends Controller
             "ChatLieu" => $request->input("ChatLieu"),
             "GiaSanPham" => $request->input("GiaSanPham"),
             "GiaKhuyenMai" => $request->input("GiaKhuyenMai"),
+            "SoLuong" => $request->input("SoLuong"),
             "Nhan" => $request->input("Nhan"),
             "Mota" => $request->input("MoTaSanPham"),
             "TrangThai" => $request->input("TrangThai"),
-            "TheLoai" => "thuong",
+            "TheLoai" => $request->input("TheLoai"),
             "updated_at" => date("Y/m/d H:i:s")
         ]);
-
-        DB::commit();
 
         if ($request->file("images")) {
             foreach ($request->file("images") as $row) {

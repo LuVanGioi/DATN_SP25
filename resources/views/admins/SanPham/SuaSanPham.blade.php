@@ -71,7 +71,19 @@
                             </div>
 
                             <div class="row">
-                                <div class="col">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label>Thể Loại</label>
+                                        <select class="form-control mb-3" name="TheLoai" onchange="theLoaiSP(this)">
+                                            <option value="thuong" {{ ($sanPham->TheLoai == "thuong" ? "selected" : "") }}>Thường</option>
+                                            <option value="bienThe" {{ ($sanPham->TheLoai == "bienThe" ? "selected" : "") }}>Biến Thể</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="mb-3">
                                         <label>Tên Sản Phẩm</label>
                                         <input class="form-control" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" value="{{ $sanPham->TenSanPham }}" required>
@@ -81,18 +93,28 @@
                                     @enderror
                                 </div>
 
-                                <div class="col" id="formInputMoney">
+                                <div class="col" id="formInputMoneyGoc" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
                                     <div class="mb-3">
                                         <label>Giá Gốc</label>
                                         <input class="form-control" type="number" name="GiaKhuyenMai" placeholder="Giá Khuyến Mãi" value="{{ $sanPham->GiaKhuyenMai }}">
                                     </div>
                                 </div>
 
-                                <div class="col" id="formInputMoney">
+                                <div class="col" id="formInputMoney" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
                                     <div class="mb-3">
                                         <label>Giá Bán</label>
-                                        <input class="form-control" type="number" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" value="{{ $sanPham->GiaSanPham }}" required>
+                                        <input class="form-control" type="number" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" value="{{ $sanPham->GiaSanPham }}" <?= $sanPham->TheLoai == 'thuong' ? 'required' : ''; ?>>
                                         @error("GiaSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col" id="formAmountPr" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
+                                    <div class="mb-3">
+                                        <label>Số Lượng</label>
+                                        <input class="form-control @error(" SoLuong") is-invalid border-danger @enderror" type="number" onkeyup="CapNhacGiaNhap()" name="SoLuong" value="{{ $sanPham->SoLuong }}" id="SoLuong" placeholder="Số Lượng Sản Phẩm" min="1" <?= $sanPham->TheLoai == 'thuong' ? 'required' : ''; ?>>
+                                        @error("SoLuong")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -176,6 +198,33 @@
                             @error("hinhAnh")
                             <p class="text-danger">{{ $message }}</p>
                             @enderror
+
+                            <div id="formSPThuong" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
+                                <label for="" class="mt-3">Bộ Sưu Tập</label>
+                                <input type="file" class="d-none" id="khoAnh" name="images[]" multiple>
+                                <div class="dropzone-wrapper">
+                                    <div class="dz-message">
+                                        <label for="khoAnh">
+                                            <i class="icon-cloud-up"></i>
+                                            <h6 class="mt-3 mb-3">Kéo & Thả ảnh vào đây hoặc Nhấn để chọn nhiều ảnh sản phẩm</h6>
+                                        </label>
+                                        <div class="image-preview" id="imagesPreview">
+                                        </div>
+                                        <div class="image-preview">
+                                            @foreach ($danhSachHinhAnh as $hinhAnh)
+                                            @if ($hinhAnh)
+                                            <div class="image-container">
+                                                <img src="{{ Storage::url($hinhAnh->DuongDan) }}">
+                                                <a class="delete-btn" href="{{ route("HinhAnhSanPham.destroy", $hinhAnh->id) }}"><i class="fal fa-times"></i></a>
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -355,6 +404,33 @@
 
 @section("js")
 <script>
+    function theLoaiSP(e) {
+        let formAmountPr = document.getElementById("formAmountPr");
+        let inputSoLuong = document.getElementById("SoLuong");
+        let formSPThuong = document.getElementById("formSPThuong");
+
+        if (e.value == "thuong") {
+            document.getElementById("formBienThe").style.display = "none";
+            formAmountPr.style.display = "block";
+            inputSoLuong.setAttribute("required", "required");
+            formSPThuong.style.display = "block";
+            document.getElementById("chonKichCo").removeAttribute("required");
+            document.getElementById("formInputMoney").style.display = "block";
+            document.getElementById("formInputMoneyGoc").style.display = "block";
+            document.getElementById("Gia").setAttribute("required", "required");
+        } else {
+            document.getElementById("formBienThe").style.display = "block";
+            formAmountPr.style.display = "none";
+            inputSoLuong.removeAttribute("required");
+            formSPThuong.style.display = "none";
+            document.getElementById("chonKichCo").setAttribute("required", "required");
+            document.getElementById("Gia").removeAttribute("required");
+            document.getElementById("formInputMoney").style.display = "none";
+            document.getElementById("formInputMoneyGoc").style.display = "none";
+        }
+    }
+
+
     function chonBienThe() {
         document.getElementById("formBienTheSelect").style.display = "block";
     }
@@ -469,10 +545,12 @@
     });
 
     const imagesPreview = document.getElementById('imagesPreview');
+    const fileInput = document.getElementById('khoAnh');
 
-    document.getElementById('khoAnh').addEventListener('change', function() {
+    fileInput.addEventListener('change', function() {
         imagesPreview.innerHTML = '';
         const files = Array.from(this.files);
+        const dataTransfer = new DataTransfer();
 
         files.forEach((file, index) => {
             if (file && file.type.startsWith('image/')) {
@@ -488,17 +566,35 @@
                     const deleteBtn = document.createElement('button');
                     deleteBtn.innerHTML = '<i class="fal fa-times"></i>';
                     deleteBtn.classList.add('delete-btn');
-                    deleteBtn.onclick = () => container.remove();
+                    deleteBtn.onclick = () => {
+                        container.remove();
+                        removeFile(index);
+                    };
 
                     container.appendChild(img);
                     container.appendChild(deleteBtn);
-
                     imagesPreview.appendChild(container);
-                }
+                };
 
                 reader.readAsDataURL(file);
+                dataTransfer.items.add(file);
             }
         });
+
+        fileInput.files = dataTransfer.files;
+
+        function removeFile(index) {
+            const newDataTransfer = new DataTransfer();
+            const currentFiles = Array.from(fileInput.files);
+
+            currentFiles.forEach((file, i) => {
+                if (i !== index) {
+                    newDataTransfer.items.add(file);
+                }
+            });
+
+            fileInput.files = newDataTransfer.files;
+        }
     });
 </script>
 @endsection
