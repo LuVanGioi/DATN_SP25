@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Storage;
                         </div>
                         @foreach (DB::table('san_pham_don_hang')
                         ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
-                        ->where('MaDonHang', $item->MaDonHang)->get() as $sanPhamDonHang)
+                        ->where('MaDonHang', $item->MaDonHang)->selectRaw('san_pham.*, san_pham_don_hang.*')->get() as $sanPhamDonHang)
                         <div class="item-product">
                             <div class="img-product">
                                 <img src="<?= Storage::url($sanPhamDonHang->HinhAnh); ?>" alt="">
