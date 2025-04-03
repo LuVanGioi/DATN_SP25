@@ -73,46 +73,132 @@
     <div class="container">
         <div class="tabs">
             <ul id="tabs" class="nav nav-justified-off">
-                <li class="active"><a href="#tat-ca" data-toggle="tab">Danh Sách Sản Phẩm</a></li>
+                <li class="active"><a href="#tat-ca" data-toggle="tab">Sản Phẩm Mới Nhất</a></li>
             </ul>
         </div>
 
-        <div class="tab-content">
-            <div class="tab-pane fade active in" id="tat-ca">
-                <div class="row">
-                    @foreach ($tatCaSanPham as $sanPham)
-                    @php
-                    $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
-                    @endphp
-                    <div class="col-md-3 col-sm-3">
-                        <div class="thumbnail product-item">
-                            <div class="media">
-                                <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">
-                                    <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
-                                </a>
-                                @if ($sanPham->Nhan)
-                                <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
-                                @endif
-                                <div class="title-time">
-                                    {{ $sanPham->ChatLieu }}
-                                </div>
+        <div class="row">
+            @foreach ($sanPhamMoiNhat as $sanPham)
+            @php
+            $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
+            @endphp
+            <div class="col-md-3 col-sm-3">
+                <div class="thumbnail product-item">
+                    <div class="media">
+                        <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
+                            <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
+                        </a>
+                        @if ($sanPham->Nhan)
+                        <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
+                        @endif
+                        <div class="title-time">
+                            {{ $sanPham->ChatLieu }}
+                        </div>
+                    </div>
+                    <div class="caption text-center">
+                        <h4 class="caption-title">
+                            <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
+                        </h4>
+                        <div class="price" style="align-items: center; margin-top: 10px">
+                            <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                            <span>Đã bán {{ soGon($luotMua) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+    </div>
+</section>
+
+<section class="page-section">
+    <div class="container">
+        <div class="tabs">
+            <ul id="tabs" class="nav nav-justified-off">
+                <li class="active"><a href="#ban-chay" data-toggle="tab">Sản Phẩm Bán Chạy</a></li>
+            </ul>
+        </div>
+
+        <div class="row">
+            @foreach ($sanPhamBanChay as $sanPham)
+            @php
+            $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
+            @endphp
+            <?php
+            if ($luotMua > 0) {
+            ?>
+                <div class="col-md-3 col-sm-3">
+                    <div class="thumbnail product-item">
+                        <div class="media">
+                            <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
+                                <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
+                            </a>
+                            @if ($sanPham->Nhan)
+                            <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
+                            @endif
+                            <div class="title-time">
+                                {{ $sanPham->ChatLieu }}
                             </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title">
-                                    <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
-                                </h4>
-                                <div class="price" style="align-items: center; margin-top: 10px">
-                                    <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
-                                    <span>Đã bán {{ soGon($luotMua) }}</span>
-                                </div>
+                        </div>
+                        <div class="caption text-center">
+                            <h4 class="caption-title">
+                                <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
+                            </h4>
+                            <div class="price" style="align-items: center; margin-top: 10px">
+                                <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                                <span>Đã bán {{ soGon($luotMua) }}</span>
                             </div>
                         </div>
                     </div>
-                    @endforeach
                 </div>
-            </div>
+            <?php
+            }
+            ?>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<section class="page-section">
+    <div class="container">
+        <div class="tabs">
+            <ul id="tabs" class="nav nav-justified-off">
+                <li class="active"><a href="#ban-chay" data-toggle="tab">Sản Phẩm Sắp Hết Hàng</a></li>
+            </ul>
         </div>
 
+        <div class="row">
+            @foreach ($sanPhamSapHetHang as $sanPham)
+            @php
+            $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
+            @endphp
+            <div class="col-md-3 col-sm-3">
+                <div class="thumbnail product-item">
+                    <div class="media">
+                        <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
+                            <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
+                        </a>
+                        @if ($sanPham->Nhan)
+                        <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
+                        @endif
+                        <div class="title-time">
+                            Còn Lại {{ number_format($sanPham->tong_ton_kho) }}
+                        </div>
+                    </div>
+                    <div class="caption text-center">
+                        <h4 class="caption-title">
+                            <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
+                        </h4>
+                        <div class="price" style="align-items: center; margin-top: 10px">
+                            <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                            <span>Đã bán {{ soGon($luotMua) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 </section>
 

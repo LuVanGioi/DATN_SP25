@@ -36,7 +36,7 @@ class clientController extends Controller
                 $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
                     ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
                     ->count();
-                if ($soLuongBienTheSanPham >= 1) {
+                if ($sanPham->TheLoai == "bienThe") {
                     $sanPhamBienThe = DB::table("bien_the_san_pham")
                         ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
                         ->where("KichCo", $thongTinGioHang->KichCo)

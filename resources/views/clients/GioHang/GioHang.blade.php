@@ -62,7 +62,7 @@
                             <td class="form-soLuong">
                                 <div class="form-quantity">
                                     <span class="btn-minus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-minus"></i></span>
-                                    <input type="number" class="quantity-input" data-id="{{ $gioHangClient->cart_id }}" value="{{ $gioHangClient->SoLuong ?? $gioHangClient->soLuongGioHang }}" min="1" readonly>
+                                    <input type="number" class="quantity-input" data-id="{{ $gioHangClient->cart_id }}" value="{{ $gioHangClient->soLuongGioHang ?? $gioHangClient->SoLuong }}" min="1" readonly>
                                     <span class="btn-plus" data-id="{{ $gioHangClient->cart_id }}"><i class="fas fa-plus"></i></span>
                                 </div>
                             </td>
