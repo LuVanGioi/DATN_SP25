@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\clients\DiaChiNhanHangController;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
@@ -117,7 +117,13 @@ Route::get('doi-mat-khau', [DoiMatKhauController::class, 'index'])->name('doi-ma
 Route::get('doi-mat-khau/edit/{id}', [DoiMatKhauController::class, 'edit'])->name('doi-mat-khau.edit');
 Route::put('doi-mat-khau/update/{id}', [DoiMatKhauController::class, 'update'])->name('doi-mat-khau.update');
 
-
+Route::prefix('dia-chi-nhan-hang')->group(function () {
+    Route::get('/', [DiaChiNhanHangController::class, 'index'])->name('dia-chi-nhan-hang.index');
+    Route::post('/', [DiaChiNhanHangController::class, 'store'])->name('dia-chi-nhan-hang.store');
+    Route::put('/{id}', [DiaChiNhanHangController::class, 'update'])->name('dia-chi-nhan-hang.update');
+    Route::delete('/{id}', [DiaChiNhanHangController::class, 'destroy'])->name('dia-chi-nhan-hang.destroy');
+    Route::post('/set-default/{id}', [DiaChiNhanHangController::class, 'setDefault'])->name('dia-chi-nhan-hang.set-default');
+});
 Route::resource('lich-su-don-hang', LichSuDonHangController::class);
 Route::resource('chi-tiet-huy-don', ChiTietHuyDonController::class);
 Route::get('danh-muc/{code}',[DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
