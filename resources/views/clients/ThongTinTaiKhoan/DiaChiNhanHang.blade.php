@@ -75,7 +75,6 @@
                         <h2 class="widget-title">Tài Khoản</h2>
                         <ul>
                             <li><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
-                            <li><a href="/tai-khoan-cua-toi">Tài Khoản Của Tôi</a></li>
                             <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
                             <li class="active"><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
                             <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
