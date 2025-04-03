@@ -9,16 +9,17 @@ use App\Http\Controllers\Controller;
 class ThungRacController extends Controller
 {
     public function index() {
-        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách chất liệu
         $danhSachThongTinLienHe = DB::table("thong_tin_lien_he")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách thông tin liên hệ
-        $danhSachSanPham = DB::table("san_pham")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách sản phẩm
+        $danhSachSanPhamTR = DB::table("san_pham")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách sản phẩm
+        //dd($danhSachSanPham);
+
         $danhSachDanhMucSanPham = DB::table("danh_muc_san_pham")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách danh mục sản phẩm
         $danhSachBanner = DB::table("banner")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách banner
         $danhSachDanhMucBaiViet = DB::table("danh_muc_bai_viet")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách danh mục bài viết
         $danhSachBaiViet = DB::table("bai_viet")->where("Xoa", 1)->orderByDesc("id")->get(); #lấy danh sách bài viết
 
-        return view("admins.ThungRac.DanhSach", compact("danhSachChatLieu", "danhSachThuongHieu", "danhSachThongTinLienHe", "danhSachSanPham", "danhSachDanhMucSanPham","danhSachBanner", "danhSachBaiViet", "danhSachDanhMucBaiViet"));
+        return view("admins.ThungRac.DanhSach", compact("danhSachThuongHieu", "danhSachThongTinLienHe", "danhSachSanPhamTR", "danhSachDanhMucSanPham","danhSachBanner", "danhSachBaiViet", "danhSachDanhMucBaiViet"));
     }
 
     public function restore(Request $request, string $id)

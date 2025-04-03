@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <meta name="author" content="WanderWeave">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ Storage::url($caiDatWebsite->Favicon_website) }}" type="image/x-icon">
     <meta name="description" content="{{ $caiDatWebsite->MoTa }}">
     <meta name="keywords" content="{{ $caiDatWebsite->TuKhoa }}">
     <meta property="og:title" content="{{ $caiDatWebsite->TenCuaHang }} | Cửa Hàng Quần Áo Uy Tín - Chất Lượng Số 1 Việt Nam">
@@ -138,9 +137,7 @@
     <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
 
     <script>
-        <?php if ($_SERVER['REQUEST_URI'] !== "/dang-nhap" || $_SERVER['REQUEST_URI'] !== "/dang-ky") { ?>
-            setInterval(getTinNhan, 2000);
-        <?php } ?>
+        setInterval(getTinNhan, 5000);
 
         function getTinNhan() {
             const contentChat = document.querySelector('.content-chat');

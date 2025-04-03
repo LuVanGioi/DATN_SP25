@@ -75,8 +75,6 @@ class payController extends Controller
 
         $danhSachDiaChimacDinh = DB::table("location")->where('ID_User', (Auth::id() ?? ""))->get();
 
-
-
         $selectedCartIds = session('selected_products', []);
 
         $checkCartThuong = DB::table('cart')
@@ -87,7 +85,10 @@ class payController extends Controller
         $sanPhamThuong = DB::table("bien_the_san_pham")->where("ID_SanPham", $checkCartThuong->ID_SanPham)->count();
 
         $sanPhamDaChon = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+            })
             ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
             ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
             ->join("bien_the_san_pham", function ($join) {
@@ -105,7 +106,10 @@ class payController extends Controller
             ->selectRaw("cart.id as cart_id, cart.soLuong as SoLuongSanPham, cart.*, bien_the_san_pham.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien")->get();
 
         $layGiaTienSanPham = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+            })
             ->join("bien_the_san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
                     ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
@@ -119,8 +123,12 @@ class payController extends Controller
             })
             ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * bien_the_san_pham.Gia) as tongTien")->first();
 
+
         $sanPhamDaChon2 = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+            })
             ->whereIn("cart.id", $selectedCartIds)
             ->where("KichCo", "=", null)
             ->where("MauSac", "=", null)
@@ -128,12 +136,21 @@ class payController extends Controller
             ->selectRaw("cart.id as cart_id, cart.soLuong as SoLuongSanPham, cart.*, san_pham.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
 
         $layGiaTienSanPham2 = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+            })
             ->whereIn("cart.id", $selectedCartIds)
             ->where("KichCo", "=", null)
             ->where("MauSac", "=", null)
             ->where("cart.ID_KhachHang", $userId)
             ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
+
+        $checkSPGH = $layGiaTienSanPham->soLuongGioHangClient + $layGiaTienSanPham2->soLuongGioHangClient;
+
+        if ($checkSPGH <= 0) {
+            return redirect()->route("gio-hang.index")->with("error", "Sản Phẩm Không Tồn Tại!");
+        }
 
         $tongTien1 = $layGiaTienSanPham->tongTien ?? 0;
         $tongTien2 = $layGiaTienSanPham2->tongTien ?? 0;
@@ -202,10 +219,19 @@ class payController extends Controller
             ->where("MauSac", "=", null)
             ->where("cart.ID_KhachHang", $userId)
             ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
+        $checkSPGH = $layGiaTienSanPham->soLuongGioHangClient + $layGiaTienSanPham2->soLuongGioHangClient;
 
+        if ($checkSPGH <= 0) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Không Có Sản Phẩm Thanh Toán!"
+            ]);
+        }
         $tongTien1 = $layGiaTienSanPham->tongTien ?? 0;
         $tongTien2 = $layGiaTienSanPham2->tongTien ?? 0;
         $tongTienSanPhamDaChon = $tongTien1 + $tongTien2;
+
+
 
         if (!$request->input("location")):
             return response()->json([
@@ -267,7 +293,7 @@ class payController extends Controller
                 "message" => "Vui Lòng Chấp Nhận Điều Khoản Và Dịch Vụ"
             ]);
         endif;
-        
+
         if ($request->input("method") == "COD"):
             DB::table("don_hang")->insert([
                 "orderCode" => time(),
@@ -282,7 +308,7 @@ class payController extends Controller
                 "GhiChu" => $request->input("message"),
                 "created_at" => date("Y-m-d H:i:s"),
             ]);
-            
+
             foreach ($sanPhamDaChon as $cart):
                 $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
                     ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
@@ -299,17 +325,15 @@ class payController extends Controller
                         "created_at" => date("Y-m-d H:i:s"),
                     ]);
 
-                    DB::table("bien_the_san_pham")
-                        ->where("ID_SanPham", $cart->ID_SanPham)
-                        ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
-                        ->where("KichCo", $cart->KichCo)
-                        ->update([
-                            "SoLuong" => $thongTinBienThe->SoLuong - $cart->SoLuong
-                        ]);
+                    $truSL = $thongTinBienThe->SoLuong - $cart->SoLuongCart;
+
+                    DB::table("bien_the_san_pham")->where("id", $thongTinBienThe->id)->update([
+                        "SoLuong" => $truSL
+                    ]);
                 endif;
             endforeach;
 
-           
+
             foreach ($sanPhamDaChon2 as $cart):
                 $thongTinSanPham = DB::table("san_pham")->where("id", $cart->ID_SanPham)->first();
 
@@ -322,11 +346,9 @@ class payController extends Controller
                         "created_at" => date("Y-m-d H:i:s"),
                     ]);
 
-                    DB::table("san_pham")
-                        ->where("id", $thongTinSanPham->id)
-                        ->update([
-                            "SoLuong" => $thongTinSanPham->SoLuong - $cart->SoLuong
-                        ]);
+                    DB::table("san_pham")->where("id", $thongTinSanPham->id)->update([
+                        "SoLuong" => $thongTinSanPham->SoLuong - $cart->SoLuong
+                    ]);
                 endif;
             endforeach;
 
@@ -398,7 +420,7 @@ class payController extends Controller
                     $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
                         ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
                         ->where("KichCo", $cart->KichCo)->first();
-    
+
                     if ($thongTinBienThe->SoLuong >= 1):
                         DB::table("san_pham_don_hang")->insert([
                             "MaDonHang" => $trading,
@@ -409,7 +431,7 @@ class payController extends Controller
                             "SoLuong" => $cart->SoLuongCart,
                             "created_at" => date("Y-m-d H:i:s"),
                         ]);
-    
+
                         DB::table("bien_the_san_pham")
                             ->where("ID_SanPham", $cart->ID_SanPham)
                             ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
@@ -419,11 +441,11 @@ class payController extends Controller
                             ]);
                     endif;
                 endforeach;
-    
-    
+
+
                 foreach ($sanPhamDaChon2 as $cart):
                     $thongTinSanPham = DB::table("san_pham")->where("id", $cart->ID_SanPham)->first();
-    
+
                     if ($thongTinSanPham->SoLuong >= 1):
                         DB::table("san_pham_don_hang")->insert([
                             "MaDonHang" => $trading,
@@ -432,7 +454,7 @@ class payController extends Controller
                             "SoLuong" => $cart->SoLuong,
                             "created_at" => date("Y-m-d H:i:s"),
                         ]);
-    
+
                         DB::table("san_pham")
                             ->where("id", $thongTinSanPham->id)
                             ->update([

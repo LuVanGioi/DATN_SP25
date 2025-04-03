@@ -90,7 +90,7 @@
                         <span class="fas fa-star text-warning"></span>
                         <span class="fas fa-star text-warning"></span>
                     </div>
-                    <a class="reviews">16 reviews</a>
+                    <a class="reviews">0 Lượt Đánh Giá</a>
                 </div>
                 <div class="product-availability">Danh Mục: <strong>{{ $danhMuc->TenDanhMucSanPham }}</strong></div>
                 <div class="product-availability">Thương Hiệu: <strong>{{ $thuongHieu->TenThuongHieu }}</strong></div>
@@ -369,6 +369,7 @@
         var index = selectedOption.getAttribute("data-index");
         var amount = selectedOption.getAttribute("data-amount");
         var price = selectedOption.getAttribute("data-price");
+        document.getElementById("quantity").value = 1;
 
         if (index) {
             jQuery('.img-carousel').trigger('to.owl.carousel', [parseInt(index), 300]);

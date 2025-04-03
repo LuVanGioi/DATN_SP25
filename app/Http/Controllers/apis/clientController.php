@@ -105,7 +105,7 @@ class clientController extends Controller
                 if ($tongTienSanPhamDaChon < $discount->min_value):
                     return response()->json([
                         "status" => "error",
-                        "message" => 'Bạn Phải Thanh Toán Từ ' . number_format($discount->min_value) . 'đ Trở Lên',
+                        "message" => 'Bạn Phải Thanh Toán Đơn Hàng Từ ' . number_format($discount->min_value) . 'đ Trở Lên',
                         "discount" => 0,
                         "total_price" => $tongTienSanPhamDaChon
                     ]);

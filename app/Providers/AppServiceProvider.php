@@ -51,7 +51,10 @@ class AppServiceProvider extends ServiceProvider
             $danhSachTinhThanh = DB::table("tinh_thanh")->get();
             $danhSachHuyen = DB::table("huyen")->select("ID_TinhThanh", "TenHuyen", "MaHuyen")->get();
             $layGiaTienSanPham = DB::table("cart")
-                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->join("san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                })
                 ->join("bien_the_san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
                         ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
@@ -63,7 +66,10 @@ class AppServiceProvider extends ServiceProvider
             $soLuongGioHangBienThe = $layGiaTienSanPham->soLuongGioHangClient;
 
             $danhSachGioHangThuong = DB::table("cart")
-                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->join("san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                })
                 ->where("KichCo", "=", null)
                 ->where("MauSac", "=", null)
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
@@ -72,20 +78,26 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
 
             $layGiaTienSanPhamThuong = DB::table("cart")
-                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->join("san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                })
                 ->where("KichCo", "=", null)
                 ->where("MauSac", "=", null)
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])
                 ->selectRaw("COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong) as soLuongSP, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")
                 ->first();
 
-                $soLuongGioHangClient = $soLuongGioHangBienThe + $layGiaTienSanPhamThuong->soLuongGioHangClient;
+            $soLuongGioHangClient = $soLuongGioHangBienThe + $layGiaTienSanPhamThuong->soLuongGioHangClient;
 
             $soLuongSPGioHangClient = $layGiaTienSanPham->soLuongSP + $layGiaTienSanPhamThuong->soLuongSP ?? 0;
             $tongTienSanPhamGioHangClient = $layGiaTienSanPham->tongTien + $layGiaTienSanPhamThuong->tongTien ?? 0;
 
             $danhSachGioHangClient = DB::table("cart")
-                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+                ->join("san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                })
                 ->join("bien_the_san_pham", function ($join) {
                     $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
                         ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
@@ -98,8 +110,12 @@ class AppServiceProvider extends ServiceProvider
                 ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien, bien_the_san_pham.Gia as GiaSanPhamBienThe")
                 ->get();
 
-                $danhSachGioHangClient2 = DB::table("cart")
-                ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+
+            $danhSachGioHangClient2 = DB::table("cart")
+                ->join("san_pham", function ($join) {
+                    $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                        ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                })
                 ->where("cart.KichCo", "=", null)
                 ->where("cart.KichCo", "=", null)
                 ->whereIn("cart.ID_KhachHang", [$userId, (Auth::user()->id ?? $userId)])

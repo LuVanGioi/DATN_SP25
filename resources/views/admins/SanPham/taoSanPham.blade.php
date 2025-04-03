@@ -79,10 +79,10 @@
                                     </div>
                                 </div>
 
-                                <div class="col" id="formInputMoney">
+                                <div class="col" id="formInputMoneyGoc">
                                     <div class="mb-3">
                                         <label>Giá Gốc</label>
-                                        <input class="form-control @error(" GiaKhuyenMai") is-invalid border-danger @enderror" type="number" name="GiaKhuyenMai" value="{{ old("GiaKhuyenMai") }}" placeholder="Giá Gốc Của Sản Phẩm (Nếu Có)" min="1">
+                                        <input class="form-control @error(" GiaKhuyenMai") is-invalid border-danger @enderror" type="number" name="GiaKhuyenMai" id="GiaKhuyenMai" value="{{ old("GiaKhuyenMai") }}" placeholder="Giá Gốc Của Sản Phẩm (Nếu Có)" min="1">
                                         @error("GiaKhuyenMai")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -241,12 +241,18 @@
             inputSoLuong.setAttribute("required", "required");
             formSPThuong.style.display = "block";
             document.getElementById("chonKichCo").removeAttribute("required");
+            document.getElementById("formInputMoney").style.display = "block";
+            document.getElementById("formInputMoneyGoc").style.display = "block";
+            document.getElementById("Gia").setAttribute("required", "required");
         } else {
             document.getElementById("formTheLoaiSanPham").style.display = "block";
             formAmountPr.style.display = "none";
             inputSoLuong.removeAttribute("required");
             formSPThuong.style.display = "none";
             document.getElementById("chonKichCo").setAttribute("required", "required");
+            document.getElementById("Gia").removeAttribute("required");
+            document.getElementById("formInputMoney").style.display = "none";
+            document.getElementById("formInputMoneyGoc").style.display = "none";
         }
     }
 
@@ -385,10 +391,12 @@
     });
 
     const imagesPreview = document.getElementById('imagesPreview');
+    const fileInput = document.getElementById('khoAnh');
 
-    document.getElementById('khoAnh').addEventListener('change', function() {
+    fileInput.addEventListener('change', function() {
         imagesPreview.innerHTML = '';
         const files = Array.from(this.files);
+        const dataTransfer = new DataTransfer();
 
         files.forEach((file, index) => {
             if (file && file.type.startsWith('image/')) {
@@ -404,17 +412,35 @@
                     const deleteBtn = document.createElement('button');
                     deleteBtn.innerHTML = '<i class="fal fa-times"></i>';
                     deleteBtn.classList.add('delete-btn');
-                    deleteBtn.onclick = () => container.remove();
+                    deleteBtn.onclick = () => {
+                        container.remove();
+                        removeFile(index);
+                    };
 
                     container.appendChild(img);
                     container.appendChild(deleteBtn);
-
                     imagesPreview.appendChild(container);
-                }
+                };
 
                 reader.readAsDataURL(file);
+                dataTransfer.items.add(file);
             }
         });
+
+        fileInput.files = dataTransfer.files;
+
+        function removeFile(index) {
+            const newDataTransfer = new DataTransfer();
+            const currentFiles = Array.from(fileInput.files);
+
+            currentFiles.forEach((file, i) => {
+                if (i !== index) {
+                    newDataTransfer.items.add(file);
+                }
+            });
+
+            fileInput.files = newDataTransfer.files;
+        }
     });
 </script>
 @endsection
