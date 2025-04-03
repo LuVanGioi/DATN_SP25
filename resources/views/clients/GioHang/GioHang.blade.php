@@ -120,11 +120,11 @@
                             <td style="text-align: start; font-weight: bold" id="total_amount_cart">{{ number_format($soLuongSPGioHangClient) }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align: start">Tạm Tính Tổng:</td>
+                            <td style="text-align: start">Tính Tổng Giỏ Hàng:</td>
                             <td style="text-align: start; font-weight: bold" id="total_money_cart">{{ number_format($tongTienSanPhamGioHangClient) }} đ</td>
                         </tr>
                         <tr>
-                            <td style="text-align: start">Số Lượng:</td>
+                            <td style="text-align: start">Số Sản Phẩm Chọn:</td>
                             <td style="text-align: start; font-weight: bold" id="amount_checkout">0</td>
                         </tr>
                         <tr>
@@ -283,7 +283,6 @@
                     document.getElementById("amount_checkout").innerHTML = data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     document.getElementById("total_money").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     document.getElementById("total_moneys").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    //AlertDATN("success", data.message);
                 } else {
                     AlertDATN("error", data.message);
                 }
