@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\clients;
 
 use App\Http\Controllers\Controller;
-use App\Models\DiaChiNhanHang;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +15,7 @@ class DiaChiNhanHangController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $diaChiNhanHangs = DiaChiNhanHang::where('ID_User', $user->id)
+        $diaChiNhanHangs = Location::where('ID_User', $user->id)
             ->orderBy('MacDinh', 'desc')
             ->get();
         return view('clients.ThongTinTaiKhoan.DiaChiNhanHang', compact('diaChiNhanHangs'));
@@ -45,10 +45,10 @@ class DiaChiNhanHangController extends Controller
         ]);
 
         if ($request->MacDinh) {
-            DiaChiNhanHang::where('ID_User', Auth::id())->update(['MacDinh' => false]);
+            Location::where('ID_User', Auth::id())->update(['MacDinh' => false]);
         }
 
-        DiaChiNhanHang::create([
+        Location::create([
             'ID_User' => Auth::id(),
             'HoTen' => $request->HoTen,
             'SoDienThoai' => $request->SoDienThoai,
@@ -92,10 +92,10 @@ class DiaChiNhanHangController extends Controller
      */
     public function destroy(string $id)
     {
-        $diaChiNhanHangs = DiaChiNhanHang::where('ID_User', Auth::id())
+        $diaChiNhanHangs = Location::where('ID_User', Auth::id())
             ->findOrFail($id);
         if ($diaChiNhanHangs->MacDinh) {
-            $otherAddress = DiaChiNhanHang::where('ID_User', Auth::id())
+            $otherAddress = Location::where('ID_User', Auth::id())
                 ->where('id', '!=', $id)
                 ->first();
 
@@ -114,9 +114,9 @@ class DiaChiNhanHangController extends Controller
     {
         $user = Auth::user();
 
-        DiaChiNhanHang::where('ID_User', $user->id)->update(['MacDinh' => false]);
+        Location::where('ID_User', $user->id)->update(['MacDinh' => false]);
 
-        $address = DiaChiNhanHang::where('ID_User', $user->id)->findOrFail($id);
+        $address = Location::where('ID_User', $user->id)->findOrFail($id);
         $address->update(['MacDinh' => true]);
 
         return redirect()->route('dia-chi-nhan-hang.index')->with('success', 'Địa chỉ mặc định đã được cập nhật.');
