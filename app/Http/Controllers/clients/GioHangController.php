@@ -78,15 +78,15 @@ class GioHangController extends Controller
                     $thongTinBienThe = DB::table("bien_the_san_pham")
                         ->where("ID_SanPham", $request->input("id_product"))
                         ->where("ID_MauSac", DB::table("mau_sac")
-                        ->where("id", $checkCart->MauSac)
-                        ->first()->id)
+                            ->where("id", $checkCart->MauSac)
+                            ->first()->id)
                         ->where("KichCo", $checkCart->KichCo)->first();
 
                     $checkGioHang = DB::table("cart")
-                    ->where("ID_SanPham", $request->input("id_product"))
-                    ->where("KichCo", $request->input("size"))
-                    ->where("MauSac", $request->input("color"))
-                    ->first();
+                        ->where("ID_SanPham", $request->input("id_product"))
+                        ->where("KichCo", $request->input("size"))
+                        ->where("MauSac", $request->input("color"))
+                        ->first();
 
                     if ($request->input("quantity") > $thongTinBienThe->SoLuong) {
                         return response()->json([
@@ -618,7 +618,7 @@ class GioHangController extends Controller
             })
             ->where("cart.id", $id)
             ->first();
-
+        $tongTienSanPhamGioHangClient = 0;
         $money = 0;
 
         if ($cartUpdate) {
@@ -669,6 +669,30 @@ class GioHangController extends Controller
                 ]);
             }
 
+            $cart_id_list = $request->input('cartIdList');
+
+            if ($cart_id_list) {
+                $tinh = 0;
+                foreach ($cart_id_list as $cart) {
+                    $thongTinGioHang = DB::table('cart')
+                        ->where('id', $cart)
+                        ->first();
+                    $sanPham = DB::table("san_pham")->where("id", $thongTinGioHang->ID_SanPham)->first();
+
+                    if ($sanPham->TheLoai == "bienThe") {
+                        $sanPhamBienThe = DB::table("bien_the_san_pham")
+                            ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
+                            ->where("KichCo", $thongTinGioHang->KichCo)
+                            ->where("ID_MauSac", $thongTinGioHang->MauSac)
+                            ->first();
+                        $tinh += $sanPhamBienThe->Gia * $thongTinGioHang->SoLuong;
+                    } else {
+                        $tinh += $thongTinGioHang->SoLuong * $sanPham->GiaSanPham;
+                    }
+                }
+
+                $tongTienSanPhamGioHangClient = $tinh;
+            }
 
             if ($checkBienThe->SoLuong <= 0) {
                 DB::table("cart")->where("id", $id)->update([
@@ -680,7 +704,8 @@ class GioHangController extends Controller
                     'message' => 'Kích Cỡ ' . $cartUpdate->KichCo . ' - ' . $layMauBienThe->TenMauSac . " Đã Hết, Vui Lòng Chọn Màu Khác",
                     'id' => $id,
                     'total' => $money,
-                    'total_cart' => $layGiaTienSanPham
+                    'total_cart' => $layGiaTienSanPham,
+                    "total_price" => ($tongTienSanPhamGioHangClient)
                 ]);
             }
         } else {
@@ -766,6 +791,30 @@ class GioHangController extends Controller
             }
         }
 
+        $cart_id_list = $request->input('cartIdList');
+        if ($cart_id_list) {
+            $tinh = 0;
+            foreach ($cart_id_list as $cart) {
+                $thongTinGioHang = DB::table('cart')
+                    ->where('id', $cart)
+                    ->first();
+                $sanPham = DB::table("san_pham")->where("id", $thongTinGioHang->ID_SanPham)->first();
+
+                if ($sanPham->TheLoai == "bienThe") {
+                    $sanPhamBienThe = DB::table("bien_the_san_pham")
+                        ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
+                        ->where("KichCo", $thongTinGioHang->KichCo)
+                        ->where("ID_MauSac", $thongTinGioHang->MauSac)
+                        ->first();
+                    $tinh += $sanPhamBienThe->Gia * $thongTinGioHang->SoLuong;
+                } else {
+                    $tinh += $thongTinGioHang->SoLuong * $sanPham->GiaSanPham;
+                }
+            }
+
+            $tongTienSanPhamGioHangClient = $tinh;
+        }
+
         return response()->json([
             'status' => "success",
             'message' => 'Cập nhật thành công',
@@ -775,7 +824,8 @@ class GioHangController extends Controller
                 "tongTien" => $tongTien,
                 "soLuongGioHangClient" => $soLuongGioHangClient,
                 "soLuongSP" => $soLuongSP
-            ]
+            ],
+            "total_price" => $tongTienSanPhamGioHangClient
         ]);
     }
 
