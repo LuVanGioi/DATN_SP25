@@ -126,7 +126,7 @@ Route::prefix('dia-chi-nhan-hang')->group(function () {
 });
 Route::resource('lich-su-don-hang', LichSuDonHangController::class);
 Route::resource('chi-tiet-huy-don', ChiTietHuyDonController::class);
-Route::get('danh-muc/{code}',[DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
+Route::get('danh-muc/{code}', [DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
 
 
 

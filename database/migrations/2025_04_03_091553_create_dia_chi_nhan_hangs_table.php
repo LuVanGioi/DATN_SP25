@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->string('SoDienThoai');
             $table->string('DiaChi');
             $table->string('Xa');
-            $table->integer('Huyen');
-            $table->integer('Tinh');
+            $table->string('Huyen');
+            $table->string('Tinh');
             $table->boolean('MacDinh');
             $table->timestamps();
 
