@@ -50,9 +50,6 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <button class="btn btn-warning"
-                                                    onclick="editAddress({{ $diaChiNhanHang->id }})">Cập
-                                                    nhật</button>
                                                 <form action="{{ route('dia-chi-nhan-hang.destroy', $diaChiNhanHang->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
@@ -150,66 +147,6 @@
                     </div>
                     <button type="submit" class="btn btn-success mt-2">Thêm</button>
                     <button type="button" class="btn btn-secondary mt-2" onclick="toggleForm('addAddressForm')">Quay
-                        Lại</button>
-                </form>
-            </div>
-
-            <!-- Form Cập Nhật Địa Chỉ -->
-            <div id="updateAddressForm" class="card p-3 shadow-sm mt-3" style="display: none;">
-                <h4>Cập Nhật Địa Chỉ</h4>
-                <form id="updateForm" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label>Họ Tên</label>
-                        <input type="text" name="HoTen" id="editHoTen" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Số Điện Thoại</label>
-                        <input type="text" name="SoDienThoai" id="editSoDienThoai" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Địa Chỉ</label>
-                        <input type="text" name="DiaChi" id="editDiaChi" class="form-control" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group selectpicker-wrapper">
-                                <select class="selectpicker input-price" name="Tinh" id="editTinhThanh"
-                                    onchange="chonTinhThanhEdit()" data-live-search="true" data-width="100%"
-                                    data-toggle="tooltip" title="Chọn Tỉnh Thành" required>
-                                    <option value="">Tỉnh Thành</option>
-                                    @foreach ($danhSachTinhThanh as $tinhThanh)
-                                        <option value="{{ $tinhThanh->TenThanhPho }}">{{ $tinhThanh->TenThanhPho }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <select class="form-control" name="Huyen" id="editHuyen" onchange="chonHuyenEdit()"
-                                    required>
-                                    <option value="">Quận / Huyện</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <select class="form-control" name="Xa" id="editXaPhuong" required>
-                                    <option value="">Xã / Phường</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Mặc Định</label>
-                        <select class="form-control" name="MacDinh" id="editMacDinh" required>
-                            <option value="0">Không đặt làm địa chỉ mặc định</option>
-                            <option value="1">Đặt làm địa chỉ mặc định</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-2">Cập Nhật</button>
-                    <button type="button" class="btn btn-secondary mt-2" onclick="toggleForm('updateAddressForm')">Quay
                         Lại</button>
                 </form>
             </div>

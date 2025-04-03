@@ -84,37 +84,7 @@ class DiaChiNhanHangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'HoTen' => 'required|string|max:255',
-            'SoDienThoai' => 'required|string|max:15',
-            'DiaChi' => 'required|string|max:255',
-            'Xa' => 'required|string|max:255',
-            'Huyen' => 'required|string|max:255',
-            'Tinh' => 'required|string|max:255',
-            'MacDinh' => 'required|boolean',
-        ]);
-
-        $diaChiNhanHangs = DiaChiNhanHang::where('ID_User', Auth::id())
-            ->findOrFail($id);
-        if ($request->MacDinh) {
-            DiaChiNhanHang::where('ID_User', Auth::id())
-                ->where('id', '!=', $id)
-                ->update(['MacDinh' => false]);
-        }
-
-
-        $diaChiNhanHangs->update([
-            'HoTen' => $request->HoTen,
-            'SoDienThoai' => $request->SoDienThoai,
-            'DiaChi' => $request->DiaChi,
-            'Xa' => $request->Xa,
-            'Huyen' => $request->Huyen,
-            'Tinh' => $request->Tinh,
-            'MacDinh' => $request->MacDinh,
-        ]);
-
-        return redirect()->route('dia-chi-nhan-hang.index')
-            ->with('success', 'Cập nhật địa chỉ thành công');
+        //
     }
 
     /**
