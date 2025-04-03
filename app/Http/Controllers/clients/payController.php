@@ -82,12 +82,12 @@ class payController extends Controller
             ->whereIn("id", $selectedCartIds)
             ->first();
 
-        $sanPhamThuong = DB::table("bien_the_san_pham")->where("ID_SanPham", $checkCartThuong->ID_SanPham)->count();
-
         $sanPhamDaChon = DB::table("cart")
             ->join("san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                    ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                    ->where("san_pham.TheLoai", "=", "bienThe")
+                    ->where("san_pham.Xoa", "=", 0)
+                    ->where("TrangThai", "hien");
             })
             ->join("kich_co", "cart.KichCo", "=", "kich_co.TenKichCo")
             ->join("mau_sac", "cart.MauSac", "=", "mau_sac.id")
@@ -108,6 +108,7 @@ class payController extends Controller
         $layGiaTienSanPham = DB::table("cart")
             ->join("san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.TheLoai", "=", "bienThe")
                     ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
             })
             ->join("bien_the_san_pham", function ($join) {
@@ -127,7 +128,9 @@ class payController extends Controller
         $sanPhamDaChon2 = DB::table("cart")
             ->join("san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                    ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                    ->where("san_pham.TheLoai", "=", "thuong")
+                    ->where("san_pham.Xoa", "=", 0)
+                    ->where("TrangThai", "hien");
             })
             ->whereIn("cart.id", $selectedCartIds)
             ->where("KichCo", "=", null)
@@ -138,7 +141,9 @@ class payController extends Controller
         $layGiaTienSanPham2 = DB::table("cart")
             ->join("san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "san_pham.id")
-                    ->where("san_pham.Xoa", "=", 0)->where("TrangThai", "hien");
+                    ->where("san_pham.TheLoai", "=", "thuong")
+                    ->where("san_pham.Xoa", "=", 0)
+                    ->where("TrangThai", "hien");
             })
             ->whereIn("cart.id", $selectedCartIds)
             ->where("KichCo", "=", null)
@@ -147,7 +152,7 @@ class payController extends Controller
             ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
 
         $checkSPGH = $layGiaTienSanPham->soLuongGioHangClient + $layGiaTienSanPham2->soLuongGioHangClient;
-
+        
         if ($checkSPGH <= 0) {
             return redirect()->route("gio-hang.index")->with("error", "Sản Phẩm Không Tồn Tại!");
         }
@@ -156,7 +161,7 @@ class payController extends Controller
         $tongTien2 = $layGiaTienSanPham2->tongTien ?? 0;
         $tongTienSanPhamDaChon = $tongTien1 + $tongTien2;
 
-        return view("clients.ThanhToan.index", compact('orderCode', 'sanPhamThuong', 'danhSachTinhThanh', 'danhSachDiaChimacDinh', 'sanPhamDaChon', 'tongTienSanPhamDaChon', 'sanPhamDaChon2', 'layGiaTienSanPham2'));
+        return view("clients.ThanhToan.index", compact('orderCode', 'danhSachTinhThanh', 'danhSachDiaChimacDinh', 'sanPhamDaChon', 'tongTienSanPhamDaChon', 'sanPhamDaChon2', 'layGiaTienSanPham2'));
     }
 
     public function payment_store(Request $request)
@@ -173,7 +178,12 @@ class payController extends Controller
         $selectedCartIds = session('selected_products', []);
 
         $sanPhamDaChon = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.TheLoai", "=", "bienThe")
+                    ->where("san_pham.Xoa", "=", 0)
+                    ->where("TrangThai", "hien");
+            })
             ->join("bien_the_san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
                     ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
@@ -189,7 +199,12 @@ class payController extends Controller
             })
             ->selectRaw("cart.id as cart_id, cart.SoLuong as SoLuongCart , cart.*, san_pham.*, kich_co.*, mau_sac.*, cart.SoLuong * bien_the_san_pham.Gia as ThanhTien")->get();
         $layGiaTienSanPham = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.TheLoai", "=", "bienThe")
+                    ->where("san_pham.Xoa", "=", 0)
+                    ->where("TrangThai", "hien");
+            })
             ->join("bien_the_san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "bien_the_san_pham.ID_SanPham")
                     ->on("cart.KichCo", "=", "bien_the_san_pham.KichCo")
@@ -205,7 +220,12 @@ class payController extends Controller
 
         $tinhPhanTram = 0;
         $sanPhamDaChon2 = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.TheLoai", "=", "bienThe")
+                    ->where("san_pham.Xoa", "=", 0)
+                    ->where("TrangThai", "hien");
+            })
             ->whereIn("cart.id", $selectedCartIds)
             ->where("KichCo", "=", null)
             ->where("MauSac", "=", null)
@@ -213,7 +233,12 @@ class payController extends Controller
             ->selectRaw("cart.id as cart_id, cart.soLuong as SoLuongSanPham, cart.*, san_pham.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")->get();
 
         $layGiaTienSanPham2 = DB::table("cart")
-            ->join("san_pham", "cart.ID_SanPham", "=", "san_pham.id")
+            ->join("san_pham", function ($join) {
+                $join->on("cart.ID_SanPham", "=", "san_pham.id")
+                    ->where("san_pham.TheLoai", "=", "bienThe")
+                    ->where("san_pham.Xoa", "=", 0)
+                    ->where("TrangThai", "hien");
+            })
             ->whereIn("cart.id", $selectedCartIds)
             ->where("KichCo", "=", null)
             ->where("MauSac", "=", null)
@@ -372,7 +397,7 @@ class payController extends Controller
         elseif ($request->input("method") == "Banking"):
 
             $PayOS = DB::table("pay_os")->where("id", 1)->first();
-            if(!$PayOS) {
+            if (!$PayOS) {
                 return response()->json([
                     "status" => "error",
                     "message" => "Thanh Toán Ngân Hàng Đang Bảo Trì, Vui Lòng Quay Lại Sau!"
@@ -394,7 +419,7 @@ class payController extends Controller
             $signatureString = "amount={$data['amount']}&cancelUrl={$data['cancelUrl']}&description={$data['description']}&orderCode={$data['orderCode']}&returnUrl={$data['returnUrl']}";
             $signature = hash_hmac('sha256', $signatureString, $checksumKey);
             $data["signature"] = $signature;
-            
+
             $response = Http::withHeaders([
                 "x-client-id" => $clientId,
                 "x-api-key" => $apiKey,
@@ -402,7 +427,7 @@ class payController extends Controller
             ])->post("https://api-merchant.payos.vn/v2/payment-requests", $data);
             $result = $response->json();
 
-            
+
             if (isset($result['data']['checkoutUrl'])) {
 
                 $selectedCartIds = session('selected_products', []);
