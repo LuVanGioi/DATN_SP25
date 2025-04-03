@@ -26,7 +26,7 @@
                 <div class="row orders mt-3" >
                             <div class="col-md-12">
                                 <h3 class="block-title"><span>Đơn Hàng Hủy Của Bạn</span></h3>
-                                <form class="row variable" submit-ajax="true" action="{{route('huy-don.update',$id)}}" method="PUT" time_load="0" swal_success="" type="POST">
+                                <form class="row variable" submit-ajax="true" action="{{route('huy-don.update',$id)}}" method="PUT" time_load="1500" swal_success="" type="POST">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="hidden" name="action" id="actionField" value="">
                                     
@@ -75,7 +75,7 @@
                                         <a href="{{ route('lich-su-don-hang.index') }}" class="btn btn-secondary">
                                             <i class="fas fa-arrow-left"></i> Quay Lại
                                         </a>
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
+                                        <button type="submit" class="btn btn-danger" data-action="huydon" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')">
                                             <i class="fas fa-times"></i> Xác Nhận Hủy Đơn
                                         </button>
                                     </div>
