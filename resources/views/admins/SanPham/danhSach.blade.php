@@ -56,7 +56,14 @@
                                             </td>
                                             <td class="text-center"><img src="{{ Storage::url($SanPham->HinhAnh) }}" alt="{{ $SanPham->TenSanPham }}" width="100px" class="img-fluid"></td>
                                             <td>{{ Str::limit($SanPham->TenSanPham, 20) }}</td>
-                                            <td>{{ number_format($SanPham->GiaSanPham, 0, ',', '.') }}đ</td>
+                                            <td>
+                                                @if ($SanPham->TheLoai == "thuong")
+                                                {{ number_format($SanPham->GiaSanPham, 0, ',', '.') }}đ
+                                                @else
+                                                {{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $SanPham->id)->where("Xoa", 0)->min("Gia")) }}đ
+                                                @endif
+
+                                            </td>
                                             <td class="text-center">
                                                 @if ($SanPham->TrangThai == "hien")
                                                 <span class="badge bg-success">Hiển Thị</span>
