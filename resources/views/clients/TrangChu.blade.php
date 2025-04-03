@@ -112,6 +112,7 @@
     </div>
 </section>
 
+@if ($tongSanPhamBanChay >= 1)
 <section class="page-section">
     <div class="container">
         <div class="tabs">
@@ -159,7 +160,9 @@
         </div>
     </div>
 </section>
+@endif
 
+@if ($tongSanPhamHetHang >= 1)
 <section class="page-section">
     <div class="container">
         <div class="tabs">
@@ -172,35 +175,61 @@
             @foreach ($sanPhamSapHetHang as $sanPham)
             @php
             $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
-            @endphp
-            <div class="col-md-3 col-sm-3">
-                <div class="thumbnail product-item">
-                    <div class="media">
-                        <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
-                            <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
-                        </a>
-                        @if ($sanPham->Nhan)
-                        <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
-                        @endif
-                        <div class="title-time">
-                            Còn Lại {{ number_format($sanPham->tong_ton_kho) }}
+            $bienTheDem = DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->selectRaw("SUM(bien_the_san_pham.SoLuong) as tong_ton_kho")->first();
+            $view = 0;
+            if($sanPham->TheLoai == "bienThe") {
+            if($bienTheDem->tong_ton_kho >= 1 && $bienTheDem->tong_ton_kho <= 10) {
+                $view=1;
+                }
+                } else {
+                if($sanPham->SoLuong >= 1 && $sanPham->SoLuong <= 10) {
+                    $view=1;
+                    }
+                    }
+                    @endphp
+                    @if ($view==1)
+                    <div class="col-md-3 col-sm-3">
+                    <div class="thumbnail product-item">
+                        <div class="media">
+                            <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
+                                <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
+                            </a>
+                            @if ($sanPham->Nhan)
+                            <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
+                            @endif
+                            <div class="title-time">
+                                @if ($sanPham->TheLoai == "bienThe")
+                                @if ($bienTheDem->tong_ton_kho >= 1)
+                                Còn Lại {{ number_format($bienTheDem->tong_ton_kho) }}
+                                @else
+                                Sản Phẩm Đã Hết Hàng
+                                @endif
+                                @else
+                                @if ($sanPham->SoLuong >= 1)
+                                Còn Lại {{ number_format($sanPham->SoLuong) }}
+                                @else
+                                Sản Phẩm Đã Hết Hàng
+                                @endif
+                                @endif
+                            </div>
+                        </div>
+                        <div class="caption text-center">
+                            <h4 class="caption-title">
+                                <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
+                            </h4>
+                            <div class="price" style="align-items: center; margin-top: 10px">
+                                <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
+                                <span>Đã bán {{ soGon($luotMua) }}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="caption text-center">
-                        <h4 class="caption-title">
-                            <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
-                        </h4>
-                        <div class="price" style="align-items: center; margin-top: 10px">
-                            <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
-                            <span>Đã bán {{ soGon($luotMua) }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
         </div>
+        @endif
+        @endforeach
+    </div>
     </div>
 </section>
+@endif
 
 <section class="page-section">
     <div class="container">
