@@ -38,9 +38,10 @@ class ChiTietHuyDonController extends Controller
         $donHangHuy = DB::table('san_pham_don_hang')
             ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
             ->where('san_pham_don_hang.MaDonHang', $id)
-            ->select('san_pham.*', 'san_pham_don_hang.*')
+            ->selectRaw('san_pham.id as idSP, san_pham.*, san_pham_don_hang.*')
             ->get();
 
+            
         return view("clients.HuyDonHang.HuyDon", compact('donHangHuy', 'id'));
     }
 

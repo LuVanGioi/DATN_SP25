@@ -20,6 +20,9 @@
                         <p><strong>Địa Chỉ : </strong>
                             {{$donHang->DiaChi . ", " . $donHang->Xa . " - " . $donHang->TenHuyen . " - " . $donHang->TenThanhPho}}
                         </p>
+                        <p><strong>Trạng Thái Đơn Hàng : </strong> {!!trangThaiDonHang($donHang->TrangThaiDonHang)!!} </p>
+                        <p><strong>Trạng Thái Thanh Toán : </strong> {{$donHang->TrangThaiThanhToan}} </p>
+                        <p><strong>Phương Thức Thanh Toán : </strong> {{$donHang->PhuongThucThanhToan}} </p>
                         <p><strong>Ghi Chú : </strong> {{$donHang->GhiChu}} </p>
 
 
@@ -52,9 +55,10 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <form action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="POST">
-                        @csrf
-                        @method('PUT')
+                    <form class="row variable" submit-ajax="true" action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="PUT" time_load="1500" swal_success="" type="POST">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="action" id="actionField" value="">
+                       
                         <div class="form-group">
                             <label class="form-label">Trạng Thái Đơn Hàng</label>
                             <select name="TrangThai" class="form-control">
@@ -84,7 +88,9 @@
                                 @endif       
                         </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Cập Nhật</button>
+
+                        
+                        <button type="submit" data-action="capnhat" class="btn btn-primary">Cập Nhật</button>
                     </form>
                 </div>
             </div>
