@@ -36,15 +36,17 @@ class homeController extends Controller
             ->where("san_pham.Xoa", 0)
             ->where("san_pham.TheLoai", "bienThe")
             ->where("san_pham.TrangThai", "hien")
-            ->selectRaw("SUM(bien_the_san_pham.SoLuong) as SoLuong")
+            ->where("bien_the_san_pham.SoLuong", "<", 6)
+            ->selectRaw("SUM(bien_the_san_pham.SoLuong) as SoLuongSP")
             ->first();
         $demHetHangThuong = DB::table("san_pham")
             ->where("san_pham.Xoa", 0)
             ->where("san_pham.TheLoai", "thuong")
             ->where("san_pham.TrangThai", "hien")
-            ->selectRaw("SUM(san_pham.SoLuong) as SoLuong")
+            ->where("san_pham.SoLuong", "<", 6)
+            ->selectRaw("SUM(san_pham.SoLuong) as SoLuongSP")
             ->first();
-        $tongSanPhamHetHang = intval($demHetHangBienThe->SoLuong) + intval($demHetHangThuong->SoLuong);
+        $tongSanPhamHetHang = intval($demHetHangBienThe->SoLuongSP) + intval($demHetHangThuong->SoLuongSP);
 
         $tatCaBaiViet = DB::table("bai_viet")
             ->where("Xoa", 0)
