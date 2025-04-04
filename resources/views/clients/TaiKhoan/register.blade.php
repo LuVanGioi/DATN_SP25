@@ -7,7 +7,9 @@
 @section('main')
 @php
 if (Auth::check()) {
-die('<script>location.href="/"</script>');
+die('<script>
+    location.href = "/"
+</script>');
 }
 @endphp
 <section class="page-section color">
@@ -15,14 +17,9 @@ die('<script>location.href="/"</script>');
         <div class="row">
             <div class="col-sm-6">
                 <h2 class="block-title"><span>Đăng Ký</span></h2>
-                @if(session("error"))
-                <div class="alert alert-danger">{{ session("error") }}</div>
-                @endif
-
-                @if(session("success"))
-                <div class="alert alert-success">{{ session("success") }}</div>
-                @endif
-                <form action="{{route('register')}}" class="form-login" method="POST">
+                <form class="form-login" submit-ajax="true" action="{{route('register')}}" method="POST" time_load="0" swal_success="" type="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" id="actionField" value="">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
@@ -35,8 +32,10 @@ die('<script>location.href="/"</script>');
                         </div>
 
                         <div class="col-md-12">
-                            <div class="form-group"><input class="form-control @error('email') is-invalid @enderror" type="text" name="email"
-                                    placeholder="Email đăng ký" required="required" value="{{old('email')}}"> </div>
+                            <div class="form-group">
+                                <input class="form-control @error('email') is-invalid @enderror" type="email" name="email"
+                                    placeholder="Email đăng ký" required="required" value="{{old('email')}}">
+                            </div>
 
                             @error('email')
                             <p class="text-danger">{{ $message}}</p>
@@ -52,7 +51,10 @@ die('<script>location.href="/"</script>');
                         </div>
 
                         <div class="col-md-6">
-                            <button class="btn btn-theme btn-block btn-theme-dark">Đăng Ký</button>
+                            <button type="submit" class="btn btn-theme btn-block btn-theme-dark" data-action="register">Đăng Ký</button>
+                        </div>
+                        <div class="col-md-6">
+                            <a class="btn btn-block btn-theme btn-theme-dark btn-create" href="{{route('login')}}">Đăng nhập</a>
                         </div>
                     </div>
                 </form>

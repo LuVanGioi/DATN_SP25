@@ -26,14 +26,14 @@ class clientController extends Controller
                     "total_price" => 0
                 ]);
             }
-            
+
             $tinh = 0;
             foreach ($cart_id_list as $cart) {
                 $thongTinGioHang = DB::table('cart')
                     ->where('id', $cart)
                     ->first();
                 $sanPham = DB::table("san_pham")->where("id", $thongTinGioHang->ID_SanPham)->first();
-                
+
                 if ($sanPham->TheLoai == "bienThe") {
                     $sanPhamBienThe = DB::table("bien_the_san_pham")
                         ->where("ID_SanPham", $thongTinGioHang->ID_SanPham)
@@ -236,6 +236,7 @@ class clientController extends Controller
                 ->where("ID_Guests", $userId)
                 ->limit(100)
                 ->first();
+
             if ($donHoTro) {
 
                 $tinNhanHoTro = DB::table("chat_ho_tro")

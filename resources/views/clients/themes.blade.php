@@ -148,7 +148,7 @@
                 url: "<?= route('api.client'); ?>",
                 type: "POST",
                 data: formData,
-                    processData: false,
+                processData: false,
                 contentType: false,
                 success: function(data) {
                     if (data.status === "success") {
@@ -191,7 +191,9 @@
                             });
                         }
                     } else {
-                        AlertDATN("error", data.message);
+                        if (data.message) {
+                            AlertDATN("error", data.message);
+                        }
                     }
 
                 },

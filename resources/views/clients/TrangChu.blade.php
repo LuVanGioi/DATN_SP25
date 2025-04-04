@@ -185,58 +185,64 @@
             @foreach ($sanPhamSapHetHang as $sanPham)
             @php
             $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
-            $bienTheDem = DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->selectRaw("SUM(bien_the_san_pham.SoLuong) as tong_ton_kho")->first();
-            $view = 0;
-            if($sanPham->TheLoai == "bienThe") {
-            if($bienTheDem->tong_ton_kho >= 1 && $bienTheDem->tong_ton_kho <= 10) {
-                $view=1;
-                }
-                } else {
-                if($sanPham->SoLuong >= 1 && $sanPham->SoLuong <= 5) {
+            $bienTheDem = DB::table("bien_the_san_pham")
+            ->where("bien_the_san_pham.SoLuong", "<", 6)
+                ->where("ID_SanPham", $sanPham->id)
+                ->selectRaw("SUM(bien_the_san_pham.SoLuong) as tong_ton_kho")
+                ->first();
+                $view = 0;
+
+
+                if($sanPham->TheLoai == "bienThe") {
+                if($bienTheDem->tong_ton_kho >= 1 && $bienTheDem->tong_ton_kho <= 5) {
                     $view=1;
                     }
-                    }
-                    @endphp
-                    @if ($view==1)
-                    <div class="col-md-3 col-sm-3">
-                    <div class="thumbnail product-item">
-                        <div class="media">
-                            <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
-                                <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
-                            </a>
-                            @if ($sanPham->Nhan)
-                            <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
-                            @endif
-                            <div class="title-time">
-                                @if ($sanPham->TheLoai == "bienThe")
-                                @if ($bienTheDem->tong_ton_kho >= 1)
-                                Còn Lại {{ number_format($bienTheDem->tong_ton_kho) }}
-                                @else
-                                Sản Phẩm Đã Hết Hàng
+                    } else {
+                    if($sanPham->SoLuong >= 1 && $sanPham->SoLuong <= 5) {
+                        $view=1;
+                        }
+                        }
+                        @endphp
+                        @if ($view==1)
+                        <div class="col-md-3 col-sm-3">
+                        <div class="thumbnail product-item">
+                            <div class="media">
+                                <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
+                                    <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
+                                </a>
+                                @if ($sanPham->Nhan)
+                                <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
                                 @endif
-                                @else
-                                @if ($sanPham->SoLuong >= 1)
-                                Còn Lại {{ number_format($sanPham->SoLuong) }}
-                                @else
-                                Sản Phẩm Đã Hết Hàng
-                                @endif
-                                @endif
+                                <div class="title-time">
+                                    @if ($sanPham->TheLoai == "bienThe")
+                                    @if ($bienTheDem->tong_ton_kho >= 1)
+                                    Còn Lại {{ number_format($bienTheDem->tong_ton_kho) }}
+                                    @else
+                                    Sản Phẩm Đã Hết Hàng
+                                    @endif
+                                    @else
+                                    @if ($sanPham->SoLuong >= 1)
+                                    Còn Lại {{ number_format($sanPham->SoLuong) }}
+                                    @else
+                                    Sản Phẩm Đã Hết Hàng
+                                    @endif
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="caption text-center">
+                                <h4 class="caption-title">
+                                    <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
+                                </h4>
+                                <div class="price" style="align-items: center; margin-top: 10px">
+                                    @if ($sanPham->TheLoai == "bienThe")
+                                    <ins>₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->where("Xoa", 0)->min("Gia")) }}</ins>
+                                    @else
+                                    <ins>₫{{ number_format($sanPham->GiaSanPham) }}</ins>
+                                    @endif
+                                    <span>Đã bán {{ soGon($luotMua) }}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="caption text-center">
-                            <h4 class="caption-title">
-                                <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
-                            </h4>
-                            <div class="price" style="align-items: center; margin-top: 10px">
-                                @if ($sanPham->TheLoai == "bienThe")
-                                <ins>₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->where("Xoa", 0)->min("Gia")) }}</ins>
-                                @else
-                                <ins>₫{{ number_format($sanPham->GiaSanPham) }}</ins>
-                                @endif
-                                <span>Đã bán {{ soGon($luotMua) }}</span>
-                            </div>
-                        </div>
-                    </div>
         </div>
         @endif
         @endforeach
