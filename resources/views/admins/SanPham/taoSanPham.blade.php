@@ -19,6 +19,20 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
+                                        <label for="ID_DichVuSanPham">Dịch Vụ</label>
+                                        <select name="ID_DichVuSanPham" class="form-control">
+                                            @foreach ($dichVu as $dv)
+                                            <option value="{{ $dv->id }}">{{ $dv->TenDichVuSanPham }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error("ID_DichVuSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="mb-3">
                                         <label>Danh Mục</label>
                                         <select name="DanhMuc" class="form-control @error(" DanhMuc") is-invalid border-danger @enderror" required>
                                             @foreach ($danhSachDanhMuc as $DanhMuc)
@@ -44,6 +58,30 @@
                                         @enderror
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label>Thể Loại</label>
+                                        <select class="form-control mb-3" name="TheLoai" onchange="theLoaiSP(this)">
+                                            <option value="thuong">Thường</option>
+                                            <option value="bienThe">Biến Thể</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label>Tên Sản Phẩm</label>
+                                        <input class="form-control @error(" TenSanPham") is-invalid border-danger @enderror" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" value="{{ old("TenSanPham") }}" required>
+                                        @error("TenSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
 
                                 <div class="col">
                                     <div class="mb-3">
@@ -57,28 +95,6 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label>Thể Loại</label>
-                                        <select class="form-control mb-3" name="TheLoai" onchange="theLoaiSP(this)">
-                                            <option value="thuong">Thường</option>
-                                            <option value="bienThe">Biến Thể</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label>Tên Sản Phẩm</label>
-                                        <input class="form-control @error(" TenSanPham") is-invalid border-danger @enderror" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" value="{{ old("TenSanPham") }}" required>
-                                        @error("TenSanPham")
-                                        <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-
                                 <div class="col" id="formInputMoneyGoc">
                                     <div class="mb-3">
                                         <label>Giá Gốc</label>
@@ -267,49 +283,47 @@
             document.getElementById("chonMauSac").selectedIndex = 0;
         }, 500);
 
+        let soThuTuBienThe = document.querySelectorAll('#danhSachBienThe .row').length;
+
         <?php foreach ($thongTinMauSac as $MauSacCon): ?>
-            <?php $randomId = rand(1000, 9999); #số ngẫu nhiều của item  
-            ?>
             var checkForm = document.getElementById('itemNhapAllMauSac_{{ $MauSacCon->id }}_' + KichCo);
             if (!checkForm) {
                 if (MauSac == "{{ $MauSacCon->id }}") {
                     form.insertAdjacentHTML('beforeend', `
-        <div class="col" id="itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}">
-            <div class="row">
-                <div class="col">
-                    <small for="" class="label-control">Kích Cỡ</small>
-                    <div class="colorProducts">Size ${KichCo}</div>
-                </div>
-                <div class="col">
-                    <small for="" class="label-control">Màu Sắc</small>
-                    <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
-                </div>
-                <input type="hidden" name="ThongTinBienThe[]" value="${KichCo}|${MauSac}">
-                <div class="col">
-                    <small for="" class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
-                    <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" placeholder="Nhập Giá Tiền" value="${Gia}" required>
-                </div>
-
-                <div class="col">
-                    <small for="" class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
-                    <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng" value="0" required>
-                </div>
-
-                <div class="col">
-                    <small for="" class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
-                    <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[]" required>
-                </div>
-
-                <div class="col pt-2">
-                    <span class="badge bg-danger mt-4 w-100" onclick="xoaBienTheKichCo('itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}')"><i class="fas fa-trash"></i></span>
-                </div>
-            </div>
+<div class="col" id="itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}">
+    <div class="row bienThe">
+        <div class="col">
+            <small class="label-control">Kích Cỡ</small>
+            <div class="colorProducts">Size ${KichCo}</div>
         </div>
-        `);
+        <div class="col">
+            <small class="label-control">Màu Sắc</small>
+            <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
+        </div>
+        <input type="hidden" name="ThongTinBienThe[]" value="${KichCo}|${MauSac}">
+        <div class="col">
+            <small class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
+            <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" value="${Gia}" required>
+        </div>
+        <div class="col">
+            <small class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
+            <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" value="0" required>
+        </div>
+        <div class="col">
+            <small class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
+            <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[${soThuTuBienThe}][]" multiple required>
+        </div>
+        <div class="col pt-2">
+            <span class="badge bg-danger mt-4 w-100" onclick="xoaBienTheKichCo('itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}')"><i class="fas fa-trash"></i></span>
+        </div>
+    </div>
+</div>
+`);
                 }
             }
         <?php endforeach; ?>
     }
+
 
     function chonBienThe() {
         document.getElementById("formBienThe").style.display = "block";

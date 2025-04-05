@@ -33,6 +33,20 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
+                                        <label for="ID_DichVuSanPham">Dịch Vụ</label>
+                                        <select name="ID_DichVuSanPham" class="form-control">
+                                            @foreach ($dichVu as $dv)
+                                            <option value="{{ $dv->id }}" {{ ($sanPham->ID_DichVuSanPham == $dv->id ? "selected" : "") }}>{{ $dv->TenDichVuSanPham }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error("ID_DichVuSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="mb-3">
                                         <label>Danh Mục</label>
                                         <select name="DanhMuc" class="form-control" required>
                                             @foreach ($danhSachDanhMuc as $DanhMuc)
@@ -58,16 +72,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label>Chất Liệu</label>
-                                        <input class="form-control" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ $sanPham->ChatLieu }}" required>
-                                        @error("ChatLieu")
-                                        <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="row">
@@ -83,7 +87,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col">
                                     <div class="mb-3">
                                         <label>Tên Sản Phẩm</label>
                                         <input class="form-control" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" value="{{ $sanPham->TenSanPham }}" required>
@@ -92,6 +96,19 @@
                                     <p class="text-danger">{{ $message }}</p>
                                     @enderror
                                 </div>
+
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label>Chất Liệu</label>
+                                        <input class="form-control" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ $sanPham->ChatLieu }}" required>
+                                        @error("ChatLieu")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
 
                                 <div class="col" id="formInputMoneyGoc" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
                                     <div class="mb-3">
@@ -247,7 +264,6 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
-                                            <th>Hình Ảnh</th>
                                             <th>Kích Cỡ</th>
                                             <th>Màu Sắc</th>
                                             <th>Giá</th>
@@ -259,7 +275,6 @@
                                         @foreach ($danhSachBienThe as $index => $bienTheSanPham)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td><img src="{{ Storage::url($bienTheSanPham->HinhAnh) }}" alt="" width="100px"></td>
                                             <td><b>Size {{ $bienTheSanPham->KichCo }}</b></td>
                                             <td>
                                                 @foreach ($thongTinMauSac as $mauSac)
@@ -272,6 +287,11 @@
                                             <td>{{ number_format($bienTheSanPham->SoLuong, 0, ',', '.') }}</td>
                                             <td>
                                                 <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalEdit_{{ $bienTheSanPham->id }}">Sửa Biển Thể</button>
+                                                <form action="{{ route("BienTheSanPham.destroy", $bienTheSanPham->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                </form>
                                             </td>
                                         </tr>
                                         <div class="modal fade" id="modalEdit_{{ $bienTheSanPham->id }}" tabindex="-1" aria-labelledby="modalEdit_{{ $bienTheSanPham->id }}Title" aria-modal="true" role="dialog">
@@ -290,14 +310,29 @@
                                                             @endif
                                                             @endforeach
                                                         </p>
+                                                        <p><strong>Hình Ảnh</strong></p>
+                                                        <div class="row">
+                                                            @foreach (DB::table("hinh_anh_san_pham")->where("ID_SanPham", $bienTheSanPham->id)->where("Xoa", 0)->get() as $hinhAnh)
+                                                            <div class="col-md-4">
+                                                                <img src="{{ Storage::url($hinhAnh->DuongDan) }}" width="100%" alt="">
+                                                                <div>
+                                                                    <form action="{{ route("BienTheSanPham.destroyImage", $hinhAnh->id) }}" method="POST" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Ảnh Này?')">
+                                                                        @csrf
+                                                                        @method("GET")
+                                                                        <button type="submit" class="btn btn-danger btn-xs w-100 mt-2">Xóa</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
 
-                                                        <form action="{{ route("BienTheSanPham.update", $bienTheSanPham->id) }}" method="post">
+                                                        <form action="{{ route("BienTheSanPham.update", $bienTheSanPham->id) }}" method="post" enctype="multipart/form-data">
                                                             @csrf
                                                             @method("PUT")
 
                                                             <div class="form-group">
                                                                 <label for="">Hình Ảnh</label>
-                                                                <input type="file" class="form-control" name="HinhAnh">
+                                                                <input type="file" class="form-control" name="HinhAnh[]" multiple>
                                                             </div>
 
                                                             <div class="form-group">
@@ -446,6 +481,8 @@
             document.getElementById("chonMauSac").selectedIndex = 0;
         }, 500);
 
+        let soThuTuBienThe = document.querySelectorAll('#danhSachBienThe .row').length;
+
         <?php foreach ($KichCoChuaCo as $KichCo):
             foreach ($thongTinMauSac as $MauSacCon): ?>
                 var checkForm = document.getElementById('itemNhapAllMauSac_{{ $MauSacCon->id }}_' + KichCo);
@@ -453,29 +490,29 @@
                     if (MauSac == "{{ $MauSacCon->id }}") {
                         form.insertAdjacentHTML('beforeend', `
         <div class="col" id="itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}">
-            <div class="row">
+            <div class="row bienThe">
                 <div class="col">
-                    <small for="" class="label-control">Kích Cỡ</small>
+                    <small class="label-control">Kích Cỡ</small>
                     <div class="colorProducts">Size ${KichCo}</div>
                 </div>
                 <div class="col">
-                    <small for="" class="label-control">Màu Sắc</small>
+                    <small class="label-control">Màu Sắc</small>
                     <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
                 </div>
                 <input type="hidden" name="ThongTinBienThe[]" value="${KichCo}|${MauSac}">
                 <div class="col">
-                    <small for="" class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
-                    <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" placeholder="Nhập Giá Tiền" value="${Gia}">
+                    <small class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
+                    <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" value="${Gia}" required>
                 </div>
 
                 <div class="col">
-                    <small for="" class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
-                    <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" placeholder="Nhập Số Lượng" value="0">
+                    <small class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
+                    <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" value="0" required>
                 </div>
 
                 <div class="col">
-                    <small for="" class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
-                    <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[]" required>
+                    <small class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
+                    <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[${soThuTuBienThe}][]" multiple required>
                 </div>
 
                 <div class="col pt-2">
@@ -489,6 +526,7 @@
         <?php endforeach;
         endforeach; ?>
     }
+
 
     function viewFormBienThe() {
         var theLoaiSanPham = document.getElementById("theLoaiSanPham").value;

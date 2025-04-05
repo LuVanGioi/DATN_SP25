@@ -41,6 +41,8 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\ChiTietHuyDonController;
 use App\Http\Controllers\clients\LichSuDonHangController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
+use App\Http\Controllers\admins\DichVuSanPhamController;
+use App\Http\Controllers\admins\HinhAnhBienTheController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\DanhMucSanPhamController;
 use App\Http\Controllers\clients\ForgotPasswordController;
@@ -165,13 +167,12 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::get('admin/ThungRac/{id}/destroy-images', [ThungRacController::class, "destroy_images"])->name('HinhAnhSanPham.destroy');
     Route::resource('admin/DanhMuc', DanhMucController::class);
     Route::resource("admin/BienTheSanPham", BienTheSanPhamController::class);
+    Route::get("admin/XoaHinhAnhSanPham/{id}", [HinhAnhBienTheController::class, "destroyImage"])->name("BienTheSanPham.destroyImage");
     Route::resource('admin/BinhLuanBaiViet', BinhLuanBaiVietController::class);
     Route::resource('admin/BienThe', BienTheController::class);
     Route::resource('admin/Banner', BannerController::class);
-
     Route::resource('admin/DonHang', DonHangController::class);
-
-
+    Route::resource('admin/DichVu', DichVuSanPhamController::class);
     Route::get('admin/profile', [QuanLyAdminController::class, 'show'])->name('admin.profile');
     Route::resource('admin/maGiamGias', MaGiamGiaController::class);
     Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);

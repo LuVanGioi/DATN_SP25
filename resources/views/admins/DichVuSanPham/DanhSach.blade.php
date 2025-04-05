@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-<title>Danh Mục Sản Phẩm - ADMIN</title>
+<title>Dịch Vụ Sản Phẩm - ADMIN</title>
 @endsection
 
 @section('main')
@@ -20,9 +20,9 @@
         @endif
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5>DANH MỤC SẢn PHẨM</h5>
+                <h5>DANH SÁCH DỊCH VỤ</h5>
                 <div class="text-end">
-                    <a href="{{ route('DanhMuc.create') }}" class="btn btn-primary btn-sm ms-2">Thêm</a>
+                    <a href="{{ route('DichVu.create') }}" class="btn btn-primary btn-sm ms-2">Thêm</a>
                     <a href="{{ route("ThungRac.index") }}" class="btn btn-dark btn-sm">Thùng Rác</a>
                 </div>
             </div>
@@ -33,23 +33,19 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Dịch Vụ</th>
-                                    <th>Danh Mục</th>
+                                    <th>Tên Dịch Vụ</th>
                                     <th>Thao Tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($danhSach as $danhMuc)
+                                @foreach ($listDichVuSanPham as $dichVu)
                                 <tr>
-                                    <td>{{ $danhMuc->id }}</td>
-                                    <td class="text-primary">
-                                        {{ DB::table("dich_vu_san_pham")->where("id", $danhMuc->ID_DichVuSanPham)->where("Xoa", 0)->first()->TenDichVuSanPham }}
-                                    </td>
-                                    <td>{{ $danhMuc->TenDanhMucSanPham }}</td>
+                                    <td>{{ $dichVu->id }}</td>
+                                    <td>{{ $dichVu->TenDichVuSanPham }}</td>
                                     <td>
-                                        <a href="{{ route('DanhMuc.edit', $danhMuc->id) }}"
+                                        <a href="{{ route('DichVu.edit', $dichVu->id) }}"
                                             class="btn btn-primary btn-sm">Sửa</a>
-                                        <form action="{{ route('DanhMuc.destroy', $danhMuc->id) }}" method="POST"
+                                        <form action="{{ route('DichVu.destroy', $dichVu->id) }}" method="POST"
                                             class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                                             @csrf
                                             @method("DELETE")
