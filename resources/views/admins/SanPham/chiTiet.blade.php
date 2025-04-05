@@ -32,17 +32,22 @@
                                         <input type="text" class="form-control" value="{{ $sanPham->TenSanPham }}" readonly>
                                     </div>
 
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-3 mb-3">
+                                        <label class="label-control">Dịch Vụ:</label>
+                                        <input type="text" class="form-control" value="{{ $dichVu->TenDichVuSanPham }}" readonly>
+                                    </div>
+
+                                    <div class="col-md-3 mb-3">
                                         <label class="label-control">Danh Mục:</label>
                                         <input type="text" class="form-control" value="{{ $danhMuc->TenDanhMucSanPham }}" readonly>
                                     </div>
 
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <label class="label-control">Thương Hiệu:</label>
                                         <input type="text" class="form-control" value="{{ $thuongHieu->TenThuongHieu }}" readonly>
                                     </div>
 
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-3 mb-3">
                                         <label class="label-control">Chất Liệu:</label>
                                         <input type="text" class="form-control" value="{{ $sanPham->ChatLieu }}" readonly>
                                     </div>
@@ -92,7 +97,7 @@
                                     <div class="col-md-12 mb-3">
                                         <label class="label-control">Biến Thể:</label>
                                         @foreach ($danhSachKichCo as $kichCo)
-                                        <div class="row border-bottom pb-3">
+                                        <div class="row">
                                             <div class="col-md-2">
                                                 <b class="btn-size">Size {{ $kichCo->TenKichCo }}</b>
                                             </div>
@@ -122,6 +127,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <hr>
                                         @endforeach
                                     </div>
                                     @endif
@@ -148,13 +154,17 @@
                                         <div class="owl-carousel owl-theme owl-loaded owl-drag" id="owl-carousel-13">
                                             <div class="owl-stage-outer">
                                                 <div class="owl-stage">
-                                                @if ($sanPham->TheLoai == "bienThe")
-                                                    @foreach ($danhSachBienThe as $bienThe1)
+                                                    @if ($sanPham->TheLoai == "bienThe")
+                                                    @foreach ($bienTheGop as $btHinhAnh)
+                                                    @foreach (DB::table('hinh_anh_san_pham')
+                                                    ->where('ID_SanPham', $btHinhAnh->ID)
+                                                    ->get() as $image)
                                                     <div class="owl-item active">
                                                         <div class="item">
-                                                            <img src="{{ Storage::url($bienThe1->HinhAnh) }}" alt="{{ $sanPham->TenSanPham }}">
+                                                            <img src="{{ Storage::url($image->DuongDan) }}" alt="{{ $sanPham->TenSanPham }}">
                                                         </div>
                                                     </div>
+                                                    @endforeach
                                                     @endforeach
                                                     @else
                                                     @foreach ($danhSachHinhAnh as $hinhAnh)

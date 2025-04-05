@@ -107,7 +107,8 @@ class SanPhamController extends Controller
 
                 if (isset($hinhAnhBienThes[$index])) {
                     foreach ($hinhAnhBienThes[$index] as $HinhAnh) {
-                        $up = $HinhAnh->store("uploads/SanPham", "public");
+                        $fileName = $kichCo . '_' . $idMauSac . '_' . $sanPham->id . '_' . uniqid() . '.png';
+                        $up = $HinhAnh->store("uploads/SanPham", $fileName, "public");
 
                         DB::table('hinh_anh_san_pham')->insert([
                             'DuongDan' => $up,
@@ -134,7 +135,7 @@ class SanPhamController extends Controller
         if (!$sanPham) {
             return redirect()->route("SanPham.index")->with("error", "Sản Phẩm Không Tồn Tại!");
         }
-        $dichVu = DB::table("dich_vu_san_pham")->where("Xoa", 0)->get();
+        $dichVu = DB::table("dich_vu_san_pham")->where("Xoa", 0)->find($sanPham->ID_DichVuSanPham);
         $danhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->find($sanPham->ID_DanhMuc);
         $thuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->find($sanPham->ID_ThuongHieu);
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
@@ -149,8 +150,12 @@ class SanPhamController extends Controller
 
         $KichCoDaCo = DB::table('mau_sac')->whereIn('id', $idMauSacDaCo)->count();
 
-
-        return view("admins.SanPham.ChiTiet", compact("dichVu", "sanPham", "danhMuc", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac", "KichCoDaCo"));
+        $bienTheGop = DB::table('bien_the_san_pham')
+            ->where("ID_SanPham", $id)
+            ->select('ID_MauSac', DB::raw('min(ID) as ID'), DB::raw('min(KichCo) as KichCo'))
+            ->groupBy('ID_MauSac')
+            ->get();
+        return view("admins.SanPham.ChiTiet", compact("dichVu", "bienTheGop", "sanPham", "danhMuc", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac", "KichCoDaCo"));
     }
 
     /**

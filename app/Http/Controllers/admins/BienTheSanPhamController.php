@@ -42,7 +42,7 @@ class BienTheSanPhamController extends Controller
         $giaBienThes = $request->input('GiaBienThe', []);
         $soLuongBienThes = $request->input('SoLuongBienThe', []);
         $hinhAnhBienThes = $request->file('HinhAnh', []);
-        
+
         foreach ($thongTinBienThes as $index => $thongTin) {
             [$kichCo, $idMauSac] = explode('|', $thongTin);
 
@@ -57,7 +57,8 @@ class BienTheSanPhamController extends Controller
 
             if (isset($hinhAnhBienThes[$index])) {
                 foreach ($hinhAnhBienThes[$index] as $HinhAnh) {
-                    $up = $HinhAnh->store("uploads/SanPham", "public");
+                    $fileName = $fileName = $kichCo . '_' . $idMauSac . '_' . $sanPham->id . '_' . uniqid() . '.png';
+                    $up = $HinhAnh->storeAs("uploads/SanPham", $fileName, "public");
 
                     DB::table('hinh_anh_san_pham')->insert([
                         'DuongDan' => $up,
@@ -75,24 +76,6 @@ class BienTheSanPhamController extends Controller
         return redirect()->route("SanPham.edit", $request->input("ID_SanPham"))
             ->with("success", "Thêm biến thể vào sản phẩm thành công!");
     }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
@@ -117,7 +100,9 @@ class BienTheSanPhamController extends Controller
         if ($request->has("HinhAnh")) {
             foreach ($request->file("HinhAnh") as $row) {
                 if ($row->isValid()) {
-                    $images = $row->store("uploads/SanPham", "public");
+                    $fileName = $thongTin->KichCo . '_' . $thongTin->ID_MauSac . '_' . $thongTin->ID_SanPham . '_' . uniqid() . '.png';
+                    $images = $row->storeAs("uploads/SanPham", $fileName, "public");
+
                     DB::table("hinh_anh_san_pham")->insert([
                         "DuongDan" => $images,
                         "ID_SanPham" => $id,

@@ -35,10 +35,10 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
-                                            <th>Danh Mục</th>
-                                            <th class="text-center">Hình Ảnh</th>
-                                            <th>Tên</th>
-                                            <th>Giá</th>
+                                            <th>Dịch Vụ / Danh Mục</th>
+                                            <th>Hình Ảnh</th>
+                                            <th>Thông Tin</th>
+                                            <th>Thể Loại</th>
                                             <th class="text-center">Trạng Thái</th>
                                             <th>Thao Tác</th>
                                         </tr>
@@ -48,21 +48,35 @@
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
                                             <td>
+                                                <div>
+                                                    <strong>Dịch Vụ: </strong> {{ DB::table("dich_vu_san_pham")->where("id", $SanPham->ID_DichVuSanPham)->where("Xoa", 0)->first()->TenDichVuSanPham }}
+                                                </div>
                                                 @foreach ($danhSachDanhMuc as $danhMuc)
                                                 @if ($danhMuc->id == $SanPham->ID_DanhMuc)
-                                                {{ $danhMuc->TenDanhMucSanPham }}
+                                                <div><strong>Danh Mục: </strong> {{ $danhMuc->TenDanhMucSanPham }}</div>
                                                 @endif
                                                 @endforeach
                                             </td>
                                             <td class="text-center"><img src="{{ Storage::url($SanPham->HinhAnh) }}" alt="{{ $SanPham->TenSanPham }}" width="100px" class="img-fluid"></td>
-                                            <td>{{ Str::limit($SanPham->TenSanPham, 20) }}</td>
+                                            <td>
+                                                <div><strong>Tên:</strong> {{ Str::limit($SanPham->TenSanPham, 30) }}</div>
+                                                <div><strong>Chất Liệu:</strong> {{ Str::limit($SanPham->ChatLieu, 30) }}</div>
+                                                <div><strong>Giá: </strong> @if ($SanPham->TheLoai == "thuong")
+                                                    {{ number_format($SanPham->GiaSanPham, 0, ',', '.') }}đ {{ ($SanPham->GiaKhuyenMai ? number_format($SanPham->GiaKhuyenMai, 0, ',', '.')."đ" : "") }}
+                                                    @else
+                                                    {{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $SanPham->id)->where("Xoa", 0)->min("Gia")) }}đ
+                                                    @endif
+                                                </div>
+                                                @if ($SanPham->TheLoai == "thuong")
+                                                <div><strong>Số Lượng:</strong> {{ number_format($SanPham->SoLuong, 0, ',', '.') }}</div>
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if ($SanPham->TheLoai == "thuong")
-                                                {{ number_format($SanPham->GiaSanPham, 0, ',', '.') }}đ
+                                                <span class="badge bg-primary">Giản Thể</span>
                                                 @else
-                                                {{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $SanPham->id)->where("Xoa", 0)->min("Gia")) }}đ
+                                                <span class="badge bg-info">Biến Thể</span>
                                                 @endif
-
                                             </td>
                                             <td class="text-center">
                                                 @if ($SanPham->TrangThai == "hien")
