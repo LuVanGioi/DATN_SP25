@@ -47,21 +47,13 @@
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"></i>
         <a class="sidebar-link sidebar-title">
-          <i class="fa-light fa-layer-group"></i>
-          <span>Danh Mục</span></a>
-        <ul class="sidebar-submenu">
-          <li><a href="{{ route("DanhMuc.index") }}">Danh Sách</a></li>
-          <li><a href="{{ route("DanhMuc.create") }}">Tạo Danh Mục</a></li>
-        </ul>
-      </li>
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"></i>
-        <a class="sidebar-link sidebar-title">
           <i class="fa-light fa-grid-2-plus"></i>
           <span>Sản Phẩm</span></a>
         <ul class="sidebar-submenu">
+          <li><a href="{{ route("DichVu.index") }}">Dịch Vụ</a></li>
+          <li><a href="{{ route("DanhMuc.index") }}">Danh Mục</a></li>
           <li><a href="{{ route("ThuongHieu.index") }}">Thương Hiệu</a></li>
-          <li><a href="{{ route("BienThe.index") }}">Biến Thể</a></li> 
+          <li><a href="{{ route("BienThe.index") }}">Biến Thể</a></li>
           <li><a href="{{ route("SanPham.index") }}">Sản Phẩm</a></li>
         </ul>
       </li>
@@ -73,70 +65,71 @@
         <ul class="sidebar-submenu">
           <li><a href="{{ route("DanhMucBaiViet.index") }}">Danh Mục</a></li>
           <li><a href="{{ route("BaiViet.index") }}">Bài Viết</a></li>
-          {{-- <li><a href="{{ route("BinhLuanBaiViet.index") }}">Bình Luận Bài Viết</a></li> --}}
-        </ul>
-      </li>
+          {{-- <li><a href="{{ route("BinhLuanBaiViet.index") }}">Bình Luận Bài Viết</a>
+      </li> --}}
+    </ul>
+    </li>
 
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"></i>
-        <a class="sidebar-link sidebar-title">
-          <i class="fa-light fa-envelope"></i>
-          <span>Mã Giảm Giá</span></a>
-            <ul class="sidebar-submenu">
-             <li><a href="{{ route('maGiamGias.index') }}">Danh Sách</a></li>
-             <li><a href="{{ route('maGiamGias.create') }}">Tạo Mã</a></li>
-          </ul>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"></i>
+      <a class="sidebar-link sidebar-title">
+        <i class="fa-light fa-envelope"></i>
+        <span>Mã Giảm Giá</span></a>
+      <ul class="sidebar-submenu">
+        <li><a href="{{ route('maGiamGias.index') }}">Danh Sách</a></li>
+        <li><a href="{{ route('maGiamGias.create') }}">Tạo Mã</a></li>
+      </ul>
+    </li>
 
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="{{ route('DonHang.index') }}">
-          <i class="fa-light fa-bags-shopping"></i>
-          <span>Đơn Hàng</span>
-        </a>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="{{ route('DonHang.index') }}">
+        <i class="fa-light fa-bags-shopping"></i>
+        <span>Đơn Hàng</span>
+      </a>
+    </li>
 
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="{{route('Banner.index')}}">
-          <i class="fa-light fa-image"></i>
-          <span>Banners</span>
-        </a>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="{{route('Banner.index')}}">
+        <i class="fa-light fa-image"></i>
+        <span>Banners</span>
+      </a>
+    </li>
 
 
 
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/BaoCao">
-          <i class="fa-light fa-bug"></i>
-          <span>Yêu Cầu Hỗ Trợ</span>
-        </a>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="/admin/BaoCao">
+        <i class="fa-light fa-bug"></i>
+        <span>Yêu Cầu Hỗ Trợ</span>
+      </a>
+    </li>
 
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="{{ route("ThongTinLienHe.index") }}">
-          <i class="fa-light fa-headset"></i>
-          <span>Thông Tin Liên Hệ</span>
-        </a>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="{{ route("ThongTinLienHe.index") }}">
+        <i class="fa-light fa-headset"></i>
+        <span>Thông Tin Liên Hệ</span>
+      </a>
+    </li>
 
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="{{ route("CaiDatWebsite.index") }}">
-          <i class="fa-light fa-cog"></i>
-          <span>Cài Đặt Website</span>
-        </a>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="{{ route("CaiDatWebsite.index") }}">
+        <i class="fa-light fa-cog"></i>
+        <span>Cài Đặt Website</span>
+      </a>
+    </li>
 
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="{{ route("LienKetWebsite.index") }}">
-          <i class="fa-light fa-link"></i>
-          <span>Liên Kết Website</span>
-        </a>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="{{ route("LienKetWebsite.index") }}">
+        <i class="fa-light fa-link"></i>
+        <span>Liên Kết Website</span>
+      </a>
+    </li>
 
     </ul>
     <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

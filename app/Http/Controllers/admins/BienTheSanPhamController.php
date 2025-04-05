@@ -35,52 +35,47 @@ class BienTheSanPhamController extends Controller
         $sanPham = DB::table("san_pham")->where("Xoa", 0)->find($request->input("ID_SanPham"));
 
         if (!$sanPham) {
-            return redirect()->route("SanPham.index")->with("error", "Sản Phẩm Không Tồn Tại!");
+            return redirect()->route("SanPham.index")->with("error", "Sản phẩm không tồn tại!");
         }
 
         $thongTinBienThes = $request->input('ThongTinBienThe', []);
         $giaBienThes = $request->input('GiaBienThe', []);
         $soLuongBienThes = $request->input('SoLuongBienThe', []);
-        $hinhAnhBienThes = $request->file("HinhAnh", []);
-
-        if(count($thongTinBienThes) <= 0) {
-            return redirect()->back()->with("error", "Chọn Đầy Đủ Thông Tin Biến Thể Đểm Thêm");
-        }
-
+        $hinhAnhBienThes = $request->file('HinhAnh', []);
+        
         foreach ($thongTinBienThes as $index => $thongTin) {
             [$kichCo, $idMauSac] = explode('|', $thongTin);
 
-            $checkBienTheSanPham = DB::table("bien_the_san_pham")->where('ID_SanPham', $request->input("ID_SanPham"))
-            ->where('ID_MauSac', $idMauSac)
-            ->where('KichCo', $kichCo)
-            ->exists();
-
-            $thongTinMauSac = DB::table("mau_sac")->where('id', $idMauSac)
-            ->first();
-
-            if($checkBienTheSanPham) {
-                return redirect()->back()->with("error", "Biến Thể ".$kichCo." - ".$thongTinMauSac->TenMauSac." Đã Tồn Tại!");
-            }
-
-            if (!empty($hinhAnhBienThes[$index])) {
-                $HinhAnh = $hinhAnhBienThes[$index]->store("uploads/SanPham", "public");
-            }
-
-            DB::table('bien_the_san_pham')->insert([
+            $idBienThe = DB::table('bien_the_san_pham')->insertGetId([
                 'KichCo' => $kichCo,
                 'ID_MauSac' => $idMauSac,
-                'ID_SanPham' => $request->input("ID_SanPham"),
-                'HinhAnh' => $HinhAnh,
-                'Gia' => ($giaBienThes[$index] ?? 0),
-                'SoLuong' => ($soLuongBienThes[$index] ?? 0),
+                'ID_SanPham' => $sanPham->id,
+                'Gia' => $giaBienThes[$index],
+                'SoLuong' => $soLuongBienThes[$index],
                 'created_at' => now(),
             ]);
+
+            if (isset($hinhAnhBienThes[$index])) {
+                foreach ($hinhAnhBienThes[$index] as $HinhAnh) {
+                    $up = $HinhAnh->store("uploads/SanPham", "public");
+
+                    DB::table('hinh_anh_san_pham')->insert([
+                        'DuongDan' => $up,
+                        'ID_SanPham' => $idBienThe,
+                        'created_at' => now(),
+                    ]);
+                }
+            }
         }
+
+
 
         DB::commit();
 
-        return redirect()->route("SanPham.edit", $request->input("ID_SanPham"))->with("success", "Thêm Biến Thể Vào Sản Phẩm Thành Công!");
+        return redirect()->route("SanPham.edit", $request->input("ID_SanPham"))
+            ->with("success", "Thêm biến thể vào sản phẩm thành công!");
     }
+
 
     /**
      * Display the specified resource.
@@ -111,7 +106,6 @@ class BienTheSanPhamController extends Controller
             return redirect()->route("SanPham.edit", $thongTin->ID_SanPham)->with("error", "Biến Thể Sản Phẩm Không Tồn Tại Hoặc Đã Được Xóa");
         }
 
-
         DB::table("bien_the_san_pham")->where("id", $id)->update([
             "Gia" => $request->input("Gia"),
             "SoLuong" => $request->input("SoLuong"),
@@ -119,6 +113,19 @@ class BienTheSanPhamController extends Controller
             "deleted_at" => ($request->input("Xoa") == "1" ? date("Y/m/d H:i:s") : $thongTin->deleted_at),
             "updated_at" => date("Y-m-d H:i:s")
         ]);
+
+        if ($request->has("HinhAnh")) {
+            foreach ($request->file("HinhAnh") as $row) {
+                if ($row->isValid()) {
+                    $images = $row->store("uploads/SanPham", "public");
+                    DB::table("hinh_anh_san_pham")->insert([
+                        "DuongDan" => $images,
+                        "ID_SanPham" => $id,
+                        "created_at" => date("Y/m/d H:i:s")
+                    ]);
+                }
+            }
+        }
 
         DB::commit();
 
