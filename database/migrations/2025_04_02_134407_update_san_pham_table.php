@@ -25,6 +25,7 @@ return new class extends Migration
         Schema::table('san_pham', function (Blueprint $table) {
             $table->dropColumn('SoLuong')->change();
             $table->string('GiaSanPham')->nullable(value: false)->change();
+            $table->dropColumn('LyDoHuy');
         });
     }
 };
