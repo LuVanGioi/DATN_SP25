@@ -22,7 +22,6 @@ class BannerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'TenBanner' => 'required|string|max:255',
             'HinhAnh.*' => 'image',
             'TrangThai' => 'required',
         ];
@@ -30,8 +29,6 @@ class BannerRequest extends FormRequest
 
     public function messages() {
         return [
-            'TenBanner.required' => 'Tên banner không được để trống!',
-            'TenBanner.max' => 'Tên banner quá dài!',
             'HinhAnh.*.image' => 'Hình ảnh không hợp lệ!',
             'TrangThai.required' => 'Trạng thái không được để trống!',
         ];

@@ -12,11 +12,6 @@ $("form[submit-ajax=true]").on("submit", function (e) {
     $("#actionField").val(actionValue);
     let oldTextButton = button.html();
 
-    if (!actionValue) {
-        AlertDATN("error", "Không xác định được hành động!");
-        return false;
-    }
-
     button.html('Đang Xử Lý...').prop('disabled', true);
 
     $.ajax({
@@ -35,7 +30,9 @@ $("form[submit-ajax=true]").on("submit", function (e) {
                     }, time_load);
                 }
             } else {
-                AlertDATN("error", response.message);
+                if (response.message) {
+                    AlertDATN("error", response.message);
+                }
             }
         },
         error: function (xhr) {
@@ -49,7 +46,7 @@ $("form[submit-ajax=true]").on("submit", function (e) {
                     window.location.href = response.redirect;
                 }, time_load);
             }
-            
+
             AlertDATN("error", errorMsg);
         },
         complete: function () {
