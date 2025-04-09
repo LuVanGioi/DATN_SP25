@@ -48,6 +48,7 @@ use App\Http\Controllers\clients\DanhMucSanPhamController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
+use App\Http\Controllers\clients\DanhMucBaiVietController as ClientsDanhMucBaiVietController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
@@ -100,7 +101,18 @@ Route::get('mat-khau-moi/{token}', [ForgotPasswordController::class, 'showFormRe
 Route::post('mat-khau-moi', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
 
 Route::resource('admin/binhluan', BinhLuanBaiVietController::class)->except(['create', 'store']);
-Route::get('baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
+
+Route::get('/baiviet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
+
+Route::get('chinh-sach-bao-hanh', function () {
+    return view('clients.BaoHanh.BaoHanh');
+});
+Route::get('danh-sach-bai-viet', function () {
+    return view('clients.BaiViet.BaiViet');
+});
+Route::get('danh-sach-bai-viet', function () {
+    return view('clients.BaiViet.Baiviet');
+});
 
 Route::get('/thong-tin-tai-khoan', [ClientsAuthController::class, 'getProfile'])
     ->middleware('auth')
@@ -136,11 +148,9 @@ Route::get('danh-muc/{code}',[DanhMucSanPhamController::class, 'show'])->name('d
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
 });
-
 Route::get('/yeu-cau-tra-hang', function () {
     return view('clients.ThongTinTaiKhoan.YeuCauTraHang');
 });
-
 Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
 })->name("contact");
@@ -149,9 +159,15 @@ Route::get('faq', function () {
     return view('clients.Faq.Faq');
 })->name("faq");
 
-Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");
+Route::get('/san-pham-yeu-thich', function () {
+    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
+});
+
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
-Route::get('/bai-viet/{id}', [BangTinController::class, 'show'])->name('news.show');
+
+
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
 
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {

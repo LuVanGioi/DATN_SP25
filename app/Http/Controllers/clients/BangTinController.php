@@ -8,32 +8,24 @@ use App\Http\Controllers\Controller;
 
 class BangTinController extends Controller
 {
-    // public function index()
-    // {
-    //     $newsList = DB::table("bai_viet")->where("Xoa", 0)->orderByDesc("id")->get();
-    //     return view("clients.BaiViet.Baiviet", compact("newsList"));
-    //  }
 
     public function index()
-    {
-        $newsList = DB::table("bai_viet")
-            ->where("Xoa", 0)
-            ->orderByDesc("id")
-            ->paginate(2);
+{
+    $newsList = DB::table("bai_viet")
+        ->where("Xoa", 0)
+        ->orderByDesc("id")
+        ->paginate(2);
 
-        return view("clients.BaiViet.Baiviet", compact("newsList"));
-    }
-    
+    return view("clients.BaiViet.Baiviet", compact("newsList"));
+}
+
+
+
+
     public function show($id)
     {
         $chiTiet = DB::table('bai_viet')->find($id);
 
-        $tatCaBaiViet = DB::table("bai_viet")
-            ->where("Xoa", 0)
-            ->orderByDesc("id")
-            ->limit(5)
-            ->paginate(2);
-
-        return view("clients.BaiViet.Chitiet", compact("chiTiet", "tatCaBaiViet"));
-    }
+        return view("clients.BaiViet.Chitiet", compact("chiTiet"));
+     }
 }

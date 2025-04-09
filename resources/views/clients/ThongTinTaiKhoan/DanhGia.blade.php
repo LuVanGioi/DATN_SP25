@@ -1,7 +1,7 @@
 @extends("clients.themes")
 
 @section("title")
-    <title>Đánh giá - WD-14</title>
+    <title>Đánh giá - {{ $caiDatWebsite->TenCuaHang }}</title>
 @endsection
 
 @section('main')
