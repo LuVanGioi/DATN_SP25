@@ -41,22 +41,23 @@
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
-
                             <div class="mb-3">
-                                <label for="min_value">Giá Trị Tối Thiểu (VNĐ)</label>
-                                <input class="form-control @error('min_value') is-invalid border-danger @enderror" type="text" id="min_value" name="min_value" placeholder="Nhập giá trị tối thiểu" value="{{ old('min_value') }}" required>
-                                @error('min_value')
-                                <p class="text-danger">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="max_value">Giá Trị Tối Đa (VNĐ)</label>
-                                <input class="form-control @error('max_value') is-invalid border-danger @enderror" type="text" id="max_value" name="max_value" placeholder="Nhập giá trị tối đa" value="{{ old('max_value') }}" required>
+                                <label for="max_value"> Giá Trị Giảm Giá Tối Đa (VNĐ)</label>
+                                <input class="form-control @error('max_value') is-invalid border-danger @enderror" type="text" id="max_value" name="max_value" placeholder="Nhập giá trị giảm giá tối đa" value="{{ old('max_value') }}" required>
                                 @error('max_value')
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="min_value">Giá Trị Đơn Hàng Tối Thiểu (VNĐ)</label>
+                                <input class="form-control @error('min_value') is-invalid border-danger @enderror" type="text" id="min_value" name="min_value" placeholder="Nhập giá trị của đơn hàng tối thiểu" value="{{ old('min_value') }}" required>
+                                @error('min_value')
+                                <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
+                           
+
+                            
 
                             <div class="mb-3">
                                 <label for="condition">Tiêu Đề</label>

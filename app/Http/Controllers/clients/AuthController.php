@@ -20,16 +20,30 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $user = $request->validate([
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string']
-        ]);
+        $email = $request->input("email");
+        $password = $request->input("password");
 
-        if (Auth::attempt($user)) {
-            // if(Auth::user()->role === "Admin"){
-            //     return redirect()->intended('/admin/thongKe');
-            // }
+        if (!$email) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Vui Lòng Nhập Email",
+            ]);
+        }
 
+        if (!$password) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Vui Lòng Nhập Mật Khẩu",
+            ]);
+        }
+
+        $user = [
+            "email" => $email,
+            "password" => $password
+        ];
+        $login = Auth::attempt($user);
+
+        if ($login) {
             $userId = request()->cookie('ID_Guests', Str::uuid());
             if ($userId) {
                 DB::table("users")->where("id", Auth::user()->id)->update([
@@ -37,13 +51,20 @@ class AuthController extends Controller
                 ]);
             }
 
-            return back();
+            return response()->json([
+                'status' => "success",
+                'message' => "Đăng Nhập Thành Công!",
+                "redirect" => url()->full()
+            ]);
         }
 
-        return redirect()->back()->withErrors([
-            'email' => 'Thông tin người dùng không đúng',
-            'password' => 'Mật khẩu không hợp lệ.'
+        return response()->json([
+            'status' => "error",
+            'message' => "Đăng Nhập Thất Bại Vui Lòng Kiểm Tra Lại!"
         ]);
+        // if(Auth::user()->role === "Admin"){
+        //     return redirect()->intended('/admin/thongKe');
+        // }
     }
     //Đăng ký
 
@@ -54,29 +75,73 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
-        ], [
-            'name.required' => 'Vui lòng nhập họ và tên.',
-            'name.string' => 'Họ và tên không hợp lệ.',
-            'name.max' => 'Họ và tên không được vượt quá 255 ký tự.',
+        $name = $request->input("name");
+        $email = $request->input("email");
+        $password = $request->input("password");
 
-            'email.required' => 'Vui lòng nhập email.',
-            'email.string' => 'Email không hợp lệ.',
-            'email.email' => 'Định dạng email không đúng.',
-            'email.max' => 'Email không được quá 255 ký tự.',
-            'email.unique' => 'Email này đã được sử dụng.',
+        if (!$name) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Vui Lòng Nhập Email",
+            ]);
+        }
 
-            'password.required' => 'Vui lòng nhập mật khẩu.',
-            'password.string' => 'Mật khẩu không hợp lệ.',
-            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+        if (!$email) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Vui Lòng Nhập Email",
+            ]);
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Email Không Hợp Lệ",
+            ]);
+        }
+
+        if (!$password) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Vui Lòng Nhập Mật Khẩu",
+            ]);
+        }
+
+        if (strlen($password) < 8) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Mật Khẩu Phải Từ 8 Kí Tự",
+            ]);
+        }
+
+        $check = DB::table("users")->where("email", $email)->first();
+        if($check) {
+            return response()->json([
+                'status' => "error",
+                'message' => "Tài Khoản Đã Tồn Tại Trong Hệ Thống",
+            ]);
+        }
+
+        $data = [
+            "name" => $name,
+            "email" => $email,
+            "password" => $password
+        ];
+
+        $signup = User::query()->create($data);
+        
+        if($signup) {
+            return response()->json([
+                'status' => "success",
+                'message' => "Đăng Ký Tài Khoản Thành Công!",
+                "redirect" => route("login")
+            ]);
+        }
+
+        return response()->json([
+            'status' => "error",
+            'message' => "Đăng Ký Tài Khoản Thất Bại!"
         ]);
-        $user = User::query()->create($data);
-        session()->flash('success', 'Đăng ký tài khoản thành công !');
-        return redirect('/dang-nhap');
-
     }
 
     //Đăng xuất
@@ -84,7 +149,9 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        return back();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 
     // Hiển thị thông tin người dùng
@@ -109,23 +176,9 @@ class AuthController extends Controller
             'email.unique' => 'Email này đã được sử dụng.',
         ]);
 
-        // if ($request->filled('phone')) {
-        //     $user->phone = $request->phone;
-        // }
-        // if ($request->filled('address')) {
-        //     $user->address = $request->address;
-        // }
-        // if ($request->filled('birthday')) {
-        //     $user->birthday = $request->birthday;
-        // }
-        // if ($request->filled('sex')) {
-        //     $user->sex = $request->sex;
-        // }
-
-        // $user->name = $validatedData['name'];
-        // $user->email = $validatedData['email'];
-
-        $user->update($validatedData);
+        // Cập nhật thông tin người dùng
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
         return back()->with('success', 'Cập nhật thông tin thành công !');
     }
 }

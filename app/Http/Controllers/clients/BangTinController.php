@@ -10,26 +10,14 @@ class BangTinController extends Controller
 {
 
     public function index()
-    {
-        $newsList = DB::table("bai_viet")
-            ->where("Xoa", 0)
-            ->orderByDesc("id")
-            ->paginate(8);
-
-        $danhMuc = DB::table("danh_muc_bai_viet")
+{
+    $newsList = DB::table("bai_viet")
         ->where("Xoa", 0)
         ->orderByDesc("id")
-        ->get();
+        ->paginate(2);
 
-        $baiVietGanDay = DB::table("bai_viet")
-        ->where("Xoa", 0)
-        ->orderByDesc("id")
-        ->select(DB::raw('DATE(created_at) as ngay'), "bai_viet.*")
-        ->limit(5)
-        ->get();
-
-        return view("clients.BaiViet.Baiviet", compact("newsList", "danhMuc", "baiVietGanDay"));
-    }
+    return view("clients.BaiViet.Baiviet", compact("newsList"));
+}
 
 
 
@@ -38,6 +26,6 @@ class BangTinController extends Controller
     {
         $chiTiet = DB::table('bai_viet')->find($id);
 
-        return view("clients.BaiViet.BaiVietChitiet", compact("chiTiet"));
-    }
+        return view("clients.BaiViet.Chitiet", compact("chiTiet"));
+     }
 }

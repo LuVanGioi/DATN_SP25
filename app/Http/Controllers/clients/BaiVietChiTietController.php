@@ -10,11 +10,7 @@ class BaiVietChiTietController extends Controller
 {
     public function show($id)
 {
-    $danhMuc = DB::table("danh_muc_bai_viet")
-    ->where("Xoa", 0)
-    ->orderByDesc("id")
-    ->get();
-
+  
     $news = DB::table('bai_viet')->where('id', $id)->first();
 
     
@@ -26,16 +22,15 @@ class BaiVietChiTietController extends Controller
         ->orderBy('ngay_binh_luan', 'desc')
         ->get();
 
-    
     $phanHois = DB::table('phan_hoi_binh_luan')
         ->leftJoin('users', 'phan_hoi_binh_luan.id_users', '=', 'users.id')
-        ->whereIn('id_binh_luan', $binhLuans->pluck('id')) 
+        ->whereIn('id_binh_luan', $binhLuans->pluck('id'))
         ->where('duyet', 1)
         ->select('phan_hoi_binh_luan.*', 'users.name as user_name')
         ->orderBy('ngay_phan_hoi', 'asc')
         ->get();
 
-    return view('clients.BaiViet.BaiVietChiTiet', compact('news', 'danhMuc', 'binhLuans', 'phanHois'));
+    return view('clients.BaiViet.BaiVietChiTiet', compact('news', 'binhLuans', 'phanHois'));
 }
     
 public function like($id)

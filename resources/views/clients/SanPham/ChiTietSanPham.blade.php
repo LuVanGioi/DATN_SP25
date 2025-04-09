@@ -35,28 +35,67 @@
                             <img class="img-responsive" src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="">
                         </a>
                     </div>
-                    @foreach ($bienTheSanPham2 as $khoAnh)
+                    @if ($thongTinSanPham->TheLoai == 'bienThe')
+                    @foreach ($bienTheGop as $btHinhAnh)
+                    @foreach (DB::table('hinh_anh_san_pham')->where('ID_SanPham', $btHinhAnh->ID)->get() as $index => $image)
                     <div class="item">
                         <a class="btn btn-theme btn-theme-transparent btn-zoom"
-                            href="{{ Storage::url($khoAnh->HinhAnh) }}" data-gal="prettyPhoto"><i
-                                class="fa fa-plus"></i></a>
-                        <a href="{{ Storage::url($khoAnh->HinhAnh) }}" data-gal="prettyPhoto"><img
-                                class="img-responsive" src="{{ Storage::url($khoAnh->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                            href="{{ Storage::url($image->DuongDan) }}" data-gal="prettyPhoto">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                        <a href="{{ Storage::url($image->DuongDan) }}" data-gal="prettyPhoto"><img
+                                class="img-responsive" src="{{ Storage::url($image->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}">
+                        </a>
                     </div>
                     @endforeach
+                    @endforeach
+                    @else
+                    @foreach ($khoAnhSanPham as $khoAnh)
+                    <div class="item">
+                        <a class="btn btn-theme btn-theme-transparent btn-zoom"
+                            href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><i
+                                class="fa fa-plus"></i></a>
+                        <a href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><img
+                                class="img-responsive" src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
+                    @endforeach
+                    @endif
                 </div>
 
-                <div class="row product-thumbnails">
-                    <div class="col-xs-2 col-sm-2 col-md-3">
-                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
-                            <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                <div class="custom-carousel">
+                    <button class="carousel-btn prev-btn">&#10094;</button>
+                    <div class="carousel-container">
+                        <div class="carousel-track">
+                            @if ($thongTinSanPham->TheLoai == 'bienThe')
+                            @php
+                            $globalIndex = 0;
+                            @endphp
+                            @foreach ($bienTheGop as $btHinhAnh)
+                            @foreach (DB::table('hinh_anh_san_pham')
+                            ->where('ID_SanPham', $btHinhAnh->ID)
+                            ->get() as $image)
+                            <div class="carousel-item">
+                                <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $globalIndex + 1 ?>, 300]);">
+                                    <img src="{{ Storage::url($image->DuongDan) }}" alt="{{ $globalIndex }}">
+                                </a>
+                            </div>
+                            @php
+                            $globalIndex++;
+                            @endphp
+                            @endforeach
+                            @endforeach
+                            @else
+                            @foreach ($khoAnhSanPham as $index => $khoAnh)
+                            <div class="carousel-item">
+                                <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
+                                    <img src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}">
+                                </a>
+                            </div>
+                            @endforeach
+                            @endif
+                        </div>
                     </div>
-                    @foreach ($bienTheSanPham2 as $index => $khoAnh1)
-                    <div class="col-xs-2 col-sm-2 col-md-3">
-                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
-                            <img src="{{ Storage::url($khoAnh1->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
-                    </div>
-                    @endforeach
+                    <button class="carousel-btn next-btn">&#10095;</button>
                 </div>
             </div>
             <div class="col-md-6">
@@ -74,59 +113,56 @@
                 <div class="product-availability">Danh Mục: <strong>{{ $danhMuc->TenDanhMucSanPham }}</strong></div>
                 <div class="product-availability">Thương Hiệu: <strong>{{ $thuongHieu->TenThuongHieu }}</strong></div>
                 <div class="product-availability">Chất Liệu: <strong>{{ $thongTinSanPham->ChatLieu }}</strong></div>
+                @if ($soLuongBienTheSanPham >= 1)
+                <div class="product-availability">Sản Phẩm Có Sẵn: <strong id="soLuongSanPham">{{ number_format($tongSoLuongBienThe->soLuongSanPhamBienTheAll) }}</strong></div>
+                @else
+                <div class="product-availability">Sản Phẩm Có Sẵn: <strong>{{ number_format($thongTinSanPham->SoLuong) }}</strong></div>
+                @endif
                 <hr class="page-divider small">
 
-                <div class="product-price">{{ number_format($thongTinSanPham->GiaSanPham) }} đ - <del style="color:rgb(115, 115, 115)">{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</del></div>
+                <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ
+                    @if ($thongTinSanPham->GiaKhuyenMai)
+                    - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
+                    @endif
+                </div>
                 <hr class="page-divider">
 
-                <form action="{{ route("gio-hang.store") }}" method="POST" class="row variable">
-                    @csrf
+                <form class="row variable" submit-ajax="true" action="{{ route("gio-hang.store") }}" method="POST" time_load="0" swal_success="" type="POST">
                     <input type="hidden" name="id_product" value="{{ $thongTinSanPham->id }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" id="actionField" value="">
+
+                    @if ($soLuongBienTheSanPham >= 1)
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
-                            <select id="exampleSelect1" name="size" class="selectpicker input-price"
-                                data-live-search="true" data-width="100%" data-toggle="tooltip"
-                                title="Select">
+                            <select name="size" id="size-select" class="form-select" onchange="chonKickCo()">
                                 <option value="">Chọn Kích Cỡ</option>
                                 @foreach ($bienTheSanPham as $kichCo)
                                 <option value="{{ $kichCo->KichCo }}">{{ $kichCo->KichCo }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        @error("size")
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
                     </div>
 
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect2">Màu Sắc</label>
-                            <select id="exampleSelect2" name="color" class="selectpicker input-price"
-                                data-live-search="true" data-width="100%" data-toggle="tooltip"
-                                title="Màu Sắc" onchange="changeCarouselImage(this)">
+                            <select name="color" id="color-select" class="form-select" onchange="changeCarouselImage(this)">
                                 <option value="" data-index="0">Chọn Màu Sắc</option>
-                                @foreach ($bienTheSanPham2 as $index => $mauSac)
-                                <option value="{{ $mauSac->ID_MauSac }}" data-index="{{ $index + 1 }}">{{ $mauSac->TenMauSac }}</option>
-                                @endforeach
                             </select>
                         </div>
-                        @error("color")
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
                     </div>
+                    @endif
 
                     <div class="col-md-12">
                         <hr class="page-divider small">
-
-
                         <div class="buttons mb-3">
                             <div class="quantity">
                                 <button type="button" class="btn" onclick="minusAmount()"><i class="fa fa-minus"></i></button>
                                 <input class="form-control qty" style="width: 50px; text-align: center" type="number" step="1" min="1" name="quantity" id="quantity"
                                     value="{{ (old("quantity") ?? "1") }}" title="Số Lượng" onkeyup="checkQuantity()">
                                 <button type="button" class="btn" onclick="plusAmount()"><i class="fa fa-plus"></i></button>
-                                <p class="text-danger d-block" id="error-quantity"></p>
                                 @error("quantity")
                                 <p class="text-danger d-block">{{ $message }}</p>
                                 @enderror
@@ -135,10 +171,10 @@
                     </div>
                     <div class="col-md-12">
                         <div class="buttons mt-3" style="margin-top: 10px;">
-                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="add_to_cart">
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="add_to_cart">
                                 <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
                             </button>
-                            <button class="btn btn-theme btn-cart" type="submit" name="action" value="buy_now">
+                            <button class="btn btn-theme btn-cart" type="submit" data-action="buy_now">
                                 <i class="fa fa-shopping-cart"></i> Mua Ngay
                             </button>
                         </div>
@@ -164,7 +200,7 @@
         <div class="tabs-wrapper content-tabs">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#item-description" data-toggle="tab">Thông Tin Sản Phẩm</a></li>
-                <li><a href="#reviews" data-toggle="tab">Đánh Giá (2)</a></li>
+                <li><a href="#reviews" data-toggle="tab">Đánh Giá (0)</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="item-description">
@@ -293,10 +329,31 @@
 
 @section("js")
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setInterval(function() {
+            fetch(location.href)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+
+                    const newCartCount = doc.querySelector("#cart-count");
+                    if (newCartCount) {
+                        document.getElementById("cart-count").innerHTML = newCartCount.innerHTML;
+                    }
+
+                    const newListHeader = doc.querySelector("#list-product-header");
+                    if (newListHeader) {
+                        document.getElementById("list-product-header").innerHTML = newListHeader.innerHTML;
+                    }
+                })
+                .catch(error => console.log("Lỗi: ", error));
+        }, 2000);
+    });
+
     function minusAmount() {
         var quantityInput = document.getElementById("quantity");
         var quantity = parseInt(quantityInput.value);
-        document.getElementById("error-quantity").innerHTML = "";
         if (quantity > 1) {
             quantityInput.value = quantity - 1;
         }
@@ -304,31 +361,23 @@
 
     function plusAmount() {
         var quantityInput = document.getElementById("quantity");
-        if (quantityInput.value >= 24) {
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Đa Là 24";
-            quantityInput.value = 24;
-        } else if (quantityInput.value <= 0) {
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Thiểu Là 1";
+        if (quantityInput.value <= 0) {
+            AlertDATN("error", "Số Lượng Tối Thiểu Là 1");
             quantityInput.value = "";
         } else if (!quantityInput.value) {
             quantityInput.value = 1;
         } else {
             var quantity = parseInt(quantityInput.value);
             quantityInput.value = quantity + 1;
-            document.getElementById("error-quantity").innerHTML = "";
         }
     }
 
     function checkQuantity() {
         var quantityInput = document.getElementById("quantity");
-        document.getElementById("error-quantity").innerHTML = "";
-        if (quantityInput.value >= 25) {
-            quantityInput.value = 24;
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Đa Là 24";
-        } else if (!quantityInput.value) {
+        if (!quantityInput.value) {
             quantityInput.value = 1;
         } else if (quantityInput.value <= 0) {
-            document.getElementById("error-quantity").innerHTML = "Số Lượng Tối Thiểu Là 1";
+            AlertDATN("error", "Số Lượng Tối Thiểu Là 1");
             quantityInput.value = "";
         }
     }
@@ -336,10 +385,158 @@
     function changeCarouselImage(select) {
         var selectedOption = select.options[select.selectedIndex];
         var index = selectedOption.getAttribute("data-index");
+        var amount = selectedOption.getAttribute("data-amount");
+        var price = selectedOption.getAttribute("data-price");
 
-        if (index) {
-            jQuery('.img-carousel').trigger('to.owl.carousel', [parseInt(index), 300]);
+        if (amount) {
+            document.getElementById("soLuongSanPham").innerHTML = amount;
         }
+        document.getElementById("GiaTienSP").innerHTML = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
+
+    var danhSachMauSac = <?= json_encode($bienTheSanPham2); ?>;
+
+    function chonKickCo() {
+        var size = document.getElementById("size-select").value;
+        var colorSelect = document.getElementById("color-select");
+
+        colorSelect.innerHTML = "";
+
+        var defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Chọn Màu Sắc";
+        defaultOption.setAttribute("data-index", "0");
+        colorSelect.appendChild(defaultOption);
+
+        danhSachMauSac.forEach(function(mauSac, index) {
+            if (mauSac.KichCo === size) {
+                var option = document.createElement("option");
+                option.value = mauSac.ID_MauSac;
+                option.textContent = mauSac.TenMauSac;
+                option.setAttribute("data-index", index + 1);
+                option.setAttribute("data-amount", mauSac.SoLuong);
+                option.setAttribute("data-price", mauSac.Gia);
+                if (mauSac.SoLuong <= 0) {
+                    option.disabled = true;
+                }
+                colorSelect.appendChild(option);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const track = document.querySelector('.carousel-track');
+        const items = document.querySelectorAll('.carousel-item');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        let currentIndex = 0;
+        const itemWidth = items[0].getBoundingClientRect().width;
+        const totalItems = items.length;
+        const visibleItems = Math.floor(track.parentElement.clientWidth / itemWidth);
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < totalItems - visibleItems) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        track.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startPos = e.clientX;
+            currentTranslate = prevTranslate;
+            track.style.transition = 'none';
+        });
+
+        track.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const currentPosition = e.clientX;
+                const diff = currentPosition - startPos;
+                track.style.transform = `translateX(${currentTranslate + diff}px)`;
+            }
+        });
+
+        track.addEventListener('mouseup', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                const movedBy = e.clientX - startPos;
+                track.style.transition = 'transform 0.5s ease-in-out';
+
+                if (movedBy < -50 && currentIndex < totalItems - visibleItems) {
+                    currentIndex++;
+                } else if (movedBy > 50 && currentIndex > 0) {
+                    currentIndex--;
+                }
+
+                prevTranslate = -currentIndex * itemWidth;
+                updateCarousel();
+            }
+        });
+
+        track.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                track.style.transition = 'transform 0.5s ease-in-out';
+                prevTranslate = -currentIndex * itemWidth;
+                updateCarousel();
+            }
+        });
+
+        track.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startPos = e.touches[0].clientX;
+            currentTranslate = prevTranslate;
+            track.style.transition = 'none';
+        });
+
+        track.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const currentPosition = e.touches[0].clientX;
+                const diff = currentPosition - startPos;
+                track.style.transform = `translateX(${currentTranslate + diff}px)`;
+            }
+        });
+
+        track.addEventListener('touchend', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                const movedBy = e.changedTouches[0].clientX - startPos;
+                track.style.transition = 'transform 0.5s ease-in-out';
+
+                if (movedBy < -50 && currentIndex < totalItems - visibleItems) {
+                    currentIndex++;
+                } else if (movedBy > 50 && currentIndex > 0) {
+                    currentIndex--;
+                }
+
+                prevTranslate = -currentIndex * itemWidth;
+                updateCarousel();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            const newItemWidth = items[0].getBoundingClientRect().width;
+            if (newItemWidth !== itemWidth) {
+                updateCarousel();
+            }
+        });
+    });
 </script>
 @endsection

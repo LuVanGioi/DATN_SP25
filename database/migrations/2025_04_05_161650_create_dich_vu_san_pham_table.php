@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bien_the_san_pham', function (Blueprint $table) {
-            $table->string('HinhAnh')->nullable()->after('ID_SanPham');
+        Schema::create('dich_vu_san_pham', function (Blueprint $table) {
+            $table->id();
+            $table->string('TenDichVuSanPham');
+            $table->string('Xoa')->default(0);
+            $table->string('deleted_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bien_the_san_pham', function (Blueprint $table) {
-            $table->dropColumn('HinhAnh');
-        });
+        Schema::dropIfExists('dich_vu_san_pham');
     }
 };

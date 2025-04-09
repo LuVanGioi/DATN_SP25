@@ -8,25 +8,28 @@
 @section('main')
 @php
 if (Auth::check()) {
-die('<script>location.href="/"</script>');
+die('<script>
+    location.href = "/"
+</script>');
 }
 @endphp
-<section class="page-section color">
+<section class="page-section mt-3">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
                 <h3 class="block-title"><span>Đăng Nhập</span></h3>
-                <form action="{{route('login')}}" method="POST" class="form-login">
-                    @csrf
+                <form class="form-login" submit-ajax="true" action="{{route('login')}}" method="POST" time_load="0" swal_success="none" type="POST">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" id="actionField" value="">
                     <div class="row">
                         <div class="col-md-12 hello-text-wrap">
-                            <span class="hello-text text-thin" style="font-size: 20px">Xin chào, chào mừng bạn đến với tài khoản của bạn</span>
+                            <span class="hello-text text-thin" style="font-size: 16px">Xin chào, chào mừng bạn đến với tài khoản của bạn</span>
                         </div>
 
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input class="form-control" type="text" name="email"
-                                    placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}" autocomplete="email">
+                                <input class="form-control" type="email" name="email"
+                                    placeholder="Nhập email" value="{{old('email')}}" autocomplete="email">
 
                                 @error('email')
                                 <p class="text-danger">{{ $message}}</p>
@@ -37,16 +40,12 @@ die('<script>location.href="/"</script>');
                             <div class="form-group"><input class="form-control" type="password" name="password"
                                     placeholder="Mật khẩu của bạn"></div>
                         </div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="checkbox">
-                                <label><input type="checkbox" style="font-size: 20px"> Nhớ mật khẩu</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-6 text-right-lg">
+
+                        <div class="col-md-12 col-lg-12 text-right-lg">
                             <a class="forgot-password" href="{{ route("forgot-password") }}">Quên mật khẩu?</a>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-theme btn-block btn-theme-dark">Đăng Nhập</button>
+                            <button type="submit" class="btn btn-theme btn-block btn-theme-dark" data-action="login">Đăng Nhập</button>
                         </div>
                         <div class="col-md-6">
                             <a class="btn btn-block btn-theme btn-theme-dark btn-create" href="{{route('register')}}">Tạo Tài

@@ -25,8 +25,7 @@ class SanPhamRequest extends FormRequest
             'DanhMuc' => 'required',
             'ThuongHieu' => 'required',
             'ChatLieu' => 'required|max:225',
-            'TenSanPham' => 'required|max:225|unique:san_pham,TenSanPham',
-            'GiaSanPham' => 'required|integer|min:0',
+            'TenSanPham' => 'required|max:225',
             'hinhAnh' => 'image',
             'images.*' => 'image'
         ];
@@ -44,12 +43,6 @@ class SanPhamRequest extends FormRequest
 
             'TenSanPham.required' => 'Vui Lòng Nhập Tên Sản Phẩm',
             'TenSanPham.max' => 'Tên Sản Phẩm Quá Dài',
-            'TenSanPham.unique' => 'Sản Phẩm Đã Tồn Tại Trên Hệ Thống',
-
-            'GiaSanPham.required' => 'Vui Lòng Nhập Giá Sản Phẩm',
-            'GiaSanPham.integer' => 'Giá Sản Phẩm Phải Là Số',
-            'GiaSanPham.min' => 'Giá Sản Phẩm Tối Thiểu Là 1đ',
-
 
             'hinhAnh.image' => 'Hình Ảnh Không Hợp Lệ',
         ];

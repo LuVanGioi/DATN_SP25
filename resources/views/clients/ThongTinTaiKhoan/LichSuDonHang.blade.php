@@ -1,83 +1,152 @@
+<?php
+
+use Illuminate\Support\Facades\Storage;
+?>
 @extends("clients.themes")
 
 @section("title")
+<<<<<<< HEAD
     <title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
+=======
+<title>Lịch sử đơn hàng - WD-14</title>
+>>>>>>> 1287cc686ac0a2e7b2641b4c9ab834e46960c509
 @endsection
 
 @section('main')
-    <section class="page-section">
-        <div class="wrap container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="information-title">Lịch Sử Đơn Hàng Của Bạn</div>
-                    <div class="details-wrap">
-                        <div class="details-box orders">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Hình Ảnh</th>
-                                        <th>Số Lượng</th>
-                                        <th>Tên Sản Phẩm</th>
-                                        <th>Giá</th>
-                                        <th>Mã Đơn Hàng</th>
-                                        <th>Ngày Giao</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="image"><a href="#" class="media-link"><i class="fa fa-plus"></i><img
-                                                    alt="" src="clients/images/top-sellers-1.jpg"></a></td>
-                                        <td class="quantity">x3</td>
-                                        <td class="description">
-                                            <h4><a href="#">Tên Sản Phẩm Tiêu Chuẩn Ở Đây</a></h4>
-                                            bởi Tên Danh Mục
-                                        </td>
-                                        <td class="total">$150 </td>
-                                        <td class="order-id"> OD31207 </td>
-                                        <td class="diliver-date"> 12 Tháng 12'13 </td>
-                                        <td class="order-status"><a href="return.html"
-                                                class="btn btn-theme btn-theme-dark">Trả Hàng</a> <a href="#"
-                                                class="btn btn-theme btn-theme-dark">Đặt Lại</a> </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="image"><a href="#" class="media-link"><i class="fa fa-plus"></i><img
-                                                    alt="" src="clients/images/top-sellers-4.jpg"></a></td>
-                                        <td class="quantity">x3</td>
-                                        <td class="description">
-                                            <h4><a href="#">Tên Sản Phẩm Tiêu Chuẩn Ở Đây</a></h4>
-                                            bởi Tên Danh Mục
-                                        </td>
-                                        <td class="total">$250 </td>
-                                        <td class="order-id"> OD31207 </td>
-                                        <td class="diliver-date"> 12 Tháng 12'13 </td>
-                                        <td class="order-status"><a href="return.html"
-                                                class="btn btn-theme btn-theme-dark">Trả Hàng</a> <a href="#"
-                                                class="btn btn-theme btn-theme-dark">Đặt Lại</a> </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="image"><a href="#" class="media-link"><i class="fa fa-plus"></i><img
-                                                    alt="" src="clients/images/top-sellers-6.jpg"></a></td>
-                                        <td class="quantity">x3</td>
-                                        <td class="description">
-                                            <h4><a href="#">Tên Sản Phẩm Tiêu Chuẩn Ở Đây</a></h4>
-                                            bởi Tên Danh Mục
-                                        </td>
-                                        <td class="total">$350 </td>
-                                        <td class="order-id"> OD31207 </td>
-                                        <td class="diliver-date"> 12 Tháng 12'13 </td>
-                                        <td class="order-status"> <span class="return-request"> Bạn đã yêu cầu </br> trả lại đơn hàng này </span> <a href="#" class="btn btn-theme btn-theme-dark">Đặt Lại</a> </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+<section class="page-section">
+    <div class="wrap container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="information-title">Lịch Sử Đơn Hàng Của Bạn</div>
+                <div class="list-order-client" id="list-order-client">
+                    
+                    @foreach ($lichSu as $item)
+                    <div class="item-order-client">
+                        <div class="item-header">
+                            <span>WanderWeave</span>
+                            <span><?= trangThaiDonHang($item->TrangThaiDonHang); ?></span>
+                        </div>
+                        @foreach (DB::table('san_pham_don_hang')
+                        ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
+                        ->where('MaDonHang', $item->MaDonHang)
+                        ->selectRaw('san_pham.id as idSP, san_pham.*, san_pham_don_hang.*')->get() as $sanPhamDonHang)
+                        @php
+                        $bienthe = DB::table('bien_the_san_pham')
+                        ->where('ID_SanPham', $sanPhamDonHang->idSP)
+                        ->where('ID_MauSac', DB::table('mau_sac')->where('TenMauSac', $sanPhamDonHang->MauSac)->first()->id)
+                        ->where('KichCo', $sanPhamDonHang->KichCo)
+                        ->where('Xoa', 0)
+                        ->first();
+                        @endphp
+                        <div class="item-product">
+                            <div class="img-product">
+                                <img src="<?= Storage::url($sanPhamDonHang->HinhAnh); ?>" alt="">
+                            </div>
+                            <div class="info-product">
+                                <span class="name-product">{{ $sanPhamDonHang->TenSanPham }}</span>
+                                <span class="classify-product">Phân Loại Hàng: {{ $sanPhamDonHang->KichCo }} - {{ $sanPhamDonHang->MauSac }}</span>
+                                <span class="amount-product">x{{ $sanPhamDonHang->SoLuong }}</span>
+                            </div>
+                            <div class="prices-product">
+                                @if ($sanPhamDonHang->TheLoai == "thuong")
+                                <span><del>{{ ($sanPhamDonHang->GiaKhuyenMai ? "₫". number_format($sanPhamDonHang->GiaKhuyenMai) : "") }}</del></span>
+                                <span>₫{{ number_format($sanPhamDonHang->GiaSanPham) }}</span>
+                                @else
+                                <span><del>{{ ($sanPhamDonHang->GiaKhuyenMai ? "₫". number_format($sanPhamDonHang->GiaKhuyenMai) : "") }}</del></span>
+                                <span>₫{{ number_format($bienthe->Gia) }}</span>
+                                @endif
+                            </div>
+                        </div>
+                        @endforeach
+                        <div class="item-footer">
+                            <div class="total-item">Thành Tiền: <span>₫{{ number_format($item->TongTien) }}</span></div>
+                            <div class="item-header">
+                                <span>
+                                    @if ($item->TrangThaiDonHang == "choxacnhan")
+                                        <span><i class="fa-solid fa-hourglass-start"></i> Chờ Xác Nhận</span>
+                                    @elseif ($item->TrangThaiDonHang == "danggiao")
+                                        <span><i class="fa-solid fa-truck-fast"></i> Đang Giao</span>
+                                    @elseif ($item->TrangThaiDonHang == "dagiao")
+                                        <span><i class="fa-solid fa-circle-check"></i> Đã Giao</span>
+                                    @elseif ($item->TrangThaiDonHang == "hoanhang")
+                                        <span><i class="fa-solid fa-right-left"></i> Hoàn Hàng</span>
+                                    @elseif($item->TrangThaiDonHang == "thatbai")
+                                        <span><i class="fa-solid fa-circle-exclamation"></i> Giao Thất Bại</span>    
+                                    @elseif($item->TrangThaiDonHang == "huydon")
+                                        <span><i class="fa-solid fa-xmark"></i> Đã Hủy Bởi Bạn</span>
+                                    @endif
+                                </span>
+                            </div>
+                            <div class="list-button">
+                            @if ($item->TrangThaiDonHang == "choxacnhan")
+                            <a href="{{route('huy-don.edit',$item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
+                            
+                            @elseif ($item->TrangThaiDonHang == "dagiao")
+                               <button class="btn btn-theme btn-vip">Mua Lại</button>
+                               <a class="btn btn-theme btn-donHang">Hoàn Hàng</a>
+                            @if (1)
+                               <a class="btn btn-theme btn-donHang">Đánh Giá</a>
+                            @else
+                               <a class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
+                            @endif
 
-                            <div>
-                                <a href="/thong-tin-tai-khoan" class="btn btn-theme"> Quay Lại Tài Khoản </a>
+                            @elseif ($item->TrangThaiDonHang == "hoanhang")
+                            <button class="btn btn-theme btn-vip">Mua Lại</button>
+                            <button class="btn btn-theme btn-donHang">Chi Tiết Hoàn Hàng</button>
+
+                            @elseif($item->TrangThaiDonHang == "thatbai")
+                               <button class="btn btn-theme btn-vip">Mua Lại</button>
+
+                            @elseif($item->TrangThaiDonHang == "huydon")
+                               <button class="btn btn-theme btn-vip">Mua Lại</button>
+                               <a href="" class="btn btn-theme btn-donHang">Chi Tiết Hủy Đơn</a>
+
+                               
+                            @endif
+                            <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 order-lg-last">
+                <div class="widget account-details">
+                    <h2 class="widget-title">Tài Khoản</h2>
+                    <ul>
+                        <li><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
+                        <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
+                        <li class="active"><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
+                        <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
+                        <li><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
+                        <li><a href="/yeu-cau-tra-hang">Yêu Cầu Trả Hàng</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+@endsection
+
+@section('js')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setInterval(function() {
+            fetch(location.href)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+
+                    const newCartCount = doc.querySelector("#list-order-client");
+                    if (newCartCount) {
+                        document.getElementById("list-order-client").innerHTML = newCartCount.innerHTML;
+                    }
+                })
+                .catch(error => console.log("Lỗi: ", error));
+        }, 2000);
+    });
+
+</script>
 @endsection
