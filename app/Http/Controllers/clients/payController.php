@@ -264,6 +264,13 @@ class payController extends Controller
             ]);
         endif;
 
+        if(DB::table("pay_os")->find("id")->status == "0") {
+            return response()->json([
+                "status" => "error",
+                "message" => "Phương Thức Thanh Toán Không Tồn Tại"
+            ]);
+        }
+
         if ($request->input("voucher")):
             $discount = DB::table('magiamgia')->where('name', $request->input('voucher'))->first();
             if (!$discount):

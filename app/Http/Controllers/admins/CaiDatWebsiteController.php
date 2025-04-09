@@ -18,13 +18,13 @@ class CaiDatWebsiteController extends Controller
     public function index()
     {
         $cai_dat_website = DB::table("cai_dat_website")->find(1);
-        $re_captcha = DB::table("re_captcha")->find(1);
         $smtp_mail = DB::table("smtp_mail")->find(1);
         $noi_dung_gui_mail = DB::table("noi_dung_gui_mail")->get();
         $tien_ich_website = DB::table("tien_ich_website")->get();
         $cai_dat_giao_dien_website = DB::table("cai_dat_giao_dien_website")->get();
+        $pay_os = DB::table("pay_os")->find(1);
 
-        return view("admins.CaiDatWebsite.index", compact("cai_dat_website", "re_captcha", "smtp_mail", "noi_dung_gui_mail", "tien_ich_website", "cai_dat_giao_dien_website"));
+        return view("admins.CaiDatWebsite.index", compact("cai_dat_website", "smtp_mail", "pay_os", "noi_dung_gui_mail", "tien_ich_website", "cai_dat_giao_dien_website"));
     }
 
     /**
@@ -125,13 +125,13 @@ class CaiDatWebsiteController extends Controller
             "updated_at" => date("Y/m/d H:i:s")
         ]); //Cập nhật thông tin kết nối Mail
 
-        DB::table("re_captcha")->where("id", 1)->update([
-            "reCAPTCHA_status" => $request->input("reCAPTCHA_status"),
-            "reCAPTCHA_site_key" => $request->input("reCAPTCHA_site_key"),
-            "reCAPTCHA_secret_key" => $request->input("reCAPTCHA_secret_key"),
+        DB::table("pay_os")->where("id", 1)->update([
+            "Client_ID" => $request->input("PayOs_Client_ID"),
+            "API_Key" => $request->input("PayOs_API_Key"),
+            "Checksum_Key" => $request->input("PayOs_Checksum_Key"),
+            "status" => $request->input("PayOs_status"),
             "updated_at" => date("Y/m/d H:i:s")
-        ]); //Cập nhật thông tin kết nối Mail
-
+        ]); //Cập nhật cổng thanh toán
 
         DB::table("noi_dung_gui_mail")->where("Loai", "order_buy")->update([
             "TieuDe" => $request->input("email_temp_subject_buy_order"),
@@ -174,7 +174,6 @@ class CaiDatWebsiteController extends Controller
 
         DB::table("tien_ich_website")->where("Loai", "live_chat")->update([
             "TrangThai" => $request->input("liveChat_status"),
-            "MaJava" => $request->input("liveChat_java"),
             "updated_at" => date("Y/m/d H:i:s")
         ]); //Cập nhật tiện ích
 

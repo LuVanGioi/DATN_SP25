@@ -83,3 +83,42 @@
         </div>
     </div>
 </div>
+
+<div class="form-contact">
+    <ul class="list-contacts">
+        @if ($tien_ich_zalo->TrangThai == 1)
+        <li>
+            <a href="//zalo.me/{{ $tien_ich_zalo->SoDienThoai }}" target="_blank">
+                <span class="icon">
+                    <img src="https://img.icons8.com/ios-filled/50/1A1A1A/zalo.png" alt="">
+                </span>
+            </a>
+        </li>
+        @endif
+        @if ($tien_ich_phone->TrangThai == 1)
+        <li>
+            <a href="tel:{{ $tien_ich_phone->SoDienThoai }}" target="_blank">
+                <span class="icon">
+                    <img src="https://img.icons8.com/ios-filled/50/1A1A1A/phone-not-being-used.png" alt="">
+                </span>
+            </a>
+        </li>
+        @endif
+        @if ($tien_ich_email_fb->TrangThai == 1)
+        <li>
+            <a href="{{ $tien_ich_email_fb->DuongDan }}" target="_blank">
+                <span class="icon">
+                    <img src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/48/1A1A1A/external-facebook-social-media-tanah-basah-glyph-tanah-basah.png" alt="">
+                </span>
+            </a>
+        </li>
+        <li>
+            <a href="mailTo:{{ $tien_ich_email_fb->SoDienThoai }}" target="_blank">
+                <span class="icon">
+                    <img src="https://img.icons8.com/ios-filled/50/1A1A1A/message-squared.png" alt="">
+                </span>
+            </a>
+        </li>
+        @endif
+    </ul>
+</div>

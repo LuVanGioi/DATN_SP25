@@ -1110,7 +1110,7 @@ select {
     color: white;
 }
 
-.list-order-client>.item-order-client>.item-footer > .total-item {
+.list-order-client>.item-order-client>.item-footer>.total-item {
     text-align: right;
     width: 100%;
     margin: 10px 0px;
@@ -1119,7 +1119,7 @@ select {
     color: black
 }
 
-.list-order-client>.item-order-client>.item-footer > .total-item > span {
+.list-order-client>.item-order-client>.item-footer>.total-item>span {
     font-size: 25px;
     color: #010660;
     margin-left: 5px;
@@ -1133,7 +1133,7 @@ select {
     display: block;
 }
 
-.card > .card-body {
+.card>.card-body {
     padding: 10px;
 }
 
@@ -1144,7 +1144,7 @@ select {
     flex-wrap: wrap;
 }
 
-.deltail-order > span {
+.deltail-order>span {
     width: calc((100% - 16px) / 2);
     background: white;
     padding: 5px;
@@ -1152,7 +1152,7 @@ select {
     margin: 5px 0px;
 }
 
-.pull-right > .badge {
+.pull-right>.badge {
     border-radius: 0px;
     padding: 5px;
     margin: 0px !important;
@@ -1170,7 +1170,7 @@ select {
     display: block;
 }
 
-.deltail-total-order > div {
+.deltail-total-order>div {
     border-bottom: #e9e9e9;
     width: 100%;
     display: flex;
@@ -1180,17 +1180,17 @@ select {
     padding: 5px 0px;
 }
 
-.deltail-total-order > div:last-child {
+.deltail-total-order>div:last-child {
     border-bottom: none;
     margin-bottom: 0px;
     padding-bottom: 0px;
 }
 
-.deltail-total-order > div > span {
+.deltail-total-order>div>span {
     font-size: 16px;
 }
 
-.deltail-total-order > div > span:last-child {
+.deltail-total-order>div>span:last-child {
     font-size: 18px;
     color: black;
     font-weight: bold;
@@ -1263,5 +1263,69 @@ select {
 @media (max-width: 480px) {
     .carousel-item {
         flex: 0 0 50%;
+    }
+}
+
+.form-contact {
+    top: 40%;
+    right: 0 !important;
+    z-index: 999;
+    position: fixed;
+}
+
+.list-contacts {
+    list-style: none;
+    justify-content: right;
+}
+
+.list-contacts>li {
+    background-color: #e3e3e3;
+    margin: 7px 0px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    top: 0px;
+    left: 0px;
+    position: relative;
+    padding: 3px;
+    box-shadow: 0px 0px 0px 1px black;
+    width: 40px;
+}
+
+.list-contacts>li>a>.icon {
+    margin: 0px;
+    padding: 0px;
+}
+
+.list-contacts>li>a>.icon>img {
+    width: 50px;
+}
+
+@keyframes laclac {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    15% {
+        transform: rotate(15deg);
+    }
+
+    30% {
+        transform: rotate(-15deg);
+    }
+
+    45% {
+        transform: rotate(10deg);
+    }
+
+    60% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
     }
 }
