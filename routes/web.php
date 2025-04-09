@@ -110,9 +110,6 @@ Route::get('chinh-sach-bao-hanh', function () {
 Route::get('danh-sach-bai-viet', function () {
     return view('clients.BaiViet.BaiViet');
 });
-Route::get('danh-sach-bai-viet', function () {
-    return view('clients.BaiViet.Baiviet');
-});
 
 Route::get('/thong-tin-tai-khoan', [ClientsAuthController::class, 'getProfile'])
     ->middleware('auth')
@@ -140,7 +137,7 @@ Route::prefix('dia-chi-nhan-hang')->group(function () {
 });
 Route::resource('lich-su-don-hang', LichSuDonHangController::class);
 Route::resource('huy-don', ChiTietHuyDonController::class);
-Route::get('danh-muc/{code}',[DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
+Route::get('danh-muc/{code}', [DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
 
 
 
@@ -163,11 +160,11 @@ Route::get('/san-pham-yeu-thich', function () {
     return view('clients.SanPhamYeuThich.SanPhamYeuThich');
 });
 
-Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
-Route::get('/news/{id}', [BangTinController::class, 'show'])->name('news.show');
-
-
-Route::get('danh-sach-bai-viet', [BangTinController::class, 'index']);
+Route::resource("danh-muc-bai-viet", ClientsDanhMucBaiVietController::class);
+Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");
+Route::get('/bai-viet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
+Route::post("binhluan", [BaiVietChiTietController::class, ""])->name("binhluan.store");
+Route::post("binhluan/reply", [BaiVietChiTietController::class, "reply"])->name("binhluan.reply");
 
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {
