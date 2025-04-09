@@ -512,10 +512,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td width="30%">
-                                                            Số Lượng Sản Phẩm
+                                                            Số Lượng Sản Phẩm Hiển Thị
                                                         </td>
                                                         <td>
-                                                            <input type="number" placeholder="Nhập Số Lượng Sản Phẩm Hiển Thị" class="form-control" name="amount_product_home" value="{{ $cai_dat_giao_dien_website->firstWhere("Loai", "quantity_product_home")->GiaTri }}">
+                                                            <input type="number" placeholder="Không Nhập Mặc Định Là 12" class="form-control" name="amount_product_home" value="{{ $cai_dat_giao_dien_website->firstWhere("Loai", "quantity_product_home")->GiaTri }}">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -523,22 +523,10 @@
                                                             Loại Hiển Thị Sản Phẩm
                                                         </td>
                                                         <td>
+                                                            <input type="hidden" name="product_cate_quality_trademark_home" value="0">
                                                             <select class="form-control" name="product_style_home">
                                                                 <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "0" ? "selected" : "" }}>MỚI HIỆN ĐẦU TIÊN</option>
                                                                 <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "1" ? "selected" : "" }}>MỚI HIỆN CUỐI</option>
-                                                                <option value="2" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "2" ? "selected" : "" }}>GIÁ THẤP ĐÊN CAO</option>
-                                                                <option value="3" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "3" ? "selected" : "" }}>GIÁ CAO ĐÊN THẤP</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="30%">
-                                                            Danh Mục, Chất Lượng Và Thương Hiệu Của Sản Phẩm
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control mb-2" name="product_cate_quality_trademark_home">
-                                                                <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "product_cate_quality_trademark_home")->GiaTri == "1" ? "selected" : "" }}>ON</option>
-                                                                <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "product_cate_quality_trademark_home")->GiaTri == "0" ? "selected" : "" }}>OFF</option>
                                                             </select>
                                                         </td>
                                                     </tr>
@@ -547,18 +535,6 @@
                                                         <th colspan="2" class="text-center bg-dark">
                                                             BÀI VIẾT
                                                         </th>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td width="30%">
-                                                            Tác Giả
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control mb-2" name="news_author_home">
-                                                                <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "news_author_home")->GiaTri == "1" ? "selected" : "" }}>ON</option>
-                                                                <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "news_author_home")->GiaTri == "0" ? "selected" : "" }}>OFF</option>
-                                                            </select>
-                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td width="30%">

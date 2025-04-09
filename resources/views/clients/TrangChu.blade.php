@@ -25,6 +25,7 @@
 <section class="page-section">
     <div class="container">
         <div class="row">
+            @if (DB::table("cai_dat_giao_dien_website")->where("Loai", "categoris_product_new_home")->first()->GiaTri == 1)
             <div class="col-md-6">
                 <div class="thumbnail no-border no-padding thumbnail-banner size-1x3">
                     <div class="media">
@@ -45,6 +46,8 @@
                     </div>
                 </div>
             </div>
+            @endif
+            @if (DB::table("cai_dat_giao_dien_website")->where("Loai", "categoris_product_sale_home")->first()->GiaTri == 1)
             <div class="col-md-6">
                 <div class="thumbnail no-border no-padding thumbnail-banner size-1x3">
                     <div class="media">
@@ -65,6 +68,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </section>
@@ -250,16 +254,17 @@
     </div>
 </section>
 @endif
-
+@if (DB::table("cai_dat_giao_dien_website")->where("Loai", "message_status_home")->first()->GiaTri == 1)
 <section class="page-section">
     <div class="container">
         <div class="message-box">
             <div class="message-box-inner">
-                <h2>Miễn phí ship cho đơn hàng từ 500.000đ</h2>
+                <h2>{{ DB::table("cai_dat_giao_dien_website")->where("Loai", "message_home")->first()->GiaTri }}</h2>
             </div>
         </div>
     </div>
 </section>
+@endif
 
 <section class="page-section">
     <div class="container">
@@ -278,8 +283,12 @@
                             <p class="media-content">{{ Str::limit(strip_tags(html_entity_decode($baiViet->noi_dung)), 100, '...') }}</p>
                             <div class="media-meta">
                                 {{ $baiViet->ngay_dang }}
+                                @if (DB::table("cai_dat_giao_dien_website")->where("Loai", "news_comment_home")->first()->GiaTri == 1)
                                 <span class="divider">/</span><i class="fas fa-comment"></i> {{ rand(1, 100) }}
+                                @endif
+                                @if (DB::table("cai_dat_giao_dien_website")->where("Loai", "news_view_home")->first()->GiaTri == 1)
                                 <span class="divider">/</span><i class="fas fa-eye"></i> {{ rand(1, 1000) }}
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -294,6 +303,7 @@
     </div>
 </section>
 
+@if (DB::table("cai_dat_giao_dien_website")->where("Loai", "3_banners_status_home")->first()->GiaTri == 1)
 <section class="page-section">
     <div class="container">
         <div class="row blocks shop-info-banners">
@@ -333,4 +343,5 @@
         </div>
     </div>
 </section>
+@endif
 @endsection
