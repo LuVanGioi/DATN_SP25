@@ -14,7 +14,7 @@ class BangTinController extends Controller
         $newsList = DB::table("bai_viet")
             ->where("Xoa", 0)
             ->orderByDesc("id")
-            ->paginate(2);
+            ->paginate(8);
 
         $baiVietGanDay = DB::table("bai_viet")
             ->where("Xoa", 0)
@@ -26,7 +26,8 @@ class BangTinController extends Controller
         $danhMuc = DB::table("danh_muc_bai_viet")
             ->where("Xoa", 0)
             ->orderByDesc("id")
-            ->paginate(2);
+            ->limit(10)
+            ->get();
 
         return view("clients.BaiViet.Baiviet", compact("newsList", "danhMuc", "baiVietGanDay"));
     }

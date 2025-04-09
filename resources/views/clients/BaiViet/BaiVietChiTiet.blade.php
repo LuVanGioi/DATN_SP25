@@ -18,7 +18,7 @@
                 <div class="widget shop-categories">
                     <h4 class="widget-title">Danh Mục</h4>
                     <div class="widget-content">
-                        <ul class="children" id="danhMucList">
+                        <ul id="danhMucList">
                             @foreach ($danhMuc as $dm)
                             @php
                             $soBaiViet = DB::table("bai_viet")->where("danh_muc_id", $dm->id)->count()

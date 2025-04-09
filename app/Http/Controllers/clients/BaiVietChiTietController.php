@@ -13,6 +13,11 @@ class BaiVietChiTietController extends Controller
   
     $news = DB::table('bai_viet')->where('id', $id)->first();
 
+    $danhMuc = DB::table("danh_muc_bai_viet")
+            ->where("Xoa", 0)
+            ->orderByDesc("id")
+            ->limit(10)
+            ->get();
     
     $binhLuans = DB::table('binh_luan_bai_viet')
         ->leftJoin('users', 'binh_luan_bai_viet.id_users', '=', 'users.id')
@@ -30,7 +35,7 @@ class BaiVietChiTietController extends Controller
         ->orderBy('ngay_phan_hoi', 'asc')
         ->get();
 
-    return view('clients.BaiViet.BaiVietChiTiet', compact('news', 'binhLuans', 'phanHois'));
+    return view('clients.BaiViet.BaiVietChiTiet', compact('news', 'danhMuc', 'binhLuans', 'phanHois'));
 }
     
 public function like($id)
