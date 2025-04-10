@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\clients\DiaChiNhanHangController;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Broadcast;
 use App\Http\Middleware\CheckRoleMiddleware;
+use App\Http\Controllers\admins\FAQController;
 use App\Http\Controllers\Admins\homeController;
 use App\Http\Controllers\apis\clientController;
 use App\Http\Controllers\clients\payController;
@@ -34,24 +34,25 @@ use App\Http\Controllers\admins\ThuongHieuController;
 use App\Http\Controllers\admins\QuanLyAdminController;
 use App\Http\Controllers\clients\DoiMatKhauController;
 use App\Http\Controllers\admins\CaiDatWebsiteController;
+use App\Http\Controllers\admins\DichVuSanPhamController;
 use App\Http\Controllers\admins\BienTheSanPhamController;
 use App\Http\Controllers\admins\DanhMucBaiVietController;
+use App\Http\Controllers\admins\HinhAnhBienTheController;
 use App\Http\Controllers\admins\LienKetWebsiteController;
 use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\ChiTietHuyDonController;
 use App\Http\Controllers\clients\LichSuDonHangController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
-use App\Http\Controllers\admins\DichVuSanPhamController;
-use App\Http\Controllers\admins\HinhAnhBienTheController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\DanhMucSanPhamController;
+use App\Http\Controllers\clients\DiaChiNhanHangController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
-use App\Http\Controllers\clients\DanhMucBaiVietController as ClientsDanhMucBaiVietController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
+use App\Http\Controllers\clients\DanhMucBaiVietController as ClientsDanhMucBaiVietController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 
 /*
@@ -191,6 +192,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/ThongTinLienHe', ThongTinLienHeController::class);
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
+    Route::resource('admin/FAQ', FAQController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 });
 Route::post("api/client", [clientController::class, "get_all"])->name("api.client");

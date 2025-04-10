@@ -19,7 +19,36 @@
             <p class="lead">Dưới đây là những câu hỏi thường gặp về việc mua sắm tại Wanderweave. Nếu bạn có bất kỳ câu hỏi
                 nào khác, vui lòng liên hệ với chúng tôi.</p>
             <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default">
+
+{{-- đang lỗi đổ dữ liệu từ db ra --}}
+
+                {{-- <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    @foreach($faq as $item)
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading{{ $item->id }}">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $item->id }}"
+                                       aria-expanded="false" aria-controls="collapse{{ $item->id }}">
+                                        <span class="dot"></span> {{ $item->TieuDe }}
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse{{ $item->id }}" class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="heading{{ $item->id }}">
+                                <div class="panel-body">
+                                    {{ $item->NoiDung }}
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div> --}}
+                
+                
+
+
+
+
+                {{-- <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="heading1">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true"
@@ -35,8 +64,8 @@
                             giao hàng sẽ được hiển thị trong quá trình thanh toán.
                         </div>
                     </div>
-                </div>
-                <div class="panel panel-default">
+                </div> --}}
+                {{-- <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="heading2">
                         <h4 class="panel-title">
                             <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse2"
@@ -116,7 +145,7 @@
                             Có, bạn sẽ nhận được hóa đơn điện tử qua email sau khi đơn hàng của bạn được xác nhận.
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

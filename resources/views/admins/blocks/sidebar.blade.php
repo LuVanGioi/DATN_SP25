@@ -131,6 +131,14 @@
       </a>
     </li>
 
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="{{ route("FAQ.index") }}">
+        <i class="fa-question-circle"></i>
+        <span>FAQ</span>
+      </a>
+    </li>
+
     </ul>
     <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
   </div>
