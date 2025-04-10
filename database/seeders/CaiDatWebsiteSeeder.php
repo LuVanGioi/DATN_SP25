@@ -14,28 +14,35 @@ class CaiDatWebsiteSeeder extends Seeder
     public function run(): void
     {
         // Cài Đặt Thông Tin Website
+        DB::table('cai_dat_website')->truncate();
+
         DB::table('cai_dat_website')->insert([
-            'id' => '1',
+            'id' => 1,
             'Favicon_website' => 'Mẫu',
             'Logo_website' => 'Mẫu',
             'Bia_website' => 'Mẫu',
             'TenCuaHang' => 'Mẫu',
             'TuKhoa' => 'Mẫu',
             'MoTa' => 'Mẫu',
-            'created_at' => date('Y/m/d H:i:s')
+            'created_at' => now()
         ]);
 
+
         // Kết Nối
-        DB::table('smtp_mail')->insert([
-            'id' => '1',
-            'smtp_status' => '0',
-            'smtp_host' => 'smtp.gmail.com',
-            'smtp_encryption' => 'tls',
-            'smtp_port' => '587',
-            'smtp_email' => 'Mẫu',
-            'smtp_password' => 'Mẫu',
-            'created_at' => date('Y/m/d H:i:s')
-        ]);
+        DB::table('smtp_mail')->truncate();
+
+DB::table('smtp_mail')->insert([
+    'id' => 1,
+    'smtp_status' => 0,
+    'smtp_host' => 'smtp.gmail.com',
+    'smtp_encryption' => 'tls',
+    'smtp_port' => 587,
+    'smtp_email' => 'Mẫu',
+    'smtp_password' => 'Mẫu',
+    'created_at' => now()
+]);
+
+
 
         // Nội Dung Gửi Mail
         DB::table('noi_dung_gui_mail')->insert([
