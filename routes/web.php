@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\clients\FAQClientController;
 use Illuminate\Http\Request;
 use PhpParser\Node\Expr\FuncCall;
 use Illuminate\Support\Facades\DB;
@@ -153,9 +154,10 @@ Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
 })->name("contact");
 
-Route::get('faq', function () {
-    return view('clients.Faq.Faq');
-})->name("faq");
+// Route::get('faq', function () {
+//     return view('clients.Faq.Faq');
+// })->name("faq");
+Route::get('faq', [FAQClientController::class, 'index'])->name('faq');
 
 Route::get('/san-pham-yeu-thich', function () {
     return view('clients.SanPhamYeuThich.SanPhamYeuThich');

@@ -20,9 +20,9 @@
                 nào khác, vui lòng liên hệ với chúng tôi.</p>
             <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
 
-{{-- đang lỗi đổ dữ liệu từ db ra --}}
+{{-- đang lỗi form chữ đổ dữ liệu ra --}}
 
-                {{-- <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel-group accordion" id="accordion" role="tablist" aria-multiselectable="true">
                     @foreach($faq as $item)
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="heading{{ $item->id }}">
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     @endforeach
-                </div> --}}
+                </div>
                 
                 
 
