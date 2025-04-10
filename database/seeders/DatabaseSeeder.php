@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
             CaiDatWebsiteSeeder::class,
             TinhThanhSeeder::class,
             HuyenSeeder::class,
-            // PaymentSettingsSeeder::class,
-            // VnpaySettingSeeder::class,
+            PaymentSettingsSeeder::class,
+            VnpaySettingSeeder::class,
         ]);
     }
 }
