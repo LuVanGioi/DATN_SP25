@@ -6,7 +6,6 @@
 
 
 @section("main")
-
   <div class="page-body">
     <div class="container-fluid">
     <div class="page-title">
@@ -44,7 +43,7 @@
             <label class="form-label">Email</label>
             <input class="form-control" value="{{$chiTiet->email}}" disabled>
           </div>
-          
+
           <div class="mb-3">
             <label class="form-label">Vai trò</label>
             <input class="form-control" value="{{$chiTiet->role == 'User' ? "Khách" : 'Quản Trị'}}" disabled>
@@ -72,7 +71,7 @@
             <label class="form-label">Địa Chỉ</label>
             <input class="form-control" name="address" type="text" value="{{$chiTiet->address}}" disabled>
           </div>
-          
+
           <div class="mb-3">
             <label class="form-label">Thời Gian Tham Gia</label>
             <input class="form-control" value="{{$chiTiet->created_at}}" disabled>
@@ -93,32 +92,35 @@
           <div class="card">
           <div class="card-body">
             <div class="table-responsive custom-scrollbar">
-            <table class="display dataTable no-footer" id="basic-1" role="grid" aria-describedby="basic-1_info">
-              <thead>
-              <tr role="row">
-                <th style="width: 157.3px;">STT</th>
-                <th style="width: 253.075px;">Tên Khách Hàng</th>
-                <th style="width: 124.537px;">Tên Sản Phẩm</th>
-                <th style="width: 55.0875px;">Ngày Mua</th>
-                <th style="width: 112.863px;">Số Lượng</th>
-                <th style="width: 78.8125px;">Tổng Tiền</th>
-                <th style="width: 78.8125px;">Trạng Thái</th>
-                <th style="width: 78.8125px;">Thao tác</th>
-              </tr>
-              </thead>
-              <tbody>
-                @foreach ($lichSu as $item)
-              <tr role="row" class="odd">
-                <th>1</th>
-                <td class="sorting_1">Vũ Đức Nam</td>
-                <td>Quần áo nike đen</td>
-                <td>2008/11/28</td>
-                <td>10</td>
-                <td>1.000.000đ</td>
-                <td>Đã Giao</td>
-                <td>Chi Tiết</td>
-              </tr>
-             
+            
+                <table class="display dataTable no-footer" id="basic-1" role="grid" aria-describedby="basic-1_info">
+                  <thead>
+                    <tr role="row">
+                      <th>Mã Đơn Hàng</th>
+                      <th>Tên Sản Phẩm</th>
+                      <th>Ngày Mua</th>
+                      <th class="">Số Lượng</th>
+                      <th>Tổng Tiền</th>
+                      <th>Trạng Thái</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($donHang as $item)
+                      <tr role="row">
+                        <td>{{$item->MaDonHang}}</td>
+                        <td>{{$item->TenSanPham}}</td>
+                        <td>{{\Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}</td>
+                        <td>{{$item->SoLuong}}</td>
+                        <td>{{number_format($item->GiaTien * $item->SoLuong, 0, ',', '.')}} đ</td>
+                        <td>{{$item->TrangThai}}</td>
+                        <td><a href="{{ route('donhang.show', $item->MaDonHang) }}">Chi Tiết</a></td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+                
+
               </tbody>
             </table>
             <div class="dataTables_paginate paging_simple_numbers" id="basic-1_paginate"><a
