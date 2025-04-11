@@ -265,13 +265,6 @@ class payController extends Controller
             ]);
         endif;
 
-        if (DB::table("pay_os")->find(1)->status == "0") {
-            return response()->json([
-                "status" => "error",
-                "message" => "Phương Thức Thanh Toán Không Tồn Tại"
-            ]);
-        }
-
         if ($request->input("voucher")):
             $discount = DB::table('magiamgia')->where('name', $request->input('voucher'))->first();
             if (!$discount):
@@ -327,6 +320,8 @@ class payController extends Controller
         endif;
 
         if ($request->input("method") == "COD"):
+
+            
             $order = DB::table("don_hang")->insert([
                 "orderCode" => time(),
                 "MaDonHang" => $trading,
@@ -341,9 +336,7 @@ class payController extends Controller
                 "GhiChu" => $request->input("message"),
                 "created_at" => date("Y-m-d H:i:s"),
             ]);
-
-            broadcast(new OrderCreated($order))->toOthers();
-
+            
             foreach ($sanPhamDaChon as $cart):
                 $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
                     ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
@@ -407,6 +400,13 @@ class payController extends Controller
                 'redirect' => route('payment.success', $trading)
             ]);
         elseif ($request->input("method") == "Banking"):
+
+            if (DB::table("pay_os")->find(1)->status == "0") {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Phương Thức Thanh Toán Không Tồn Tại"
+                ]);
+            }
 
             $PayOS = DB::table("pay_os")->where("id", 1)->first();
             if (!$PayOS) {
