@@ -140,7 +140,6 @@
     <script>
         let fakeProductList = [];
 
-
         function fetchFakeProducts() {
             const formData = new FormData();
             formData.append('_token', "{{ csrf_token() }}");
@@ -167,7 +166,6 @@
                 }
             });
         }
-
 
         function pickRandomProduct() {
             if (fakeProductList.length > 0) {

@@ -5,8 +5,8 @@
 @endsection
 
 @section('main')
-    <div class="page-body">
-        <div class="container-fluid pt-3">
+<div class="page-body">
+    <div class="container-fluid pt-3">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>Quản Lý Đơn Hàng</h5>
@@ -23,6 +23,7 @@
                                         <th>Phương Thức Thanh Toán</th>
                                         <th>Trạng Thái Thanh Toán</th>
                                         <th>Thao Tác</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -1401,3 +1401,23 @@ select {
     font-size: 13px;
     color: rgb(91, 91, 91);
 }
+
+.bg-success {
+    background-color: #03b26c;
+    color: white;
+}
+
+.bg-danger {
+    background-color: #f73333;
+    color: white;
+}
+
+.bg-info {
+    background-color: #33c9f7;
+    color: white;
+}
+
+.bg-primary {
+    background-color: #4033f7;
+    color: white;
+}
