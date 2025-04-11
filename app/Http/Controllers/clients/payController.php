@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\clients;
 
+use OrderCreated;
 use App\Models\Location;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -152,7 +153,7 @@ class payController extends Controller
             ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
 
         $checkSPGH = $layGiaTienSanPham->soLuongGioHangClient + $layGiaTienSanPham2->soLuongGioHangClient;
-        
+
         if ($checkSPGH <= 0) {
             return redirect()->route("gio-hang.index")->with("error", "Sản Phẩm Không Tồn Tại!");
         }
@@ -264,7 +265,7 @@ class payController extends Controller
             ]);
         endif;
 
-        if(DB::table("pay_os")->find("id")->status == "0") {
+        if (DB::table("pay_os")->find(1)->status == "0") {
             return response()->json([
                 "status" => "error",
                 "message" => "Phương Thức Thanh Toán Không Tồn Tại"
@@ -326,7 +327,7 @@ class payController extends Controller
         endif;
 
         if ($request->input("method") == "COD"):
-            DB::table("don_hang")->insert([
+            $order = DB::table("don_hang")->insert([
                 "orderCode" => time(),
                 "MaDonHang" => $trading,
                 "ID_User" => Auth::user()->id,
@@ -340,6 +341,8 @@ class payController extends Controller
                 "GhiChu" => $request->input("message"),
                 "created_at" => date("Y-m-d H:i:s"),
             ]);
+
+            broadcast(new OrderCreated($order))->toOthers();
 
             foreach ($sanPhamDaChon as $cart):
                 $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)

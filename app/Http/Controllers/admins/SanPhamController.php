@@ -108,7 +108,7 @@ class SanPhamController extends Controller
                 if (isset($hinhAnhBienThes[$index])) {
                     foreach ($hinhAnhBienThes[$index] as $HinhAnh) {
                         $fileName = $kichCo . '_' . $idMauSac . '_' . $sanPham->id . '_' . uniqid() . '.png';
-                        $up = $HinhAnh->store("uploads/SanPham", $fileName, "public");
+                        $up = $HinhAnh->storeAs("uploads/SanPham", $fileName, "public");
 
                         DB::table('hinh_anh_san_pham')->insert([
                             'DuongDan' => $up,

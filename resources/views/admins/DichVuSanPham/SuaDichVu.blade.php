@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-<title>Tạo Dịch Vụ - ADMIN</title>
+<title>Sửa Môn Thể Thao - ADMIN</title>
 @endsection
 
 @section("main")
@@ -11,14 +11,14 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h5>THÊM DỊCH VỤ MỚI</h5>
+                        <h5>SỬA MÔN THỂ THAO</h5>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('DichVu.update', $thongTinDichVu->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method("PUT")
                             <div class="mb-3">
-                                <label for="TenDichVuSanPham">Tên Dịch Vụ Sản Phẩm </label>
+                                <label for="TenDichVuSanPham">Tên Môn Thể Thao</label>
                                 <input
                                     class="form-control @error(" TenDichVuSanPham") is-invalid border-danger @enderror"
                                     type="text" name="TenDichVuSanPham" id="TenDichVuSanPham"

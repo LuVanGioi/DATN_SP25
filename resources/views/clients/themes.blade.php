@@ -81,7 +81,9 @@
         <footer class="footer">
             @include("clients.Block.foot")
         </footer>
-        
+
+        <div class="buy-now" id="order-list"></div>
+
         <?php if ($tien_ich_live_chat->TrangThai == "1"): ?>
             <div class="form-contact-DATN">
                 <div class="form-chat" id="form-chat">
@@ -118,7 +120,6 @@
                 </div>
             </div>
         <?php endif; ?>
-
         <div id="alertContainer"></div>
     </div>
 
@@ -135,6 +136,112 @@
     <script src="/clients/js/theme.js"></script>
     <script src="/clients/js/jquery.cookie.js"></script>
     <script src="/clients/js/systemVIP.js?t=<?= time(); ?>"></script>
+
+    <script>
+        let fakeProductList = [];
+
+
+        function fetchFakeProducts() {
+            const formData = new FormData();
+            formData.append('_token', "{{ csrf_token() }}");
+            formData.append('type', 'get_products_virtual');
+
+            $.ajax({
+                url: "<?= route('api.client'); ?>",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.status === "success" && data.data.length > 0) {
+                        fakeProductList = data.data;
+                    }
+                    setTimeout(() => {
+                        startShowingItems();
+                    }, 5000);
+                },
+                error: function() {
+                    setTimeout(() => {
+                        startShowingItems();
+                    }, 5000);
+                }
+            });
+        }
+
+
+        function pickRandomProduct() {
+            if (fakeProductList.length > 0) {
+                const list = fakeProductList;
+                return list[Math.floor(Math.random() * list.length)];
+            }
+        }
+
+        function soDienThoai() {
+            const prefixes = ['032', '033', '034', '035', '036', '037', '038', '039', '090', '091', '092', '093', '094', '095'];
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const suffix = Math.floor(1000 + Math.random() * 8999);
+            return `${prefix}.${suffix}.xxx`;
+        }
+
+        function addItem(phone, title, image, createdAt = null) {
+            if (fakeProductList.length > 0) {
+                return new Promise(resolve => {
+                    const orderList = document.getElementById('order-list');
+
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    const timeId = `time-${Date.now()}`;
+
+                    item.innerHTML = `
+            <div class="logo">
+                <img src="${image}" alt="">
+            </div>
+            <div class="info-buy">
+                <span class="info">${phone} <small>vừa mua hàng</small></span>
+                <span class="title">${title}</span>
+                <span class="time" id="${timeId}">1 giây trước</span>
+            </div>
+        `;
+
+                    orderList.insertBefore(item, orderList.firstChild);
+
+                    const items = orderList.querySelectorAll('.item');
+                    if (items.length > 3) {
+                        orderList.removeChild(items[items.length - 1]);
+                    }
+
+                    const timeInterval = setInterval(() => {
+                        const diff = Math.floor((Date.now() - createdAt) / 1000);
+                        const timeText = diff < 60 ? `${diff} giây trước` : `${Math.floor(diff / 60)} phút trước`;
+                        const timeSpan = document.getElementById(timeId);
+                        if (timeSpan) timeSpan.textContent = timeText;
+                    }, 6000);
+
+                    setTimeout(() => {
+                        clearInterval(timeInterval);
+                        item.style.transition = "opacity 2s ease";
+                        item.style.opacity = 0;
+                        setTimeout(() => {
+                            item.remove();
+                            resolve();
+                        }, 2000);
+                    }, 5000);
+                });
+            }
+        }
+
+
+        async function startShowingItems() {
+            while (true) {
+                const phone = soDienThoai();
+                const product = pickRandomProduct();
+                const createdAt = Date.now();
+                await addItem(phone, product.TenSanPham, product.HinhAnh, createdAt);
+            }
+        }
+
+        fetchFakeProducts();
+    </script>
 
     <script>
         <?php if ($tien_ich_live_chat->TrangThai == "1"): ?>
@@ -388,6 +495,15 @@
                 alertQueue = alertQueue.filter(item => item !== alert);
             }, 500);
         }
+
+        window.Echo.channel('orders')
+            .listen('.order.created', (e) => {
+                console.log('Đơn hàng mới:', e.order);
+                const list = document.getElementById('order-list');
+                const li = document.createElement('li');
+                li.innerText = `#${e.order.id} - Tổng: ${e.order.total}đ`;
+                list.prepend(li);
+            });
     </script>
     <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
     <script>

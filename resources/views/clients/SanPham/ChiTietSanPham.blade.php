@@ -121,8 +121,10 @@
                 <hr class="page-divider small">
 
                 <div class="product-price"><span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span> đ
+                    @if ($thongTinSanPham->TheLoai == "thuong")
                     @if ($thongTinSanPham->GiaKhuyenMai)
                     - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
+                    @endif
                     @endif
                 </div>
                 <hr class="page-divider">
