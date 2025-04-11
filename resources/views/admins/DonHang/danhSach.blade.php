@@ -51,8 +51,7 @@
                                         </td>
                                         
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', $item->MaDonHang) }}">Xem Chi Tiết</a>
-                                        </td>
+                                            <a class="btn btn-info btn-sm dt-no-action" href="{{ route('DonHang.show', $item->MaDonHang) }}">Xem Chi Tiết</a>                                        </td>
                                     </tr>
                                   @endforeach
                                     
