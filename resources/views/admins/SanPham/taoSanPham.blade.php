@@ -131,8 +131,6 @@
                                         <select name="Nhan" class="form-control">
                                             <option value="">Không Có</option>
                                             <option value="hot">HOT</option>
-                                            <option value="sale">Giảm Giá</option>
-                                            <option value="new">Hàng Mới</option>
                                             <option value="featured">Nổi Bật</option>
                                             <option value="clearance">Xả</option>
                                             <option value="limited">Giới Hạn</option>
