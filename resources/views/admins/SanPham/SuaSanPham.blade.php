@@ -145,8 +145,6 @@
                                         <select name="Nhan" class="form-control">
                                             <option value="" {{ $sanPham->Nhan == NULL ? "selected" : "" }}>Không Có</option>
                                             <option value="hot" {{ $sanPham->Nhan == "hot" ? "selected" : "" }}>HOT</option>
-                                            <option value="sale" {{ $sanPham->Nhan == "sale" ? "selected" : "" }}>Giảm Giá</option>
-                                            <option value="new" {{ $sanPham->Nhan == "new" ? "selected" : "" }}>Hàng Mới</option>
                                             <option value="featured" {{ $sanPham->Nhan == "featured" ? "selected" : "" }}>Nổi Bật</option>
                                             <option value="clearance" {{ $sanPham->Nhan == "clearance" ? "selected" : "" }}>Xả</option>
                                             <option value="limited" {{ $sanPham->Nhan == "limited" ? "selected" : "" }}>Giới Hạn</option>
@@ -302,7 +300,6 @@
                                                         <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <img src="{{ Storage::url($bienTheSanPham->HinhAnh) }}" alt="" width="100px">
                                                         <p><strong>Kích Cỡ: </strong> {{ $bienTheSanPham->KichCo }}</p>
                                                         <p><strong>Màu Sắc: </strong> @foreach ($thongTinMauSac as $mauSac)
                                                             @if ($mauSac->id == $bienTheSanPham->ID_MauSac)
