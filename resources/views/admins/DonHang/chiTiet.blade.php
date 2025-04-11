@@ -55,8 +55,8 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <form class="row variable" submit-ajax="true" action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="POST" >
-                        @csrf
+                        <form class="row variable"  action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="POST" >
+                            @csrf
                             @method('PUT')
                             <input type="hidden" name="action" id="actionField" value="">
                         

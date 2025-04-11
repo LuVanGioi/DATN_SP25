@@ -107,8 +107,8 @@
               </tr>
               </thead>
               <tbody>
+                @foreach ($lichSu as $item)
               <tr role="row" class="odd">
-
                 <th>1</th>
                 <td class="sorting_1">Vũ Đức Nam</td>
                 <td>Quần áo nike đen</td>
@@ -134,7 +134,6 @@
         </div>
       </div>
       <div class="card-footer ">
-        <a class="btn btn-primary " href="{{route('KhachHang.index')}}">Cập Nhật</a>
         <a class="btn btn-dark" href="{{route('KhachHang.index')}}">Quay Lại</a>
       </div>
       </form>
