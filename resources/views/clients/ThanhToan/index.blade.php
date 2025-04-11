@@ -308,7 +308,7 @@
                             <span>Thanh Toán Khi Nhận Hàng</span>
                         </li>
 
-                        @if (DB::table("pay_os")->find("id")->status == "1")
+                        @if (DB::table("pay_os")->find(1)->status == "1")
                         <li>
                             <label for="banking" class="item-method" onclick="chonPhuongThucThanhToan('banking')" id="banking-button">
                                 <img src="/clients/images/LOGO/banking.webp" alt="">

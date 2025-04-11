@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-<title>Dịch Vụ Sản Phẩm - ADMIN</title>
+<title>Môn Thể Thao Sản Phẩm - ADMIN</title>
 @endsection
 
 @section('main')
@@ -20,7 +20,7 @@
         @endif
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h5>DANH SÁCH DỊCH VỤ</h5>
+                <h5>DANH SÁCH MÔN THỂ THAO</h5>
                 <div class="text-end">
                     <a href="{{ route('DichVu.create') }}" class="btn btn-primary btn-sm ms-2">Thêm</a>
                     <a href="{{ route("ThungRac.index") }}" class="btn btn-dark btn-sm">Thùng Rác</a>

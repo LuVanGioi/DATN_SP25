@@ -266,6 +266,25 @@ class clientController extends Controller
                     "message" => "ok"
                 ]);
             }
+        } else if($request->input("type") == "get_products_virtual") {
+            $products = DB::table('san_pham')
+                ->inRandomOrder()
+                ->limit(10)
+                ->select('TenSanPham', 'HinhAnh')
+                ->get();
+                $List = [];
+                foreach ($products as $row):
+                    $List[] = [
+                        "TenSanPham" => $row->TenSanPham,
+                        "HinhAnh" => Storage::url($row->HinhAnh)
+                    ];
+                endforeach;
+
+                return response()->json([
+                    "status" => "success",
+                    "message"=> "Lấy Danh Sách Thành Công!",
+                    "data" => []
+                ]);
         }
 
         return response()->json([

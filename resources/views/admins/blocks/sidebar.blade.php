@@ -50,7 +50,7 @@
           <i class="fa-light fa-grid-2-plus"></i>
           <span>Sản Phẩm</span></a>
         <ul class="sidebar-submenu">
-          <li><a href="{{ route("DichVu.index") }}">Dịch Vụ</a></li>
+          <li><a href="{{ route("DichVu.index") }}">Môn Thể Thao</a></li>
           <li><a href="{{ route("DanhMuc.index") }}">Danh Mục</a></li>
           <li><a href="{{ route("ThuongHieu.index") }}">Thương Hiệu</a></li>
           <li><a href="{{ route("BienThe.index") }}">Biến Thể</a></li>
