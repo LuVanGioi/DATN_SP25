@@ -140,7 +140,6 @@
     <script>
         let fakeProductList = [];
 
-
         function fetchFakeProducts() {
             const formData = new FormData();
             formData.append('_token', "{{ csrf_token() }}");
@@ -167,7 +166,6 @@
                 }
             });
         }
-
 
         function pickRandomProduct() {
             if (fakeProductList.length > 0) {
@@ -464,28 +462,30 @@
         let alertQueue = [];
 
         function AlertDATN(type, message) {
-            const alertContainer = document.getElementById("alertContainer");
+            if (message) {
+                const alertContainer = document.getElementById("alertContainer");
 
-            const alertBox = document.createElement("div");
-            alertBox.classList.add("alertManhDev", "show", type === "success" ? "alertManhDevSuccess" : "alertManhDevError");
+                const alertBox = document.createElement("div");
+                alertBox.classList.add("alertManhDev", "show", type === "success" ? "alertManhDevSuccess" : "alertManhDevError");
 
-            alertBox.innerHTML = `
+                alertBox.innerHTML = `
         <span class="icon">${type === "success" ? "<i class='fas fa-check'></i>" : "<i class='fas fa-triangle-exclamation'></i>"}</span>
         <span class="noteAlertManhDev">${message}</span>
         <button onclick="closeAlertManhDev(this.parentElement)"><i class='fas fa-times'></i></button>
     `;
 
-            alertContainer.prepend(alertBox);
-            alertQueue.push(alertBox);
+                alertContainer.prepend(alertBox);
+                alertQueue.push(alertBox);
 
-            if (alertQueue.length > 3) {
-                let firstAlert = alertQueue.shift();
-                firstAlert.remove();
+                if (alertQueue.length > 3) {
+                    let firstAlert = alertQueue.shift();
+                    firstAlert.remove();
+                }
+
+                setTimeout(() => {
+                    closeAlertManhDev(alertBox);
+                }, 3000);
             }
-
-            setTimeout(() => {
-                closeAlertManhDev(alertBox);
-            }, 3000);
         }
 
         function closeAlertManhDev(alert) {

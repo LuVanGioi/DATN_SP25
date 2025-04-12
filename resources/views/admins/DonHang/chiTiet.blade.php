@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-    <title>Quản Lý Đơn Hàng - ADMIN</title>
+<title>Quản Lý Đơn Hàng - ADMIN</title>
 @endsection
 
 @section('main')
@@ -87,14 +87,14 @@
                                 <option value="hoanhang" {{ $donHang->TrangThaiDonHang == "hoanhang" ? "selected" : "" }}>Hoàn Hàng</option>
                                 @endif       
                         </select>
-                        </div>
+                    </div>
 
-                        
-                        <button type="submit" data-action="capnhat" class="btn btn-primary">Cập Nhật</button>
-                    </form>
-                </div>
+
+                    <button type="submit" data-action="capnhat" class="btn btn-primary">Cập Nhật</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 @endsection
