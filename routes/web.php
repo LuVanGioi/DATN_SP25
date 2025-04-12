@@ -50,6 +50,7 @@ use App\Http\Controllers\clients\DiaChiNhanHangController;
 use App\Http\Controllers\clients\ForgotPasswordController;
 use App\Http\Controllers\clients\ThongTinTaiKhoanController;
 use App\Http\Controllers\clients\AuthController as ClientsAuthController;
+use App\Http\Controllers\clients\DanhGiaController;
 use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
@@ -143,7 +144,13 @@ Route::get('danh-muc/{code}', [DanhMucSanPhamController::class, 'show'])->name('
 
 
 
-
+// đánh giá
+Route::get('/danh-gia/{id}', [DanhGiaController::class, 'show'])->name('danh-gia');
+Route::post('/luu-danh-gia/{id}', [DanhGiaController::class, 'store'])->name('luu-danh-gia');
+Route::post('/cap-nhat-danh-gia/{id}', [DanhGiaController::class, 'update'])->name('cap-nhat-danh-gia');
+Route::post('/danh-gia/{id}/tra-loi', [DanhGiaController::class, 'reply'])->name('DanhGia.reply');
+Route::get('/danh-gia', [DanhGiaController::class, 'index'])->name('DanhGia.index');
+//
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
 });
