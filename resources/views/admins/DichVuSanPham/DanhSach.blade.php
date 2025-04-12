@@ -33,7 +33,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Tên Dịch Vụ</th>
+                                    <th>Tên</th>
                                     <th>Thao Tác</th>
                                 </tr>
                             </thead>
