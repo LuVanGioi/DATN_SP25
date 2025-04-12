@@ -12,15 +12,16 @@ class homeController extends Controller
      */
     public function index()
     {
-        $data = DB::table('san_pham')
-            ->selectRaw('MONTH(created_at) as month, SUM(GiaSanPham) as revenue')
+        $data = DB::table('don_hang')
+            ->selectRaw('MONTH(created_at) as month, SUM(TongTien) as revenue')
             ->groupBy('month')
             ->orderBy('month')
             ->get();
 
+        $choNhan = "";
         $months = $data->pluck('month')->map(fn($month) => "Tháng $month")->toArray();
         $revenues = $data->pluck('revenue')->toArray();
-        
-        return view("admins.home", compact("months","revenues"));
+
+        return view("admins.home", compact("months", "choNhan", "revenues"));
     }
 }

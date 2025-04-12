@@ -620,7 +620,7 @@
                     },
                     {
                         label: "Chờ Nhận",
-                        data: <?= json_encode($revenues); ?>,
+                        data: <?= json_encode($choNhan); ?>,
                         backgroundColor: "rgb(255, 169, 21)",
                         borderColor: "rgb(213, 137, 6)",
                         borderWidth: 1

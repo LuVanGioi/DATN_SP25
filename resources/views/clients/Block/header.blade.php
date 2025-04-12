@@ -135,15 +135,15 @@
             <nav class="navigation closed clearfix">
                 <a href="#" class="menu-toggle-close btn"><i class="fa fa-times"></i></a>
                 <ul class="nav sf-menu">
-                    <li><a href="/">Trang chủ</a></li>
+                    <li class="active"><a href="/">Trang chủ</a></li>
                     <li>
                         <a href="/hang-moi-ve">Hàng mới về</a>
                     </li>
                     <li>
                         <a href="/hang-giam-gia">Hàng Giảm Giá</a>
                     </li>
-                    <li class="megamenu">
-                        <a href="#" class="sf-with-ul">Môn Thể Thao</a>
+                    <li>
+                        <a href="#">Danh mục</a>
                         <ul>
                             <li class="row" style="width: 100%">
                                 @foreach ($dich_vu_san_pham as $dichVuSP)
