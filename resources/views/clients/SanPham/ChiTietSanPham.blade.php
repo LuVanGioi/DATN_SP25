@@ -37,7 +37,7 @@
                     </div>
 
                     @if ($thongTinSanPham->TheLoai == "bienThe")
-                    @foreach ($bienTheSanPham2 as $khoAnh)
+                    @foreach ($LocHinhSP as $khoAnh)
                     <div class="item">
                         <a class="btn btn-theme btn-theme-transparent btn-zoom"
                             href="{{ Storage::url($khoAnh->HinhAnh) }}" data-gal="prettyPhoto"><i
@@ -65,7 +65,7 @@
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
                             <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
-                    @foreach ($bienTheSanPham2 as $index => $khoAnh1)
+                    @foreach ($LocHinhSP as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
                             <img src="{{ Storage::url($khoAnh1->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>

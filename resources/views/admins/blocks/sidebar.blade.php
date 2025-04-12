@@ -108,9 +108,9 @@
 
       <li class="sidebar-list">
         <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/BaoCao">
+        <a class="sidebar-link" href="/admin/HoTroTinNhan">
           <i class="fa-light fa-bug"></i>
-          <span>Yêu Cầu Hỗ Trợ</span>
+          <span>Tin Nhắn Hỗ Trợ</span>
         </a>
       </li>
 

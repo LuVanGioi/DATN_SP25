@@ -136,12 +136,12 @@
                 <a href="#" class="menu-toggle-close btn"><i class="fa fa-times"></i></a>
                 <ul class="nav sf-menu">
                     <li class="active"><a href="/">Trang chủ</a></li>
-                    <li>
+                    <!-- <li>
                         <a href="/hang-moi-ve">Hàng mới về</a>
                     </li>
                     <li>
                         <a href="/hang-giam-gia">Hàng Giảm Giá</a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="#">Danh mục</a>
                         <ul>

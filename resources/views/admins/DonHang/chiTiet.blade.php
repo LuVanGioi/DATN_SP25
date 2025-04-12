@@ -55,10 +55,11 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <form class="row variable" submit-ajax="true" action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="PUT" time_load="1500" swal_success="" type="POST">
+                    <form class="row variable" action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="POST" time_load="1500" swal_success="" type="POST">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="action" id="actionField" value="">
-                       
+                       @csrf
+@method("PUT")
                         <div class="form-group">
                             <label class="form-label">Trạng Thái Đơn Hàng</label>
                             <select name="TrangThai" class="form-control">

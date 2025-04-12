@@ -21,7 +21,7 @@
 
     </div>
 </section>
-
+<!-- 
 <section class="page-section">
     <div class="container">
         <div class="row">
@@ -67,7 +67,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 @if (count($sanPhamMoiNhat) >= 1)
 <section class="page-section">
