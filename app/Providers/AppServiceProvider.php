@@ -132,7 +132,17 @@ class AppServiceProvider extends ServiceProvider
                 ->select("cart.SoLuong as SoLuongGioHang")
                 ->selectRaw("cart.id as cart_id, cart.*, san_pham.*, cart.SoLuong * san_pham.GiaSanPham as ThanhTien")
                 ->get();
+            $tien_ich_zalo = DB::table("tien_ich_website")->where("Loai", "support_zalo")->first();
+            $tien_ich_email_fb = DB::table("tien_ich_website")->where("Loai", "support_zalo_2")->first();
+            $tien_ich_phone = DB::table("tien_ich_website")->where("Loai", "support_phone")->first();
+            $tien_ich_live_chat = DB::table("tien_ich_website")->where("Loai", "live_chat")->first();
+            $dich_vu_san_pham = DB::table("dich_vu_san_pham")->where("Xoa", 0)->get();
 
+            $view->with('dich_vu_san_pham', $dich_vu_san_pham);
+            $view->with('tien_ich_zalo', $tien_ich_zalo);
+            $view->with('tien_ich_email_fb', $tien_ich_email_fb);
+            $view->with('tien_ich_phone', $tien_ich_phone);
+            $view->with('tien_ich_live_chat', $tien_ich_live_chat);
             $view->with('danhMucSanPham', $danhMucSanPham);
             $view->with('danhSachLienHe', $danhSachLienHe);
             $view->with('caiDatWebsite', $caiDatWebsite);

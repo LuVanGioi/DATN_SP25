@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('don_hang', function (Blueprint $table) {
-            $table->text('LyDoHuy')->nullable()->after('GhiChu');
+        Schema::create('dich_vu_san_pham', function (Blueprint $table) {
+            $table->id();
+            $table->string('TenDichVuSanPham');
+            $table->string('Xoa')->default(0);
+            $table->string('deleted_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -21,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('don_hang', function (Blueprint $table) {
-            $table->dropColumn('LyDoHuy');
-        });
+        Schema::dropIfExists('dich_vu_san_pham');
     }
-
-    };
+};

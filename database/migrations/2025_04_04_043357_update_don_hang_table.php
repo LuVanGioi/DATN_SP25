@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('don_hang', function (Blueprint $table) {
             $table->text('TrangThaiThanhToan')->nullable()->after('PhuongThucThanhToan');
+            $table->text('LyDoHuy')->nullable()->after('GhiChu');
         });
     }
 

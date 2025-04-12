@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-    <title>Quản Lý Đơn Hàng - ADMIN</title>
+<title>Quản Lý Đơn Hàng - ADMIN</title>
 @endsection
 
 @section('main')
@@ -55,11 +55,10 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <form class="row variable" action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="POST" time_load="1500" swal_success="" type="POST">
+                    <form class="row variable" submit-ajax="true" action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="PUT" time_load="1500" swal_success="" type="POST">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="action" id="actionField" value="">
-                       @csrf
-@method("PUT")
+                       
                         <div class="form-group">
                             <label class="form-label">Trạng Thái Đơn Hàng</label>
                             <select name="TrangThai" class="form-control">
@@ -88,14 +87,14 @@
                                 <option value="hoanhang" {{ $donHang->TrangThaiDonHang == "hoanhang" ? "selected" : "" }}>Hoàn Hàng</option>
                                 @endif       
                         </select>
-                        </div>
+                    </div>
 
-                        
-                        <button type="submit" data-action="capnhat" class="btn btn-primary">Cập Nhật</button>
-                    </form>
-                </div>
+
+                    <button type="submit" data-action="capnhat" class="btn btn-primary">Cập Nhật</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 @endsection

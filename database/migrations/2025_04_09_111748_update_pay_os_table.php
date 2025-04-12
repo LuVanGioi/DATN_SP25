@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bien_the_san_pham', function (Blueprint $table) {
-            $table->string('HinhAnh')->nullable()->after('ID_SanPham');
+        Schema::table('pay_os', function (Blueprint $table) {
+            $table->string('status')->nullable()->after('Checksum_Key');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bien_the_san_pham', function (Blueprint $table) {
-            $table->dropColumn('HinhAnh');
+        Schema::table('pay_os', function (Blueprint $table) {
+            $table->dropColumn('status')->change();
         });
     }
 };

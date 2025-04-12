@@ -8,32 +8,37 @@ use App\Http\Controllers\Controller;
 
 class BangTinController extends Controller
 {
-    // public function index()
-    // {
-    //     $newsList = DB::table("bai_viet")->where("Xoa", 0)->orderByDesc("id")->get();
-    //     return view("clients.BaiViet.Baiviet", compact("newsList"));
-    //  }
 
     public function index()
     {
         $newsList = DB::table("bai_viet")
             ->where("Xoa", 0)
             ->orderByDesc("id")
-            ->paginate(2);
+            ->paginate(8);
 
-        return view("clients.BaiViet.Baiviet", compact("newsList"));
+        $baiVietGanDay = DB::table("bai_viet")
+            ->where("Xoa", 0)
+            ->orderByDesc("id")
+            ->select(DB::raw('DATE(created_at) as ngay'), "bai_viet.*")
+            ->limit(5)
+            ->get();
+
+        $danhMuc = DB::table("danh_muc_bai_viet")
+            ->where("Xoa", 0)
+            ->orderByDesc("id")
+            ->limit(10)
+            ->get();
+
+        return view("clients.BaiViet.Baiviet", compact("newsList", "danhMuc", "baiVietGanDay"));
     }
-    
+
+
+
+
     public function show($id)
     {
         $chiTiet = DB::table('bai_viet')->find($id);
 
-        $tatCaBaiViet = DB::table("bai_viet")
-            ->where("Xoa", 0)
-            ->orderByDesc("id")
-            ->limit(5)
-            ->paginate(2);
-
-        return view("clients.BaiViet.Chitiet", compact("chiTiet", "tatCaBaiViet"));
+        return view("clients.BaiViet.Chitiet", compact("chiTiet"));
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\clients;
 
+use OrderCreated;
 use App\Models\Location;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -152,7 +153,7 @@ class payController extends Controller
             ->selectRaw(" COUNT(cart.ID_SanPham) as soLuongGioHangClient, SUM(cart.SoLuong * san_pham.GiaSanPham) as tongTien")->first();
 
         $checkSPGH = $layGiaTienSanPham->soLuongGioHangClient + $layGiaTienSanPham2->soLuongGioHangClient;
-        
+
         if ($checkSPGH <= 0) {
             return redirect()->route("gio-hang.index")->with("error", "Sản Phẩm Không Tồn Tại!");
         }
@@ -319,12 +320,15 @@ class payController extends Controller
         endif;
 
         if ($request->input("method") == "COD"):
-            DB::table("don_hang")->insert([
+
+            
+            $order = DB::table("don_hang")->insert([
                 "orderCode" => time(),
                 "MaDonHang" => $trading,
                 "ID_User" => Auth::user()->id,
                 "TrangThai" => "choxacnhan",
                 "PhuongThucThanhToan" => "Thanh Toán Khi Nhận Hàng",
+                "TrangThaiThanhToan" => "chuathanhtoan",
                 "DiaChiNhan" => $request->input("location"),
                 "TongTien" => $tongTienSanPhamDaChon,
                 "GiamGia" => $tinhPhanTram,
@@ -332,7 +336,7 @@ class payController extends Controller
                 "GhiChu" => $request->input("message"),
                 "created_at" => date("Y-m-d H:i:s"),
             ]);
-
+            
             foreach ($sanPhamDaChon as $cart):
                 $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
                     ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
@@ -397,6 +401,13 @@ class payController extends Controller
             ]);
         elseif ($request->input("method") == "Banking"):
 
+            if (DB::table("pay_os")->find(1)->status == "0") {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Phương Thức Thanh Toán Không Tồn Tại"
+                ]);
+            }
+
             $PayOS = DB::table("pay_os")->where("id", 1)->first();
             if (!$PayOS) {
                 return response()->json([
@@ -439,6 +450,7 @@ class payController extends Controller
                     "ID_User" => Auth::user()->id,
                     "TrangThai" => "chuathanhtoan",
                     "PhuongThucThanhToan" => "Chuyển Khoản Ngân Hàng",
+                    "TrangThaiThanhToan" => "chuathanhtoan",
                     "DiaChiNhan" => $request->input("location"),
                     "TongTien" => $tongTienSanPhamDaChon,
                     "GiamGia" => $tinhPhanTram,

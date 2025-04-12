@@ -3,33 +3,33 @@
         <div class="top-bar-left">
             <ul class="list-inline">
                 @if (Auth::check())
-                    <li>
-                        <a href="{{ route("ThongTinTaiKhoan") }}"><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
-                    </li>
-                    <li>
-                        <form action="{{route('logout')}}" method="POST">
-                            @csrf
-                            <button class="btn-none"><i class="fas fa-sign-out-alt"></i>Đăng Xuất</button>
-                        </form>
-                    </li>
-                    @if (Auth::user()->role == "Admin")
-                        <li>
-                            <a href="{{ route("home.index") }}"><i class="fas fa-cog"></i> Quản Trị Viên</a>
-                        </li>
-                    @endif
+                <li>
+                    <a href="{{ route("ThongTinTaiKhoan") }}"><i class="fas fa-user"></i> {{Auth::user()->name}}</a>
+                </li>
+                <li>
+                    <form action="{{route('logout')}}" method="POST">
+                        @csrf
+                        <button class="btn-none"><i class="fas fa-sign-out-alt"></i>Đăng Xuất</button>
+                    </form>
+                </li>
+                @if (Auth::user()->role == "Admin")
+                <li>
+                    <a href="{{ route("home.index") }}"><i class="fas fa-cog"></i> Quản Trị Viên</a>
+                </li>
+                @endif
                 @else
-                    <li class="icon-user">
-                        <a href="{{route('login')}}">
-                            <img src="/clients/images/icon-1.png" alt="">
-                            <span>Đăng Nhập</span>
+                <li class="icon-user">
+                    <a href="{{route('login')}}">
+                        <img src="/clients/images/icon-1.png" alt="">
+                        <span>Đăng Nhập</span>
 
-                        </a>
-                    </li>
-                    <li class="icon-form">
-                        <a href="{{route('register')}}"><img src="/clients/images/icon-2.png" alt="">
-                            <span>Tạo tài khoản</span>
-                        </a>
-                    </li>
+                    </a>
+                </li>
+                <li class="icon-form">
+                    <a href="{{route('register')}}"><img src="/clients/images/icon-2.png" alt="">
+                        <span>Tạo tài khoản</span>
+                    </a>
+                </li>
 
                 @endif
 
@@ -136,21 +136,27 @@
                 <a href="#" class="menu-toggle-close btn"><i class="fa fa-times"></i></a>
                 <ul class="nav sf-menu">
                     <li class="active"><a href="/">Trang chủ</a></li>
-                    <!-- <li>
+                    <li>
                         <a href="/hang-moi-ve">Hàng mới về</a>
                     </li>
                     <li>
                         <a href="/hang-giam-gia">Hàng Giảm Giá</a>
-                    </li> -->
+                    </li>
                     <li>
                         <a href="#">Danh mục</a>
                         <ul>
-                            @foreach ($danhMucSanPham as $danhMucSP)
-                                <li>
-                                    <a
-                                        href="{{route('danh-muc.show', xoadau($danhMucSP->TenDanhMucSanPham))}}">{{ $danhMucSP->TenDanhMucSanPham }}</a>
-                                </li>
-                            @endforeach
+                            <li class="row" style="width: 100%">
+                                @foreach ($dich_vu_san_pham as $dichVuSP)
+                                <div class="col-md-2">
+                                    <h4 class="block-title"><b>{{ $dichVuSP->TenDichVuSanPham }}</b></h4>
+                                    <ul style="padding: 0px;">
+                                        @foreach (DB::table("danh_muc_san_pham")->where("Xoa", 0)->where("ID_DichVuSanPham", $dichVuSP->id)->orderByDesc("id")->limit(5)->get() as $danhMucSP)
+                                        <li><a href="{{route('danh-muc.show', xoadau($danhMucSP->TenDanhMucSanPham))}}">{{ $danhMucSP->TenDanhMucSanPham }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endforeach
+                            </li>
                         </ul>
                     </li>
                     <li><a href="{{ route("danhSachBaiViet.index") }}">Bài viết</a></li>

@@ -27,7 +27,7 @@ class SanPhamController extends Controller
             ->join("mau_sac", "bien_the_san_pham.ID_MauSac", "=", "mau_sac.id")
             ->where("bien_the_san_pham.ID_SanPham", $thongTinSanPham->id)
             ->where("bien_the_san_pham.Xoa", 0)
-            ->select("bien_the_san_pham.ID_MauSac", "mau_sac.TenMauSac", "bien_the_san_pham.KichCo", "bien_the_san_pham.SoLuong", "bien_the_san_pham.Gia", "bien_the_san_pham.HinhAnh")
+            ->select("bien_the_san_pham.id", "bien_the_san_pham.ID_MauSac", "mau_sac.TenMauSac", "bien_the_san_pham.KichCo", "bien_the_san_pham.SoLuong", "bien_the_san_pham.Gia")
             ->distinct()
             ->get();
 
@@ -70,6 +70,6 @@ class SanPhamController extends Controller
             ->selectRaw("SUM(SoLuong) as soLuongSanPhamBienTheAll")
             ->first();
 
-        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "LocHinhSP", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
+        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
     }
 }

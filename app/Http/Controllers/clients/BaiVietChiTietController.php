@@ -10,8 +10,15 @@ class BaiVietChiTietController extends Controller
 {
     public function show($id)
 {
-    $chiTiet = DB::table('bai_viet')->where('id', $id)->first();
+  
+    $news = DB::table('bai_viet')->where('id', $id)->first();
 
+    $danhMuc = DB::table("danh_muc_bai_viet")
+            ->where("Xoa", 0)
+            ->orderByDesc("id")
+            ->limit(10)
+            ->get();
+    
     $binhLuans = DB::table('binh_luan_bai_viet')
         ->leftJoin('users', 'binh_luan_bai_viet.id_users', '=', 'users.id')
         ->where('id_baiviet', $id)
@@ -28,10 +35,7 @@ class BaiVietChiTietController extends Controller
         ->orderBy('ngay_phan_hoi', 'asc')
         ->get();
 
-    // Lấy tất cả bài viết
-    $tatCaBaiViet = DB::table('bai_viet')->orderBy('ngay_dang', 'desc')->get();
-
-    return view('clients.BaiViet.ChiTiet', compact('chiTiet', 'binhLuans', 'phanHois', 'tatCaBaiViet'));
+    return view('clients.BaiViet.BaiVietChiTiet', compact('news', 'danhMuc', 'binhLuans', 'phanHois'));
 }
     
 public function like($id)

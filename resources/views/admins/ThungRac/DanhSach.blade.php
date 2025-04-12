@@ -90,6 +90,24 @@
                                 </tr>
                                 @endforeach
 
+                                @foreach ($danhSachDichVuSanPham as $index => $dichVuSanPham)
+                                <tr>
+                                    <td class="text-center">
+                                        
+                                    </td>
+                                    <td class="text-dark">Dich Vụ Sản Phẩm</td>
+                                    <td>{{ $dichVuSanPham->TenDichVuSanPham }}</td>
+                                    <td>{{ $dichVuSanPham->deleted_at }}</td>
+                                    <td>
+                                        <form action="{{ route("ThungRac.restore", $dichVuSanPham->id) }}" class="d-inline" method="GET" onsubmit="return confirm('Bạn có muốn khôi phục không?'); ">
+                                            @csrf
+                                            <input type="hidden" name="table" value="dich_vu_san_pham">
+                                            <button type="submit" class="btn btn-success btn-sm">Khôi Phục</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endforeach
+
                                 @foreach ($danhSachDanhMucSanPham as $index => $danhMucSanPham)
                                 <tr>
                                     <td class="text-center">

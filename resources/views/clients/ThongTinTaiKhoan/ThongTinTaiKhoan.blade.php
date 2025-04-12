@@ -2,7 +2,7 @@
 
 
 @section("title")
-    <title>Thông tin tài khoản - WD-14</title>
+    <title>Thông tin tài khoản - {{ $caiDatWebsite->TenCuaHang }}</title>
 @endsection
 
 @section('main')

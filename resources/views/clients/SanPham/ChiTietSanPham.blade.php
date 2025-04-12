@@ -37,14 +37,17 @@
                     </div>
 
                     @if ($thongTinSanPham->TheLoai == "bienThe")
-                    @foreach ($LocHinhSP as $khoAnh)
+                    @foreach ($bienTheSanPham2 as $khoAnh)
                     <div class="item">
                         <a class="btn btn-theme btn-theme-transparent btn-zoom"
-                            href="{{ Storage::url($khoAnh->HinhAnh) }}" data-gal="prettyPhoto"><i
-                                class="fa fa-plus"></i></a>
-                        <a href="{{ Storage::url($khoAnh->HinhAnh) }}" data-gal="prettyPhoto"><img
-                                class="img-responsive" src="{{ Storage::url($khoAnh->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                            href="{{ Storage::url($image->DuongDan) }}" data-gal="prettyPhoto">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                        <a href="{{ Storage::url($image->DuongDan) }}" data-gal="prettyPhoto"><img
+                                class="img-responsive" src="{{ Storage::url($image->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}">
+                        </a>
                     </div>
+                    @endforeach
                     @endforeach
                     @else
                     @foreach ($khoAnhSanPham as $khoAnh)
@@ -65,7 +68,7 @@
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
                             <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
-                    @foreach ($LocHinhSP as $index => $khoAnh1)
+                    @foreach ($bienTheSanPham2 as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
                             <img src="{{ Storage::url($khoAnh1->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
@@ -91,29 +94,29 @@
                         <span class="fas fa-star text-warning"></span>
                         <span class="fas fa-star text-warning"></span>
                     </div>
-                    <a class="reviews">0 Lượt Đánh Giá</a>
+                    <a class="reviews">16 reviews</a>
                 </div>
                 <div class="product-availability">Danh Mục: <strong>{{ $danhMuc->TenDanhMucSanPham }}</strong></div>
                 <div class="product-availability">Thương Hiệu: <strong>{{ $thuongHieu->TenThuongHieu }}</strong></div>
                 <div class="product-availability">Chất Liệu: <strong>{{ $thongTinSanPham->ChatLieu }}</strong></div>
-                @if ($thongTinSanPham->TheLoai == "bienThe")
+                @if ($soLuongBienTheSanPham >= 1)
                 <div class="product-availability">Sản Phẩm Có Sẵn: <strong id="soLuongSanPham">{{ number_format($tongSoLuongBienThe->soLuongSanPhamBienTheAll) }}</strong></div>
                 @else
-                @if ($thongTinSanPham->SoLuong > 1)
                 <div class="product-availability">Sản Phẩm Có Sẵn: <strong>{{ number_format($thongTinSanPham->SoLuong) }}</strong></div>
-                @endif
                 @endif
                 <hr class="page-divider small">
 
-                <div class="product-price"><span id="GiaTienSP">
-                        @if ($thongTinSanPham->TheLoai == "bienThe")
-                        ₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinSanPham->id)->where("Xoa", 0)->min("Gia")) }}
-                        @else
-                        ₫{{ number_format($thongTinSanPham->GiaSanPham) }}
-                        @endif
-                    </span>
+                <div class="product-price">
+                    @if ($thongTinSanPham->TheLoai == "bienThe")
+                    <span id="GiaTienSP">{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinSanPham->id)->where("Xoa", 0)->min("Gia")) }}</span>
+                    @else
+                    <span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span>
+                    @endif
+                    đ
+                    @if ($thongTinSanPham->TheLoai == "thuong")
                     @if ($thongTinSanPham->GiaKhuyenMai)
                     - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
+                    @endif
                     @endif
                 </div>
                 <hr class="page-divider">
@@ -123,7 +126,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
 
-                    @if ($thongTinSanPham->TheLoai == "bienThe")
+                    @if ($soLuongBienTheSanPham >= 1)
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
@@ -160,7 +163,6 @@
                             </div>
                         </div>
                     </div>
-                    @if ($thongTinSanPham->TheLoai == "bienThe")
                     <div class="col-md-12">
                         <div class="buttons mt-3" style="margin-top: 10px;">
                             <button class="btn btn-theme btn-cart" type="submit" data-action="add_to_cart">
@@ -171,28 +173,6 @@
                             </button>
                         </div>
                     </div>
-                    @else
-                    @if ($thongTinSanPham->SoLuong > 1)
-                    <div class="col-md-12">
-                        <div class="buttons mt-3" style="margin-top: 10px;">
-                            <button class="btn btn-theme btn-cart" type="submit" data-action="add_to_cart">
-                                <i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ
-                            </button>
-                            <button class="btn btn-theme btn-cart" type="submit" data-action="buy_now">
-                                <i class="fa fa-shopping-cart"></i> Mua Ngay
-                            </button>
-                        </div>
-                    </div>
-                    @else
-                    <div class="col-md-12">
-                        <div class="buttons mt-3" style="margin-top: 10px;">
-                            <button class="btn btn-theme btn-cart btn-block" disabled>
-                                <i class="fa fa-shopping-cart"></i> Sản Phẩm Đã Hết Hàng
-                            </button>
-                        </div>
-                    </div>
-                    @endif
-                    @endif
                 </form>
                 <hr class="page-divider small">
 
@@ -401,11 +381,6 @@
         var index = selectedOption.getAttribute("data-index");
         var amount = selectedOption.getAttribute("data-amount");
         var price = selectedOption.getAttribute("data-price");
-        document.getElementById("quantity").value = 1;
-
-        if (index) {
-            jQuery('.img-carousel').trigger('to.owl.carousel', [parseInt(index), 300]);
-        }
 
         if (amount) {
             document.getElementById("soLuongSanPham").innerHTML = amount;
@@ -442,5 +417,120 @@
             }
         });
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const track = document.querySelector('.carousel-track');
+        const items = document.querySelectorAll('.carousel-item');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        let currentIndex = 0;
+        const itemWidth = items[0].getBoundingClientRect().width;
+        const totalItems = items.length;
+        const visibleItems = Math.floor(track.parentElement.clientWidth / itemWidth);
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < totalItems - visibleItems) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        track.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startPos = e.clientX;
+            currentTranslate = prevTranslate;
+            track.style.transition = 'none';
+        });
+
+        track.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const currentPosition = e.clientX;
+                const diff = currentPosition - startPos;
+                track.style.transform = `translateX(${currentTranslate + diff}px)`;
+            }
+        });
+
+        track.addEventListener('mouseup', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                const movedBy = e.clientX - startPos;
+                track.style.transition = 'transform 0.5s ease-in-out';
+
+                if (movedBy < -50 && currentIndex < totalItems - visibleItems) {
+                    currentIndex++;
+                } else if (movedBy > 50 && currentIndex > 0) {
+                    currentIndex--;
+                }
+
+                prevTranslate = -currentIndex * itemWidth;
+                updateCarousel();
+            }
+        });
+
+        track.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                isDragging = false;
+                track.style.transition = 'transform 0.5s ease-in-out';
+                prevTranslate = -currentIndex * itemWidth;
+                updateCarousel();
+            }
+        });
+
+        track.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startPos = e.touches[0].clientX;
+            currentTranslate = prevTranslate;
+            track.style.transition = 'none';
+        });
+
+        track.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const currentPosition = e.touches[0].clientX;
+                const diff = currentPosition - startPos;
+                track.style.transform = `translateX(${currentTranslate + diff}px)`;
+            }
+        });
+
+        track.addEventListener('touchend', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                const movedBy = e.changedTouches[0].clientX - startPos;
+                track.style.transition = 'transform 0.5s ease-in-out';
+
+                if (movedBy < -50 && currentIndex < totalItems - visibleItems) {
+                    currentIndex++;
+                } else if (movedBy > 50 && currentIndex > 0) {
+                    currentIndex--;
+                }
+
+                prevTranslate = -currentIndex * itemWidth;
+                updateCarousel();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            const newItemWidth = items[0].getBoundingClientRect().width;
+            if (newItemWidth !== itemWidth) {
+                updateCarousel();
+            }
+        });
+    });
 </script>
 @endsection

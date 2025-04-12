@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('re_captcha', function (Blueprint $table) {
+        Schema::create('faq', function (Blueprint $table) {
             $table->id();
-            $table->boolean("reCAPTCHA_status")->default(0)->nullable();
-            $table->string("reCAPTCHA_site_key")->nullable();
-            $table->string("reCAPTCHA_secret_key")->nullable();
+            $table->string("DuongDan")->unique();
+            $table->string("TieuDe")->unique();
+            $table->text("NoiDung")->nullable();
+            $table->string("Xoa")->default(0);
+            $table->string("deleted_at")->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('re_captcha');
+        Schema::dropIfExists('faq');
     }
 };

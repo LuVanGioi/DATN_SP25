@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 @extends("clients.themes")
 
 @section("title")
-<title>Lịch sử đơn hàng - WD-14</title>
+<title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
 @endsection
 
 @section('main')
@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Storage;
             <div class="col-md-9">
                 <div class="information-title">Lịch Sử Đơn Hàng Của Bạn</div>
                 <div class="list-order-client" id="list-order-client">
-                    
+
                     @foreach ($lichSu as $item)
                     <div class="item-order-client">
                         <div class="item-header">
-                            <span>WanderWeave</span>
+                            <span>#{{ $item->MaDonHang }}</span>
                             <span><?= trangThaiDonHang($item->TrangThaiDonHang); ?></span>
                         </div>
                         @foreach (DB::table('san_pham_don_hang')
@@ -59,47 +59,44 @@ use Illuminate\Support\Facades\Storage;
                             <div class="item-header">
                                 <span>
                                     @if ($item->TrangThaiDonHang == "choxacnhan")
-                                        <span><i class="fa-solid fa-hourglass-start"></i> Chờ Xác Nhận</span>
+                                    <span><i class="fa-solid fa-hourglass-start text-primary"></i> Chờ Xác Nhận</span>
                                     @elseif ($item->TrangThaiDonHang == "danggiao")
-                                        <span><i class="fa-solid fa-truck-fast"></i> Đang Giao</span>
+                                    <span><i class="fa-solid fa-truck-fast text-warning"></i> Đang Giao</span>
                                     @elseif ($item->TrangThaiDonHang == "dagiao")
-                                        <span><i class="fa-solid fa-circle-check"></i> Đã Giao</span>
+                                    <span><i class="fa-solid fa-circle-check text-success"></i> Hoàn Thành</span>
                                     @elseif ($item->TrangThaiDonHang == "hoanhang")
-                                        <span><i class="fa-solid fa-right-left"></i> Hoàn Hàng</span>
+                                    <span><i class="fa-solid fa-right-left text-danger"></i> Hoàn Hàng</span>
                                     @elseif($item->TrangThaiDonHang == "thatbai")
-                                        <span><i class="fa-solid fa-circle-exclamation"></i> Giao Thất Bại</span>    
+                                    <span><i class="fa-solid fa-circle-exclamation text-danger"></i> Giao Thất Bại</span>
                                     @elseif($item->TrangThaiDonHang == "huydon")
-                                        <span><i class="fa-solid fa-xmark"></i> Đã Hủy Bởi Bạn</span>
+                                    <span><i class="fa-solid fa-xmark text-danger"></i> Đã Hủy Bởi Bạn</span>
                                     @endif
                                 </span>
                             </div>
                             <div class="list-button">
-                            @if ($item->TrangThaiDonHang == "choxacnhan")
-                            <a href="{{route('huy-don.edit',$item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
-                            
-                            @elseif ($item->TrangThaiDonHang == "dagiao")
-                               <button class="btn btn-theme btn-vip">Mua Lại</button>
-                               <a class="btn btn-theme btn-donHang">Hoàn Hàng</a>
-                            @if (1)
-                               <a class="btn btn-theme btn-donHang">Đánh Giá</a>
-                            @else
-                               <a class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
-                            @endif
+                                @if ($item->TrangThaiDonHang == "choxacnhan")
+                                <a href="{{route('huy-don.edit',$item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
+                                @elseif ($item->TrangThaiDonHang == "dagiao")
+                                <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
+                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>
+                                @if (1)
+                                <a class="btn btn-theme btn-donHang">Đánh Giá</a>
+                                @else
+                                <a class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
+                                @endif
 
-                            @elseif ($item->TrangThaiDonHang == "hoanhang")
-                            <button class="btn btn-theme btn-vip">Mua Lại</button>
-                            <button class="btn btn-theme btn-donHang">Chi Tiết Hoàn Hàng</button>
+                                @elseif ($item->TrangThaiDonHang == "hoanhang")
+                                <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
+                                <button class="btn btn-theme btn-donHang">Chi Tiết Hoàn Hàng</button>
 
-                            @elseif($item->TrangThaiDonHang == "thatbai")
-                               <button class="btn btn-theme btn-vip">Mua Lại</button>
+                                @elseif($item->TrangThaiDonHang == "thatbai")
+                                <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
 
-                            @elseif($item->TrangThaiDonHang == "huydon")
-                               <button class="btn btn-theme btn-vip">Mua Lại</button>
-                               <a href="" class="btn btn-theme btn-donHang">Chi Tiết Hủy Đơn</a>
-
-                               
-                            @endif
-                            <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
+                                @elseif($item->TrangThaiDonHang == "huydon")
+                                <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
+                                <a href="" class="btn btn-theme btn-donHang">Chi Tiết Hủy Đơn</a>
+                                @endif
+                                <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
                             </div>
                         </div>
                     </div>
@@ -127,6 +124,37 @@ use Illuminate\Support\Facades\Storage;
 
 @section('js')
 <script>
+    function buy_again(MADONHANG) {
+        const formData = new FormData();
+        formData.append('_token', "{{ csrf_token() }}");
+        formData.append('type', 'buy_again');
+        formData.append('trading', MADONHANG);
+        $.ajax({
+            url: "<?= route('api.client'); ?>",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.status === "success") {
+                    location.href = data.redirect;
+                } else {
+                    if (data.message) {
+                        AlertDATN("error", data.message);
+                    }
+                }
+
+            },
+            error: function(error) {
+                let errorMessage = "Có lỗi xảy ra!";
+                if (error.responseJSON && error.responseJSON.message) {
+                    errorMessage = error.responseJSON.message;
+                }
+                AlertDATN(errorMessage);
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         setInterval(function() {
             fetch(location.href)
@@ -143,6 +171,5 @@ use Illuminate\Support\Facades\Storage;
                 .catch(error => console.log("Lỗi: ", error));
         }, 2000);
     });
-
 </script>
 @endsection

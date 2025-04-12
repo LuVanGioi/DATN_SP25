@@ -208,30 +208,37 @@
                                                 <thead class="table-dark">
                                                     <tr>
                                                         <th colspan="2" class="text-center">
-                                                            <img src="/admins/images/icon/google_recaptcha.png" width="20px"> reCAPTCHA
+                                                            <img src="/clients/images/LOGO/payos.png" width="20px"> Cổng Thanh Toán PayOs
                                                         </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>reCAPTCHA</td>
+                                                        <td>PayOs</td>
                                                         <td>
-                                                            <select class="form-control" name="reCAPTCHA_status">
-                                                                <option value="1" {{ $re_captcha->reCAPTCHA_status == "1" ? "selected" : "" }}>ON</option>
-                                                                <option value="0"  {{ $re_captcha->reCAPTCHA_status == "0" ? "selected" : "" }}>OFF</option>
+                                                            <select class="form-control" name="PayOs_status">
+                                                                <option value="1" {{ $pay_os->status == "1" ? "selected" : "" }}>ON</option>
+                                                                <option value="0" {{ $pay_os->status == "0" ? "selected" : "" }}>OFF</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>reCAPTCHA Site Key</td>
+                                                        <td>PayOs ClientID</td>
                                                         <td>
-                                                            <input type="text" name="reCAPTCHA_site_key" value="{{ $re_captcha->reCAPTCHA_site_key }}" class="form-control">
+                                                            <input type="text" name="PayOs_Client_ID" value="{{ $pay_os->Client_ID }}" class="form-control">
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td>reCAPTCHA Secret Key</td>
+                                                        <td>PayOs API Key</td>
                                                         <td>
-                                                            <input type="text" name="reCAPTCHA_secret_key" value="{{ $re_captcha->reCAPTCHA_secret_key }}" class="form-control">
+                                                            <input type="text" name="PayOs_API_Key" value="{{ $pay_os->API_Key }}" class="form-control">
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>PayOs Checksum Key</td>
+                                                        <td>
+                                                            <input type="text" name="PayOs_Checksum_Key" value="{{ $pay_os->Checksum_Key }}" class="form-control">
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -279,8 +286,7 @@
                                                                                 <li><b>{ip}</b> => Địa chỉ IP.</li>
                                                                                 <li><b>{device}</b> => Thiết bị.</li>
                                                                                 <li><b>{time}</b> => Thời gian.</li>
-                                                                                <li><b>{product}</b> => Tên sản phẩm.</li>
-                                                                                <li><b>{amount}</b> => Số lượng đã mua.</li>
+                                                                                <li><b>{list_product}</b> => Danh sách sản phẩm mua.</li>
                                                                                 <li><b>{trans_id}</b> => Mã đơn hàng.</li>
                                                                                 <li><b>{pay}</b> => Số tiền đã thanh toán.</li>
                                                                             </ul>
@@ -377,7 +383,7 @@
                                                                 <option value="1" {{ $tien_ich_website->firstWhere("Loai", "support_zalo")->TrangThai == "1" ? "selected" : "" }}>ON</option>
                                                                 <option value="0" {{ $tien_ich_website->firstWhere("Loai", "support_zalo")->TrangThai == "0" ? "selected" : "" }}>OFF</option>
                                                             </select>
-                                                            <img src="https://zshopclone7.cmsnt.net/mod/img/demo-widget-zalo1.png" height="100px">
+                                                            <img src="/clients/images/icon/zalo.png" width="50px">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -398,14 +404,7 @@
                                                                 <option value="1" {{ $tien_ich_website->firstWhere("Loai", "support_zalo_2")->TrangThai == "1" ? "selected" : "" }}>ON</option>
                                                                 <option value="0" {{ $tien_ich_website->firstWhere("Loai", "support_zalo_2")->TrangThai == "0" ? "selected" : "" }}>OFF</option>
                                                             </select>
-                                                            <img src="https://zshopclone7.cmsnt.net/mod/img/demo-widget-fbzalo2.png" height="100px">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Số Điện Thoại Zalo
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="form-control" placeholder="Nhập Số Điện Thoại Zalo" name="TienIchZalo2_phone" value="{{ $tien_ich_website->firstWhere("Loai", "support_zalo_2")->SoDienThoai }}">
+                                                            <img src="/clients/images/icon/fb_email.png" width="50px">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -413,6 +412,13 @@
                                                         </td>
                                                         <td>
                                                             <input type="text" class="form-control" placeholder="Nhập Link Facebook" name="TienIchZalo2_DuongDan" value="{{ $tien_ich_website->firstWhere("Loai", "support_zalo_2")->DuongDan }}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Email
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" placeholder="Nhập Số Điện Thoại Zalo" name="TienIchZalo2_phone" value="{{ $tien_ich_website->firstWhere("Loai", "support_zalo_2")->SoDienThoai }}">
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -428,7 +434,7 @@
                                                                 <option value="1" {{ $tien_ich_website->firstWhere("Loai", "support_phone")->TrangThai == "1" ? "selected" : "" }}>ON</option>
                                                                 <option value="0" {{ $tien_ich_website->firstWhere("Loai", "support_phone")->TrangThai == "0" ? "selected" : "" }}>OFF</option>
                                                             </select>
-                                                            <img src="https://zshopclone7.cmsnt.net/mod/img/demo-widget-phone1.png" height="100px">
+                                                            <img src="/clients/images/icon/phone.png" width="50px">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -450,13 +456,6 @@
                                                                 <option value="1" {{ $tien_ich_website->firstWhere("Loai", "live_chat")->TrangThai == "1" ? "selected" : "" }}>ON</option>
                                                                 <option value="0" {{ $tien_ich_website->firstWhere("Loai", "live_chat")->TrangThai == "0" ? "selected" : "" }}>OFF</option>
                                                             </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Javascript Chat</td>
-                                                        <td>
-                                                            <textarea type="text" name="liveChat_java" rows="4" placeholder="Nhập mã code live chat" class="form-control">{{ $tien_ich_website->firstWhere("Loai", "live_chat")->MaJava }}</textarea>
-                                                            <a href="https://my.livechatinc.com" target="_blank"><small>Lấy Thông Tin LiveChat</small></a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -513,10 +512,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td width="30%">
-                                                            Số Lượng Sản Phẩm
+                                                            Số Lượng Sản Phẩm Hiển Thị
                                                         </td>
                                                         <td>
-                                                            <input type="number" placeholder="Nhập Số Lượng Sản Phẩm Hiển Thị" class="form-control" name="amount_product_home" value="{{ $cai_dat_giao_dien_website->firstWhere("Loai", "quantity_product_home")->GiaTri }}">
+                                                            <input type="number" placeholder="Không Nhập Mặc Định Là 12" class="form-control" name="amount_product_home" value="{{ $cai_dat_giao_dien_website->firstWhere("Loai", "quantity_product_home")->GiaTri }}">
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -524,22 +523,10 @@
                                                             Loại Hiển Thị Sản Phẩm
                                                         </td>
                                                         <td>
+                                                            <input type="hidden" name="product_cate_quality_trademark_home" value="0">
                                                             <select class="form-control" name="product_style_home">
                                                                 <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "0" ? "selected" : "" }}>MỚI HIỆN ĐẦU TIÊN</option>
                                                                 <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "1" ? "selected" : "" }}>MỚI HIỆN CUỐI</option>
-                                                                <option value="2" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "2" ? "selected" : "" }}>GIÁ THẤP ĐÊN CAO</option>
-                                                                <option value="3" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "style_product_home")->GiaTri == "3" ? "selected" : "" }}>GIÁ CAO ĐÊN THẤP</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="30%">
-                                                            Danh Mục, Chất Lượng Và Thương Hiệu Của Sản Phẩm
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control mb-2" name="product_cate_quality_trademark_home">
-                                                                <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "product_cate_quality_trademark_home")->GiaTri == "1" ? "selected" : "" }}>ON</option>
-                                                                <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "product_cate_quality_trademark_home")->GiaTri == "0" ? "selected" : "" }}>OFF</option>
                                                             </select>
                                                         </td>
                                                     </tr>
@@ -548,18 +535,6 @@
                                                         <th colspan="2" class="text-center bg-dark">
                                                             BÀI VIẾT
                                                         </th>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td width="30%">
-                                                            Tác Giả
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control mb-2" name="news_author_home">
-                                                                <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "news_author_home")->GiaTri == "1" ? "selected" : "" }}>ON</option>
-                                                                <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "news_author_home")->GiaTri == "0" ? "selected" : "" }}>OFF</option>
-                                                            </select>
-                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td width="30%">
@@ -640,7 +615,7 @@
 @section("js")
 <script>
     function SMTP_view() {
-        if(document.getElementById("smtp_status").value == "1") {
+        if (document.getElementById("smtp_status").value == "1") {
             document.querySelector(".thietLap").style.display = "block";
         } else {
             document.querySelector(".thietLap").style.display = "none";
