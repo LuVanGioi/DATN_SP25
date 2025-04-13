@@ -272,6 +272,9 @@
         <div class="featured-products-carousel">
             <div class="owl-carousel" id="featured-products-carousel">
                 @foreach ($danhSachSanPham as $i => $sanPhamKhac)
+                @php
+                $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPhamKhac->id)->count();
+                @endphp
                 @if ($sanPhamKhac->DuongDan !== $thongTinSanPham->DuongDan && $i++ <= 10)
                     <div class="thumbnail product-item">
                     <div class="media">
@@ -291,7 +294,7 @@
                         </h4>
                         <div class="price">
                             <ins>{{ number_format($sanPhamKhac->GiaSanPham) }}đ</ins>
-                            <span>Đã bán 54,3k</span>
+                            <span>Đã bán {{ soGon($luotMua) }}</span>
                         </div>
                     </div>
             </div>
