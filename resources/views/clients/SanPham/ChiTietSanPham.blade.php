@@ -37,6 +37,15 @@
                     </div>
 
                     @if ($thongTinSanPham->TheLoai == "bienThe")
+                    @foreach ($khoAnhBienThe as $khoAnh)
+                    <div class="item">
+                        <a class="btn btn-theme btn-theme-transparent btn-zoom"
+                            href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><i
+                                class="fa fa-plus"></i></a>
+                        <a href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><img
+                                class="img-responsive" src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
+                    @endforeach
                     @else
                     @foreach ($khoAnhSanPham as $khoAnh)
                     <div class="item">
@@ -52,7 +61,21 @@
 
                 <div class="row product-thumbnails">
                     @if ($thongTinSanPham->TheLoai == "bienThe")
+                    <div class="col-xs-2 col-sm-2 col-md-3">
+                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
+                            <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
+                    @foreach ($khoAnhBienThe as $index => $khoAnh1)
+                    <div class="col-xs-2 col-sm-2 col-md-3">
+                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
+                            <img src="{{ Storage::url($khoAnh1->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
+                    @endforeach
                     @else
+                    <div class="col-xs-2 col-sm-2 col-md-3">
+                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
+                            <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
                     @foreach ($khoAnhSanPham as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
@@ -249,6 +272,9 @@
         <div class="featured-products-carousel">
             <div class="owl-carousel" id="featured-products-carousel">
                 @foreach ($danhSachSanPham as $i => $sanPhamKhac)
+                @php
+                $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPhamKhac->id)->count();
+                @endphp
                 @if ($sanPhamKhac->DuongDan !== $thongTinSanPham->DuongDan && $i++ <= 10)
                     <div class="thumbnail product-item">
                     <div class="media">
@@ -268,7 +294,7 @@
                         </h4>
                         <div class="price">
                             <ins>{{ number_format($sanPhamKhac->GiaSanPham) }}đ</ins>
-                            <span>Đã bán 54,3k</span>
+                            <span>Đã bán {{ soGon($luotMua) }}</span>
                         </div>
                     </div>
             </div>
