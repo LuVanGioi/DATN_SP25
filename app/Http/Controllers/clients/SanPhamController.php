@@ -21,7 +21,16 @@ class SanPhamController extends Controller
         $thuongHieu = DB::table("thuong_hieu")->where("id", $thongTinSanPham->ID_ThuongHieu)->where("Xoa", 0)->first();
         $danhMuc = DB::table("danh_muc_san_pham")->where("id", $thongTinSanPham->ID_DanhMuc)->where("Xoa", 0)->first();
         $allThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->get();
-        $khoAnhSanPham = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $thongTinSanPham->id)->where("Xoa", 0)->get();
+        $khoAnhSanPham = DB::table("hinh_anh_san_pham")
+        ->where("ID_SanPham", $thongTinSanPham->id)
+        ->where("Xoa", 0)
+        ->get();
+
+        $khoAnhBienThe = DB::table("hinh_anh_san_pham")
+        ->join("bien_the_san_pham", "hinh_anh_san_pham.ID_SanPham", "=", "bien_the_san_pham.id")
+        ->where("bien_the_san_pham.ID_SanPham", $thongTinSanPham->id)
+        ->where("bien_the_san_pham.Xoa", 0)
+        ->get();
 
         $bienTheSanPham2 = DB::table("bien_the_san_pham")
             ->join("mau_sac", "bien_the_san_pham.ID_MauSac", "=", "mau_sac.id")
@@ -30,23 +39,7 @@ class SanPhamController extends Controller
             ->select("bien_the_san_pham.id", "bien_the_san_pham.ID_MauSac", "mau_sac.TenMauSac", "bien_the_san_pham.KichCo", "bien_the_san_pham.SoLuong", "bien_the_san_pham.Gia")
             ->distinct()
             ->get();
-
-        $LocHinhSP = DB::table("bien_the_san_pham")
-            ->join("mau_sac", "bien_the_san_pham.ID_MauSac", "=", "mau_sac.id")
-            ->where("bien_the_san_pham.ID_SanPham", $thongTinSanPham->id)
-            ->where("bien_the_san_pham.Xoa", 0)
-            ->groupBy("bien_the_san_pham.ID_MauSac", "mau_sac.TenMauSac")
-            ->select(
-                "bien_the_san_pham.ID_MauSac",
-                "mau_sac.TenMauSac",
-                DB::raw("MIN(bien_the_san_pham.KichCo) as KichCo"),
-                DB::raw("MIN(bien_the_san_pham.SoLuong) as SoLuong"),
-                DB::raw("MIN(bien_the_san_pham.Gia) as Gia"),
-                DB::raw("MIN(bien_the_san_pham.HinhAnh) as HinhAnh"),
-                DB::raw("MIN(bien_the_san_pham.id) as ID_BienTheDaiDien")
-            )
-            ->get();
-
+            
         $soLuongBienTheSanPham = DB::table("bien_the_san_pham")
             ->where("ID_SanPham", $thongTinSanPham->id)
             ->count();
@@ -70,6 +63,6 @@ class SanPhamController extends Controller
             ->selectRaw("SUM(SoLuong) as soLuongSanPhamBienTheAll")
             ->first();
 
-        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
+        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "khoAnhBienThe", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
     }
 }
