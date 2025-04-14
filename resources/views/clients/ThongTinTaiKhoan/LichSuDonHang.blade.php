@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 @extends("clients.themes")
 
 @section("title")
-<title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
+    <title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
 @endsection
 
 @section('main')

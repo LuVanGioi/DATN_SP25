@@ -54,7 +54,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => "success",
                 'message' => "Đăng Nhập Thành Công!",
-                "redirect" => url()->full()
+                "redirect" => url()->full(),
             ]);
         }
 
@@ -125,7 +125,8 @@ class AuthController extends Controller
         $data = [
             "name" => $name,
             "email" => $email,
-            "password" => $password
+            "password" => $password,
+            "role" => 0     
         ];
 
         $signup = User::query()->create($data);
@@ -162,7 +163,6 @@ class AuthController extends Controller
         return view('clients.ThongTinTaiKhoan.ThongtinTaiKhoan', compact('user'));
     }
 
-    // Cập nhật thông tin người dùng
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
@@ -176,7 +176,6 @@ class AuthController extends Controller
             'email.unique' => 'Email này đã được sử dụng.',
         ]);
 
-        // Cập nhật thông tin người dùng
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         return back()->with('success', 'Cập nhật thông tin thành công !');

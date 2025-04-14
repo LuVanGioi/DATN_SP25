@@ -19,8 +19,7 @@
                                     <tr>
                                         <th></th>
                                         <th>Mã Đơn Hàng</th>
-                                        <th>Sản Phẩm</th>
-                                        <th>Trạng Thái</th>
+                                        <th>Trạng Thái Đơn Hàng</th>
                                         <th>Phương Thức Thanh Toán</th>
                                         <th>Trạng Thái Thanh Toán</th>
                                         <th>Thao Tác</th>
@@ -32,13 +31,28 @@
                                       <tr>
                                         <td>{{$index + 1}}</td>
                                         <td>{{$item->MaDonHang}}</td>
-                                        <td>{{$item->TenSanPham}}</td>
                                         <td><?=trangThaiDonHang($item->TrangThai); ?></td>
                                         <td>{{$item->PhuongThucThanhToan}}</td>
-                                        <td>{{$item->TrangThaiThanhToan}}</td>
                                         <td>
-                                            <a class="btn btn-info btn-sm" href="{{ route('DonHang.show', $item->MaDonHang) }}">Xem Chi Tiết</a>
+                                           @if ($item->TrangThai == 'choxacnhan')
+                                           <span class="text-warning">Chưa Thanh Toán</span>
+                                           @elseif($item->TrangThai == 'daxacnhan')
+                                           <span class="text-warning">Chưa Thanh Toán</span>
+                                           @elseif($item->TrangThai == 'dangiao')
+                                           <span class="text-warning">Chưa Thanh Toán</span>
+                                           @elseif($item->TrangThai == 'dagiao')
+                                           <span class="text-success">Đã Thanh Toán</span>
+                                           @elseif($item->TrangThai == 'thatbai')
+                                           <span class="text-danger">Thanh Toán Thất Bại</span>
+                                           @elseif($item->TrangThai == 'hoanhang')
+                                           <span class="text-danger">Thanh Toán Thất Bại</span>
+                                           @elseif($item->TrangThai == 'huydon')
+                                           <span class="text-danger">Thanh Toán Thất Bại</span>
+                                           @endif
                                         </td>
+                                        
+                                        <td>
+                                            <a class="btn btn-info btn-sm dt-no-action" href="{{ route('DonHang.show', $item->MaDonHang) }}">Xem Chi Tiết</a>                                        </td>
                                     </tr>
                                   @endforeach
                                     
@@ -50,4 +64,4 @@
             </div>
         </div>
     </div>
-@endsection
+@endsection 
