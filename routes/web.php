@@ -55,6 +55,7 @@ use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\DanhMucBaiVietController as ClientsDanhMucBaiVietController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
+use App\Http\Controllers\clients\ViController;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,10 +122,15 @@ Route::post('/thong-tin-tai-khoan/update', [ClientsAuthController::class, 'updat
     ->middleware('auth')
     ->name('update-profile');
 
-
-
 Route::get('thong-tin-tai-khoan/edit/{id}', [ThongTinTaiKhoanController::class, 'edit'])->name('thong-tin-tai-khoan.edit');
 Route::put('thong-tin-tai-khoan/update/{id}', [ThongTinTaiKhoanController::class, 'update'])->name('thong-tin-tai-khoan.update');
+Route::get('vi', [ViController::class, "index"]);
+Route::get('vi/nap-tien', [ViController::class, "NapTien"])->name("vi.NapTien");
+Route::get('vi/rut-tien', [ViController::class, "RutTien"])->name("vi.RutTien");
+Route::get('vi/lich-su-giao-dich', [ViController::class, "LichSu"])->name("vi.LichSu");
+Route::post('api/create-qr', [ViController::class, "TaoQr"])->name("vi.TaoQr");
+Route::post('api/withdraw', [ViController::class, "RutTienStore"])->name("vi.RutTienApi");
+Route::get('vi/chi-tiet-giao-dich/{code}', [ViController::class, "ChiTietGiaoDich"]);
 
 Route::get('doi-mat-khau', [DoiMatKhauController::class, 'index'])->name('doi-mat-khau');
 Route::get('doi-mat-khau/edit/{id}', [DoiMatKhauController::class, 'edit'])->name('doi-mat-khau.edit');
@@ -141,27 +147,14 @@ Route::resource('lich-su-don-hang', LichSuDonHangController::class);
 Route::resource('huy-don', ChiTietHuyDonController::class);
 Route::get('danh-muc/{code}', [DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
 
-
-
-
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
-});
-Route::get('/yeu-cau-tra-hang', function () {
-    return view('clients.ThongTinTaiKhoan.YeuCauTraHang');
 });
 Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
 })->name("contact");
 
-// Route::get('faq', function () {
-//     return view('clients.Faq.Faq');
-// })->name("faq");
 Route::get('faq', [FAQClientController::class, 'index'])->name('faq');
-
-Route::get('/san-pham-yeu-thich', function () {
-    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
-});
 
 Route::resource("danh-muc-bai-viet", ClientsDanhMucBaiVietController::class);
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");

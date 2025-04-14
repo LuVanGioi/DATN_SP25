@@ -1197,7 +1197,6 @@ select {
     border-left: 1px solid #e9e9e9;
 }
 
-/* Danh sách ảnh nhỏ chi tiết sản phẩm */
 .custom-carousel {
     position: relative;
     width: 100%;
@@ -1420,4 +1419,156 @@ select {
 .bg-primary {
     background-color: #4033f7;
     color: white;
+}
+
+.m-0 {
+    margin: 0px !important;
+}
+
+.mt-0 {
+    margin-top: 0px !important;
+}
+
+.wallet-DATN {
+    border: 3px solid #e5e5e5;
+    text-align: center;
+}
+
+.wallet-DATN > .img {
+    border-radius: 50%;
+    margin: 5px 0px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.wallet-DATN > .img > img {
+    height: 40px;
+    border-radius: 5px;
+}
+
+.wallet-DATN > span {
+    display: block;
+    font-weight: bold;
+    font-size: 16px;
+    color: #232323
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.cusor-pointer {
+    cursor: pointer;
+}
+
+.btn-dark {
+    background-color: #232323;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #010660;
+    border-color: #010660;
+    color: white;
+}
+
+.info-hisoty-wallet {
+    display: flex;
+    align-items: center;
+}
+
+.info-hisoty-wallet > .img {
+    width: 5%;
+    margin: 0px 5px;
+    border-radius: 100%;
+    padding: 8px;
+    text-align: center;
+}
+
+.info-hisoty-wallet > .img.payment {
+    background-color: #010660;
+}
+
+.info-hisoty-wallet > .img.withdraw {
+    background-color: #0056b3;
+}
+
+.info-hisoty-wallet > .img.refund {
+    background-color: #00b362;
+}
+
+.info-hisoty-wallet > .img > img {
+    width: 100%;
+}
+
+.info-hisoty-wallet > .info {
+    width: 100%;
+    margin: 0px 5px;
+}
+
+.info-hisoty-wallet > .info > span {
+    display: block;
+    color: rgb(78, 78, 78);
+}
+
+.info-hisoty-wallet > .info > .title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.info-hisoty-wallet > .info > .time {
+    color: #888;
+}
+
+.info-hisoty-wallet > .price {
+    width: 20%;
+    text-align: end;
+}
+
+.info-hisoty-wallet > .price > span {
+    font-size: 18px;
+}
+
+.list-tab-hisory-wallet {
+    display: flex;
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    justify-content: space-between;
+}
+
+.list-tab-hisory-wallet > li {
+    width: 100%;
+    text-align: center;
+    margin: 0px 5px;
+}
+
+.list-tab-hisory-wallet > li > a {
+    border: 1px solid #888;
+    padding: 0px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    display: block;
+    color: black;
+}
+
+.list-tab-hisory-wallet .active > a {
+    color: #0056b3;
+}
+
+.list-tab-hisory-wallet .active > a {
+    border-color: #0056b3;
+}
+
+.list-tab-hisory-wallet > li:hover {
+    color: #0056b3;
+    border-color: #0056b3;
+}
+
+.bootstrap-select .selectpicker > .filter-option {
+    color: #737475 !important;
+    font-weight: 500 !important;
 }

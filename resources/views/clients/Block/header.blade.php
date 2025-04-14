@@ -135,7 +135,7 @@
             <nav class="navigation closed clearfix">
                 <a href="#" class="menu-toggle-close btn"><i class="fa fa-times"></i></a>
                 <ul class="nav sf-menu">
-                    <li class="active"><a href="/">Trang chủ</a></li>
+                    <li><a href="/">Trang chủ</a></li>
                     <li>
                         <a href="/hang-moi-ve">Hàng mới về</a>
                     </li>

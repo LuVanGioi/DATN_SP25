@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
@@ -502,6 +503,34 @@ class clientController extends Controller
                 "message" => "Xác Nhận Mua Lại",
                 "redirect" => route("gio-hang.index")
             ]);
+        } else if ($request->input("type") == "check_deposit") {
+            $PayOS = DB::table("pay_os")->where("id", 1)->first();
+
+            $apiKey = $PayOS->API_Key;
+            $clientId = $PayOS->Client_ID;
+            $checksumKey = $PayOS->Checksum_Key;
+            $orderCode = time();
+
+            $data = [
+                "amount" => (int) $request->input("money"),
+                "cancelUrl" => route('payos.cancel'),
+                "description" => Auth::user()->id,
+                "orderCode" => $orderCode,
+                "returnUrl" => url('/vi/nap-tien'),
+            ];
+    
+            $signatureString = "amount={$data['amount']}&cancelUrl={$data['cancelUrl']}&description={$data['description']}&orderCode={$data['orderCode']}&returnUrl={$data['returnUrl']}";
+            $signature = hash_hmac('sha256', $signatureString, $checksumKey);
+            $data["signature"] = $signature;
+    
+            $response = Http::withHeaders([
+                "x-client-id" => $clientId,
+                "x-api-key" => $apiKey,
+                "Content-Type" => "application/json"
+            ])->post("https://api-merchant.payos.vn/v2/payment-requests/{id}", $data);
+            $result = $response->json();
+
+            
         }
 
         return response()->json([
