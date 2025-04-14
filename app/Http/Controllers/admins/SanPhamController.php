@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admins\SanPhamRequest;
 use Illuminate\Support\Facades\Storage;
 
 class SanPhamController extends Controller
@@ -16,11 +17,10 @@ class SanPhamController extends Controller
     {
         $danhSach = DB::table("san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachDanhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
-        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
 
 
-        return view("admins.SanPham.DanhSach", compact("danhSach", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu"));
+        return view("admins.SanPham.DanhSach", compact("danhSach", "danhSachDanhMuc", "danhSachThuongHieu"));
     }
 
     /**
@@ -28,38 +28,41 @@ class SanPhamController extends Controller
      */
     public function create()
     {
+        $dichVu = DB::table("dich_vu_san_pham")->where("Xoa", 0)->get();
         $danhSachDanhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
-        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachBienThe = DB::table("bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
         $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
         $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
 
-
-        return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo"));
+        return view("admins.SanPham.TaoSanPham", compact("danhSachDanhMuc", "danhSachThuongHieu", "dichVu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo"));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SanPhamRequest $request)
     {
         DB::beginTransaction();
 
         $image = null;
-        $images = null;
 
         if ($request->hasFile("hinhAnh")) {
             $image = $request->file("hinhAnh")->store("uploads/SanPham", "public");
         }
 
         DB::table("san_pham")->insert([
+            "DuongDan" => xoadau($request->input("TenSanPham")),
             "HinhAnh" => $image,
             "TenSanPham" => $request->input("TenSanPham"),
+            "ID_DichVuSanPham" => $request->input("ID_DichVuSanPham"),
             "ID_DanhMuc" => $request->input("DanhMuc"),
-            "ID_ChatLieu" => $request->input("ChatLieu"),
             "ID_ThuongHieu" => $request->input("ThuongHieu"),
+            "ChatLieu" => $request->input("ChatLieu"),
             "GiaSanPham" => $request->input("GiaSanPham"),
+            "GiaKhuyenMai" => $request->input("GiaKhuyenMai"),
+            "SoLuong" => $request->input("SoLuong"),
+            "Nhan" => $request->input("Nhan"),
             "Mota" => $request->input("MoTaSanPham"),
             "TrangThai" => "hien",
             "TheLoai" => $request->input("TheLoai"),
@@ -70,39 +73,49 @@ class SanPhamController extends Controller
 
         $sanPham = DB::table("san_pham")->orderByDesc("id")->first();
 
-        foreach ($request->file("images") as $row) {
-            if ($row->isValid()) {
-                $images = $row->store("uploads/SanPham", "public");
-                DB::table("hinh_anh_san_pham")->insert([
-                    "DuongDan" => $images,
-                    "ID_SanPham" => $sanPham->id,
-                    "created_at" => date("Y/m/d H:i:s")
-                ]);
+        if ($request->file("images")) {
+            foreach ($request->file("images") as $row) {
+                if ($row->isValid()) {
+                    $images = $row->store("uploads/SanPham", "public");
+                    DB::table("hinh_anh_san_pham")->insert([
+                        "DuongDan" => $images,
+                        "ID_SanPham" => $sanPham->id,
+                        "created_at" => date("Y/m/d H:i:s")
+                    ]);
+                }
             }
         }
 
-
         if ($request->input("TheLoai") == "bienThe") {
-            $kichCo = $request->input('KichCo');
-            $mauSac = $request->input('MauSac');
-            $giaBienThe = $request->input('GiaBienThe');
-            $soLuongBienThe = $request->input('SoLuongBienThe');
-            $soLuongMauSacMoiKichCo = floor(count($mauSac) / count($kichCo));
+            $thongTinBienThes = $request->input('ThongTinBienThe', []);
+            $giaBienThes = $request->input('GiaBienThe', []);
+            $soLuongBienThes = $request->input('SoLuongBienThe', []);
+            $hinhAnhBienThes = $request->file("HinhAnh", []);
 
-            foreach ($kichCo as $kichCo) {
-                for ($i = 0; $i < $soLuongMauSacMoiKichCo; $i++) {
-                    $mauSacArray = array_shift($mauSac);
-                    $giaBienTheArray = array_shift($giaBienThe);
-                    $soLuongBienTheArray = array_shift($soLuongBienThe);
+            foreach ($thongTinBienThes as $index => $thongTin) {
+                [$kichCo, $idMauSac] = explode('|', $thongTin);
 
-                    DB::table('bien_the_san_pham')->insert([
-                        'KichCo' => $kichCo,
-                        'ID_MauSac' => $mauSacArray,
-                        'ID_SanPham' => $sanPham->id,
-                        'Gia' => $giaBienTheArray,
-                        'SoLuong' => $soLuongBienTheArray,
-                        'created_at' => now(),
-                    ]);
+                $idBienThe = DB::table('bien_the_san_pham')->insertGetId([
+                    'KichCo' => $kichCo,
+                    'ID_MauSac' => $idMauSac,
+                    'ID_SanPham' => $sanPham->id,
+                    'Gia' => $giaBienThes[$index],
+                    'SoLuong' => $soLuongBienThes[$index],
+                    'created_at' => now(),
+                ]);
+
+
+                if (isset($hinhAnhBienThes[$index])) {
+                    foreach ($hinhAnhBienThes[$index] as $HinhAnh) {
+                        $fileName = $kichCo . '_' . $idMauSac . '_' . $sanPham->id . '_' . uniqid() . '.png';
+                        $up = $HinhAnh->storeAs("uploads/SanPham", $fileName, "public");
+
+                        DB::table('hinh_anh_san_pham')->insert([
+                            'DuongDan' => $up,
+                            'ID_SanPham' => $idBienThe,
+                            'created_at' => now(),
+                        ]);
+                    }
                 }
             }
         }
@@ -122,18 +135,27 @@ class SanPhamController extends Controller
         if (!$sanPham) {
             return redirect()->route("SanPham.index")->with("error", "Sản Phẩm Không Tồn Tại!");
         }
-
+        $dichVu = DB::table("dich_vu_san_pham")->where("Xoa", 0)->find($sanPham->ID_DichVuSanPham);
         $danhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->find($sanPham->ID_DanhMuc);
-        $chatLieu = DB::table("chat_lieu")->where("Xoa", 0)->find($sanPham->ID_ChatLieu);
         $thuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->find($sanPham->ID_ThuongHieu);
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
-
-        $danhSachKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
 
         $danhSachBienThe = DB::table("bien_the_san_pham")->where("xoa", 0)->where("ID_SanPham", $id)->get();
 
         $danhSachMauSac = DB::table("mau_sac")->where("xoa", 0)->get();
-        return view("admins.SanPham.ChiTiet", compact("sanPham", "danhMuc", "chatLieu", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac"));
+
+        $idMauSacDaCo = $danhSachBienThe->pluck('KichCo')->toArray();
+
+        $danhSachKichCo = DB::table("kich_co")->where("Xoa", 0)->whereIn("TenKichCo", $idMauSacDaCo)->get();
+
+        $KichCoDaCo = DB::table('mau_sac')->whereIn('id', $idMauSacDaCo)->count();
+
+        $bienTheGop = DB::table('bien_the_san_pham')
+            ->where("ID_SanPham", $id)
+            ->select('ID_MauSac', DB::raw('min(ID) as ID'), DB::raw('min(KichCo) as KichCo'))
+            ->groupBy('ID_MauSac')
+            ->get();
+        return view("admins.SanPham.ChiTiet", compact("dichVu", "bienTheGop", "sanPham", "danhMuc", "thuongHieu", "danhSachHinhAnh", "danhSachKichCo", "danhSachBienThe", "danhSachMauSac", "KichCoDaCo"));
     }
 
     /**
@@ -147,22 +169,26 @@ class SanPhamController extends Controller
             return redirect()->route("SanPham.index")->with("error", "Sản Phẩm Không Tồn Tại!");
         }
 
+        $dichVu = DB::table("dich_vu_san_pham")->where("Xoa", 0)->get();
         $danhSachDanhMuc = DB::table("danh_muc_san_pham")->where("Xoa", 0)->orderByDesc("id")->get();
-        $danhSachChatLieu = DB::table("chat_lieu")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachThuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->orderByDesc("id")->get();
-        $danhSachBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $id)->get();
+        $danhSachBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
         $thongTinMauSac = DB::table("mau_sac")->where("Xoa", 0)->get();
         $thongTinKichCo = DB::table("kich_co")->where("Xoa", 0)->get();
-
+        $danhSachBienThe1 = DB::table("bien_the")->where("Xoa", 0)->orderByDesc("id")->get();
         $danhSachHinhAnh = DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->where("Xoa", 0)->get();
 
-        return view("admins.SanPham.SuaSanPham", compact("sanPham", "danhSachDanhMuc", "danhSachChatLieu", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh"));
+        $idKichCoDaCo = $danhSachBienThe->pluck('KichCo')->toArray();
+
+        $KichCoChuaCo = DB::table('kich_co')->whereNotIn('TenKichCo', $idKichCoDaCo)->get();
+
+        return view("admins.SanPham.SuaSanPham", compact("dichVu", "sanPham", "danhSachDanhMuc", "danhSachThuongHieu", "danhSachBienThe", "thongTinMauSac", "thongTinKichCo", "danhSachHinhAnh", "KichCoChuaCo", "danhSachBienThe1"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SanPhamRequest $request, string $id)
     {
         DB::beginTransaction();
         $sanPham = DB::table("san_pham")->where("Xoa", 0)->find($id);
@@ -182,17 +208,19 @@ class SanPhamController extends Controller
         DB::table("san_pham")->where("id", $id)->update([
             "HinhAnh" => $image,
             "TenSanPham" => $request->input("TenSanPham"),
+            "ID_DichVuSanPham" => $request->input("ID_DichVuSanPham"),
             "ID_DanhMuc" => $request->input("DanhMuc"),
-            "ID_ChatLieu" => $request->input("ChatLieu"),
             "ID_ThuongHieu" => $request->input("ThuongHieu"),
+            "ChatLieu" => $request->input("ChatLieu"),
             "GiaSanPham" => $request->input("GiaSanPham"),
+            "GiaKhuyenMai" => $request->input("GiaKhuyenMai"),
+            "SoLuong" => $request->input("SoLuong"),
+            "Nhan" => $request->input("Nhan"),
             "Mota" => $request->input("MoTaSanPham"),
             "TrangThai" => $request->input("TrangThai"),
             "TheLoai" => $request->input("TheLoai"),
             "updated_at" => date("Y/m/d H:i:s")
         ]);
-
-        DB::commit();
 
         if ($request->file("images")) {
             foreach ($request->file("images") as $row) {
@@ -217,19 +245,18 @@ class SanPhamController extends Controller
      */
     public function destroy(string $id)
     {
-        $sanPham = DB::table("san_pham")->find($id);
+        $bienThe = DB::table("bien_the_san_pham")->find($id);
 
-        if (!$sanPham) {
-            return redirect()->route("SanPham.index")->with("error", "Sản Phẩm Không Tồn Tại!");
+        if (!$bienThe) {
+            return redirect()->route("SanPham.index")->with("error", "Biến Thể Sản Phẩm Không Tồn Tại!");
         }
 
-        DB::table("san_pham")->where("id", $id)->update([
-            "Xoa" => 1,
-            "deleted_at" => date("Y/m/d H:i:s")
-        ]);
+        DB::table("bien_the_san_pham")->where("id", $id)->delete();
+
+        DB::table("hinh_anh_san_pham")->where("ID_SanPham", $id)->delete();
 
         DB::commit();
 
-        return redirect()->route("SanPham.index")->with("success", "Xóa Sản Phẩm Thành Công!");
+        return redirect()->route("SanPham.index")->with("success", "Xóa Biến Thể Thành Công!");
     }
 }

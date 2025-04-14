@@ -13,14 +13,12 @@
                 <h5>THÔNG TIN SẢN PHẨM: <span class="VietHoa">{{ $sanPham->TenSanPham }}</span></h5>
             </div>
             <div class="card-body">
+                <a href="{{ route("SanPham.index") }}" class="btn btn-dark mb-3">Quay Lại</a>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="list-group" id="list-tab" role="tablist">
                             <a class="list-group-item list-group-item-action active" data-bs-toggle="list" href="#thongTin" role="tab">Thông Tin</a>
                             <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#hinhAnh" role="tab">Hình Ảnh</a>
-                            @if ($sanPham->TheLoai == "bienThe")
-                            <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#bienThe" role="tab">Biển Thể</a>
-                            @endif
                         </div>
                     </div>
                     <div class="col-md-9">
@@ -29,42 +27,64 @@
 
                             <div class="tab-pane fade list-behaviors active show" id="thongTin" role="tabpanel">
                                 <div class="row">
-                                    <div class="col-md-12 mb-2">
+                                    <div class="col-md-12 mb-3">
                                         <label class="label-control">Tên Sản Phẩm:</label>
                                         <input type="text" class="form-control" value="{{ $sanPham->TenSanPham }}" readonly>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
+                                    <div class="col-md-3 mb-3">
+                                        <label class="label-control">Dịch Vụ:</label>
+                                        <input type="text" class="form-control" value="{{ $dichVu->TenDichVuSanPham }}" readonly>
+                                    </div>
+
+                                    <div class="col-md-3 mb-3">
                                         <label class="label-control">Danh Mục:</label>
                                         <input type="text" class="form-control" value="{{ $danhMuc->TenDanhMucSanPham }}" readonly>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label class="label-control">Chất Liệu:</label>
-                                        <input type="text" class="form-control" value="{{ $chatLieu->TenChatLieu }}" readonly>
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
+                                    <div class="col-md-3 mb-3">
                                         <label class="label-control">Thương Hiệu:</label>
                                         <input type="text" class="form-control" value="{{ $thuongHieu->TenThuongHieu }}" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-2">
-                                        <label class="label-control">Giá Sản Phẩm:</label>
+                                    <div class="col-md-3 mb-3">
+                                        <label class="label-control">Chất Liệu:</label>
+                                        <input type="text" class="form-control" value="{{ $sanPham->ChatLieu }}" readonly>
+                                    </div>
+
+                                    @if($sanPham->TheLoai == "thuong")
+                                    <div class="col-md-4 mb-3">
+                                        <label class="label-control">Giá Gốc:</label>
+                                        <input type="text" class="form-control" value="{{ ($sanPham->GiaKhuyenMai ? number_format($sanPham->GiaKhuyenMai) : "0") }}đ" readonly>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="label-control">Giá Bán:</label>
                                         <input type="text" class="form-control" value="{{ number_format($sanPham->GiaSanPham) }}đ" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-2">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="label-control">Số Lượng:</label>
+                                        <input type="text" class="form-control" value="{{ number_format($sanPham->SoLuong) }}" readonly>
+                                    </div>
+                                    @endif
+
+                                    <div class="col-md-4 mb-3">
+                                        <label class="label-control">Nhãn:</label>
+                                        <input type="text" class="form-control" value="{{ nhan($sanPham->Nhan) }}" readonly>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Trạng Thái:</label>
                                         <input type="text" class="form-control" value="{{ ($sanPham->TrangThai == "hien" ? "Hiển Thị" : "Ẩn") }}" readonly>
                                     </div>
 
-                                    <div class="col-md-12 mb-2">
+                                    <div class="col-md-4 mb-3">
                                         <label class="label-control">Loại Sản Phẩm:</label>
                                         <input type="text" class="form-control" value="{{ ($sanPham->TheLoai == "bienThe" ? "Biến Thể" : "Thường") }}" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mb-2">
+                                    <div class="col-md-6 mb-3">
                                         <label class="label-control">Thời Gian Tạo:</label>
                                         <input type="text" class="form-control" value="{{ $sanPham->created_at }}" readonly>
                                     </div>
@@ -73,11 +93,48 @@
                                         <label class="label-control">Thời Gian Cập Nhật:</label>
                                         <input type="text" class="form-control" value="{{ ($sanPham->updated_at ?? "Chưa Có Thời Gian Chỉnh Sửa") }}" readonly>
                                     </div>
-                                    <hr>
-
+                                    @if ($sanPham->TheLoai == "bienThe")
                                     <div class="col-md-12 mb-3">
+                                        <label class="label-control">Biến Thể:</label>
+                                        @foreach ($danhSachKichCo as $kichCo)
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <b class="btn-size">Size {{ $kichCo->TenKichCo }}</b>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="row">
+                                                    @foreach ($danhSachBienThe as $bienThe)
+                                                    @if ($bienThe->KichCo == $kichCo->TenKichCo)
+                                                    @foreach ($danhSachMauSac as $mauSac)
+                                                    @if ($mauSac->id == $bienThe->ID_MauSac)
+                                                    <div class="col-md-12 mb-2">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <span class="btn-color">{{ $mauSac->TenMauSac }}</span>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <span class="btn-amount">Số Lượng: <b>{{ number_format($bienThe->SoLuong) }}</b></span>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <span class="btn-price">Giá Tiền: <b>{{ number_format($bienThe->Gia) }}đ</b></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    @endforeach
+                                                    @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        @endforeach
+                                    </div>
+                                    @endif
+
+                                    <div class="col-md-12 pt-3 mb-3">
                                         <label class="label-control">Mô Tả Sản Phẩm:</label>
-                                        <div class="border border-1 border-r p-2">
+                                        <div class="border border-1 border-r-7 card-body">
                                             {!! $sanPham->Mota !!}
                                         </div>
                                     </div>
@@ -92,11 +149,24 @@
                                     </div>
 
                                     <hr>
-                                    <div class="col-md-12 mb-2 mt-3">
+                                    <div class="col-md-12 mb-3 mt-3">
                                         <label class="label-control d-block">Hình Ảnh Các Sản Phẩm:</label>
                                         <div class="owl-carousel owl-theme owl-loaded owl-drag" id="owl-carousel-13">
                                             <div class="owl-stage-outer">
                                                 <div class="owl-stage">
+                                                    @if ($sanPham->TheLoai == "bienThe")
+                                                    @foreach ($bienTheGop as $btHinhAnh)
+                                                    @foreach (DB::table('hinh_anh_san_pham')
+                                                    ->where('ID_SanPham', $btHinhAnh->ID)
+                                                    ->get() as $image)
+                                                    <div class="owl-item active">
+                                                        <div class="item">
+                                                            <img src="{{ Storage::url($image->DuongDan) }}" alt="{{ $sanPham->TenSanPham }}">
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                    @endforeach
+                                                    @else
                                                     @foreach ($danhSachHinhAnh as $hinhAnh)
                                                     <div class="owl-item active">
                                                         <div class="item">
@@ -104,52 +174,15 @@
                                                         </div>
                                                     </div>
                                                     @endforeach
+                                                    @endif
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade list-behaviors" id="bienThe" role="tabpanel">
-                                <div class="disabled-container">
-                                    <div class="treejs">
-                                        <div class="treejs-nodes row">
-                                            @foreach ($danhSachKichCo as $kichCo)
-                                            <div class="col-md-3 mb-3 mt-3">
-                                                <div class="treejs-node treejs-node__halfchecked treejs-node__disabled border border-1 border-r-7 p-2">
-                                                    <i class="fa-solid fa-circle-radiation"></i>
-                                                    <b class="treejs-label text-primary">Size {{ $kichCo->TenKichCo }}</b>
-                                                    <ul class="treejs-nodes">
-                                                        @foreach ($danhSachBienThe as $bienThe)
-                                                        @if ($bienThe->KichCo == $kichCo->TenKichCo)
-                                                        @foreach ($danhSachMauSac as $mauSac)
-                                                        @if ($mauSac->id == $bienThe->ID_MauSac)
-                                                        <li class="treejs-node treejs-node__halfchecked treejs-node__disabled">
-                                                            <span class="treejs-label title">{{ $mauSac->TenMauSac }}</span>
-                                                            <ul class="treejs-nodes">
-                                                                <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Số Lượng: <b>{{ number_format($bienThe->SoLuong) }}</b></li>
-                                                                <li class="treejs-node treejs-node__close treejs-node__halfchecked treejs-node__disabled text-dark">Giá Tiền: <b class="text-primary">{{ number_format($bienThe->Gia) }}đ</b></li>
-                                                            </ul>
-                                                        </li>
-                                                        @endif
-                                                        @endforeach
-                                                        @endif
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="mt-3">
-                    <a href="{{ route("SanPham.index") }}" class="btn btn-dark">Quay Lại</a>
                 </div>
             </div>
         </div>
@@ -159,72 +192,42 @@
 
 @section("css")
 <style type="text/css">
-    .treejs {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        font-size: 14px;
+    .btn-size {
+        border: 1px solid #016666;
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: #016666;
+        display: block;
     }
 
-    .treejs *:after,
-    .treejs *:before {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
+    .btn-color {
+        border: 1px solid rgb(1, 50, 102);
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: rgb(1, 50, 102);
+        display: block;
     }
 
-    .treejs>.treejs-node {
-        padding-left: 0;
+    .btn-amount {
+        border: 1px solid rgb(180, 12, 226);
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: rgb(180, 12, 226);
+        display: block;
+        width: 100%;
     }
 
-    .treejs .treejs-nodes {
-        list-style: none;
-        padding-left: 20px;
-        overflow: hidden;
-        -webkit-transition: height 150ms ease-out, opacity 150ms ease-out;
-        -o-transition: height 150ms ease-out, opacity 150ms ease-out;
-        transition: height 150ms ease-out, opacity 150ms ease-out;
-    }
-
-    .treejs .treejs-node {
-        cursor: pointer;
-        overflow: hidden;
-    }
-
-    .treejs .treejs-node.treejs-placeholder {
-        padding-left: 20px;
-    }
-
-    .treejs i {
-        font-size: 12px;
-        color: #1890ff;
-    }
-
-    .treejs .treejs-node__close>.treejs-switcher {
-        -webkit-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
-        transform: rotate(-90deg);
-    }
-
-    .treejs .treejs-node__close>.treejs-nodes {
-        height: 0;
-    }
-
-    .treejs .treejs-checkbox {
-        display: inline-block;
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        position: relative;
-    }
-
-    .treejs .treejs-label {
-        vertical-align: middle;
-    }
-
-    .treejs .treejs-label.title {
-        font-weight: bold;
-        margin-left: 10px;
-        color: #006666;
+    .btn-price {
+        border: 1px solid rgb(225, 47, 47);
+        background: none;
+        border-radius: 3px;
+        padding: 5px 10px;
+        color: rgb(225, 47, 47);
+        display: block;
+        width: 100%;
     }
 </style>
 @endsection

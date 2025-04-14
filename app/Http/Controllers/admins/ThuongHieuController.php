@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\admins\ThuongHieuRequest;
 
 class ThuongHieuController extends Controller
@@ -33,7 +34,12 @@ class ThuongHieuController extends Controller
     {
         DB::beginTransaction();
 
+        if($request->hasFile("HinhAnh")) {
+            $image = $request->file("HinhAnh")->store("uploads/Brands", "public");
+        }
+
         DB::table("thuong_hieu")->insert([
+            "HinhAnh" => $image,
             "TenThuongHieu" => $request->input("TenThuongHieu"),
             "created_at" => date("Y-m-d H:i:s")
         ]);
@@ -67,7 +73,18 @@ class ThuongHieuController extends Controller
     {
         DB::beginTransaction();
 
+        $thuongHieu = DB::table("thuong_hieu")->where("Xoa", 0)->find($id);
+        if(!$thuongHieu) {
+            return redirect()->route("ThuongHieu.index")->with("error", "Thương Hiệu Không Tồn Tại!");
+        }
+        $image = $thuongHieu->HinhAnh;
+        if($request->hasFile("HinhAnh")) {
+            $image = $request->file("HinhAnh")->store("uploads/Brands", "public");
+            Storage::disk('public')->delete($thuongHieu->HinhAnh);
+        }
+
         DB::table("thuong_hieu")->where("id", $id)->update([
+            "HinhAnh" => $image,
             "TenThuongHieu" => $request->input("TenThuongHieu"),
             "updated_at" => date("Y-m-d H:i:s")
         ]);

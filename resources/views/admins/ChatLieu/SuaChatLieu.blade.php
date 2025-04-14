@@ -35,7 +35,7 @@
                                     <div class="text-end">
                                         <button class="btn btn-primary" type="submit">Cập Nhật</button>
                                         <button class="btn btn-dark" type="reset">Đặt Lại</button>
-                                        <a class="btn btn-secondary" href="/admin/ChatLieu">Danh Sách</a>
+                                        <a class="btn btn-secondary" href="{{route('ChatLieu.index')}}">Danh Sách</a>
                                     </div>
                                 </div>
                             </div>

@@ -11,13 +11,13 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">
-                            <h5>THÔNG TIN BÀI VIẾT: <b>{{ $baiViet->id }}</b></h5>
+                            <h5>THÔNG TIN BÀI VIẾT: <b>{{ $baiViet->tieu_de }}</b></h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <img src="{{ asset('storage/' . $baiViet->hinh_anh) }}" class="img-fluid rounded"
+                                        <img src="{{ asset('storage/' . $baiViet->hinh_anh) }}" width="150px" class="img-fluid rounded"
                                             alt="">
                                     </div>
                                 </div>
@@ -66,7 +66,9 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Nội Dung</label>
-                                        <textarea class="form-control" rows="5" readonly>{{ $baiViet->noi_dung }}</textarea>
+                                        <div class="form-control" readonly>
+                                        {!! $baiViet->noi_dung !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

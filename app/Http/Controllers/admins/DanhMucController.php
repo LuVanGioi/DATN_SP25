@@ -23,7 +23,8 @@ class DanhMucController extends Controller
      */
     public function create()
     {
-        return view("admins.DanhMuc.TaoDanhMuc");
+        $dichVu = DB::table("dich_vu_san_pham")->where("Xoa", 0)->get();
+        return view("admins.DanhMuc.TaoDanhMuc", compact("dichVu"));
     }
 
     /**
@@ -34,20 +35,12 @@ class DanhMucController extends Controller
         DB::beginTransaction();
 
         DB::table('danh_muc_san_pham')->insert([
+            'ID_DichVuSanPham' => $request->input('ID_DichVuSanPham'),
             'TenDanhMucSanPham' => $request->input('TenDanhMucSanPham'),
             'created_at' => now(),
         ]);
         DB::commit();
         return redirect()->route('DanhMuc.index')->with('success', 'Thêm danh mục sản phẩm thành công');
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -57,11 +50,13 @@ class DanhMucController extends Controller
     {
         $thongTin = DB::table("danh_muc_san_pham")->find($id);
 
+        $dichVu = DB::table("dich_vu_san_pham")->where("Xoa", 0)->get();
+
         if (!$thongTin) {
             return redirect()->route("DanhMuc.index")->with("error", "Danh Mục Không Tồn Tại");
         }
 
-        return view("admins.DanhMuc.suaDanhMuc", compact("thongTin"));
+        return view("admins.DanhMuc.suaDanhMuc", compact("thongTin", "dichVu"));
     }
 
     /**
@@ -76,6 +71,7 @@ class DanhMucController extends Controller
         }
 
         DB::table(table: "danh_muc_san_pham")->where("id", $id)->update([
+            "ID_DichVuSanPham" => $request->input("ID_DichVuSanPham"),
             "TenDanhMucSanPham" => $request->input("TenDanhMucSanPham"),
             "updated_at" => date("Y-m-d H:i:s")
         ]);
@@ -97,6 +93,11 @@ class DanhMucController extends Controller
         }
 
         DB::table("danh_muc_san_pham")->where("id", $id)->update([
+            "Xoa" => 1,
+            "deleted_at" => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table("san_pham")->where("ID_DanhMuc", $thongTin->id)->update([
             "Xoa" => 1,
             "deleted_at" => date("Y-m-d H:i:s")
         ]);

@@ -7,9 +7,22 @@
 @section("main")
 <div class="page-body">
     <div class="container-fluid pt-3">
+        @if (session('success'))
+        <div class="alert alert-success fade show" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+        @endif
+
+        @if (session('error'))
+        <div class="alert alert-danger fade show" role="alert">
+            <p>{{ session('error') }}</p>
+        </div>
+        @endif
+
         <form action="{{ route("SanPham.update", $sanPham->id) }}" class="form theme-form" method="POST" enctype="multipart/form-data">
             @csrf
             @method("PUT")
+            <input type="hidden" value="TheLoai" value="bienThe">
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">
@@ -20,23 +33,29 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
+                                        <label for="ID_DichVuSanPham">Dịch Vụ</label>
+                                        <select name="ID_DichVuSanPham" class="form-control">
+                                            @foreach ($dichVu as $dv)
+                                            <option value="{{ $dv->id }}" {{ ($sanPham->ID_DichVuSanPham == $dv->id ? "selected" : "") }}>{{ $dv->TenDichVuSanPham }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error("ID_DichVuSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="mb-3">
                                         <label>Danh Mục</label>
                                         <select name="DanhMuc" class="form-control" required>
                                             @foreach ($danhSachDanhMuc as $DanhMuc)
                                             <option value="{{ $DanhMuc->id }}" {{ ($sanPham->ID_DanhMuc == $DanhMuc->id ? "selected" : "") }}>{{ $DanhMuc->TenDanhMucSanPham }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label>Chất Liệu</label>
-                                        <select name="ChatLieu" class="form-control" required>
-                                            @foreach ($danhSachChatLieu as $ChatLieu)
-                                            <option value="{{ $ChatLieu->id }}" {{ ($sanPham->ID_ChatLieu == $ChatLieu->id ? "selected" : "") }}>{{ $ChatLieu->TenChatLieu }}</option>
-                                            @endforeach
-                                        </select>
+                                        @error("DanhMuc")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -48,6 +67,21 @@
                                             <option value="{{ $ThuongHieu->id }}" {{ ($sanPham->ID_ThuongHieu == $ThuongHieu->id ? "selected" : "") }}>{{ $ThuongHieu->TenThuongHieu }}</option>
                                             @endforeach
                                         </select>
+                                        @error("ThuongHieu")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label>Thể Loại</label>
+                                        <select class="form-control mb-3" name="TheLoai" onchange="theLoaiSP(this)">
+                                            <option value="thuong" {{ ($sanPham->TheLoai == "thuong" ? "selected" : "") }}>Thường</option>
+                                            <option value="bienThe" {{ ($sanPham->TheLoai == "bienThe" ? "selected" : "") }}>Biến Thể</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -58,12 +92,67 @@
                                         <label>Tên Sản Phẩm</label>
                                         <input class="form-control" type="text" name="TenSanPham" placeholder="Tên Sản Phẩm" value="{{ $sanPham->TenSanPham }}" required>
                                     </div>
+                                    @error("TenSanPham")
+                                    <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
-                                <div class="col" id="formInputMoney">
+                                <div class="col">
                                     <div class="mb-3">
-                                        <label>Giá Sản Phẩm</label>
-                                        <input class="form-control" type="number" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" value="{{ $sanPham->GiaSanPham }}" required>
+                                        <label>Chất Liệu</label>
+                                        <input class="form-control" type="text" name="ChatLieu" placeholder="Chất Liệu Sản Phẩm" value="{{ $sanPham->ChatLieu }}" required>
+                                        @error("ChatLieu")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col" id="formInputMoneyGoc" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
+                                    <div class="mb-3">
+                                        <label>Giá Gốc</label>
+                                        <input class="form-control" type="number" name="GiaKhuyenMai" placeholder="Giá Khuyến Mãi" value="{{ $sanPham->GiaKhuyenMai }}">
+                                    </div>
+                                </div>
+
+                                <div class="col" id="formInputMoney" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
+                                    <div class="mb-3">
+                                        <label>Giá Bán</label>
+                                        <input class="form-control" type="number" name="GiaSanPham" id="Gia" placeholder="Giá Bán Sản Phẩm" value="{{ $sanPham->GiaSanPham }}" <?= $sanPham->TheLoai == 'thuong' ? 'required' : ''; ?>>
+                                        @error("GiaSanPham")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col" id="formAmountPr" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
+                                    <div class="mb-3">
+                                        <label>Số Lượng</label>
+                                        <input class="form-control @error(" SoLuong") is-invalid border-danger @enderror" type="number" onkeyup="CapNhacGiaNhap()" name="SoLuong" value="{{ $sanPham->SoLuong }}" id="SoLuong" placeholder="Số Lượng Sản Phẩm" min="1" <?= $sanPham->TheLoai == 'thuong' ? 'required' : ''; ?>>
+                                        @error("SoLuong")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label>Nhãn</label>
+                                        <select name="Nhan" class="form-control">
+                                            <option value="" {{ $sanPham->Nhan == NULL ? "selected" : "" }}>Không Có</option>
+                                            <option value="hot" {{ $sanPham->Nhan == "hot" ? "selected" : "" }}>HOT</option>
+                                            <option value="featured" {{ $sanPham->Nhan == "featured" ? "selected" : "" }}>Nổi Bật</option>
+                                            <option value="clearance" {{ $sanPham->Nhan == "clearance" ? "selected" : "" }}>Xả</option>
+                                            <option value="limited" {{ $sanPham->Nhan == "limited" ? "selected" : "" }}>Giới Hạn</option>
+                                            <option value="discount" {{ $sanPham->Nhan == "discount" ? "selected" : "" }}>Ưu Đãi Đặc Biệt</option>
+                                        </select>
+                                        @error("Nhan")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -74,6 +163,9 @@
                                             <option value="hien" {{ $sanPham->TrangThai == "hien" ? "selected" : "" }}>Hiện</option>
                                             <option value="an" {{ $sanPham->TrangThai == "an" ? "selected" : "" }}>Ẩn</option>
                                         </select>
+                                        @error("TrangThai")
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -83,18 +175,6 @@
                                     <div class="mb-3">
                                         <label>Mô Tả</label>
                                         <textarea name="MoTaSanPham" class="note-DATN">{{ $sanPham->Mota }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label>Thể Loại</label>
-                                        <select name="TheLoai" id="theLoaiSanPham" class="form-control" onchange="viewFormBienThe()" required>
-                                            <option value="thuong" {{ $sanPham->TheLoai == "thuong" ? "selected" : "" }}>Sản Phẩm Thường</option>
-                                            <option value="bienThe" {{ $sanPham->TheLoai == "bienThe" ? "selected" : "" }}>Sản Phẩm Biến Thể</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -130,29 +210,35 @@
                                     </label>
                                 </div>
                             </div>
+                            @error("hinhAnh")
+                            <p class="text-danger">{{ $message }}</p>
+                            @enderror
 
-                            <label for="" class="mt-3">Bộ Sưu Tập</label>
-                            <input type="file" class="d-none" id="khoAnh" name="images[]" multiple>
-                            <div class="dropzone-wrapper">
-                                <div class="dz-message">
-                                    <label for="khoAnh">
-                                        <i class="icon-cloud-up"></i>
-                                        <h6 class="mt-3 mb-3">Kéo & Thả ảnh vào đây hoặc Nhấn để chọn nhiều ảnh sản phẩm</h6>
-                                    </label>
-                                    <div class="image-preview" id="imagesPreview">
-                                    </div>
-                                    <div class="image-preview">
-                                        @foreach ($danhSachHinhAnh as $hinhAnh)
-                                        @if ($hinhAnh)
-                                        <div class="image-container">
-                                            <img src="{{ Storage::url($hinhAnh->DuongDan) }}">
-                                            <a class="delete-btn" href="{{ route("HinhAnhSanPham.destroy", $hinhAnh->id) }}"><i class="fal fa-times"></i></a>
+                            <div id="formSPThuong" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
+                                <label for="" class="mt-3">Bộ Sưu Tập</label>
+                                <input type="file" class="d-none" id="khoAnh" name="images[]" multiple>
+                                <div class="dropzone-wrapper">
+                                    <div class="dz-message">
+                                        <label for="khoAnh">
+                                            <i class="icon-cloud-up"></i>
+                                            <h6 class="mt-3 mb-3">Kéo & Thả ảnh vào đây hoặc Nhấn để chọn nhiều ảnh sản phẩm</h6>
+                                        </label>
+                                        <div class="image-preview" id="imagesPreview">
                                         </div>
-                                        @endif
-                                        @endforeach
-                                    </div>
+                                        <div class="image-preview">
+                                            @foreach ($danhSachHinhAnh as $hinhAnh)
+                                            @if ($hinhAnh)
+                                            <div class="image-container">
+                                                <img src="{{ Storage::url($hinhAnh->DuongDan) }}">
+                                                <a class="delete-btn" href="{{ route("HinhAnhSanPham.destroy", $hinhAnh->id) }}"><i class="fal fa-times"></i></a>
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                        </div>
 
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -160,11 +246,14 @@
             </div>
         </form>
 
-        <div class="card" id="formBienThe" {{ $sanPham->TheLoai == "bienThe" ? 'style="display:block"' : 'style="display:none"' }}>
+        <div class="card" id="formBienThe" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'block' : 'none'; ?>">
             <div class="card-header">
                 <h5>BIẾN THỂ SẢN PHẨM</h5>
             </div>
             <div class="card-body">
+                <div class="text-end">
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddBienThe">Thêm Màu Sắc</button>
+                </div>
                 <div class="table-responsive dt-responsive">
                     <div id="dom-jqry_wrapper" class="dataTables_wrapper dt-bootstrap5">
                         <div class="row dt-row">
@@ -177,7 +266,6 @@
                                             <th>Màu Sắc</th>
                                             <th>Giá</th>
                                             <th>Số Lượng</th>
-                                            <th>Trạng Thái</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                     </thead>
@@ -196,14 +284,12 @@
                                             <td>{{ number_format($bienTheSanPham->Gia, 0, ',', '.') }}đ</td>
                                             <td>{{ number_format($bienTheSanPham->SoLuong, 0, ',', '.') }}</td>
                                             <td>
-                                                @if ($bienTheSanPham->Xoa == "1")
-                                                <b class="text-danger w-100">Ẩn</b>
-                                                @else
-                                                <b class="text-success w-100">Hiển Thị</b>
-                                                @endif
-                                            </td>
-                                            <td>
                                                 <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modalEdit_{{ $bienTheSanPham->id }}">Sửa Biển Thể</button>
+                                                <form action="{{ route("BienTheSanPham.destroy", $bienTheSanPham->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                                </form>
                                             </td>
                                         </tr>
                                         <div class="modal fade" id="modalEdit_{{ $bienTheSanPham->id }}" tabindex="-1" aria-labelledby="modalEdit_{{ $bienTheSanPham->id }}Title" aria-modal="true" role="dialog">
@@ -221,10 +307,30 @@
                                                             @endif
                                                             @endforeach
                                                         </p>
+                                                        <p><strong>Hình Ảnh</strong></p>
+                                                        <div class="row">
+                                                            @foreach (DB::table("hinh_anh_san_pham")->where("ID_SanPham", $bienTheSanPham->id)->where("Xoa", 0)->get() as $hinhAnh)
+                                                            <div class="col-md-4">
+                                                                <img src="{{ Storage::url($hinhAnh->DuongDan) }}" width="100%" alt="">
+                                                                <div>
+                                                                    <form action="{{ route("BienTheSanPham.destroyImage", $hinhAnh->id) }}" method="POST" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Ảnh Này?')">
+                                                                        @csrf
+                                                                        @method("GET")
+                                                                        <button type="submit" class="btn btn-danger btn-xs w-100 mt-2">Xóa</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
 
-                                                        <form action="{{ route("BienTheSanPham.update", $bienTheSanPham->id) }}" method="post">
+                                                        <form action="{{ route("BienTheSanPham.update", $bienTheSanPham->id) }}" method="post" enctype="multipart/form-data">
                                                             @csrf
                                                             @method("PUT")
+
+                                                            <div class="form-group">
+                                                                <label for="">Hình Ảnh</label>
+                                                                <input type="file" class="form-control" name="HinhAnh[]" multiple>
+                                                            </div>
 
                                                             <div class="form-group">
                                                                 <label for="">Giá Tiền</label>
@@ -266,11 +372,159 @@
         </div>
     </div>
 </div>
+<div class="modal bd-example-modal-xl fade" id="modalAddBienThe" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form action="{{ route("BienTheSanPham.store") }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="ID_SanPham" value="{{ $sanPham->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Biển Thể Sản Phẩm</h5>
+                    <button class="btn-close py-0" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label>Kích Cỡ</label>
+                                <select class="form-control mb-3" id="chonKichCo" name="KichCo" onchange="chonBienThe()">
+                                    <option value="">-- Chọn Kích Cỡ --</option>
+                                    @foreach ($thongTinKichCo as $KichCo)
+                                    <option value="{{ $KichCo->TenKichCo }}">Size {{ $KichCo->TenKichCo }}</option>
+                                    @endforeach
+                                </select>
+                                @error("KichCo")
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col" style="display: none" id="formBienTheSelect">
+                            <div class="mb-3">
+                                <label>Màu Sắc</label>
+                                <select id="chonMauSac" class="form-control mb-3" name="MauSac" onchange="chonMauSacc()">
+                                    <option value="">-- Chọn Màu Sắc --</option>
+                                    @foreach ($thongTinMauSac as $MauSac)
+                                    <option value="{{ $MauSac->id }}">{{ $MauSac->TenMauSac }}</option>
+                                    @endforeach
+                                </select>
+                                @error("MauSac")
+                                <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3" style="display: none;" id="formGiaTienAmount">
+                        <div class="col">
+                            <div class="row">
+                                <div id="danhSachBienThe"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Đóng</button>
+                    <button class="btn btn-primary" type="submit">Thêm Ngay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 
 @section("js")
 <script>
+    function theLoaiSP(e) {
+        let formAmountPr = document.getElementById("formAmountPr");
+        let inputSoLuong = document.getElementById("SoLuong");
+        let formSPThuong = document.getElementById("formSPThuong");
+
+        if (e.value == "thuong") {
+            document.getElementById("formBienThe").style.display = "none";
+            formAmountPr.style.display = "block";
+            inputSoLuong.setAttribute("required", "required");
+            formSPThuong.style.display = "block";
+            document.getElementById("chonKichCo").removeAttribute("required");
+            document.getElementById("formInputMoney").style.display = "block";
+            document.getElementById("formInputMoneyGoc").style.display = "block";
+            document.getElementById("Gia").setAttribute("required", "required");
+        } else {
+            document.getElementById("formBienThe").style.display = "block";
+            formAmountPr.style.display = "none";
+            inputSoLuong.removeAttribute("required");
+            formSPThuong.style.display = "none";
+            document.getElementById("chonKichCo").setAttribute("required", "required");
+            document.getElementById("Gia").removeAttribute("required");
+            document.getElementById("formInputMoney").style.display = "none";
+            document.getElementById("formInputMoneyGoc").style.display = "none";
+        }
+    }
+
+
+    function chonBienThe() {
+        document.getElementById("formBienTheSelect").style.display = "block";
+    }
+
+    function chonMauSacc() {
+        var form = document.getElementById("danhSachBienThe");
+        document.getElementById("formGiaTienAmount").style.display = "block";
+        var KichCo = document.getElementById("chonKichCo").value;
+        var MauSac = document.getElementById("chonMauSac").value;
+        var Gia = document.getElementById("Gia").value;
+
+        setTimeout(() => {
+            document.getElementById("chonMauSac").selectedIndex = 0;
+        }, 500);
+
+        let soThuTuBienThe = document.querySelectorAll('#danhSachBienThe .row').length;
+
+        <?php foreach ($KichCoChuaCo as $KichCo):
+            foreach ($thongTinMauSac as $MauSacCon): ?>
+                var checkForm = document.getElementById('itemNhapAllMauSac_{{ $MauSacCon->id }}_' + KichCo);
+                if (!checkForm) {
+                    if (MauSac == "{{ $MauSacCon->id }}") {
+                        form.insertAdjacentHTML('beforeend', `
+        <div class="col" id="itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}">
+            <div class="row bienThe">
+                <div class="col">
+                    <small class="label-control">Kích Cỡ</small>
+                    <div class="colorProducts">Size ${KichCo}</div>
+                </div>
+                <div class="col">
+                    <small class="label-control">Màu Sắc</small>
+                    <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
+                </div>
+                <input type="hidden" name="ThongTinBienThe[]" value="${KichCo}|${MauSac}">
+                <div class="col">
+                    <small class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
+                    <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" value="${Gia}" required>
+                </div>
+
+                <div class="col">
+                    <small class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
+                    <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" value="0" required>
+                </div>
+
+                <div class="col">
+                    <small class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
+                    <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[${soThuTuBienThe}][]" multiple required>
+                </div>
+
+                <div class="col pt-2">
+                    <span class="badge bg-danger mt-4 w-100" onclick="xoaBienTheKichCo('itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}')"><i class="fas fa-trash"></i></span>
+                </div>
+            </div>
+        </div>
+        `);
+                    }
+                }
+        <?php endforeach;
+        endforeach; ?>
+    }
+
+
     function viewFormBienThe() {
         var theLoaiSanPham = document.getElementById("theLoaiSanPham").value;
 
@@ -326,10 +580,12 @@
     });
 
     const imagesPreview = document.getElementById('imagesPreview');
+    const fileInput = document.getElementById('khoAnh');
 
-    document.getElementById('khoAnh').addEventListener('change', function() {
+    fileInput.addEventListener('change', function() {
         imagesPreview.innerHTML = '';
         const files = Array.from(this.files);
+        const dataTransfer = new DataTransfer();
 
         files.forEach((file, index) => {
             if (file && file.type.startsWith('image/')) {
@@ -345,17 +601,35 @@
                     const deleteBtn = document.createElement('button');
                     deleteBtn.innerHTML = '<i class="fal fa-times"></i>';
                     deleteBtn.classList.add('delete-btn');
-                    deleteBtn.onclick = () => container.remove();
+                    deleteBtn.onclick = () => {
+                        container.remove();
+                        removeFile(index);
+                    };
 
                     container.appendChild(img);
                     container.appendChild(deleteBtn);
-
                     imagesPreview.appendChild(container);
-                }
+                };
 
                 reader.readAsDataURL(file);
+                dataTransfer.items.add(file);
             }
         });
+
+        fileInput.files = dataTransfer.files;
+
+        function removeFile(index) {
+            const newDataTransfer = new DataTransfer();
+            const currentFiles = Array.from(fileInput.files);
+
+            currentFiles.forEach((file, i) => {
+                if (i !== index) {
+                    newDataTransfer.items.add(file);
+                }
+            });
+
+            fileInput.files = newDataTransfer.files;
+        }
     });
 </script>
 @endsection
