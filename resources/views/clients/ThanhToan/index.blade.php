@@ -290,6 +290,14 @@
                         </li>
                         @endif
 
+                        <li>
+                            <label for="viTien" class="item-method" onclick="chonPhuongThucThanhToan('viTien')" id="viTien-button">
+                                <img src="/clients/images/LOGO/wallet.png" alt="">
+                                <input type="radio" id="viTien" name="method" value="Wallet">
+                            </label>
+                            <span>Thanh Toán Qua Số Dư Ví (₫{{ Auth::user()->price >= 1 ? number_format(Auth::user()->price) : 0 }})</span>
+                        </li>
+
                         <!-- <li class="item-method" onclick="chonPhuongThucThanhToan('momo')" id="momo-button">
                                 <label for="momo">
                                     <img src="/clients/images/LOGO/momo.webp"

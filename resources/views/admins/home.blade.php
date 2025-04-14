@@ -463,21 +463,14 @@
                 datasets: [
                     {
                         label: "Tổng Nhận",
-                        data: <?= json_encode($revenues); ?>,
+                        data: <?= json_encode($daGiao); ?>,
                         backgroundColor: "#006666",
                         borderColor: "rgb(13, 161, 161)",
                         borderWidth: 1
                     },
                     {
-                        label: "Chờ Nhận",
-                        data: <?= json_encode($choNhan); ?>,
-                        backgroundColor: "rgb(255, 169, 21)",
-                        borderColor: "rgb(213, 137, 6)",
-                        borderWidth: 1
-                    },
-                    {
                         label: "Tổng Hoàn",
-                        data: <?= json_encode($revenues); ?>,
+                        data: <?= json_encode($hoanHang); ?>,
                         backgroundColor: "rgb(213, 19, 19)",
                         borderColor: "rgb(187, 0, 0)",
                         borderWidth: 1

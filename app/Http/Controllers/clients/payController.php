@@ -320,9 +320,7 @@ class payController extends Controller
         endif;
 
         if ($request->input("method") == "COD"):
-
-            
-            $order = DB::table("don_hang")->insert([
+            DB::table("don_hang")->insert([
                 "orderCode" => time(),
                 "MaDonHang" => $trading,
                 "ID_User" => Auth::user()->id,
@@ -336,7 +334,7 @@ class payController extends Controller
                 "GhiChu" => $request->input("message"),
                 "created_at" => date("Y-m-d H:i:s"),
             ]);
-            
+
             foreach ($sanPhamDaChon as $cart):
                 $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
                     ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
@@ -527,6 +525,96 @@ class payController extends Controller
             } else {
                 return redirect()->back()->with('error', 'Lỗi, Vui Lòng Thanh Toán Lại');
             }
+        elseif ($request->input("method") == "Wallet"):
+
+            if (Auth::user()->price < $tongTienSanPhamDaChon) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Số Dư Ví Không Đủ ₫".number_format($tongTienSanPhamDaChon)." Để Thanh Toán"
+                ]);
+            }
+
+            DB::table("don_hang")->insert([
+                "orderCode" => time(),
+                "MaDonHang" => $trading,
+                "ID_User" => Auth::user()->id,
+                "TrangThai" => "choxacnhan",
+                "PhuongThucThanhToan" => "Số Dư Ví",
+                "TrangThaiThanhToan" => "dathanhtoan",
+                "DiaChiNhan" => $request->input("location"),
+                "TongTien" => $tongTienSanPhamDaChon,
+                "GiamGia" => $tinhPhanTram,
+                "MaGiamGia" => ($request->input('voucher') ?? ""),
+                "GhiChu" => $request->input("message"),
+                "created_at" => date("Y-m-d H:i:s"),
+            ]);
+
+            foreach ($sanPhamDaChon as $cart):
+                $thongTinBienThe = DB::table("bien_the_san_pham")->where("ID_SanPham", $cart->ID_SanPham)
+                    ->where("ID_MauSac", DB::table("mau_sac")->where("id", $cart->MauSac)->first()->id)
+                    ->where("KichCo", $cart->KichCo)->first();
+
+                if ($thongTinBienThe->SoLuong >= 1):
+                    DB::table("san_pham_don_hang")->insert([
+                        "MaDonHang" => $trading,
+                        "Id_SanPham" => $cart->ID_SanPham,
+                        "KichCo" => $cart->KichCo,
+                        "MauSac" => DB::table("mau_sac")->where("id", $cart->MauSac)->first()->TenMauSac,
+                        "GiaTien" => $thongTinBienThe->Gia * $cart->SoLuongCart,
+                        "SoLuong" => $cart->SoLuongCart,
+                        "created_at" => date("Y-m-d H:i:s"),
+                    ]);
+
+                    $truSL = $thongTinBienThe->SoLuong - $cart->SoLuongCart;
+
+                    DB::table("bien_the_san_pham")->where("id", $thongTinBienThe->id)->update([
+                        "SoLuong" => $truSL
+                    ]);
+                endif;
+            endforeach;
+
+
+            foreach ($sanPhamDaChon2 as $cart):
+                $thongTinSanPham = DB::table("san_pham")->where("id", $cart->ID_SanPham)->first();
+
+                if ($thongTinSanPham->SoLuong >= 1):
+                    DB::table("san_pham_don_hang")->insert([
+                        "MaDonHang" => $trading,
+                        "Id_SanPham" => $thongTinSanPham->id,
+                        "GiaTien" => $thongTinSanPham->GiaSanPham,
+                        "SoLuong" => $cart->SoLuong,
+                        "created_at" => date("Y-m-d H:i:s"),
+                    ]);
+
+                    DB::table("san_pham")->where("id", $thongTinSanPham->id)->update([
+                        "SoLuong" => $thongTinSanPham->SoLuong - $cart->SoLuong
+                    ]);
+                endif;
+            endforeach;
+
+            if ($request->input("voucher")):
+                DB::table("su_dung_ma_giam_gia")->insert([
+                    "ID_User" => Auth::user()->id,
+                    "MaGiamGia" => $request->input('voucher'),
+                    "created_at" => date("Y-m-d H:i:s"),
+                ]);
+            endif;
+
+            DB::table("users")->where('id', Auth::user()->id)->update([
+                "price" => Auth::user()->price - $tongTienSanPhamDaChon
+            ]);
+
+            DB::table("cart")->where("ID_KhachHang", (Auth::user()->ID_Guests ?? Auth::user()->id))->whereIn("cart.id", $selectedCartIds)->delete();
+
+            DB::commit();
+
+            Session::forget('order_code');
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Tạo Đơn Hàng Thành Công!",
+                'redirect' => route('payment.success', $trading)
+            ]);
         endif;
     }
 
