@@ -114,7 +114,7 @@
                         <td>{{$item->SoLuong}}</td>
                         <td>{{number_format($item->GiaTien * $item->SoLuong, 0, ',', '.')}} đ</td>
                         <td>{{$item->TrangThai}}</td>
-                        <td><a href="{{ route('donhang.show', $item->MaDonHang) }}">Chi Tiết</a></td>
+                        {{-- <td><a href="{{ route('donhang.show', $item->MaDonHang) }}">Chi Tiết</a></td> --}}
                       </tr>
                     @endforeach
                   </tbody>

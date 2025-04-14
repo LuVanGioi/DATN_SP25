@@ -5,11 +5,7 @@ use Illuminate\Support\Facades\Storage;
 @extends("clients.themes")
 
 @section("title")
-<<<<<<< HEAD
     <title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
-=======
-<title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
->>>>>>> 6b37d573001a0d2402e352d731265f1d6abe9fdf
 @endsection
 
 @section('main')
