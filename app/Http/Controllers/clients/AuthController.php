@@ -126,7 +126,7 @@ class AuthController extends Controller
             "name" => $name,
             "email" => $email,
             "password" => $password,
-            "role" => 0     
+            "role" => "User"   
         ];
 
         $signup = User::query()->create($data);
