@@ -7,6 +7,17 @@
     "content-hash": "3246c5c0591cff6a6e5f84b617d83660",
     "packages": [
         {
+<<<<<<< HEAD
+            "name": "brick/math",
+            "version": "0.12.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/math.git",
+                "reference": "866551da34e9a618e64a819ee1e01c20d8a588ba"
+            },
+            "dist": {
+                "type": "zip",
+=======
             "name": "beyondcode/laravel-websockets",
             "version": "1.14.1",
             "source": {
@@ -99,6 +110,7 @@
             },
             "dist": {
                 "type": "zip",
+>>>>>>> 7184a123c5a08a97c721bf2b7c7c0d2c4888d11f
                 "url": "https://api.github.com/repos/brick/math/zipball/866551da34e9a618e64a819ee1e01c20d8a588ba",
                 "reference": "866551da34e9a618e64a819ee1e01c20d8a588ba",
                 "shasum": ""
@@ -655,6 +667,8 @@
                 }
             ],
             "time": "2025-03-06T22:45:56+00:00"
+<<<<<<< HEAD
+=======
         },
         {
             "name": "evenement/evenement",
@@ -811,6 +825,7 @@
                 "source": "https://github.com/php-fig/http-message-util/tree/1.1.5"
             },
             "time": "2020-11-24T22:02:12+00:00"
+>>>>>>> 7184a123c5a08a97c721bf2b7c7c0d2c4888d11f
         },
         {
             "name": "fruitcake/php-cors",
@@ -3348,6 +3363,8 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.8"
             },
             "time": "2025-03-16T03:05:19+00:00"
+<<<<<<< HEAD
+=======
         },
         {
             "name": "pusher/pusher-php-server",
@@ -3409,6 +3426,7 @@
                 "source": "https://github.com/pusher/pusher-http-php/tree/7.2.7"
             },
             "time": "2025-01-06T10:56:20+00:00"
+>>>>>>> 7184a123c5a08a97c721bf2b7c7c0d2c4888d11f
         },
         {
             "name": "ralouphie/getallheaders",
@@ -3623,6 +3641,17 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
+<<<<<<< HEAD
+            "name": "symfony/console",
+            "version": "v6.4.20",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/console.git",
+                "reference": "2e4af9c952617cc3f9559ff706aee420a8464c36"
+            },
+            "dist": {
+                "type": "zip",
+=======
             "name": "ratchet/rfc6455",
             "version": "v0.3.1",
             "source": {
@@ -4231,6 +4260,7 @@
             },
             "dist": {
                 "type": "zip",
+>>>>>>> 7184a123c5a08a97c721bf2b7c7c0d2c4888d11f
                 "url": "https://api.github.com/repos/symfony/console/zipball/2e4af9c952617cc3f9559ff706aee420a8464c36",
                 "reference": "2e4af9c952617cc3f9559ff706aee420a8464c36",
                 "shasum": ""
@@ -5794,6 +5824,8 @@
                 }
             ],
             "time": "2025-03-10T17:11:00+00:00"
+<<<<<<< HEAD
+=======
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -5883,6 +5915,7 @@
                 }
             ],
             "time": "2023-07-26T11:53:26+00:00"
+>>>>>>> 7184a123c5a08a97c721bf2b7c7c0d2c4888d11f
         },
         {
             "name": "symfony/routing",

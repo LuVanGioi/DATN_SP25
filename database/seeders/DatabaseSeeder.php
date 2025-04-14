@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             BienTheSeeder::class,
             CaiDatWebsiteSeeder::class,
             TinhThanhSeeder::class,
+            PayOsSeeder::class,
             HuyenSeeder::class,
             NganHangSeeder::class,
         ]);
