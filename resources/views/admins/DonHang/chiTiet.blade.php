@@ -149,7 +149,6 @@
                         </div>
                     </div>
                     @endforeach
->>>>>>> 6b37d573001a0d2402e352d731265f1d6abe9fdf
                 </div>
             </div>
             <div class="card-footer">
