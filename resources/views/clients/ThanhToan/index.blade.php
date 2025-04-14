@@ -98,35 +98,7 @@
             <div class="col-md-5">
                 @if (!Auth::check())
                 <h3 class="block-title"><span>Đăng Nhập & Đăng Ký</span></h3>
-                <p class="text-success">Bạn Chưa Đăng Nhập, Vui Lòng Đăng Nhập Để Thanh Toán Đơn Hàng</p>
-                <form action="{{route('login')}}" method="POST" class="form-login">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="email"
-                                    placeholder="Tên đăng nhập hoặc email" value="{{old('email')}}"
-                                    autocomplete="email">
-
-                                @error('email')
-                                <p class="text-danger">{{ $message}}</p>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group"><input class="form-control" type="password" name="password"
-                                    placeholder="Mật khẩu của bạn"></div>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-theme btn-block btn-theme-dark">Đăng Nhập</button>
-                        </div>
-                        <div class="col-md-6">
-                            <a class="btn btn-block btn-theme btn-theme-dark btn-create"
-                                href="{{route('register')}}">Tạo Tài
-                                Khoản</a>
-                        </div>
-                    </div>
-                </form>
+                <p>Bạn Chưa Đăng Nhập, Vui Lòng <a href="/dang-nhap">Đăng Nhập</a> Để Thanh Toán Đơn Hàng. Nếu chưa có tài khoản bấm <a href="/dang-ky">Đăng Ký</a></p>
                 @else
                 <h3 class="block-title"><span>Địa Chỉ Giao Hàng</span></h3>
                 <div role="tab" id="headingTwo" class="d-flex">
@@ -334,21 +306,21 @@
                             <tr>
                                 <td style="text-align: start">Tổng Tiền Hàng:</td>
                                 <td style="text-align: end; font-weight: bold">
-                                    {{ number_format($tongTienSanPhamDaChon) }} VND
+                                    ₫{{ number_format($tongTienSanPhamDaChon) }}
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align: start">Tổng Tiền Phí Vận Chuyển:</td>
-                                <td style="text-align: end; font-weight: bold">0 VND</td>
+                                <td style="text-align: end; font-weight: bold">₫0</td>
                             </tr>
                             <tr>
                                 <td style="text-align: start">Giảm Giá Tiền Hàng:</td>
-                                <td style="text-align: end; font-weight: bold" id="discountForm">0 VND</td>
+                                <td style="text-align: end; font-weight: bold" id="discountForm">₫0</td>
                             </tr>
                             <tfoot>
                                 <tr>
                                     <td colspan="2" style="padding: 5px 0px; margin: 0px">Tổng Thanh Toán:
-                                        <span id="total_price">{{ number_format($tongTienSauGiam) }}</span> VND
+                                        ₫<span id="total_price">{{ number_format($tongTienSauGiam) }}</span>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -396,15 +368,15 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === "success") {
-                        document.getElementById("discountForm").innerHTML = data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
-                        document.getElementById("total_price").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+                        document.getElementById("discountForm").innerHTML = "₫" + data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        document.getElementById("total_price").innerHTML = "₫" + data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         if (data.discount >= 1) {
                             AlertDATN("success", data.message);
                         }
                     } else {
                         AlertDATN("error", data.message);
-                        document.getElementById("discountForm").innerHTML = data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
-                        document.getElementById("total_price").innerHTML = data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND";
+                        document.getElementById("discountForm").innerHTML = "₫" + data.discount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        document.getElementById("total_price").innerHTML = "₫" + data.total_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }
                 })
                 .catch(error => {

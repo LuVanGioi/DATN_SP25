@@ -109,11 +109,11 @@ use Illuminate\Support\Facades\Storage;
                     <h2 class="widget-title">Tài Khoản</h2>
                     <ul>
                         <li><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
+                        <li><a href="/vi"> Ví Của Tôi </a></li>
                         <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
-                        <li class="active"><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
-                        <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
+                        <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
+                        <li class="active"><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
                         <li><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
-                        <li><a href="/yeu-cau-tra-hang">Yêu Cầu Trả Hàng</a></li>
                     </ul>
                 </div>
             </div>
