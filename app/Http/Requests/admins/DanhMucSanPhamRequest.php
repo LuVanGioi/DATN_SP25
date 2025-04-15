@@ -22,7 +22,7 @@ class DanhMucSanPhamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "TenDanhMucSanPham" => "required|max:255"
+            "TenDanhMucSanPham" => "required|max:255|unique:danh_muc_san_pham,TenDanhMucSanPham"
         ];
     }
 
@@ -30,6 +30,7 @@ class DanhMucSanPhamRequest extends FormRequest
         return [
             "TenDanhMucSanPham.required" => "Vui Lòng Nhập Tên Danh Mục Sản Phẩm",
             "TenDanhMucSanPham.max" => "Tên Danh Mục Quá Dài",
+            "TenDanhMucSanPham.unique" => "Tên Danh Mục Đã Tồn Tại",
         ];
     }
 }
