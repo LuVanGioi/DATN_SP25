@@ -34,7 +34,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label for="ID_DichVuSanPham">Dịch Vụ</label>
-                                        <select name="ID_DichVuSanPham" class="form-control">
+                                        <select name="ID_DichVuSanPham" id="selectDichVu" class="form-control">
                                             @foreach ($dichVu as $dv)
                                             <option value="{{ $dv->id }}" {{ ($sanPham->ID_DichVuSanPham == $dv->id ? "selected" : "") }}>{{ $dv->TenDichVuSanPham }}</option>
                                             @endforeach
@@ -48,10 +48,8 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Danh Mục</label>
-                                        <select name="DanhMuc" class="form-control" required>
-                                            @foreach ($danhSachDanhMuc as $DanhMuc)
-                                            <option value="{{ $DanhMuc->id }}" {{ ($sanPham->ID_DanhMuc == $DanhMuc->id ? "selected" : "") }}>{{ $DanhMuc->TenDanhMucSanPham }}</option>
-                                            @endforeach
+                                        <select name="DanhMuc" class="form-control" id="selectDanhMuc" required>
+                                            <option value="{{ DB::table("danh_muc_san_pham")->find($sanPham->ID_DanhMuc)->id }}" selected>{{ DB::table("danh_muc_san_pham")->find($sanPham->ID_DanhMuc)->TenDanhMucSanPham }}</option>
                                         </select>
                                         @error("DanhMuc")
                                         <p class="text-danger">{{ $message }}</p>
@@ -630,6 +628,28 @@
 
             fileInput.files = newDataTransfer.files;
         }
+    });
+
+    const allDanhMuc = @json($danhSachDanhMuc);
+
+    const selectDichVu = document.getElementById('selectDichVu');
+    const selectDanhMuc = document.getElementById('selectDanhMuc');
+
+    function updateDanhMucOptions(dichVuId) {
+        selectDanhMuc.innerHTML = '';
+
+        const filtered = allDanhMuc.filter(dm => dm.ID_DichVuSanPham == dichVuId);
+
+        filtered.forEach(dm => {
+            const option = document.createElement('option');
+            option.value = dm.id;
+            option.textContent = dm.TenDanhMucSanPham;
+            selectDanhMuc.appendChild(option);
+        });
+    }
+
+    selectDichVu.addEventListener('change', function() {
+        updateDanhMucOptions(this.value);
     });
 </script>
 @endsection

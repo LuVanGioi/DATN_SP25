@@ -20,7 +20,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label for="ID_DichVuSanPham">Môn Thể Thao</label>
-                                        <select name="ID_DichVuSanPham" id="selectDichVu" class="form-control">
+                                        <select name="ID_DichVuSanPham" id="selectDichVu"  class="form-control">
                                             <option value=""> -- Chọn Môn Thể Thao --</option>
                                             @foreach ($dichVu as $dv)
                                             <option value="{{ $dv->id }}">{{ $dv->TenDichVuSanPham }}</option>
