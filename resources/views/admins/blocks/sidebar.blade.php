@@ -91,21 +91,27 @@
 
     <li class="sidebar-list">
       <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="{{route('RutTienVi.index')}}">
+        <i class="fa-light fa-money-bill"></i>
+        <span>Danh Sách Rút Tiền</span>
+      </a>
+    </li>
+
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
       <a class="sidebar-link" href="{{route('Banner.index')}}">
         <i class="fa-light fa-image"></i>
         <span>Banners</span>
       </a>
     </li>
 
-
-
-      <li class="sidebar-list">
-        <i class="fa fa-thumb-tack"> </i>
-        <a class="sidebar-link" href="/admin/BaoCao">
-          <i class="fa-light fa-bug"></i>
-          <span>Yêu Cầu Hỗ Trợ</span>
-        </a>
-      </li>
+    <li class="sidebar-list">
+      <i class="fa fa-thumb-tack"> </i>
+      <a class="sidebar-link" href="/admin/BaoCao">
+        <i class="fa-light fa-bug"></i>
+        <span>Yêu Cầu Hỗ Trợ</span>
+      </a>
+    </li>
 
     <li class="sidebar-list">
       <i class="fa fa-thumb-tack"> </i>

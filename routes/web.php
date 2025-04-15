@@ -44,6 +44,7 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\ChiTietHuyDonController;
 use App\Http\Controllers\clients\LichSuDonHangController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
+use App\Http\Controllers\admins\RutTienViController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\DanhMucSanPhamController;
 use App\Http\Controllers\clients\DiaChiNhanHangController;
@@ -87,7 +88,6 @@ Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
 Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
 Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
-
 Route::get('payos/cancel', [PayOSController::class, 'cancel'])->name('payos.cancel');
 Route::get('payos/callback', [PayOSController::class, 'callback'])->name('payos.callback');
 
@@ -188,6 +188,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::resource('admin/FAQ', FAQController::class);
+    Route::resource('admin/RutTienVi', RutTienViController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 });
 Route::post("api/client", [clientController::class, "get_all"])->name("api.client");

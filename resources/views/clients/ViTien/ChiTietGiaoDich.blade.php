@@ -23,7 +23,7 @@
                         <div class="text-danger"><i class="fas fa-exclamation"></i> Khác</div>
                         @endif
                         @if ($donHang->TrangThai == "thanhcong")
-                        <p>Thời Gian Hoàn Thành: {{ date("d-m-Y H:i", strtotime($donHang->created_at)) }}</p>
+                        <p>Thời Gian Hoàn Thành: {{ date("d-m-Y H:i", strtotime($donHang->updated_at)) }}</p>
                         @endif
                     </div>
                 </div>
