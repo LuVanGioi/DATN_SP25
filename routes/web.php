@@ -172,8 +172,9 @@ Route::get('faq', [FAQClientController::class, 'index'])->name('faq');
 Route::resource("danh-muc-bai-viet", ClientsDanhMucBaiVietController::class);
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");
 Route::get('/bai-viet/{id}', [BaiVietChiTietController::class, 'show'])->name('baiviet.show');
-Route::post("binhluan", [BaiVietChiTietController::class, ""])->name("binhluan.store");
+Route::post("binhluan", [BaiVietChiTietController::class, "store"])->name("binhluan.store");
 Route::post("binhluan/reply", [BaiVietChiTietController::class, "reply"])->name("binhluan.reply");
+Route::post('binhluan/{id}/duyet', [BaiVietChiTietController::class, 'duyet'])->name('binhluan.duyet');
 
 #ADMINS
 Route::middleware(['auth.admin'])->group(function () {
