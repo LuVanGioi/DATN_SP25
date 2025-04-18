@@ -48,7 +48,7 @@
                             </tbody>
                         </table>
                     </div>
-<<<<<<< HEAD
+
                 
                     <!-- Hiển thị danh sách đánh giá -->
                     <div class="reviews-list mt-4">
@@ -91,7 +91,7 @@
                             <hr>
                         </div>
                         @endforeach
-=======
+
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-4">
                     <div class="widget account-details">
@@ -104,13 +104,12 @@
                             <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
                             <li class="active"><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
                         </ul>
->>>>>>> d95c2f25551370b6155282c309b70d86b269327b
                     </div>
                 </div>
             </div>
 
             <!-- Sidebar: Đánh Giá và Nhận Xét -->
-            <div class="col-lg-3 col-md-3 col-sm-4">
+            {{-- <div class="col-lg-3 col-md-3 col-sm-4">
                 <div class="widget account-details">
                     <h2 class="widget-title">Đánh Giá và Nhận Xét</h2>
                     <ul>
@@ -122,7 +121,7 @@
                         <li><a href="/yeu-cau-tra-hang">Yêu Cầu Trả Hàng</a></li>
                     </ul>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </section>
