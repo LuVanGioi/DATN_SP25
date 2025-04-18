@@ -44,6 +44,7 @@ use App\Http\Controllers\admins\ThongTinLienHeController;
 use App\Http\Controllers\clients\ChiTietHuyDonController;
 use App\Http\Controllers\clients\LichSuDonHangController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
+use App\Http\Controllers\admins\RutTienViController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\DanhMucSanPhamController;
 use App\Http\Controllers\clients\DiaChiNhanHangController;
@@ -56,6 +57,7 @@ use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\DanhMucBaiVietController as ClientsDanhMucBaiVietController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
+use App\Http\Controllers\clients\ViController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,7 +89,6 @@ Route::post('pay', [payController::class, 'checkDiscount'])->name("pay");
 Route::get('payment/{code}', [payController::class, 'payment'])->name("payent");
 Route::post('payment/{code}', [payController::class, 'payment_store'])->name("payment.store");
 Route::get('payment/success/{trading}', [payController::class, 'payment_success'])->name("payment.success");
-
 Route::get('payos/cancel', [PayOSController::class, 'cancel'])->name('payos.cancel');
 Route::get('payos/callback', [PayOSController::class, 'callback'])->name('payos.callback');
 
@@ -122,10 +123,15 @@ Route::post('/thong-tin-tai-khoan/update', [ClientsAuthController::class, 'updat
     ->middleware('auth')
     ->name('update-profile');
 
-
-
 Route::get('thong-tin-tai-khoan/edit/{id}', [ThongTinTaiKhoanController::class, 'edit'])->name('thong-tin-tai-khoan.edit');
 Route::put('thong-tin-tai-khoan/update/{id}', [ThongTinTaiKhoanController::class, 'update'])->name('thong-tin-tai-khoan.update');
+Route::get('vi', [ViController::class, "index"]);
+Route::get('vi/nap-tien', [ViController::class, "NapTien"])->name("vi.NapTien");
+Route::get('vi/rut-tien', [ViController::class, "RutTien"])->name("vi.RutTien");
+Route::get('vi/lich-su-giao-dich', [ViController::class, "LichSu"])->name("vi.LichSu");
+Route::post('api/create-qr', [ViController::class, "TaoQr"])->name("vi.TaoQr");
+Route::post('api/withdraw', [ViController::class, "RutTienStore"])->name("vi.RutTienApi");
+Route::get('vi/chi-tiet-giao-dich/{code}', [ViController::class, "ChiTietGiaoDich"]);
 
 Route::get('doi-mat-khau', [DoiMatKhauController::class, 'index'])->name('doi-mat-khau');
 Route::get('doi-mat-khau/edit/{id}', [DoiMatKhauController::class, 'edit'])->name('doi-mat-khau.edit');
@@ -144,6 +150,7 @@ Route::get('danh-muc/{code}', [DanhMucSanPhamController::class, 'show'])->name('
 
 
 
+
 // đánh giá
 Route::get('/danh-gia/{id}', [DanhGiaController::class, 'show'])->name('danh-gia');
 Route::post('/luu-danh-gia/{id}', [DanhGiaController::class, 'store'])->name('luu-danh-gia');
@@ -151,24 +158,16 @@ Route::post('/cap-nhat-danh-gia/{id}', [DanhGiaController::class, 'update'])->na
 Route::post('/danh-gia/{id}/tra-loi', [DanhGiaController::class, 'reply'])->name('DanhGia.reply');
 Route::get('/danh-gia', [DanhGiaController::class, 'index'])->name('DanhGia.index');
 //
+
+
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');
-});
-Route::get('/yeu-cau-tra-hang', function () {
-    return view('clients.ThongTinTaiKhoan.YeuCauTraHang');
 });
 Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
 })->name("contact");
 
-// Route::get('faq', function () {
-//     return view('clients.Faq.Faq');
-// })->name("faq");
 Route::get('faq', [FAQClientController::class, 'index'])->name('faq');
-
-Route::get('/san-pham-yeu-thich', function () {
-    return view('clients.SanPhamYeuThich.SanPhamYeuThich');
-});
 
 Route::resource("danh-muc-bai-viet", ClientsDanhMucBaiVietController::class);
 Route::get('danh-sach-bai-viet', [BangTinController::class, 'index'])->name("danhSachBaiViet.index");
@@ -202,6 +201,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/CaiDatWebsite', CaiDatWebsiteController::class);
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::resource('admin/FAQ', FAQController::class);
+    Route::resource('admin/RutTienVi', RutTienViController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 });
 Route::post("api/client", [clientController::class, "get_all"])->name("api.client");

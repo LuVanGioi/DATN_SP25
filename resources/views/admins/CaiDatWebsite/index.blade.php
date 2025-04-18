@@ -90,9 +90,9 @@
                                     <div class="row">
                                         <div class="col">
                                             <div class="mb-3">
-                                                <label>Từ Khóa Trang Web</label>
-                                                <textarea class="form-control @error(" TuKhoa") is-invalid border-danger @enderror" type="text" name="TuKhoa" rows="3" placeholder="Từ Khóa Website" required>{{ $cai_dat_website->TuKhoa }}</textarea>
-                                                @error("TuKhoa")
+                                                <label>Mô Tả Trang Web</label>
+                                                <textarea class="form-control @error(" MoTa") is-invalid border-danger @enderror" type="text" name="MoTa" rows="5" placeholder="Mô Tả Website" required>{{ $cai_dat_website->MoTa }}</textarea>
+                                                @error("MoTa")
                                                 <p class="text-danger">{{ $message }}</p>
                                                 @enderror
                                             </div>
@@ -100,14 +100,13 @@
 
                                         <div class="col">
                                             <div class="mb-3">
-                                                <label>Mô Tả Trang Web</label>
-                                                <textarea class="form-control @error(" MoTa") is-invalid border-danger @enderror" type="text" name="MoTa" rows="3" placeholder="Mô Tả Website" required>{{ $cai_dat_website->TenCuaHang }}</textarea>
-                                                @error("MoTa")
+                                                <label>Từ Khóa Trang Web</label>
+                                                <textarea class="form-control @error(" TuKhoa") is-invalid border-danger @enderror" type="text" name="TuKhoa" rows="5" placeholder="Từ Khóa Website" required>{{ $cai_dat_website->TuKhoa }}</textarea>
+                                                @error("TuKhoa")
                                                 <p class="text-danger">{{ $message }}</p>
                                                 @enderror
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

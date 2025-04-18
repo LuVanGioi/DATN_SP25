@@ -35,7 +35,7 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
-                                            <th>Dịch Vụ / Danh Mục</th>
+                                            <th>Dịch Vụ / Danh Mục / Thương Hiệu</th>
                                             <th>Hình Ảnh</th>
                                             <th>Thông Tin</th>
                                             <th>Thể Loại</th>
@@ -56,6 +56,9 @@
                                                 <div><strong>Danh Mục: </strong> {{ $danhMuc->TenDanhMucSanPham }}</div>
                                                 @endif
                                                 @endforeach
+                                                <div>
+                                                    <strong>Thương Hiệu: </strong> {{ DB::table("thuong_hieu")->find($SanPham->ID_ThuongHieu)->TenThuongHieu }}
+                                                </div>
                                             </td>
                                             <td class="text-center"><img src="{{ Storage::url($SanPham->HinhAnh) }}" alt="{{ $SanPham->TenSanPham }}" width="100px" class="img-fluid"></td>
                                             <td>

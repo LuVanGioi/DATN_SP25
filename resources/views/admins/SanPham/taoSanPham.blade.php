@@ -19,8 +19,9 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="ID_DichVuSanPham">Dịch Vụ</label>
-                                        <select name="ID_DichVuSanPham" class="form-control">
+                                        <label for="ID_DichVuSanPham">Môn Thể Thao</label>
+                                        <select name="ID_DichVuSanPham" id="selectDichVu"  class="form-control">
+                                            <option value=""> -- Chọn Môn Thể Thao --</option>
                                             @foreach ($dichVu as $dv)
                                             <option value="{{ $dv->id }}">{{ $dv->TenDichVuSanPham }}</option>
                                             @endforeach
@@ -34,11 +35,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Danh Mục</label>
-                                        <select name="DanhMuc" class="form-control @error(" DanhMuc") is-invalid border-danger @enderror" required>
-                                            @foreach ($danhSachDanhMuc as $DanhMuc)
-                                            <option value="{{ $DanhMuc->id }}">{{ $DanhMuc->TenDanhMucSanPham }}</option>
-                                            @endforeach
-                                        </select>
+                                        <select name="DanhMuc" id="selectDanhMuc" class="form-control @error(" DanhMuc") is-invalid border-danger @enderror" required></select>
                                         @error("DanhMuc")
                                         <p class="text-danger">{{ $message }}</p>
                                         @enderror
@@ -187,6 +184,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col">
                                     <a href="{{ route("SanPham.index") }}" class="btn btn-dark">Quay Lại</a>
@@ -453,6 +451,28 @@
 
             fileInput.files = newDataTransfer.files;
         }
+    });
+
+    const allDanhMuc = @json($danhSachDanhMuc);
+
+    const selectDichVu = document.getElementById('selectDichVu');
+    const selectDanhMuc = document.getElementById('selectDanhMuc');
+
+    function updateDanhMucOptions(dichVuId) {
+        selectDanhMuc.innerHTML = '';
+
+        const filtered = allDanhMuc.filter(dm => dm.ID_DichVuSanPham == dichVuId);
+
+        filtered.forEach(dm => {
+            const option = document.createElement('option');
+            option.value = dm.id;
+            option.textContent = dm.TenDanhMucSanPham;
+            selectDanhMuc.appendChild(option);
+        });
+    }
+
+    selectDichVu.addEventListener('change', function() {
+        updateDanhMucOptions(this.value);
     });
 </script>
 @endsection

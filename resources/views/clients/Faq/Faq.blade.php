@@ -36,7 +36,7 @@
                             <div id="collapse{{ $item->id }}" class="panel-collapse collapse" role="tabpanel"
                                  aria-labelledby="heading{{ $item->id }}">
                                 <div class="panel-body">
-                                    {{ $item->NoiDung }}
+                                    {!! $item->NoiDung !!}
                                 </div>
                             </div>
                         </div>

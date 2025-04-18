@@ -136,12 +136,6 @@
                 <a href="#" class="menu-toggle-close btn"><i class="fa fa-times"></i></a>
                 <ul class="nav sf-menu">
                     <li><a href="/">Trang chủ</a></li>
-                    <li>
-                        <a href="/hang-moi-ve">Hàng mới về</a>
-                    </li>
-                    <li>
-                        <a href="/hang-giam-gia">Hàng Giảm Giá</a>
-                    </li>
                     <li class="megamenu">
                         <a href="#" class="sf-with-ul">Môn Thể Thao</a>
                         <ul>
@@ -161,6 +155,7 @@
                     </li>
                     <li><a href="{{ route("danhSachBaiViet.index") }}">Bài viết</a></li>
                     <li><a href="{{ route("contact") }}">Liên hệ</a></li>
+                    <li><a href="{{ route("faq") }}">FAQ</a></li>
                 </ul>
             </nav>
         </div>

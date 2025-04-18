@@ -62,7 +62,7 @@ class DanhMucController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DanhMucSanPhamRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $thongTin = DB::table("danh_muc_san_pham")->find($id);
 

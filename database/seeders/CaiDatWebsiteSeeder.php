@@ -37,8 +37,8 @@ DB::table('smtp_mail')->insert([
     'smtp_host' => 'smtp.gmail.com',
     'smtp_encryption' => 'tls',
     'smtp_port' => 587,
-    'smtp_email' => 'Mẫu',
-    'smtp_password' => 'Mẫu',
+    'smtp_email' => 'lumanhgioi.vn@gmail.com',
+    'smtp_password' => 'pdsp fvbe kwtq lpzb',
     'created_at' => now()
 ]);
 
@@ -116,7 +116,7 @@ Nếu bạn cần hỗ trợ, vui l&ograve;ng li&ecirc;n hệ với ch&uacute;ng
         DB::table('tien_ich_website')->insert([
             'Loai' => 'support_zalo_2',
             'TrangThai' => '0',
-            'SoDienThoai' => '0123456789',
+            'SoDienThoai' => 'abc@gmail.com',
             'DuongDan' => 'Đường Dẫn Facebook',
             'created_at' => date('Y/m/d H:i:s')
         ]);
@@ -199,6 +199,13 @@ Nếu bạn cần hỗ trợ, vui l&ograve;ng li&ecirc;n hệ với ch&uacute;ng
         DB::table('cai_dat_giao_dien_website')->insert([
             'Loai' => '3_banners_status_home',
             'TrangThai' => '1',
+            'created_at' => date('Y/m/d H:i:s')
+        ]);
+
+        DB::table('lien_ket_ket_website')->insert([
+            'DuongDan' => 'dieu-khoan-va-dich-vu',
+            'TieuDe' => 'Điều Khoản Và Dịch Vụ',
+            'NoiDung' => 'Mẫu',
             'created_at' => date('Y/m/d H:i:s')
         ]);
     }
