@@ -50,8 +50,7 @@
                             </tbody>
                         </table>
                     </div>
-<<<<<<< HEAD
-                
+
                     <!-- Hiển thị danh sách đánh giá -->
                     <div class="reviews-list mt-4">
                         <h3>Đánh Giá Của Bạn Về Sản Phẩm Của Chúng Tôi</h3>
@@ -82,25 +81,11 @@
                             @endif
                         </div>
                         @endforeach
-=======
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4">
-                    <div class="widget account-details">
-                        <h2 class="widget-title">Đánh Giá và Nhận Xét</h2>
-                        <ul>
-                            <li><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
-                            <li><a href="/vi"> Ví Của Tôi </a></li>
-                            <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
-                            <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
-                            <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
-                            <li class="active"><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
-                        </ul>
->>>>>>> d95c2f25551370b6155282c309b70d86b269327b
                     </div>
                 </div>
             </div>
 
-            <!-- Sidebar: Đánh Giá và Nhận Xét -->
+            <!-- Sidebar -->
             <div class="col-lg-3 col-md-3 col-sm-4">
                 <div class="widget account-details">
                     <h2 class="widget-title">Đánh Giá và Nhận Xét</h2>
@@ -113,7 +98,7 @@
                         <li class="active"><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
                     </ul>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 </section>
