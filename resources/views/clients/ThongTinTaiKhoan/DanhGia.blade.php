@@ -8,10 +8,12 @@
 <section class="page-section">
     <div class="wrap container">
         <div class="row">
+            <!-- Nội dung chính -->
             <div class="col-lg-9 col-md-9 col-sm-8">
                 <div class="information-title">Đánh Giá và Nhận Xét Của Bạn</div>
                 <div class="details-wrap">
                     <div class="details-box orders">
+                        <!-- Nội dung đánh giá -->
                         <table class="table">
                             <tbody>
                                 @php
@@ -48,11 +50,10 @@
                             </tbody>
                         </table>
                     </div>
-<<<<<<< HEAD
-                
+
                     <!-- Hiển thị danh sách đánh giá -->
                     <div class="reviews-list mt-4">
-                        <h3>Đánh Giá Của Bạn Về Sản Phẩm Của Chúng Tôi </h3>
+                        <h3>Đánh Giá Của Bạn Về Sản Phẩm Của Chúng Tôi</h3>
                         @foreach ($danhGias as $danhGia)
                         <div class="review-item">
                             <p style="display: flex; align-items: center; gap: 10px;">
@@ -65,7 +66,7 @@
                                 <span>Sản phẩm: <strong>{{ $danhGia->TenSanPham }}</strong></span>
                                 <div class="ratinggg" id="ratinggg-{{ $danhGia->id_san_pham }}">
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <i class="fa fa-star" data-value="{{ $i }}"></i>
+                                        <i class="fa fa-star {{ $i <= $danhGia->rating ? 'selected' : '' }}" data-value="{{ $i }}"></i>
                                     @endfor
                                 </div>
                             </p>
@@ -78,48 +79,23 @@
                                 <p class="admin-reply"><strong>Wanderweave:</strong> {{ $danhGia->tra_loi }}</p>
                             </div>
                             @endif
-                    
-                            @if (!$danhGia->da_sua && $danhGia->id_users == auth()->id())
-                            <form action="{{ route('cap-nhat-danh-gia', ['id' => $danhGia->id]) }}" method="POST" class="mt-2 form-edit" style="display: none;">
-                                @csrf
-                                <textarea name="noi_dung" class="form-control" rows="3" placeholder="Chỉnh sửa đánh giá của bạn">{{ $danhGia->noi_dung }}</textarea>
-                                <button type="submit" class="btn btn-theme mt-2">Cập Nhật Đánh Giá</button>
-                                <button type="button" class="btn btn-secondary mt-2 btn-cancel">Quay lại</button>
-                            </form>
-                            @endif
-                    
-                            <hr>
                         </div>
                         @endforeach
-=======
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-4">
-                    <div class="widget account-details">
-                        <h2 class="widget-title">Đánh Giá và Nhận Xét</h2>
-                        <ul>
-                            <li><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
-                            <li><a href="/vi"> Ví Của Tôi </a></li>
-                            <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
-                            <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
-                            <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
-                            <li class="active"><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
-                        </ul>
->>>>>>> d95c2f25551370b6155282c309b70d86b269327b
                     </div>
                 </div>
             </div>
 
-            <!-- Sidebar: Đánh Giá và Nhận Xét -->
+            <!-- Sidebar -->
             <div class="col-lg-3 col-md-3 col-sm-4">
                 <div class="widget account-details">
                     <h2 class="widget-title">Đánh Giá và Nhận Xét</h2>
                     <ul>
                         <li><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
+                        <li><a href="/vi"> Ví Của Tôi </a></li>
                         <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
                         <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
                         <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
                         <li class="active"><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
-                        <li><a href="/yeu-cau-tra-hang">Yêu Cầu Trả Hàng</a></li>
                     </ul>
                 </div>
             </div>
