@@ -158,7 +158,7 @@ Route::post('/cap-nhat-danh-gia/{id}', [DanhGiaController::class, 'update'])->na
 Route::post('/danh-gia/{id}/tra-loi', [DanhGiaController::class, 'reply'])->name('DanhGia.reply');
 Route::get('/danh-gia', [DanhGiaController::class, 'index'])->name('DanhGia.index');
 //
-
+Route::get('/tim-kiem', [App\Http\Controllers\clients\SanPhamController::class, 'timKiem'])->name('sanpham.timkiem');
 
 Route::get('/danh-gia-va-nhan-xet', function () {
     return view('clients.ThongTinTaiKhoan.DanhGia');

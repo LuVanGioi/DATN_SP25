@@ -65,4 +65,15 @@ class SanPhamController extends Controller
 
         return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "khoAnhBienThe", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
     }
+    public function timKiem(Request $request)
+{
+    $tuKhoa = $request->input('q'); 
+
+   
+    $sanPhams = DB::table('san_pham')
+        ->where('TenSanPham', 'like', '%' . $tuKhoa . '%')
+        ->where('Xoa', 0) 
+        ->get();
+    return view('clients.SanPham.TimKiem', compact('sanPhams', 'tuKhoa'));
+}
 }
