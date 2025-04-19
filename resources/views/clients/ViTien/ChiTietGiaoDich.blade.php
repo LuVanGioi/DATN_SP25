@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                @if ($donHang->TheLoai == "withdraw")
+                @if ($donHang->TheLoai == "withdraw" && $donHang->TrangThai == "thatbai")
                 <div class="card">
                     <div class="card-body">
                         <b class="text-danger">Lý Do: </b> {{ $donHang->LiDoThatBai }}

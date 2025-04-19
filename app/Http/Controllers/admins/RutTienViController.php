@@ -25,6 +25,16 @@ class RutTienViController extends Controller
     {
         DB::beginTransaction();
 
+        $donRut = DB::table("lich_su_giao_dich_vi")->find($id);
+
+        $nguoiRut = DB::table("users")->find($donRut->ID_User);
+
+        if ($request->input("TrangThai") == "thatbai") {
+            DB::table("users")->where("id", $nguoiRut->id)->update([
+                "price" => $nguoiRut->price + $donRut->SoTien
+            ]);
+        }
+
         DB::table("lich_su_giao_dich_vi")->where("id", $id)->update([
             "TrangThai" => $request->input("TrangThai"),
             "LiDoThatBai" => ($request->input("LiDoThatBai") ?? null),
@@ -32,6 +42,6 @@ class RutTienViController extends Controller
 
         DB::commit();
 
-        return redirect()->route("RutTienVi.index")->with("success","Chỉnh Sửa Trạng Thái Thành Công!");
+        return redirect()->route("RutTienVi.index")->with("success", "Chỉnh Sửa Trạng Thái Thành Công!");
     }
 }

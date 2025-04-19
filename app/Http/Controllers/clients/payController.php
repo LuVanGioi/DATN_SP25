@@ -446,7 +446,7 @@ class payController extends Controller
                     "orderCode" => $orderCode,
                     "MaDonHang" => $trading,
                     "ID_User" => Auth::user()->id,
-                    "TrangThai" => "chuathanhtoan",
+                    "TrangThai" => "choxacnhan",
                     "PhuongThucThanhToan" => "Chuyển Khoản Ngân Hàng",
                     "TrangThaiThanhToan" => "chuathanhtoan",
                     "DiaChiNhan" => $request->input("location"),

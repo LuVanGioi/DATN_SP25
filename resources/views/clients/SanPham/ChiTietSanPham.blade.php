@@ -178,7 +178,7 @@
         <div class="tabs-wrapper content-tabs">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#item-description" data-toggle="tab">Thông Tin Sản Phẩm</a></li>
-                <li><a href="#reviews" data-toggle="tab">Đánh Giá (0)</a></li>
+                <li><a href="#reviews" data-toggle="tab">Đánh Giá</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="item-description">
@@ -186,7 +186,7 @@
                 </div>
                 <div class="tab-pane fade" id="reviews">
                     <div class="comments">
-
+                        @foreach (DB::table("danh_gia")->where("id_san_pham", $thongTinSanPham->id)->get() as $dg)
                         <div class="media comment">
                             <a href="#" class="pull-left comment-avatar">
                                 <img alt="" src="" class="media-object">
@@ -194,14 +194,15 @@
                             <div class="media-body">
                                 <p class="comment-meta">
                                     <span class="comment-author">
-                                        <a>MạnhDev</a>
-                                        <span class="comment-date"> 4 Ngày Trước <i class="fa fa-flag"></i></span>
+                                        <a>{{ (DB::table("users")->find($dg->id_users)->name ?? DB::table("users")->find($dg->id_users)->email) }}</a>
+                                        <span class="comment-date ms-1"> {{ $dg->ngay_danh_gia }} <i class="fa fa-flag"></i></span>
                                     </span>
                                 </p>
-                                <p class="comment-text">Xin Chào</p>
+                                <p class="comment-text">{{ $dg->noi_dung }}</p>
+                                <p></p>
                             </div>
                         </div>
-
+                        @endforeach
                     </div>
                 </div>
             </div>
