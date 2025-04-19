@@ -50,6 +50,23 @@ if (!function_exists('xoadau1')) {
     }
 }
 
+if (!function_exists('TrangThaiThanhToan')) {
+    function TrangThaiThanhToan($tttt) {
+        if ($tttt == "chuathanhtoan") {
+            return "Chưa Thanh Toán";
+        }
+
+        if ($tttt == "dathanhtoan") {
+            return "Đã Thanh Toán";
+        }
+
+
+        if ($tttt == "huythanhtoan") {
+            return "Hủy Thanh Toán";
+        }
+
+    }
+}
 
 if (!function_exists('nhan')) {
     function nhan($nhan)
@@ -72,49 +89,49 @@ if (!function_exists('nhan')) {
             return "";
         }
     }
+}
 
-    if (!function_exists('trangthai')) {
-        function trangThaiDonHang($trangthai)
-        {
-            if ($trangthai == 'choxacnhan')
-                return '<span class="badge bg-warning">Chờ Xác Nhận</span>';
-            else if ($trangthai == 'daxacnhan')
-                return '<span class="badge bg-dark">Đã Xác Nhận</span>';
-            else if ($trangthai == 'danggiao')
-                return '<span class="badge bg-primary">Đang Giao</span>';
-            else if ($trangthai == 'huydon')
-                return '<span class="badge bg-danger">Hủy Đơn</span>';
-            else if ($trangthai == 'dagiao')
-                return '<span class="badge bg-success">Đã Giao</span>';
-            else if ($trangthai == 'thatbai')
-                return '<span class="badge bg-danger">Giao Thất Bại</span>';
-            else if ($trangthai == 'chuathanhtoan')
-                return '<span class="badge bg-warning">Chưa Thanh Toán</span>';
-            else if ($trangthai == 'dathanhtoan')
-                return '<span class="badge bg-success">Đã Thanh Toán</span>';
-            else if ($trangthai == 'huythanhtoan')
-                return '<span class="badge bg-danger">Hủy Thanh Toán</span>';
-            else if ($trangthai == 'hoanhang')
-                return '<span class="badge bg-danger">Hoàn Hàng</span>';
-            else if ($trangthai == 'danhan')
+if (!function_exists('trangthai')) {
+    function trangThaiDonHang($trangthai)
+    {
+        if ($trangthai == 'choxacnhan')
+            return '<span class="badge bg-warning">Chờ Xác Nhận</span>';
+        else if ($trangthai == 'daxacnhan')
+            return '<span class="badge bg-dark">Đã Xác Nhận</span>';
+        else if ($trangthai == 'danggiao')
+            return '<span class="badge bg-primary">Đang Giao</span>';
+        else if ($trangthai == 'huydon')
+            return '<span class="badge bg-danger">Hủy Đơn</span>';
+        else if ($trangthai == 'dagiao')
+            return '<span class="badge bg-success">Đã Giao</span>';
+        else if ($trangthai == 'thatbai')
+            return '<span class="badge bg-danger">Thất Bại</span>';
+        else if ($trangthai == 'chuathanhtoan')
+            return '<span class="badge bg-warning">Chưa Thanh Toán</span>';
+        else if ($trangthai == 'dathanhtoan')
+            return '<span class="badge bg-success">Đã Thanh Toán</span>';
+        else if ($trangthai == 'huythanhtoan')
+            return '<span class="badge bg-danger">Hủy Thanh Toán</span>';
+        else if ($trangthai == 'hoanhang')
+            return '<span class="badge bg-danger">Hoàn Hàng</span>';
+        else if ($trangthai == 'danhan')
             return '<span class="badge bg-success">Hoàn Thành</span>';
         else {
-                return '<span class="badge bg-info">Khác</span>';
-            }
+            return '<span class="badge bg-info">Khác</span>';
         }
     }
+}
 
-    if (!function_exists('soGon')) {
-        function soGon($number)
-        {
-            if ($number >= 1000000000) {
-                return round($number / 1000000000, 1) . "B";
-            } elseif ($number >= 1000000) {
-                return round($number / 1000000, 1) . "M";
-            } elseif ($number >= 1000) {
-                return round($number / 1000, 1) . "K";
-            }
-            return $number;
+if (!function_exists('soGon')) {
+    function soGon($number)
+    {
+        if ($number >= 1000000000) {
+            return round($number / 1000000000, 1) . "B";
+        } elseif ($number >= 1000000) {
+            return round($number / 1000000, 1) . "M";
+        } elseif ($number >= 1000) {
+            return round($number / 1000, 1) . "K";
         }
+        return $number;
     }
 }

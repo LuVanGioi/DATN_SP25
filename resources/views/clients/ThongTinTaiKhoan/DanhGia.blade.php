@@ -1,7 +1,7 @@
 @extends("clients.themes")
 
 @section("title")
-    <title>Đánh giá - {{ $caiDatWebsite->TenCuaHang }}</title>
+<title>Đánh giá - {{ $caiDatWebsite->TenCuaHang }}</title>
 @endsection
 
 @section('main')
@@ -17,35 +17,35 @@
                         <table class="table">
                             <tbody>
                                 @php
-                                    $sanPhamDaHienThi = []; 
+                                $sanPhamDaHienThi = [];
                                 @endphp
                                 @foreach ($sanPhams as $sanPham)
-                                    @if (!in_array($sanPham->id, $sanPhamDaHienThi)) 
-                                        @php
-                                            $sanPhamDaHienThi[] = $sanPham->id; 
-                                            $daDanhGia = $danhGias->contains('id_san_pham', $sanPham->id); 
-                                        @endphp
-                                        <tr>
-                                            <td class="ratings">
-                                                <p> Đánh Giá Sản Phẩm -</p>
-                                                <h4 class="caption-title">{{ $sanPham->TenSanPham }}</h4>
-                                                <div class="rating" id="rating-{{ $sanPham->id }}">
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        <i class="fa fa-star star" data-value="{{ $i }}"></i>
-                                                    @endfor
-                                                </div>
-                                            </td>
-                                            <td class="reviews">
-                                                <form action="{{ route('luu-danh-gia', ['id' => $sanPham->id]) }}" method="POST">
-                                                    @csrf
-                                                    <textarea name="noi_dung" class="form-control" rows="3" placeholder="Nhập đánh giá của bạn" {{ $daDanhGia ? 'disabled' : '' }}></textarea>
-                                                    <button type="submit" class="btn btn-theme mt-2" {{ $daDanhGia ? 'disabled' : '' }}>
-                                                        {{ $daDanhGia ? 'Đã Đánh Giá' : 'Gửi Đánh Giá' }}
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endif
+                                @if (!in_array($sanPham->id, $sanPhamDaHienThi))
+                                @php
+                                $sanPhamDaHienThi[] = $sanPham->id;
+                                $daDanhGia = $danhGias->contains('id_san_pham', $sanPham->id);
+                                @endphp
+                                <tr>
+                                    <td class="ratings">
+                                        <p> Đánh Giá Sản Phẩm -</p>
+                                        <h4 class="caption-title">{{ $sanPham->TenSanPham }}</h4>
+                                        <div class="rating" id="rating-{{ $sanPham->id }}">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i class="fa fa-star star" data-value="{{ $i }}"></i>
+                                                @endfor
+                                        </div>
+                                    </td>
+                                    <td class="reviews">
+                                        <form action="{{ route('luu-danh-gia', ['id' => $sanPham->id]) }}" method="POST">
+                                            @csrf
+                                            <textarea name="noi_dung" class="form-control" rows="3" placeholder="Nhập đánh giá của bạn" {{ $daDanhGia ? 'disabled' : '' }}></textarea>
+                                            <button type="submit" class="btn btn-theme mt-2" {{ $daDanhGia ? 'disabled' : '' }}>
+                                                {{ $daDanhGia ? 'Đã Đánh Giá' : 'Gửi Đánh Giá' }}
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -58,17 +58,17 @@
                         <div class="review-item">
                             <p style="display: flex; align-items: center; gap: 10px;">
                                 <strong>{{ $danhGia->user_name }}</strong> - {{ date('d/m/Y H:i', strtotime($danhGia->ngay_danh_gia)) }}
-                                @if (!$danhGia->da_sua && $danhGia->id_users == auth()->id()) 
+                                @if (!$danhGia->da_sua && $danhGia->id_users == auth()->id())
                                 <a href="javascript:void(0);" class="btn btn-link btn-edit" data-id="{{ $danhGia->id }}">Chỉnh sửa</a>
                                 @endif
                             </p>
                             <p style="display: flex; align-items: center; gap: 10px;">
                                 <span>Sản phẩm: <strong>{{ $danhGia->TenSanPham }}</strong></span>
-                                <div class="ratinggg" id="ratinggg-{{ $danhGia->id_san_pham }}">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i class="fa fa-star {{ $i <= $danhGia->rating ? 'selected' : '' }}" data-value="{{ $i }}"></i>
+                            <div class="ratinggg" id="ratinggg-{{ $danhGia->id_san_pham }}">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="fa fa-star {{ $i <= $danhGia->rating ? 'selected' : '' }}" data-value="{{ $i }}"></i>
                                     @endfor
-                                </div>
+                            </div>
                             </p>
                             <p>{{ $danhGia->noi_dung }}</p>
                             @if ($danhGia->tra_loi)
@@ -102,115 +102,116 @@
         </div>
     </div>
 </section>
-    <style>
-        .rating .star {
-            font-size: 24px;
-            color: #ccc; 
-            cursor: pointer;
-        }
-    
-        .rating .star.selected {
-            color: #f39c12; 
-        }
+<style>
+    .rating .star {
+        font-size: 24px;
+        color: #ccc;
+        cursor: pointer;
+    }
 
-        .ratinggg .star {
-            font-size: 24px;
-            color: #ccc; 
-            cursor: pointer;
-        }
-    
-        .ratinggg .star.selected {
-            color: #f39c12; 
-        }
-        .rating .fa-star,
-        .rating .fa-star,
-.ratinggg .fa-star {
-    font-size: 24px;
-    color: #ccc; 
-    cursor: pointer;
-}
+    .rating .star.selected {
+        color: #f39c12;
+    }
 
-.rating .fa-star.selected,
-.ratinggg .fa-star.selected {
-    color: #f39c12; 
-}
-    </style>
-    <script>
-     document.addEventListener('DOMContentLoaded', function () {
-    const ratings = document.querySelectorAll('.rating');
+    .ratinggg .star {
+        font-size: 24px;
+        color: #ccc;
+        cursor: pointer;
+    }
 
-    ratings.forEach(rating => {
-        const stars = rating.querySelectorAll('.star');
-        const productId = rating.getAttribute('id').split('-')[1]; 
-        const localStorageKey = `rating_${productId}`;
-        let selectedRating = 0;
+    .ratinggg .star.selected {
+        color: #f39c12;
+    }
 
-        // Lấy giá trị đánh giá đã lưu trong localStorage
-        const savedRating = localStorage.getItem(localStorageKey);
-        if (savedRating) {
-            selectedRating = parseInt(savedRating);
-            stars.forEach(star => {
-                if (parseInt(star.getAttribute('data-value')) <= selectedRating) {
-                    star.classList.add('selected');
-                }
-            });
+    .rating .fa-star,
+    .rating .fa-star,
+    .ratinggg .fa-star {
+        font-size: 24px;
+        color: #ccc;
+        cursor: pointer;
+    }
 
-            // Hiển thị số sao bên dưới
-            const ratinggg = document.querySelector(`#ratinggg-${productId}`);
-            if (ratinggg) {
-                const starsBelow = ratinggg.querySelectorAll('.fa-star');
-                starsBelow.forEach(star => {
+    .rating .fa-star.selected,
+    .ratinggg .fa-star.selected {
+        color: #f39c12;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratings = document.querySelectorAll('.rating');
+
+        ratings.forEach(rating => {
+            const stars = rating.querySelectorAll('.star');
+            const productId = rating.getAttribute('id').split('-')[1];
+            const localStorageKey = `rating_${productId}`;
+            let selectedRating = 0;
+
+            // Lấy giá trị đánh giá đã lưu trong localStorage
+            const savedRating = localStorage.getItem(localStorageKey);
+            if (savedRating) {
+                selectedRating = parseInt(savedRating);
+                stars.forEach(star => {
                     if (parseInt(star.getAttribute('data-value')) <= selectedRating) {
                         star.classList.add('selected');
                     }
                 });
-            }
-        }
 
-        // Xử lý sự kiện click để chọn ngôi sao
-        stars.forEach(star => {
-            star.addEventListener('click', function () {
-                const value = parseInt(this.getAttribute('data-value'));
-                selectedRating = value;
-                localStorage.setItem(localStorageKey, selectedRating);
-                
-                stars.forEach(s => s.classList.remove('selected'));
-
-            
-                stars.forEach(s => {
-                    if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
-                        s.classList.add('selected');
-                    }
-                });
-
-                // Cập nhật số sao bên dưới
+                // Hiển thị số sao bên dưới
                 const ratinggg = document.querySelector(`#ratinggg-${productId}`);
                 if (ratinggg) {
                     const starsBelow = ratinggg.querySelectorAll('.fa-star');
-                    starsBelow.forEach(s => s.classList.remove('selected'));
-                    starsBelow.forEach(s => {
+                    starsBelow.forEach(star => {
+                        if (parseInt(star.getAttribute('data-value')) <= selectedRating) {
+                            star.classList.add('selected');
+                        }
+                    });
+                }
+            }
+
+            // Xử lý sự kiện click để chọn ngôi sao
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    selectedRating = value;
+                    localStorage.setItem(localStorageKey, selectedRating);
+
+                    stars.forEach(s => s.classList.remove('selected'));
+
+
+                    stars.forEach(s => {
                         if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
                             s.classList.add('selected');
                         }
                     });
-                }
+
+                    // Cập nhật số sao bên dưới
+                    const ratinggg = document.querySelector(`#ratinggg-${productId}`);
+                    if (ratinggg) {
+                        const starsBelow = ratinggg.querySelectorAll('.fa-star');
+                        starsBelow.forEach(s => s.classList.remove('selected'));
+                        starsBelow.forEach(s => {
+                            if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
+                                s.classList.add('selected');
+                            }
+                        });
+                    }
+                });
             });
         });
     });
-});
-    </script>
+</script>
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const editButtons = document.querySelectorAll('.btn-edit');
         const cancelButtons = document.querySelectorAll('.btn-cancel');
 
         // Xử lý khi nhấn nút "Chỉnh sửa"
         editButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const reviewItem = this.closest('.review-item'); 
-                const form = reviewItem.querySelector('.form-edit'); 
+            button.addEventListener('click', function() {
+                const reviewItem = this.closest('.review-item');
+                const form = reviewItem.querySelector('.form-edit');
                 form.style.display = 'block';
                 this.style.display = 'none';
             });
@@ -218,35 +219,35 @@
 
         // Xử lý khi nhấn nút "Quay lại"
         cancelButtons.forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const reviewItem = this.closest('.review-item');
-                const form = reviewItem.querySelector('.form-edit'); 
-                const editButton = reviewItem.querySelector('.btn-edit'); 
+                const form = reviewItem.querySelector('.form-edit');
+                const editButton = reviewItem.querySelector('.btn-edit');
                 form.style.display = 'none';
                 editButton.style.display = 'inline';
             });
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-    const shopReplyTitles = document.querySelectorAll('.shop-reply-title');
+    document.addEventListener('DOMContentLoaded', function() {
+        const shopReplyTitles = document.querySelectorAll('.shop-reply-title');
 
-    shopReplyTitles.forEach(title => {
-        title.addEventListener('click', function () {
-            const replyContainer = this.nextElementSibling; 
-            const toggleIcon = this.querySelector('.toggle-icon'); 
-            
-            // Ẩn/hiện nội dung
-            if (replyContainer.style.display === 'none' || replyContainer.style.display === '') {
-                replyContainer.style.display = 'block';
-                toggleIcon.classList.add('open'); 
-            } else {
-                replyContainer.style.display = 'none';
-                toggleIcon.classList.remove('open'); 
-            }
+        shopReplyTitles.forEach(title => {
+            title.addEventListener('click', function() {
+                const replyContainer = this.nextElementSibling;
+                const toggleIcon = this.querySelector('.toggle-icon');
+
+                // Ẩn/hiện nội dung
+                if (replyContainer.style.display === 'none' || replyContainer.style.display === '') {
+                    replyContainer.style.display = 'block';
+                    toggleIcon.classList.add('open');
+                } else {
+                    replyContainer.style.display = 'none';
+                    toggleIcon.classList.remove('open');
+                }
+            });
         });
     });
-});
 </script>
 
 <style>
@@ -258,58 +259,63 @@
         font-size: 14px;
         color: #007bff;
         text-decoration: none;
-        margin-left: 10px; 
+        margin-left: 10px;
     }
 
     .review-item p .btn-edit:hover {
         text-decoration: underline;
     }
+
     .admin-reply strong {
-    color: #28a745; 
-    font-size: 18px; 
-    font-weight: bold; 
-    
-}
-.shop-reply-title {
-    font-weight: bold;
-    font-size: 16px;
-    color: #333;
-    display: inline-flex; 
-    align-items: center;
-    gap: 5px; 
-    cursor: pointer;
-}
+        color: #28a745;
+        font-size: 18px;
+        font-weight: bold;
 
-.shop-reply-title .toggle-icon {
-    font-size: 16px;
-    color: #8a8e92;
-    transition: transform 0.3s ease;
-}
-.admin-reply-container {
-    margin-left: 20px; 
-    padding: 10px; 
-    border-left: 2px solid #ddd; 
-    display: none; 
-    background-color: #f9f9f9; 
-    border-radius: 5px; 
-}
-.ratinggg {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
+    }
 
-.ratinggg.fa-star {
-    font-size: 14px; 
-}
-.ratinggg .fa-star {
-    font-size: 14px; 
-    color: #ccc; 
-}
+    .shop-reply-title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+    }
 
-.ratinggg .fa-star.selected {
-    color: #f39c12;
-}
+    .shop-reply-title .toggle-icon {
+        font-size: 16px;
+        color: #8a8e92;
+        transition: transform 0.3s ease;
+    }
+
+    .admin-reply-container {
+        margin-left: 20px;
+        padding: 10px;
+        border-left: 2px solid #ddd;
+        display: none;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    .ratinggg {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .ratinggg.fa-star {
+        font-size: 14px;
+    }
+
+    .ratinggg .fa-star {
+        font-size: 14px;
+        color: #ccc;
+    }
+
+    .ratinggg .fa-star.selected {
+        color: #f39c12;
+    }
 </style>
 
 

@@ -69,7 +69,7 @@ use Illuminate\Support\Facades\Storage;
                                     @elseif ($item->TrangThaiDonHang == "hoanhang")
                                     <span><i class="fa-solid fa-right-left text-danger"></i> Hoàn Hàng</span>
                                     @elseif($item->TrangThaiDonHang == "thatbai")
-                                    <span><i class="fa-solid fa-circle-exclamation text-danger"></i> Giao Thất Bại</span>
+                                    <span><i class="fa-solid fa-circle-exclamation text-danger"></i> Thất Bại</span>
                                     @elseif($item->TrangThaiDonHang == "huydon")
                                     <span><i class="fa-solid fa-xmark text-danger"></i> Đã Hủy Bởi Bạn</span>
                                     @endif
@@ -85,7 +85,7 @@ use Illuminate\Support\Facades\Storage;
                                 @if ($item->TrangThaiDonHang == "dagiao")
                                   <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
                                 @else
-                                  <a href="#" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
+                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
                                 @endif
 
                                 @elseif ($item->TrangThaiDonHang == "danhan")
@@ -94,7 +94,7 @@ use Illuminate\Support\Facades\Storage;
                                 @if ($item->TrangThaiDonHang == "dagiao")
                                   <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
                                 @else
-                                  <a href="#" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
+                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
                                 @endif
 
                                 @elseif ($item->TrangThaiDonHang == "hoanhang")
