@@ -290,6 +290,7 @@
                         </li>
                         @endif
 
+                        @if (Auth::check())
                         <li>
                             <label for="viTien" class="item-method" onclick="chonPhuongThucThanhToan('viTien')" id="viTien-button">
                                 <img src="/clients/images/LOGO/wallet.png" alt="">
@@ -297,6 +298,7 @@
                             </label>
                             <span>Thanh Toán Qua Số Dư Ví (₫{{ Auth::user()->price >= 1 ? number_format(Auth::user()->price) : 0 }})</span>
                         </li>
+                        @endif
 
                         <!-- <li class="item-method" onclick="chonPhuongThucThanhToan('momo')" id="momo-button">
                                 <label for="momo">
