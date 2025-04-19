@@ -53,9 +53,9 @@
                 <div class="shop-sorting">
                     <div class="row">
                         <div class="col-sm-8">
-                            <form class="form-inline" action="">
+                            <form id="filterForm" class="form-inline">
                                 <div class="form-group selectpicker-wrapper">
-                                    <select class="selectpicker input-price">
+                                    <select class="selectpicker input-price" name="price_range" id="priceRange">
                                         <option value="">-- Chọn Khoảng Giá --</option>
                                         <option value="0-100000">₫0 - ₫100.000</option>
                                         <option value="100000-200000">₫100.000 - ₫200.000</option>
@@ -68,44 +68,47 @@
                     </div>
                 </div>
 
-                <div class="row mt-1">
+                <div id="productList" class="row mt-4">
                     @foreach ($danhSach as $row)
-                    @if($id == xoadau($row->TenDanhMucSanPham))
-                    @php
-                    $sanPhams = DB::table('san_pham')->where('ID_DanhMuc', $row->id)->paginate(12);
-                    @endphp
-                    @foreach ($sanPhams as $sanPham)
-                    @php
-                    $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
-                    @endphp
-                    <div class="col-md-3 col-sm-3">
-                        <div class="thumbnail product-item">
-                            <div class="media">
-                                <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">
-                                    <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
-                                </a>
-                                @if ($sanPham->Nhan)
-                                <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
-                                @endif
-                                <div class="title-time">
-                                    {{ date("d.m") }}
+                        @if($id == xoadau($row->TenDanhMucSanPham))
+                            @php
+                                $sanPhams = DB::table('san_pham')->where('ID_DanhMuc', $row->id)->paginate(12);
+                            @endphp
+                            @foreach ($sanPhams as $sanPham)
+                                @php
+                                    $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
+                                @endphp
+                                <div class="col-md-3 col-sm-3">
+                                    <div class="thumbnail product-item">
+                                        <div class="media">
+                                            <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
+                                                <img src="{{ Storage::url($sanPham->HinhAnh) }}" alt="">
+                                            </a>
+                                            @if ($sanPham->Nhan)
+                                                <span class="ribbons {{ $sanPham->Nhan }}">{{ nhan($sanPham->Nhan) }}</span>
+                                            @endif
+                                            <div class="title-time">
+                                                {{ $sanPham->ChatLieu }}
+                                            </div>
+                                        </div>
+                                        <div class="caption text-center">
+                                            <h4 class="caption-title">
+                                                <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
+                                            </h4>
+                                            <div class="price" style="align-items: center; margin-top: 10px">
+                                                @if ($sanPham->TheLoai == "bienThe")
+                                                    <ins>₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPham->id)->where("Xoa", 0)->min("Gia")) }}</ins>
+                                                @else
+                                                    <ins>₫{{ number_format($sanPham->GiaSanPham) }}</ins>
+                                                @endif
+                                                <span>Đã bán {{ soGon($luotMua) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="caption text-center">
-                                <h4 class="caption-title">
-                                    <a href="{{ route("san-pham.show", xoadau($sanPham->TenSanPham)) }}">{{ $sanPham->TenSanPham }}</a>
-                                </h4>
-                                <div class="price">
-                                    <ins>{{ number_format($sanPham->GiaSanPham) }}đ</ins>
-                                    <span>Đã bán {{ soGon($luotMua) }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            @endforeach
+                        @endif
                     @endforeach
-                    @endif
-                    @endforeach
-
                 </div>
 
                 @if ($sanPhams->count() > 0)
