@@ -65,8 +65,8 @@
         <ul class="sidebar-submenu">
           <li><a href="{{ route("DanhMucBaiViet.index") }}">Danh Mục</a></li>
           <li><a href="{{ route("BaiViet.index") }}">Bài Viết</a></li>
-          {{-- <li><a href="{{ route("BinhLuanBaiViet.index") }}">Bình Luận Bài Viết</a>
-      </li> --}}
+          <li><a href="{{ route("BinhLuanBaiViet.index") }}">Bình Luận Bài Viết</a>
+      </li>
     </ul>
     </li>
 

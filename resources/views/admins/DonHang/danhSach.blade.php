@@ -10,6 +10,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>Quản Lý Đơn Hàng</h5>
+                    <a href="{{ route('DanhGia.index') }}" class="btn btn-primary btn-sm">Xem Danh Sách Đánh Giá</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
