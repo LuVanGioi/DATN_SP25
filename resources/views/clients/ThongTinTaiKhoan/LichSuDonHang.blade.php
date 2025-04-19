@@ -75,9 +75,11 @@ use Illuminate\Support\Facades\Storage;
                             </div>
                             <div class="list-button">
                                 @if ($item->TrangThaiDonHang == "choxacnhan")
-                                <a href="{{route('huy-don.edit',$item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
+                                <a href="{{route('huy-don.edit',parameters: $item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
                                 @elseif ($item->TrangThaiDonHang == "dagiao")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
+                                <button class="btn btn-theme btn-vip" onclick="xacNhanDon('{{ $item->MaDonHang }}')">Đã Nhận</button>
+
                                 <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>
                                 @if ($item->TrangThaiDonHang == "dagiao")
                                   <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
@@ -131,6 +133,37 @@ use Illuminate\Support\Facades\Storage;
         formData.append('trading', MADONHANG);
         $.ajax({
             url: "<?= route('api.client'); ?>",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.status === "success") {
+                    location.href = data.redirect;
+                } else {
+                    if (data.message) {
+                        AlertDATN("error", data.message);
+                    }
+                }
+
+            },
+            error: function(error) {
+                let errorMessage = "Có lỗi xảy ra!";
+                if (error.responseJSON && error.responseJSON.message) {
+                    errorMessage = error.responseJSON.message;
+                }
+                AlertDATN(errorMessage);
+            }
+        });
+    }
+
+    function xacNhanDon(MADONHANG) {
+        const formData = new FormData();
+        formData.append('_token', "{{ csrf_token() }}");
+        formData.append('type', 'buy_again');
+        formData.append('trading', MADONHANG);
+        $.ajax({
+            url: "{{route('LichSuDonHang.index')}}",
             type: "POST",
             data: formData,
             processData: false,
