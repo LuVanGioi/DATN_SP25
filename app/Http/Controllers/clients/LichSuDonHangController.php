@@ -62,6 +62,10 @@ class LichSuDonHangController extends Controller
         return view('clients.ThongTinTaiKhoan.ChiTietDonHang', compact('chiTietDonHang', 'sanPhamMua'));
     }
 
+    public function store(Request $request) {
+        
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

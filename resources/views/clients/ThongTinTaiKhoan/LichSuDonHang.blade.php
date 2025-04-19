@@ -62,8 +62,10 @@ use Illuminate\Support\Facades\Storage;
                                     <span><i class="fa-solid fa-hourglass-start text-primary"></i> Chờ Xác Nhận</span>
                                     @elseif ($item->TrangThaiDonHang == "danggiao")
                                     <span><i class="fa-solid fa-truck-fast text-warning"></i> Đang Giao</span>
+                                    @elseif ($item->TrangThaiDonHang == "danhan")
+                                    <span><i class="fa-solid fa-truck-fast text-primary"></i> Hoàn Thành</span>
                                     @elseif ($item->TrangThaiDonHang == "dagiao")
-                                    <span><i class="fa-solid fa-circle-check text-success"></i> Hoàn Thành</span>
+                                    <span><i class="fa-solid fa-circle-check text-success"></i> Đã Giao</span>
                                     @elseif ($item->TrangThaiDonHang == "hoanhang")
                                     <span><i class="fa-solid fa-right-left text-danger"></i> Hoàn Hàng</span>
                                     @elseif($item->TrangThaiDonHang == "thatbai")
@@ -78,9 +80,17 @@ use Illuminate\Support\Facades\Storage;
                                 <a href="{{route('huy-don.edit',parameters: $item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
                                 @elseif ($item->TrangThaiDonHang == "dagiao")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
-                                <button class="btn btn-theme btn-vip" onclick="xacNhanDon('{{ $item->MaDonHang }}')">Đã Nhận</button>
+                                <button class="btn btn-theme btn-donHang" onclick="xacNhanDon('{{ $item->MaDonHang }}')">Đã Nhận</button>
+                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>   
+                                @if ($item->TrangThaiDonHang == "dagiao")
+                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
+                                @else
+                                  <a href="#" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
+                                @endif
 
-                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>
+                                @elseif ($item->TrangThaiDonHang == "danhan")
+                                <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
+                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>   
                                 @if ($item->TrangThaiDonHang == "dagiao")
                                   <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
                                 @else
@@ -160,17 +170,17 @@ use Illuminate\Support\Facades\Storage;
     function xacNhanDon(MADONHANG) {
         const formData = new FormData();
         formData.append('_token', "{{ csrf_token() }}");
-        formData.append('type', 'buy_again');
+        formData.append('type', 'xacNhanDon');
         formData.append('trading', MADONHANG);
         $.ajax({
-            url: "{{route('LichSuDonHang.index')}}",
+            url: "{{route('api.client')}}",
             type: "POST",
             data: formData,
             processData: false,
             contentType: false,
             success: function(data) {
                 if (data.status === "success") {
-                    location.href = data.redirect;
+                    AlertDATN("success", data.message);
                 } else {
                     if (data.message) {
                         AlertDATN("error", data.message);
