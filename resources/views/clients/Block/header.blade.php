@@ -60,8 +60,10 @@
             </div>
 
             <div class="header-search">
-                <input class="form-control" type="text" placeholder="Tìm kiếm sản phẩm">
-                <button><i class="fa fa-search"></i></button>
+                <form action="{{ route('sanpham.timkiem') }}" method="GET">
+                    <input class="form-control" type="text" name="q" placeholder="Tìm kiếm sản phẩm" required>
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
             </div>
 
             <div class="header-cart">

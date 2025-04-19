@@ -47,10 +47,10 @@
                                             @if ($binhLuan->duyet)
                                                 <button class="btn btn-secondary btn-sm" disabled>Đã duyệt</button>
                                             @else
-                                                <form action="{{ route('binhluan.duyet', $binhLuan->id) }}" method="POST" style="display:inline-block;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
-                                                </form>
+                                            <form action="{{ route('binhluan.duyet', $binhLuan->id) }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success btn-sm">Duyệt</button>
+                                            </form>
                                             @endif
                                         </td>
                                     </tr>

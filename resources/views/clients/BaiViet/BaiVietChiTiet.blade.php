@@ -110,13 +110,13 @@
                         </div>
                         <p class="mt-2">{{ $binhLuan->noi_dung }}</p>
                         <div class="d-flex justify-content-between align-items-center mt-2">
-                            <div>
+                            {{-- <div>
                                 <button class="btn btn-link p-0" onclick="likeComment('{{ $binhLuan->id }}')">Thích</button>
                                 <button class="btn btn-link p-0" onclick="showReplyForm('{{ $binhLuan->id }}')">Phản hồi</button>
-                            </div>
-                            <div class="text-muted">
+                            </div> --}}
+                            {{-- <div class="text-muted">
                                 {{ $binhLuan->so_luot_thich }} lượt thích
-                            </div>
+                            </div> --}}
                         </div>
                         <!-- Form phản hồi -->
                         <div id="reply-form-{{ $binhLuan->id }}" class="mt-3" style="display: none;">
@@ -143,9 +143,9 @@
                                     <div>
                                         <button class="btn btn-link p-0" onclick="likeComment('{{ $phanHoi->id }}')">Thích</button>
                                     </div>
-                                    <div class="text-muted">
+                                    {{-- <div class="text-muted">
                                         {{ $phanHoi->so_luot_thich ?? 0 }} lượt thích
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>

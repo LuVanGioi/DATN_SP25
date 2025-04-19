@@ -82,4 +82,42 @@ public function reply(Request $request)
 
     return redirect()->back()->with('success', 'Phản hồi của bạn đã được gửi và đang chờ duyệt.');
 }
+
+public function store(Request $request)
+{
+    // Validate dữ liệu từ form
+    $request->validate([
+        'id_baiviet' => 'required|exists:bai_viet,id', // Đảm bảo bài viết tồn tại
+        'noi_dung' => 'required|string|max:1000', // Nội dung bình luận không được vượt quá 1000 ký tự
+    ]);
+
+    // Lưu bình luận vào cơ sở dữ liệu
+    DB::table('binh_luan_bai_viet')->insert([
+        'id_baiviet' => $request->id_baiviet, // ID bài viết
+        'id_users' => auth()->id(), // ID người dùng hiện tại
+        'noi_dung' => $request->noi_dung, // Nội dung bình luận
+        'duyet' => 0, // Bình luận cần được duyệt trước khi hiển thị
+        'ngay_binh_luan' => now(), // Thời gian bình luận
+    ]);
+
+    // Trả về thông báo thành công
+    return redirect()->back()->with('success', 'Bình luận của bạn đã được gửi và đang chờ duyệt.');
+}
+
+public function duyet($id)
+{
+    // Kiểm tra xem bình luận có tồn tại không
+    $binhLuan = DB::table('binh_luan_bai_viet')->where('id', $id)->first();
+
+    if (!$binhLuan) {
+        return redirect()->back()->with('error', 'Bình luận không tồn tại.');
+    }
+
+    // Cập nhật trạng thái duyệt
+    DB::table('binh_luan_bai_viet')
+        ->where('id', $id)
+        ->update(['duyet' => 1]);
+
+    return redirect()->back()->with('success', 'Bình luận đã được duyệt.');
+}
 }

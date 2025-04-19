@@ -81,10 +81,10 @@ use Illuminate\Support\Facades\Storage;
                                 <button class="btn btn-theme btn-vip" onclick="xacNhanDon('{{ $item->MaDonHang }}')">Đã Nhận</button>
 
                                 <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>
-                                @if (1)
-                                <a class="btn btn-theme btn-donHang">Đánh Giá</a>
+                                @if ($item->TrangThaiDonHang == "dagiao")
+                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
                                 @else
-                                <a class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
+                                  <a href="#" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
                                 @endif
 
                                 @elseif ($item->TrangThaiDonHang == "hoanhang")
