@@ -531,6 +531,19 @@ class clientController extends Controller
             $result = $response->json();
 
             
+        } else if ($request->input("type") == "xacNhanDon") {
+            $trading = $request->input("trading");
+
+            DB::table("don_hang")->where('MaDonHang', $trading)->update([
+                "TrangThai" => "danhan"
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Xác Nhận 'Đã Nhận Hàng' Thành Công!"
+            ]); 
         }
 
         return response()->json([

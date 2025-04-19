@@ -96,7 +96,9 @@ if (!function_exists('nhan')) {
                 return '<span class="badge bg-danger">Hủy Thanh Toán</span>';
             else if ($trangthai == 'hoanhang')
                 return '<span class="badge bg-danger">Hoàn Hàng</span>';
-            else {
+            else if ($trangthai == 'danhan')
+            return '<span class="badge bg-success">Hoàn Thành</span>';
+        else {
                 return '<span class="badge bg-info">Khác</span>';
             }
         }
