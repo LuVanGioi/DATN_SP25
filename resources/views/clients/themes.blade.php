@@ -242,6 +242,32 @@
     </script>
 
     <script>
+        setInterval(checkNapTien, 5000);
+
+        function checkNapTien() {
+            const formData = new FormData();
+            formData.append('_token', "{{ csrf_token() }}");
+            formData.append('type', 'check_recharge');
+            $.ajax({
+                url: "<?= route('api.client'); ?>",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.status === "success") {
+                        AlertDATN(data.status, data.message);
+                    }
+
+                    document.getElementById("soDuVi").innerText = data.money;
+                },
+                error: function(error) {
+                    let errorMessage = "Có lỗi xảy ra!";
+                    AlertDATN(errorMessage);
+                }
+            });
+        }
+
         <?php if ($tien_ich_live_chat->TrangThai == "1"): ?>
             setInterval(getTinNhan, 5000);
 

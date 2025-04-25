@@ -518,19 +518,17 @@ class clientController extends Controller
                 "orderCode" => $orderCode,
                 "returnUrl" => url('/vi/nap-tien'),
             ];
-    
+
             $signatureString = "amount={$data['amount']}&cancelUrl={$data['cancelUrl']}&description={$data['description']}&orderCode={$data['orderCode']}&returnUrl={$data['returnUrl']}";
             $signature = hash_hmac('sha256', $signatureString, $checksumKey);
             $data["signature"] = $signature;
-    
+
             $response = Http::withHeaders([
                 "x-client-id" => $clientId,
                 "x-api-key" => $apiKey,
                 "Content-Type" => "application/json"
             ])->post("https://api-merchant.payos.vn/v2/payment-requests/{id}", $data);
             $result = $response->json();
-
-            
         } else if ($request->input("type") == "xacNhanDon") {
             $trading = $request->input("trading");
 
@@ -543,7 +541,53 @@ class clientController extends Controller
             return response()->json([
                 "status" => "success",
                 "message" => "Xác Nhận 'Đã Nhận Hàng' Thành Công!"
-            ]); 
+            ]);
+        } else if ($request->input("type") == "check_recharge") {
+            $PayOS = DB::table("pay_os")->where("id", 1)->first();
+
+            $apiKey = $PayOS->API_Key;
+            $clientId = $PayOS->Client_ID;
+
+            foreach (DB::table("danh_sach_tao_qr")->where("TrangThai", "dangxuly")->get() as $row):
+                $response = Http::withHeaders([
+                    "x-client-id" => $clientId,
+                    "x-api-key" => $apiKey,
+                    "Content-Type" => "application/json"
+                ])->get("https://api-merchant.payos.vn/v2/payment-requests/" . $row->paymentLinkId);
+                $result = $response->json();
+
+                if(time() >= $row->ThoiGianKetThuc) {
+                    DB::table("danh_sach_tao_qr")->where("id", $row->id)->update([
+                        "TrangThai" => "thatbai"
+                    ]);
+                }
+
+                if($result['data']['status'] == "PAID") {
+                    $nguoiMua = DB::table("users")->find($row->ID_User);
+
+                    DB::table("danh_sach_tao_qr")->where("id", $row->id)->update([
+                        "TrangThai" => "hoantat"
+                    ]);
+
+                    DB::table("users")->where("id", $row->ID_User)->update([
+                        "price" => $nguoiMua->price + $row->SoTienNap
+                    ]);
+
+                    DB::commit();
+
+                    return response()->json([
+                        "status" => "success",
+                        "message" => "Bạn Đã Nạp Thành Công ₫".number_format($row->SoTienNap),
+                        "money" => number_format((Auth::user()->price ?? 0))
+                    ]);
+                }
+            endforeach;
+
+            return response()->json([
+                "status" => "error",
+                "message" => "Success",
+                "money" => number_format((Auth::user()->price ?? 0))
+            ]);
         }
 
         return response()->json([
