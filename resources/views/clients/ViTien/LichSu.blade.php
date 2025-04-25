@@ -22,6 +22,9 @@
                             <a href="#hoan-tien" data-toggle="tab">Hoàn Tiền</a>
                         </li>
                         <li>
+                            <a href="#nap-tien" data-toggle="tab">Nạp Tiền</a>
+                        </li>
+                        <li>
                             <a href="#rut-tien" data-toggle="tab">Rút Tiền</a>
                         </li>
                         <li>
@@ -43,7 +46,7 @@
                         @foreach ($giaoDichThang as $ls)
                         <div class="card cusor-pointer" onclick="href('/vi/chi-tiet-giao-dich/{{ $ls->MaGiaoDich }}')">
                             <div class="card-body info-hisoty-wallet">
-                                <div class="img {{ $ls->TheLoai }}">
+                                <div class="img {{ ($ls->TheLoai == "recharge" ? "wallet" : $ls->TheLoai) }}">
                                     <img src="/clients/images/icon/{{ $ls->TheLoai == "withdraw" ? "banking" : ($ls->TheLoai == "refund" ? "withdraw" : "wallet") }}.png"
                                         alt="">
                                 </div>
@@ -52,8 +55,7 @@
                                     <span class="time">{{ $ls->created_at }}</span>
                                 </div>
                                 <div class="price">
-                                    <span
-                                        class="{{ $ls->TheLoai == "refund" ? "text-success" : "text-danger" }}">{{ $ls->TheLoai == "refund" ? "+" : "-" }}₫{{ number_format($ls->SoTien) }}</span>
+                                    <span class="{{ $ls->TheLoai == "refund" ? "text-success" : ($ls->TheLoai == "recharge" ? "text-success" : "text-danger") }}">{{ $ls->TheLoai == "refund" ? "+" : ($ls->TheLoai == "recharge" ? "+" : "-" )}}₫{{ number_format($ls->SoTien) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -111,6 +113,34 @@
                                 <div class="price">
                                     <span
                                         class="{{ $ls->TheLoai == "refund" ? "text-success" : "text-danger" }}">{{ $ls->TheLoai == "refund" ? "+" : "-" }}₫{{ number_format($ls->SoTien) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                        @endif
+                        @endforeach
+                    </div>
+
+                    <div class="tab-pane fade" id="nap-tien">
+                        @foreach ($lichSu as $thang => $giaoDichThang)
+                        @php
+                        $giaoDichNapTien = $giaoDichThang->filter(fn($gd) => $gd->TheLoai == "recharge");
+                        @endphp
+                        @if ($giaoDichNapTien->isNotEmpty())
+                        <h4>Tháng {{ $thang }}</h4>
+                        @foreach ($giaoDichNapTien as $ls)
+                        <div class="card cusor-pointer" onclick="href('/vi/chi-tiet-giao-dich/{{ $ls->MaGiaoDich }}')">
+                            <div class="card-body info-hisoty-wallet">
+                                <div class="img {{ ($ls->TheLoai == "recharge" ? "wallet" : $ls->TheLoai) }}">
+                                    <img src="/clients/images/icon/{{ $ls->TheLoai == "withdraw" ? "banking" : ($ls->TheLoai == "refund" ? "withdraw" : "wallet") }}.png"
+                                        alt="">
+                                </div>
+                                <div class="info">
+                                    <span class="title">{{ $ls->TieuDe }}</span>
+                                    <span class="time">{{ $ls->created_at }}</span>
+                                </div>
+                                <div class="price">
+                                <span class="{{ $ls->TheLoai == "refund" ? "text-success" : ($ls->TheLoai == "recharge" ? "text-success" : "text-danger") }}">{{ $ls->TheLoai == "refund" ? "+" : ($ls->TheLoai == "recharge" ? "+" : "-" )}}₫{{ number_format($ls->SoTien) }}</span>
                                 </div>
                             </div>
                         </div>

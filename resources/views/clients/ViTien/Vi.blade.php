@@ -13,7 +13,7 @@
                     <div class="col-md-12" style="margin-top: 0px !important;">
                         <div class="card">
                             <div class="card-body text-center">
-                                <h1 class="text-success">₫{{ number_format(Auth::user()->price) }}</h1>
+                                <h1 class="text-success" id="soDuVi">₫{{ number_format(Auth::user()->price) }}</h1>
                                 <h5>Số Dư Ví</h5>
                             </div>
                         </div>

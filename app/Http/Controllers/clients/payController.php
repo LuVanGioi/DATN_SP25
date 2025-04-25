@@ -573,7 +573,6 @@ class payController extends Controller
                 endif;
             endforeach;
 
-
             foreach ($sanPhamDaChon2 as $cart):
                 $thongTinSanPham = DB::table("san_pham")->where("id", $cart->ID_SanPham)->first();
 
@@ -599,6 +598,16 @@ class payController extends Controller
                     "created_at" => date("Y-m-d H:i:s"),
                 ]);
             endif;
+
+            DB::table("lich_su_giao_dich_vi")->insert([
+                "ID_User" => Auth::user()->id,
+                "MaGiaoDich" => $trading,
+                "TieuDe" => "Thanh Toán Hóa Đơn #" .$trading,
+                "SoTien" => $tongTienSanPhamDaChon,
+                "TheLoai" => "payment",
+                "TrangThai" => "thanhcong",
+                "created_at" => now()
+            ]);
 
             DB::table("users")->where('id', Auth::user()->id)->update([
                 "price" => Auth::user()->price - $tongTienSanPhamDaChon

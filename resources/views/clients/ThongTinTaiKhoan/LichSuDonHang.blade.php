@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 @extends("clients.themes")
 
 @section("title")
-    <title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
+<title>Lịch sử đơn hàng - {{ $caiDatWebsite->TenCuaHang }}</title>
 @endsection
 
 @section('main')
@@ -81,29 +81,16 @@ use Illuminate\Support\Facades\Storage;
                                 @elseif ($item->TrangThaiDonHang == "dagiao")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
                                 <button class="btn btn-theme btn-donHang" onclick="xacNhanDon('{{ $item->MaDonHang }}')">Đã Nhận</button>
-                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>   
-                                @if ($item->TrangThaiDonHang == "dagiao")
-                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
-                                @else
-                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
-                                @endif
-
+                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>
                                 @elseif ($item->TrangThaiDonHang == "danhan")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
-                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>   
-                                @if ($item->TrangThaiDonHang == "dagiao")
-                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
-                                @else
-                                  <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Xem Đánh Giá</a>
-                                @endif
-
+                                <a class="btn btn-theme btn-donHang">Trả Hàng / Hoàn Tiền</a>
+                                <a href="{{ route('danh-gia', ['id' => $item->MaDonHang]) }}" class="btn btn-theme btn-donHang">Đánh Giá</a>
                                 @elseif ($item->TrangThaiDonHang == "hoanhang")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
                                 <button class="btn btn-theme btn-donHang">Chi Tiết Hoàn Hàng</button>
-
                                 @elseif($item->TrangThaiDonHang == "thatbai")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
-
                                 @elseif($item->TrangThaiDonHang == "huydon")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
                                 <a href="" class="btn btn-theme btn-donHang">Chi Tiết Hủy Đơn</a>
@@ -125,7 +112,6 @@ use Illuminate\Support\Facades\Storage;
                         <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
                         <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
                         <li class="active"><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
-                        <li><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
                     </ul>
                 </div>
             </div>

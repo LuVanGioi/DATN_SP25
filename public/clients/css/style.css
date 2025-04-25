@@ -1497,6 +1497,10 @@ select {
     background-color: #00b362;
 }
 
+.info-hisoty-wallet > .img.wallet {
+    background-color: #00b362;
+}
+
 .info-hisoty-wallet > .img > img {
     width: 100%;
 }
@@ -1572,3 +1576,4 @@ select {
     color: #737475 !important;
     font-weight: 500 !important;
 }
+
