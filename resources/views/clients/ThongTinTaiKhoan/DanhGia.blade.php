@@ -24,6 +24,7 @@
                                 @php
                                 $sanPhamDaHienThi[] = $sanPham->id;
                                 $daDanhGia = $danhGias->contains('id_san_pham', $sanPham->id);
+                                if(!$daDanhGia):
                                 @endphp
                                 <tr>
                                     <td class="ratings">
@@ -36,8 +37,11 @@
                                         </div>
                                     </td>
                                     <td class="reviews">
-                                        <form action="{{ route('luu-danh-gia', ['id' => $sanPham->id]) }}" method="POST">
-                                            @csrf
+                                        <form submit-ajax="true" action="{{ route('luu-danh-gia', ['id' => $sanPham->id]) }}" method="POST" time_load="0" swal_success="" type="POST">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="rating" id="rating-value-{{ $sanPham->id }}">
+                                            <input type="hidden" name="product_id" value="{{ $sanPham->id }}">
+                                            <input type="hidden" name="trading" value="{{ $donHang->MaDonHang }}">
                                             <textarea name="noi_dung" class="form-control" rows="3" placeholder="Nhập đánh giá của bạn" {{ $daDanhGia ? 'disabled' : '' }}></textarea>
                                             <button type="submit" class="btn btn-theme mt-2" {{ $daDanhGia ? 'disabled' : '' }}>
                                                 {{ $daDanhGia ? 'Đã Đánh Giá' : 'Gửi Đánh Giá' }}
@@ -45,29 +49,29 @@
                                         </form>
                                     </td>
                                 </tr>
+                                @php
+                                endif;
+                                @endphp
                                 @endif
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Hiển thị danh sách đánh giá -->
                     <div class="reviews-list mt-4">
                         <h3>Đánh Giá Của Bạn Về Sản Phẩm Của Chúng Tôi</h3>
                         @foreach ($danhGias as $danhGia)
                         <div class="review-item">
                             <p style="display: flex; align-items: center; gap: 10px;">
                                 <strong>{{ $danhGia->user_name }}</strong> - {{ date('d/m/Y H:i', strtotime($danhGia->ngay_danh_gia)) }}
-                                @if (!$danhGia->da_sua && $danhGia->id_users == auth()->id())
-                                <a href="javascript:void(0);" class="btn btn-link btn-edit" data-id="{{ $danhGia->id }}">Chỉnh sửa</a>
-                                @endif
                             </p>
                             <p style="display: flex; align-items: center; gap: 10px;">
                                 <span>Sản phẩm: <strong>{{ $danhGia->TenSanPham }}</strong></span>
                             <div class="ratinggg" id="ratinggg-{{ $danhGia->id_san_pham }}">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <i class="fa fa-star {{ $i <= $danhGia->rating ? 'selected' : '' }}" data-value="{{ $i }}"></i>
+                                @for ($i = 1; $i <= $danhGia->rating; $i++)
+                                    <i class="fa fa-star" style="color: #f39c12"></i>
                                     @endfor
+
                             </div>
                             </p>
                             <p>{{ $danhGia->noi_dung }}</p>
@@ -80,12 +84,12 @@
                             </div>
                             @endif
                         </div>
+                        <hr>
                         @endforeach
                     </div>
                 </div>
             </div>
 
-            <!-- Sidebar -->
             <div class="col-lg-3 col-md-3 col-sm-4">
                 <div class="widget account-details">
                     <h2 class="widget-title">Đánh Giá và Nhận Xét</h2>
@@ -95,7 +99,6 @@
                         <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
                         <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
                         <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
-                        <li class="active"><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
                     </ul>
                 </div>
             </div>
@@ -136,120 +139,6 @@
         color: #f39c12;
     }
 </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const ratings = document.querySelectorAll('.rating');
-
-        ratings.forEach(rating => {
-            const stars = rating.querySelectorAll('.star');
-            const productId = rating.getAttribute('id').split('-')[1];
-            const localStorageKey = `rating_${productId}`;
-            let selectedRating = 0;
-
-            // Lấy giá trị đánh giá đã lưu trong localStorage
-            const savedRating = localStorage.getItem(localStorageKey);
-            if (savedRating) {
-                selectedRating = parseInt(savedRating);
-                stars.forEach(star => {
-                    if (parseInt(star.getAttribute('data-value')) <= selectedRating) {
-                        star.classList.add('selected');
-                    }
-                });
-
-                // Hiển thị số sao bên dưới
-                const ratinggg = document.querySelector(`#ratinggg-${productId}`);
-                if (ratinggg) {
-                    const starsBelow = ratinggg.querySelectorAll('.fa-star');
-                    starsBelow.forEach(star => {
-                        if (parseInt(star.getAttribute('data-value')) <= selectedRating) {
-                            star.classList.add('selected');
-                        }
-                    });
-                }
-            }
-
-            // Xử lý sự kiện click để chọn ngôi sao
-            stars.forEach(star => {
-                star.addEventListener('click', function() {
-                    const value = parseInt(this.getAttribute('data-value'));
-                    selectedRating = value;
-                    localStorage.setItem(localStorageKey, selectedRating);
-
-                    stars.forEach(s => s.classList.remove('selected'));
-
-
-                    stars.forEach(s => {
-                        if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
-                            s.classList.add('selected');
-                        }
-                    });
-
-                    // Cập nhật số sao bên dưới
-                    const ratinggg = document.querySelector(`#ratinggg-${productId}`);
-                    if (ratinggg) {
-                        const starsBelow = ratinggg.querySelectorAll('.fa-star');
-                        starsBelow.forEach(s => s.classList.remove('selected'));
-                        starsBelow.forEach(s => {
-                            if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
-                                s.classList.add('selected');
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    });
-</script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editButtons = document.querySelectorAll('.btn-edit');
-        const cancelButtons = document.querySelectorAll('.btn-cancel');
-
-        // Xử lý khi nhấn nút "Chỉnh sửa"
-        editButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const reviewItem = this.closest('.review-item');
-                const form = reviewItem.querySelector('.form-edit');
-                form.style.display = 'block';
-                this.style.display = 'none';
-            });
-        });
-
-        // Xử lý khi nhấn nút "Quay lại"
-        cancelButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const reviewItem = this.closest('.review-item');
-                const form = reviewItem.querySelector('.form-edit');
-                const editButton = reviewItem.querySelector('.btn-edit');
-                form.style.display = 'none';
-                editButton.style.display = 'inline';
-            });
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const shopReplyTitles = document.querySelectorAll('.shop-reply-title');
-
-        shopReplyTitles.forEach(title => {
-            title.addEventListener('click', function() {
-                const replyContainer = this.nextElementSibling;
-                const toggleIcon = this.querySelector('.toggle-icon');
-
-                // Ẩn/hiện nội dung
-                if (replyContainer.style.display === 'none' || replyContainer.style.display === '') {
-                    replyContainer.style.display = 'block';
-                    toggleIcon.classList.add('open');
-                } else {
-                    replyContainer.style.display = 'none';
-                    toggleIcon.classList.remove('open');
-                }
-            });
-        });
-    });
-</script>
-
 <style>
     .review-item p {
         margin: 0;
@@ -306,6 +195,7 @@
 
     .ratinggg.fa-star {
         font-size: 14px;
+        float: right;
     }
 
     .ratinggg .fa-star {
@@ -317,6 +207,34 @@
         color: #f39c12;
     }
 </style>
+@endsection
 
+@section("js")
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratings = document.querySelectorAll('.rating');
 
+        ratings.forEach(rating => {
+            const stars = rating.querySelectorAll('.star');
+            const productId = rating.getAttribute('id').split('-')[1];
+            const hiddenInput = document.getElementById('rating-value-' + productId);
+
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const ratingValue = parseInt(this.getAttribute('data-value'));
+
+                    stars.forEach(s => {
+                        if (parseInt(s.getAttribute('data-value')) <= ratingValue) {
+                            s.classList.add('selected');
+                        } else {
+                            s.classList.remove('selected');
+                        }
+                    });
+
+                    hiddenInput.value = ratingValue;
+                });
+            });
+        });
+    });
+</script>
 @endsection

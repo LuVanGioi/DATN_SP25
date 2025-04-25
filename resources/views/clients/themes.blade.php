@@ -259,7 +259,13 @@
                         AlertDATN(data.status, data.message);
                     }
 
-                    document.getElementById("soDuVi").innerText = data.money;
+                    if(document.getElementById("maQrNapTien")) {
+                        document.getElementById("maQrNapTien").innerHTML = "";
+                    }
+
+                    if(document.getElementById("soDuVi")) {
+                        document.getElementById("soDuVi").innerText = data.money;
+                    }
                 },
                 error: function(error) {
                     let errorMessage = "Có lỗi xảy ra!";

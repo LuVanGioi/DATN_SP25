@@ -161,10 +161,6 @@ Route::get('/danh-gia', [DanhGiaController::class, 'index'])->name('DanhGia.inde
 Route::get('/tim-kiem', [App\Http\Controllers\clients\SanPhamController::class, 'timKiem'])->name('sanpham.timkiem');
 Route::get('san-pham/filter', [DanhMucSanPhamController::class, 'filterProducts'])->name('san-pham.filter');
 
-//
-Route::get('/danh-gia-va-nhan-xet', function () {
-    return view('clients.ThongTinTaiKhoan.DanhGia');
-});
 Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
 })->name("contact");

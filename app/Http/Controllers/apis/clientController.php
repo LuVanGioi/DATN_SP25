@@ -573,12 +573,22 @@ class clientController extends Controller
                         "price" => $nguoiMua->price + $row->SoTienNap
                     ]);
 
+                    DB::table("lich_su_giao_dich_vi")->insert([
+                        "ID_User" => Auth::user()->id,
+                        "MaGiaoDich" => $row->orderCode,
+                        "TieuDe" => "Nạp Tiền Vào Tài Khoản #" . $row->orderCode,
+                        "SoTien" => $row->SoTienNap,
+                        "TheLoai" => "recharge",
+                        "TrangThai" => "thanhcong",
+                        "created_at" => now()
+                    ]);
+
                     DB::commit();
 
                     return response()->json([
                         "status" => "success",
                         "message" => "Bạn Đã Nạp Thành Công ₫".number_format($row->SoTienNap),
-                        "money" => number_format((Auth::user()->price ?? 0))
+                        "money" => number_format((Auth::user()->price ?? 0))."đ"
                     ]);
                 }
             endforeach;
@@ -586,7 +596,7 @@ class clientController extends Controller
             return response()->json([
                 "status" => "error",
                 "message" => "Success",
-                "money" => number_format((Auth::user()->price ?? 0))
+                "money" => number_format((Auth::user()->price ?? 0))."đ"
             ]);
         }
 
