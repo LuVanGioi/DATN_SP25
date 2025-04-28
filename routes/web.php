@@ -45,6 +45,7 @@ use App\Http\Controllers\clients\ChiTietHuyDonController;
 use App\Http\Controllers\clients\LichSuDonHangController;
 use App\Http\Controllers\admins\BinhLuanBaiVietController;
 use App\Http\Controllers\admins\RutTienViController;
+use App\Http\Controllers\admins\TinNhanHoTroController;
 use App\Http\Controllers\clients\BaiVietChiTietController;
 use App\Http\Controllers\clients\DanhMucSanPhamController;
 use App\Http\Controllers\clients\DiaChiNhanHangController;
@@ -161,6 +162,10 @@ Route::get('/danh-gia', [DanhGiaController::class, 'index'])->name('DanhGia.inde
 Route::get('/tim-kiem', [App\Http\Controllers\clients\SanPhamController::class, 'timKiem'])->name('sanpham.timkiem');
 Route::get('san-pham/filter', [DanhMucSanPhamController::class, 'filterProducts'])->name('san-pham.filter');
 
+//
+Route::get('/danh-gia-va-nhan-xet', function () {
+    return view('clients.ThongTinTaiKhoan.DanhGia');
+});
 Route::get('lien-he', function () {
     return view('clients.LienHe.LienHe');
 })->name("contact");
@@ -201,6 +206,7 @@ Route::middleware(['auth.admin'])->group(function () {
     Route::resource('admin/LienKetWebsite', LienKetWebsiteController::class);
     Route::resource('admin/FAQ', FAQController::class);
     Route::resource('admin/RutTienVi', RutTienViController::class);
+    Route::resource('admin/TinNhanHoTro', TinNhanHoTroController::class);
     Route::get('admin/thong-tin-ca-nhan/{id}', [QuanLyAdminController::class, 'show'])->name('admin.thongtin');
 });
 Route::post("api/client", [clientController::class, "get_all"])->name("api.client");

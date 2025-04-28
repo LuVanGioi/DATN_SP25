@@ -90,7 +90,7 @@
         </div>
     </div>
 
-    
+
     <!-- <script src="/admins/js/jquery.min.js"></script> -->
     <script src="/admins/js/bootstrap.bundle.min.js"></script>
     <script src="/admins/js/feather.min.js"></script>

@@ -225,6 +225,57 @@ class clientController extends Controller
                 'content' => $content,
                 'chat_code' => $chat->MaHoTro ?? null,
             ]);
+        } else if ($request->input("type") == "chat_support_admin") {
+            $donHoTro = DB::table("don_ho_tro")->where("MaHoTro", $request->input("trading"))->first();
+            if (!$donHoTro) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Tin Nhắn Hỗ Trợ Không Tồn Tại"
+                ]);
+            }
+
+            $content = $request->input("content");
+
+            if (!$content) {
+                if (!$request->hasFile('images')) {
+                    return response()->json([
+                        "status" => "error",
+                        "message" => "Vui Lòng Nhập Nội Dung Tin Nhắn!"
+                    ]);
+                }
+            }
+
+            $images = [];
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('uploads/chats', 'public');
+                    $images[] = Storage::url($path);
+                }
+            }
+
+            DB::table("chat_ho_tro")->insert([
+                "ID_Guests" => "system",
+                "MaHoTro" => $donHoTro->MaHoTro,
+                "NoiDung" => $content,
+                "HinhAnh" => json_encode($images),
+                "status" => 1,
+                "created_at" => date("Y-m-d H:i:s")
+            ]);
+
+            DB::table("don_ho_tro")->where("id", $donHoTro->id)->update([
+                "TrangThai" => "system",
+                "updated_at" => date("Y-m-d H:i:s")
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Gửi Tin Nhắn Thành Công!",
+                "images" => $images,
+                'content' => $content,
+                'chat_code' => $chat->MaHoTro ?? null,
+            ]);
         } else if ($request->input("type") == "get_chat_user") {
             if (Auth::check()) {
                 $userId = Auth::user()->ID_Guests;
@@ -267,6 +318,66 @@ class clientController extends Controller
                     "message" => "ok"
                 ]);
             }
+        } else if ($request->input("type") == "get_chat_admin") {
+            $don_ho_tro = DB::table("don_ho_tro")
+                ->where("MaHoTro", $request->input("trading"))
+                ->limit(100)
+                ->get();
+
+            $don = [];
+
+            foreach ($don_ho_tro as $row) {
+                $list = [];
+
+                $chats = DB::table("chat_ho_tro")
+                    ->where("MaHoTro", $row->MaHoTro)
+                    ->limit(100)
+                    ->get();
+
+                foreach ($chats as $chat) {
+                    $list[] = [
+                        "user" => ($chat->ID_Guests == "system" ? "system" : "my"),
+                        "chat_code" => $chat->MaHoTro,
+                        "content" => $chat->NoiDung,
+                        "images" => $chat->HinhAnh,
+                        "time" => $chat->created_at,
+                    ];
+                }
+
+                $don[] = [
+                    "trading" => $row->MaHoTro,
+                    "data" => $list
+                ];
+            }
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Lấy Danh Sách Thành Công!",
+                "data" => $don
+            ]);
+        } else if ($request->input("type") == "update_status_chat") {
+            $don_ho_tro = DB::table("don_ho_tro")
+                ->where("MaHoTro", $request->input("trading"))
+                ->limit(100)
+                ->get();
+
+            if (!$don_ho_tro) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Tin Nhắn Hỗ Trợ Không Tồn Tại"
+                ]);
+            }
+
+            DB::table('chat_ho_tro')->where('MaHoTro', $request->input("trading"))->update([
+                    'status' => 1
+                ]);
+
+            DB::commit();
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Cập Nhật Thành Công!"
+            ]);
         } else if ($request->input("type") == "get_products_virtual") {
             $products = DB::table('san_pham')
                 ->inRandomOrder()
@@ -542,6 +653,8 @@ class clientController extends Controller
                 "status" => "success",
                 "message" => "Xác Nhận 'Đã Nhận Hàng' Thành Công!"
             ]);
+<<<<<<< HEAD
+=======
         } else if ($request->input("type") == "check_recharge") {
             $PayOS = DB::table("pay_os")->where("id", 1)->first();
 
@@ -598,11 +711,12 @@ class clientController extends Controller
                 "message" => "Success",
                 "money" => number_format((Auth::user()->price ?? 0))."đ"
             ]);
+>>>>>>> 3a02789e7b9b02035d49e437f0458801bad16199
         }
 
         return response()->json([
             "status" => "error",
-            "message" => "Lỗi, Vui Lòng Tải Lại Trang"
+            "message" => "Lỗi, Vui Lòng Tải Lại Trang!"
         ]);
     }
 }
