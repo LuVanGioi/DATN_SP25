@@ -29,7 +29,7 @@
                         <div class="col">
                             <div class="mb-3">
                                 <label>Câu Hỏi</label>
-                                <input class="form-control @error(" TieuDe") is-invalid border-danger @enderror" type="text" name="TieuDe" placeholder="Câu hỏi" value="{{ old("TieuDe") }}" required>
+                                <input class="form-control @error(" TieuDe") is-invalid border-danger @enderror" type="text" name="TieuDe" placeholder="Nhập câu hỏi" value="{{ old("TieuDe") }}" required>
                                 @error("TieuDe")
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -39,7 +39,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label>Nội Dung</label>
+                                <label>Giải Đáp</label>
                                 <textarea name="NoiDung" class="note-DATN">{{ old("NoiDung") }}</textarea>
                             </div>
                         </div>
