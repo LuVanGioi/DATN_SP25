@@ -653,8 +653,6 @@ class clientController extends Controller
                 "status" => "success",
                 "message" => "Xác Nhận 'Đã Nhận Hàng' Thành Công!"
             ]);
-<<<<<<< HEAD
-=======
         } else if ($request->input("type") == "check_recharge") {
             $PayOS = DB::table("pay_os")->where("id", 1)->first();
 
@@ -711,7 +709,6 @@ class clientController extends Controller
                 "message" => "Success",
                 "money" => number_format((Auth::user()->price ?? 0))."đ"
             ]);
->>>>>>> 3a02789e7b9b02035d49e437f0458801bad16199
         }
 
         return response()->json([
