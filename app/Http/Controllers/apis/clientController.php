@@ -653,6 +653,65 @@ class clientController extends Controller
                 "status" => "success",
                 "message" => "Xác Nhận 'Đã Nhận Hàng' Thành Công!"
             ]);
+<<<<<<< HEAD
+=======
+        } else if ($request->input("type") == "check_recharge") {
+            $PayOS = DB::table("pay_os")->where("id", 1)->first();
+
+            $apiKey = $PayOS->API_Key;
+            $clientId = $PayOS->Client_ID;
+
+            foreach (DB::table("danh_sach_tao_qr")->where("TrangThai", "dangxuly")->get() as $row):
+                $response = Http::withHeaders([
+                    "x-client-id" => $clientId,
+                    "x-api-key" => $apiKey,
+                    "Content-Type" => "application/json"
+                ])->get("https://api-merchant.payos.vn/v2/payment-requests/" . $row->paymentLinkId);
+                $result = $response->json();
+
+                if(time() >= $row->ThoiGianKetThuc) {
+                    DB::table("danh_sach_tao_qr")->where("id", $row->id)->update([
+                        "TrangThai" => "thatbai"
+                    ]);
+                }
+
+                if($result['data']['status'] == "PAID") {
+                    $nguoiMua = DB::table("users")->find($row->ID_User);
+
+                    DB::table("danh_sach_tao_qr")->where("id", $row->id)->update([
+                        "TrangThai" => "hoantat"
+                    ]);
+
+                    DB::table("users")->where("id", $row->ID_User)->update([
+                        "price" => $nguoiMua->price + $row->SoTienNap
+                    ]);
+
+                    DB::table("lich_su_giao_dich_vi")->insert([
+                        "ID_User" => Auth::user()->id,
+                        "MaGiaoDich" => $row->orderCode,
+                        "TieuDe" => "Nạp Tiền Vào Tài Khoản #" . $row->orderCode,
+                        "SoTien" => $row->SoTienNap,
+                        "TheLoai" => "recharge",
+                        "TrangThai" => "thanhcong",
+                        "created_at" => now()
+                    ]);
+
+                    DB::commit();
+
+                    return response()->json([
+                        "status" => "success",
+                        "message" => "Bạn Đã Nạp Thành Công ₫".number_format($row->SoTienNap),
+                        "money" => number_format((Auth::user()->price ?? 0))."đ"
+                    ]);
+                }
+            endforeach;
+
+            return response()->json([
+                "status" => "error",
+                "message" => "Success",
+                "money" => number_format((Auth::user()->price ?? 0))."đ"
+            ]);
+>>>>>>> 3a02789e7b9b02035d49e437f0458801bad16199
         }
 
         return response()->json([

@@ -52,8 +52,6 @@
                                 <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
                                 <li><a href="/so-dia-chi">Sổ Địa Chỉ</a></li>
                                 <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
-                                <li><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
-                                <li><a href="/yeu-cau-tra-hang">Yêu Cầu Trả Hàng</a></li>
                             </ul>
                         </div>
                     </div>

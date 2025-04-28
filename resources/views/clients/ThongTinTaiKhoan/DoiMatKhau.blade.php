@@ -59,7 +59,6 @@
                             <li class="active"><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
                             <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
                             <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
-                            <li><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
                         </ul>
                     </div>
                 </div>

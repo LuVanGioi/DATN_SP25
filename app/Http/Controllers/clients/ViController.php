@@ -85,6 +85,8 @@ class ViController extends Controller
 
         if (isset($result['data']['checkoutUrl'])) {
             DB::table("danh_sach_tao_qr")->insert([
+                "paymentLinkId" => $result['data']['paymentLinkId'],
+                "orderCode" => $result['data']['orderCode'],
                 "ID_User" => Auth::user()->id,
                 "SoTienNap" => $request->input("money"),
                 "ThoiGianNap" => time(),

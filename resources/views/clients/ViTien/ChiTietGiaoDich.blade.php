@@ -12,7 +12,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="p-1 text-center">
-                        <h2>{{ $donHang->TheLoai == "refund" ? "+" : "-" }}₫{{ number_format($donHang->SoTien) }}</h2>
+                        <h2 class="{{ $donHang->TheLoai == "refund" ? "text-success" : ($donHang->TheLoai == "recharge" ? "text-success" : "text-danger") }}">{{ $donHang->TheLoai == "refund" ? "+" : ($donHang->TheLoai == "recharge" ? "+" : "-" )}}₫{{ number_format($donHang->SoTien) }}</h2>
                         @if ($donHang->TrangThai == "thanhcong")
                         <div class="text-success"><i class="fas fa-check-circle"></i> Thành Công</div>
                         @elseif ($donHang->TrangThai == "dangxuly")
@@ -39,6 +39,15 @@
                         <div>
                             <h5>Thanh Toán Cho</h5>
                             <span>Đơn Hàng</span>
+                        </div>
+                        @elseif ($donHang->TheLoai == "recharge")
+                        <div>
+                            <h5>Nạp Từ</h5>
+                            <span>Quét Mã QR</span>
+                        </div>
+                        <div>
+                            <h5>Vào</h5>
+                            <span>Số Dư Ví</span>
                         </div>
                         @elseif ($donHang->TheLoai == "withdraw")
                         <div>
@@ -77,7 +86,11 @@
                         <span>{{ hexdec(substr(hash('sha256', $donHang->MaGiaoDich), 0, 10)) }}</span>
                         <hr style="margin: 3px 0px;">
                         <small>Phương Thức Thanh Toán</small><br>
+                        @if ($donHang->TheLoai == "recharge")
+                        <span>Nạp Tiền Ngân Hàng</span>
+                        @else
                         <span>Số Dư Ví</span>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -2,22 +2,16 @@
 
 namespace App\Http\Controllers\clients;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DanhGiaController extends Controller
 {
     public function index()
     {
-        $danhGias = DB::table('danh_gia')
-            ->join('users', 'danh_gia.id_users', '=', 'users.id')
-            ->join('san_pham', 'danh_gia.id_san_pham', '=', 'san_pham.id')
-            ->select('danh_gia.*', 'users.name as user_name', 'san_pham.TenSanPham')
-            ->orderBy('ngay_danh_gia', 'desc')
-            ->get();
-
-        return view('admins.DanhGia.danhSach', compact('danhGias'));
+        //
     }
     public function show($id)
     {
@@ -28,12 +22,12 @@ class DanhGiaController extends Controller
             ->select('san_pham.*', 'san_pham_don_hang.SoLuong')
             ->get();
 
-        // Lấy danh sách đánh giá
         $danhGias = DB::table('danh_gia')
             ->join('users', 'danh_gia.id_users', '=', 'users.id')
-            ->join('san_pham', 'danh_gia.id_san_pham', '=', 'san_pham.id') // Kết hợp với bảng san_pham
-            ->whereIn('id_san_pham', $sanPhams->pluck('id')) // Lọc theo danh sách sản phẩm trong đơn hàng
-            ->select('danh_gia.*', 'users.name as user_name', 'san_pham.TenSanPham') // Lấy thêm TenSanPham
+            ->join('san_pham', 'danh_gia.id_san_pham', '=', 'san_pham.id')
+            ->where("danh_gia.trading", $id)
+            ->whereIn('id_san_pham', $sanPhams->pluck('id'))
+            ->select('danh_gia.*', 'users.name as user_name', 'san_pham.TenSanPham')
             ->orderBy('ngay_danh_gia', 'desc')
             ->get();
 
@@ -41,37 +35,75 @@ class DanhGiaController extends Controller
     }
     public function store(Request $request, $id)
     {
-        $request->validate([
-            'noi_dung' => 'required|string|max:1000',
-        ]);
+        if(empty($request->input("rating"))) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Vui Lòng Chọn Sao Đánh Giá"
+            ]);
+        }
+
+        if(empty($request->input("noi_dung"))) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Vui Lòng Nhập Nội Dung Bình Luận"
+            ]);
+        }
+
+        $checkDanhGia = DB::table('danh_gia')->where("id_users", Auth::user()->id)->where("id_san_pham", $id)->where("trading", $request->input("trading"))->first();
+
+        if($checkDanhGia) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Bạn Đã Đánh Giá Sản Phẩm Này Rồi"
+            ]);
+        }
 
         DB::table('danh_gia')->insert([
+            'trading' => $request->input("trading"),
             'id_san_pham' => $id,
-            'id_users' => auth()->id(),
-            'noi_dung' => $request->noi_dung,
+            'id_users' => Auth::user()->id,
+            'noi_dung' => $request->input("noi_dung"),
+            'rating' => $request->input("rating"),
             'ngay_danh_gia' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi.');
+        return response()->json([
+            "status" => "success",
+            "message" => "Đánh Giá Của Bạn Đã Được Gửi",
+            "redirect" => "/danh-gia/".$request->input("trading")
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'noi_dung' => 'required|string|max:1000',
-        ]);
+        if(empty($request->input("noi_dung"))) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Vui Lòng Nhập Nội Dung Bình Luận"
+            ]);
+        }
 
-        // Cập nhật nội dung đánh giá và đánh dấu là đã chỉnh sửa
+        if(empty($request->input("rating"))) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Vui Lòng Chọn Sao Đánh Giá"
+            ]);
+        }
+
         DB::table('danh_gia')
             ->where('id', $id)
-            ->where('id_users', auth()->id())
+            ->where('id_users', Auth::user()->id)
             ->update([
-                'noi_dung' => $request->noi_dung,
+                'noi_dung' => $request->input("noi_dung"),
+                'rating' => $request->input("rating"),
                 'da_sua' => true,
                 'ngay_danh_gia' => now(),
             ]);
 
-        return redirect()->back()->with('success', 'Đánh giá của bạn đã được cập nhật.');
+        return response()->json([
+                "status" => "success",
+                "message" => "Đánh Giá Thành Công!"
+            ]);;
     }
 
     public function reply(Request $request, $id)

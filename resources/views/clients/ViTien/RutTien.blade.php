@@ -93,7 +93,7 @@
                     <div class="col-md-12" style="margin-top: 0px !important;">
                         <div class="card">
                             <div class="card-body text-center">
-                                <h1 class="text-success">{{ number_format(Auth::user()->price) }}đ</h1>
+                                <h1 class="text-success" id="soDuVi">{{ number_format(Auth::user()->price) }}đ</h1>
                                 <h5>Số Dư Ví Hiện Tại</h5>
                             </div>
                         </div>
