@@ -29,8 +29,8 @@
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label>Tiêu Đề</label>
-                                <input class="form-control @error(" TieuDe") is-invalid border-danger @enderror" type="text" name="TieuDe" placeholder="Câu hỏi" value="{{ $thongTinLienKet->TieuDe }}" required>
+                                <label>Câu Hỏi</label>
+                                <input class="form-control @error(" TieuDe") is-invalid border-danger @enderror" type="text" name="TieuDe" placeholder="Nhập câu hỏi" value="{{ $thongTinLienKet->TieuDe }}" required>
                                 @error("TieuDe")
                                 <p class="text-danger">{{ $message }}</p>
                                 @enderror
@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label>Nội Dung</label>
+                                <label>Giải Đáp</label>
                                 <textarea name="NoiDung" class="note-DATN">{{ $thongTinLienKet->NoiDung }}</textarea>
                             </div>
                         </div>

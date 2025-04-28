@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label>Tiêu Đề</label>
+                                <label>Câu hỏi</label>
                                 <input class="form-control" type="text" placeholder="Câu hỏi" value="{{ $thongTinLienKet->TieuDe }}" readonly>
                             </div>
                         </div>
@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label>Nội Dung</label>
+                                <label>Giải đáp</label>
                                 <div class="form-control">{!! $thongTinLienKet->NoiDung !!}</div>
                             </div>
                         </div>
