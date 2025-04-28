@@ -51,7 +51,8 @@ if (!function_exists('xoadau1')) {
 }
 
 if (!function_exists('TrangThaiThanhToan')) {
-    function TrangThaiThanhToan($tttt) {
+    function TrangThaiThanhToan($tttt)
+    {
         if ($tttt == "chuathanhtoan") {
             return "Chưa Thanh Toán";
         }
@@ -64,7 +65,6 @@ if (!function_exists('TrangThaiThanhToan')) {
         if ($tttt == "huythanhtoan") {
             return "Hủy Thanh Toán";
         }
-
     }
 }
 
@@ -133,5 +133,29 @@ if (!function_exists('soGon')) {
             return round($number / 1000, 1) . "K";
         }
         return $number;
+    }
+}
+
+if (!function_exists('formatRelativeTime')) {
+    function formatRelativeTime($past)
+    {
+        $now = time();
+        $diff = $now - strtotime($past);
+
+        if ($diff < 60) {
+            return 'Vừa Xong';
+        } elseif ($diff < 3600) {
+            return floor($diff / 60) . ' Phút Trước';
+        } elseif ($diff < 86400) {
+            return floor($diff / 3600) . ' Giờ Trước';
+        } elseif ($diff < 172800) {
+            return 'Hôm Qua';
+        } elseif ($diff < 604800) {
+            return floor($diff / 86400) . ' Ngày Trước';
+        } elseif ($diff < 1209600) {
+            return 'Tuần Trước';
+        } else {
+            return floor($diff / 604800) . ' Tuần Trước';
+        }
     }
 }

@@ -399,7 +399,6 @@
                 const imageInput = document.getElementById('images-chat');
                 const files = selectedFiles;
                 const originalText = button.innerHTML;
-                button.innerHTML = "...";
 
                 if (content.trim() === '' && files.length === 0) return;
 
