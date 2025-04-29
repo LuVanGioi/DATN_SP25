@@ -24,8 +24,9 @@
                     <p><strong>Trạng Thái Thanh Toán : </strong> {!! $donHang->TrangThaiThanhToan == "chuathanhtoan" ? "<span class='badge bg-danger'>Chưa Thanh Toán</span>" : "<span class='badge bg-success'>Đã Thanh Toán</span>" !!} </p>
                     <p><strong>Phương Thức Thanh Toán : </strong> {{$donHang->PhuongThucThanhToan}} </p>
                     <p><strong>Ghi Chú : </strong> {{$donHang->GhiChu}} </p>
-
-
+                    @if ($donHang->TrangThaiDonHang == "huydon" || $donHang->TrangThaiDonHang == "hoanhang" || $donHang->TrangThaiDonHang == "xacnhanhoanhang")
+                    <p><strong>Lý Do Hủy : </strong> {{ ($donHang->LyDoHuy ?? "") }} </p>
+                    @endif
                 </div>
                 <h5 class="text-primary">Danh Sách Sản Phẩm</h5>
                 <div class="row mt-3">
@@ -54,8 +55,9 @@
                     @endforeach
                 </div>
             </div>
+            @if ($donHang->TrangThaiDonHang !== 'huydon' && $donHang->TrangThaiDonHang !== 'danhan' && $donHang->TrangThaiDonHang !== 'xacnhanhoanhang')
             <div class="card-footer">
-                <form class="row variable" action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="POST">
+                <form action="{{route('DonHang.update', $donHang->MaDonHang)}}" method="POST">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="action" id="actionField" value="">
@@ -86,6 +88,7 @@
                             <option value="huydon" {{ $donHang->TrangThaiDonHang == "huydon" ? "selected" : "" }}>Đã Hủy</option>
                             @elseif ($donHang->TrangThaiDonHang == "hoanhang")
                             <option value="hoanhang" {{ $donHang->TrangThaiDonHang == "hoanhang" ? "selected" : "" }}>Hoàn Hàng</option>
+                            <option value="xacnhanhoanhang" {{ $donHang->TrangThaiDonHang == "xacnhanhoanhang" ? "selected" : "" }}>Xác Nhận Hoàn Hàng</option>
                             @endif
                         </select>
                     </div>
@@ -94,6 +97,7 @@
                     <button type="submit" data-action="capnhat" class="btn btn-primary">Cập Nhật</button>
                 </form>
             </div>
+            @endif
         </div>
     </div>
 </div>

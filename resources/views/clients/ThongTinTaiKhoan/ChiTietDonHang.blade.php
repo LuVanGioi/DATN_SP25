@@ -65,7 +65,6 @@
                                 </div>
                             </div>
                         </div>
-
                         @endforeach
                     </div>
                 </div>
@@ -81,10 +80,16 @@
                                 <span>Phương Thức Thanh Toán :</span> <span
                                     style="font-weight: 500; font-size: 15px">{{$chiTietDonHang->PhuongThucThanhToan}}</span>
                             </div>
-                            @if ($chiTietDonHang->PhuongThucThanhToan == "Chuyển Khoản Ngân Hàng")
+                            @if ($chiTietDonHang->PhuongThucThanhToan == "Chuyển Khoản Ngân Hàng" || $chiTietDonHang->PhuongThucThanhToan == "Số Dư Ví")
                             <div>
                                 <span>Trạng Thái Thanh Toán :</span> <span
                                     style="font-weight: 500; font-size: 15px">{{TrangThaiThanhToan($chiTietDonHang->TrangThaiThanhToan)}}</span>
+                            </div>
+                            @endif
+                            @if ($chiTietDonHang->TrangThaiDonHang == "huydon" || $chiTietDonHang->TrangThaiDonHang == "hoanhang")
+                            <div>
+                                <span>Lý Do Hủy Đơn :</span> <span
+                                    style="font-weight: 500; font-size: 15px; color: #888">{{ $chiTietDonHang->LyDoHuy }}</span>
                             </div>
                             @endif
                         </div>
@@ -100,11 +105,10 @@
                     <h2 class="widget-title">Tài Khoản</h2>
                     <ul>
                         <li><a href="/thong-tin-tai-khoan"> Thông Tin Tài Khoản </a></li>
+                        <li><a href="/vi">Ví Của Tôi</a></li>
                         <li><a href="/doi-mat-khau">Đổi Mật Khẩu</a></li>
-                        <li class="active"><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
-                        <li><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
-                        <li><a href="/danh-gia-va-nhan-xet">Đánh Giá và Nhận Xét</a></li>
-                        <li><a href="/yeu-cau-tra-hang">Yêu Cầu Trả Hàng</a></li>
+                        <li><a href="/dia-chi-nhan-hang">Địa Chỉ Nhận Hàng</a></li>
+                        <li class="active"><a href="/lich-su-don-hang">Lịch Sử Đơn Hàng</a></li>
                     </ul>
                 </div>
             </div>

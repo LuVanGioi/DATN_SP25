@@ -85,7 +85,7 @@ class homeController extends Controller
             ->orderByDesc("id")
             ->select("san_pham_bien_the.*")
             ->where("Xoa", 0)
-            ->where("TrangThai", "hien")
+            ->where("san_pham.TrangThai", "hien")
             ->count();
 
         $demHetHangBienThe = DB::table("san_pham")

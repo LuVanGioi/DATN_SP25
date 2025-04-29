@@ -67,7 +67,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Mật Khẩu Tài Khoản :</label>
+                                <label class="form-label">Mật Khẩu Tài Khoản Website:</label>
                                 <input required type="password" name="password" class="form-control" placeholder="******">
                             </div>
 
