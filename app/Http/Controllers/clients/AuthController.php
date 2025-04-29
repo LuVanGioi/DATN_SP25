@@ -82,7 +82,7 @@ class AuthController extends Controller
         if (!$name) {
             return response()->json([
                 'status' => "error",
-                'message' => "Vui Lòng Nhập Email",
+                'message' => "Vui Lòng Nhập Họ Tên",
             ]);
         }
 
@@ -122,6 +122,7 @@ class AuthController extends Controller
             ]);
         }
 
+         
         $data = [
             "name" => $name,
             "email" => $email,
