@@ -31,7 +31,7 @@ die('<script>
                             @enderror
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12"> 
                             <div class="form-group">
                                 <input class="form-control @error('email') is-invalid @enderror" type="email" name="email"
                                     placeholder="Email đăng ký" required="required" value="{{old('email')}}">

@@ -22,7 +22,6 @@
       <div class="col-xl-4">
         <div class="card">
         <div class="card-header">
-
           <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i
             class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#"
             data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
@@ -66,12 +65,7 @@
             <label class="form-label">Số Điện Thoại</label>
             <input class="form-control" name="phone" type="number" value="{{$chiTiet->phone}}" disabled>
           </div>
-
-          <div class="mb-3">
-            <label class="form-label">Địa Chỉ</label>
-            <input class="form-control" name="address" type="text" value="{{$chiTiet->address}}" disabled>
-          </div>
-
+          
           <div class="mb-3">
             <label class="form-label">Thời Gian Tham Gia</label>
             <input class="form-control" value="{{$chiTiet->created_at}}" disabled>
@@ -101,7 +95,7 @@
                       <th>Ngày Mua</th>
                       <th class="">Số Lượng</th>
                       <th>Tổng Tiền</th>
-                      <th>Trạng Thái</th>
+                      <th>Trạng Thái Thanh Toán</th>
                       <th>Thao tác</th>
                     </tr>
                   </thead>
@@ -113,8 +107,24 @@
                         <td>{{\Carbon\Carbon::parse($item->created_at)->format('d/m/Y')}}</td>
                         <td>{{$item->SoLuong}}</td>
                         <td>{{number_format($item->GiaTien * $item->SoLuong, 0, ',', '.')}} đ</td>
-                        <td>{{$item->TrangThai}}</td>
-                        {{-- <td><a href="{{ route('donhang.show', $item->MaDonHang) }}">Chi Tiết</a></td> --}}
+                        <td>
+                          @if ($item->TrangThai == 'choxacnhan')
+                          <span class="text-warning">Chưa Thanh Toán</span>
+                          @elseif($item->TrangThai == 'daxacnhan')
+                          <span class="text-warning">Chưa Thanh Toán</span>
+                          @elseif($item->TrangThai == 'dangiao')
+                          <span class="text-warning">Chưa Thanh Toán</span>
+                          @elseif($item->TrangThai == 'dagiao')
+                          <span class="text-success">Đã Thanh Toán</span>
+                          @elseif($item->TrangThai == 'thatbai')
+                          <span class="text-danger">Thanh Toán Thất Bại</span>
+                          @elseif($item->TrangThai == 'hoanhang')
+                          <span class="text-danger">Thanh Toán Thất Bại</span>
+                          @elseif($item->TrangThai == 'huydon')
+                          <span class="text-danger">Thanh Toán Thất Bại</span>
+                          @endif
+                       </td>
+                        <td><a href="{{ route('DonHang.show', $item->MaDonHang) }}">Chi Tiết</a></td>
                       </tr>
                     @endforeach
                   </tbody>
