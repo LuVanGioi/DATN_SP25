@@ -91,7 +91,7 @@ if (!function_exists('nhan')) {
     }
 }
 
-if (!function_exists('trangthai')) {
+if (!function_exists('trangThaiDonHang')) {
     function trangThaiDonHang($trangthai)
     {
         if ($trangthai == 'choxacnhan')
@@ -116,6 +116,8 @@ if (!function_exists('trangthai')) {
             return '<span class="badge bg-danger">Hoàn Hàng</span>';
         else if ($trangthai == 'danhan')
             return '<span class="badge bg-success">Hoàn Thành</span>';
+        else if ($trangthai == 'xacnhanhoanhang')
+            return '<span class="badge bg-primary">Đã Hoàn Tiền</span>';
         else {
             return '<span class="badge bg-info">Khác</span>';
         }

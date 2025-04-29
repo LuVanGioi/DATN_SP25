@@ -152,14 +152,14 @@
                 success: function(data) {
                     if (data.status === "success") {
                         AlertDATN(data.status, data.message);
-                    }
 
-                    if(document.getElementById("maQrNapTien")) {
-                        document.getElementById("maQrNapTien").innerHTML = "";
-                    }
+                        if (document.getElementById("maQrNapTien")) {
+                            document.getElementById("maQrNapTien").innerHTML = "";
+                        }
 
-                    if(document.getElementById("soDuVi")) {
-                        document.getElementById("soDuVi").innerText = data.money;
+                        if (document.getElementById("soDuVi")) {
+                            document.getElementById("soDuVi").innerText = data.money;
+                        }
                     }
                 },
                 error: function(error) {
@@ -424,7 +424,6 @@
 
         window.Echo.channel('orders')
             .listen('.order.created', (e) => {
-                console.log('Đơn hàng mới:', e.order);
                 const list = document.getElementById('order-list');
                 const li = document.createElement('li');
                 li.innerText = `#${e.order.id} - Tổng: ${e.order.total}đ`;

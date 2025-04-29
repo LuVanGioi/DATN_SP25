@@ -1,23 +1,36 @@
+filesArray = [];
 $("form[submit-ajax=true]").on("submit", function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
 
-    let form = $(this);
-    let url = form.attr("action");
-    let button = form.find('button[type=submit]:focus');
+    let form = $(this)[0];
+    let $form = $(this);
+    let url = $form.attr("action");
+    let button = $form.find('button[type=submit]:focus');
     let actionValue = button.data("action");
-    let swal_success = form.attr("swal_success");
-    let method = form.attr("method");
-    let time_load = form.attr("time_load");
+    let swal_success = $form.attr("swal_success");
+    let method = $form.attr("method");
+    let time_load = $form.attr("time_load");
     $("#actionField").val(actionValue);
     let oldTextButton = button.html();
+
+    let formData = new FormData(form);
+    formData.append('action', actionValue);
+
+    if (filesArray) {
+        filesArray.forEach(file => {
+            formData.append('images[]', file);
+        });
+    }
 
     button.html('Đang Xử Lý...').prop('disabled', true);
 
     $.ajax({
         type: method,
         url: url,
-        data: form.serialize(),
+        data: formData,
+        processData: false,
+        contentType: false,
         dataType: "json",
         success: function (response) {
             if (response.status == "success") {
@@ -41,9 +54,9 @@ $("form[submit-ajax=true]").on("submit", function (e) {
                 errorMsg = xhr.responseJSON.message;
             }
 
-            if (response.redirect) {
+            if (xhr.responseJSON && xhr.responseJSON.redirect) {
                 setTimeout(function () {
-                    window.location.href = response.redirect;
+                    window.location.href = xhr.responseJSON.redirect;
                 }, time_load);
             }
 

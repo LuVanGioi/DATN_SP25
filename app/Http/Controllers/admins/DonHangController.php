@@ -14,16 +14,9 @@ class DonHangController extends Controller
     public function index()
     {
         $donHang = DB::table('don_hang')
-            ->select('don_hang.MaDonHang','don_hang.TrangThai as TrangThai','don_hang.PhuongThucThanhToan','don_hang.TrangThaiThanhToan',
-            )
-            ->groupBy(
-                'don_hang.MaDonHang',
-                'don_hang.TrangThai',
-                'don_hang.PhuongThucThanhToan',
-                'don_hang.TrangThai'
-            )
+            ->orderByDesc("id")
             ->get();
-                
+
         return view('admins.DonHang.danhSach', compact('donHang'));
     }
 
@@ -74,6 +67,26 @@ class DonHangController extends Controller
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
+
+        $donhang = DB::table("don_hang")->where("MaDonHang", $id)->first();
+
+        $user_buy = DB::table("users")->where("id", $donhang->ID_User)->first();
+
+        if (!$donhang) {
+            abort(404);
+        }
+
+        if ($request->input("TrangThai") == "huydon" || $request->input("TrangThai") == "hoanhang") {
+            if ($donhang->PhuongThucThanhToan == "Số Dư Ví" || $donhang->PhuongThucThanhToan == "Chuyển Khoản Ngân Hàng") {
+                DB::table('users')->where('id', $user_buy->id)->update([
+                    'price' => $user_buy->price + $donhang->TongTien,
+                ]);
+            }
+        } else if ($request->input("TrangThai") == "xacnhanhoanhang") {
+            DB::table('users')->where('id', $user_buy->id)->update([
+                'price' => $user_buy->price + $donhang->TongTien,
+            ]);
+        }
 
         DB::table('don_hang')->where('MaDonHang', $id)->update([
             'TrangThai' => $request->input('TrangThai'),
