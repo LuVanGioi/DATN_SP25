@@ -34,7 +34,7 @@
         <div class="row orders mt-2">
             <div class="col-md-7">
                 <h3 class="block-title"><span>Sản Phẩm</span></h3>
-                <ul class="list-product-payment">
+                <ul class="list-product-payment" id="realTimeSPThanhToan">
                     @foreach ($sanPhamDaChon as $sanPhamm)
                     <li class="item-product-payment" onclick="href('/san-pham/{{ $sanPhamm->DuongDan }}')">
                         <div class="logo">
@@ -312,7 +312,7 @@
                     <br>
                     <h3 class="block-title"><span>Chi Tiết Thanh Toán</span></h3>
                     <div class="shopping-cart">
-                        <table>
+                        <table id="retimeTinhTienThanhToan">
                             <tr>
                                 <td style="text-align: start">Tổng Tiền Hàng:</td>
                                 <td style="text-align: end; font-weight: bold">
@@ -354,6 +354,28 @@
 
 @section("js")
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setInterval(function() {
+            fetch(location.href)
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, "text/html");
+                    const newListHeader = doc.querySelector("#realTimeSPThanhToan");
+                    if (newListHeader) {
+                        document.getElementById("realTimeSPThanhToan").innerHTML = newListHeader.innerHTML;
+                    }
+
+                    const retimeTinhTienThanhToan = doc.querySelector("#retimeTinhTienThanhToan");
+                    if (retimeTinhTienThanhToan) {
+                        document.getElementById("retimeTinhTienThanhToan").innerHTML = retimeTinhTienThanhToan.innerHTML;
+                    }
+
+                })
+                .catch(error => console.log("Lỗi: ", error));
+        }, 2000);
+    });
+
     function checkVoucher(e) {
         let selectedCartIds = getSelectedCartIds();
 
