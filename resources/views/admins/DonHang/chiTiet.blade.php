@@ -26,6 +26,15 @@
                     <p><strong>Ghi Chú : </strong> {{$donHang->GhiChu}} </p>
                     @if ($donHang->TrangThaiDonHang == "huydon" || $donHang->TrangThaiDonHang == "hoanhang" || $donHang->TrangThaiDonHang == "xacnhanhoanhang")
                     <p><strong>Lý Do Hủy : </strong> {{ ($donHang->LyDoHuy ?? "") }} </p>
+                    @if ($donHang->TrangThaiDonHang == "hoanhang" || $donHang->TrangThaiDonHang == "xacnhanhoanhang")
+                    <div class="row">
+                        @foreach (DB::table("hinh_anh_huy_don")->where("MaDonHang", $donHang->MaDonHang)->get() as $hinhAnhHoan)
+                        <div class="col-2">
+                            <img src="{{ Storage::url($hinhAnhHoan->DuongDan) }}" class="img-fluid" alt="">
+                        </div>
+                        @endforeach
+                    </div>
+                    @endif
                     @endif
                 </div>
                 <h5 class="text-primary">Danh Sách Sản Phẩm</h5>
@@ -79,7 +88,6 @@
                             <option value="thatbai" {{ $donHang->TrangThaiDonHang == "thatbai" ? "selected" : "" }}>Giao Thất Bại</option>
                             @elseif ($donHang->TrangThaiDonHang == "dagiao")
                             <option value="dagiao" {{ $donHang->TrangThaiDonHang == "dagiao" ? "selected" : "" }}>Đã Giao</option>
-                            <option value="hoanhang" {{ $donHang->TrangThaiDonHang == "hoanhang" ? "selected" : "" }}>Hoàn Hàng</option>
                             @elseif ($donHang->TrangThaiDonHang == "thatbai")
                             <option value="thatbai" {{ $donHang->TrangThaiDonHang == "thatbai" ? "selected" : "" }}>Giao Thất Bại</option>
                             <option value="hoanhang" {{ $donHang->TrangThaiDonHang == "hoanhang" ? "selected" : "" }}>Hoàn Hàng</option>

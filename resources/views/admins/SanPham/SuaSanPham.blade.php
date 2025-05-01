@@ -73,18 +73,6 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <label>Thể Loại</label>
-                                        <select class="form-control mb-3" name="TheLoai" onchange="theLoaiSP(this)">
-                                            <option value="thuong" {{ ($sanPham->TheLoai == "thuong" ? "selected" : "") }}>Thường</option>
-                                            <option value="bienThe" {{ ($sanPham->TheLoai == "bienThe" ? "selected" : "") }}>Biến Thể</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
                                         <label>Tên Sản Phẩm</label>
@@ -212,7 +200,7 @@
                             <p class="text-danger">{{ $message }}</p>
                             @enderror
 
-                            <div id="formSPThuong" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'none' : 'block'; ?>">
+                            <div>
                                 <label for="" class="mt-3">Bộ Sưu Tập</label>
                                 <input type="file" class="d-none" id="khoAnh" name="images[]" multiple>
                                 <div class="dropzone-wrapper">
@@ -244,7 +232,7 @@
             </div>
         </form>
 
-        <div class="card" id="formBienThe" style="display: <?= $sanPham->TheLoai == 'bienThe' ? 'block' : 'none'; ?>">
+        <div class="card" id="formBienThe">
             <div class="card-header">
                 <h5>BIẾN THỂ SẢN PHẨM</h5>
             </div>
@@ -305,30 +293,10 @@
                                                             @endif
                                                             @endforeach
                                                         </p>
-                                                        <p><strong>Hình Ảnh</strong></p>
-                                                        <div class="row">
-                                                            @foreach (DB::table("hinh_anh_san_pham")->where("ID_SanPham", $bienTheSanPham->id)->where("Xoa", 0)->get() as $hinhAnh)
-                                                            <div class="col-md-4">
-                                                                <img src="{{ Storage::url($hinhAnh->DuongDan) }}" width="100%" alt="">
-                                                                <div>
-                                                                    <form action="{{ route("BienTheSanPham.destroyImage", $hinhAnh->id) }}" method="POST" onsubmit="return confirm('Bạn Chắc Chắn Muốn Xóa Ảnh Này?')">
-                                                                        @csrf
-                                                                        @method("GET")
-                                                                        <button type="submit" class="btn btn-danger btn-xs w-100 mt-2">Xóa</button>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                            @endforeach
-                                                        </div>
 
                                                         <form action="{{ route("BienTheSanPham.update", $bienTheSanPham->id) }}" method="post" enctype="multipart/form-data">
                                                             @csrf
                                                             @method("PUT")
-
-                                                            <div class="form-group">
-                                                                <label for="">Hình Ảnh</label>
-                                                                <input type="file" class="form-control" name="HinhAnh[]" multiple>
-                                                            </div>
 
                                                             <div class="form-group">
                                                                 <label for="">Giá Tiền</label>
@@ -465,12 +433,23 @@
         document.getElementById("formBienTheSelect").style.display = "block";
     }
 
+    function capNhatGiaTienChoCacDongKhac(gia) {
+        document.querySelectorAll('.bienTheRow .GiaBienThe').forEach((el, idx) => {
+            if (idx !== 0) el.value = gia;
+        });
+    }
+
+    function capNhatSoLuongChoCacDongKhac(soLuong) {
+        document.querySelectorAll('.bienTheRow .SoLuongBienThe').forEach((el, idx) => {
+            if (idx !== 0) el.value = soLuong;
+        });
+    }
+
     function chonMauSacc() {
         var form = document.getElementById("danhSachBienThe");
         document.getElementById("formGiaTienAmount").style.display = "block";
         var KichCo = document.getElementById("chonKichCo").value;
         var MauSac = document.getElementById("chonMauSac").value;
-        var Gia = document.getElementById("Gia").value;
 
         setTimeout(() => {
             document.getElementById("chonMauSac").selectedIndex = 0;
@@ -478,50 +457,61 @@
 
         let soThuTuBienThe = document.querySelectorAll('#danhSachBienThe .row').length;
 
-        <?php foreach ($KichCoChuaCo as $KichCo):
-            foreach ($thongTinMauSac as $MauSacCon): ?>
-                var checkForm = document.getElementById('itemNhapAllMauSac_{{ $MauSacCon->id }}_' + KichCo);
-                if (!checkForm) {
-                    if (MauSac == "{{ $MauSacCon->id }}") {
-                        form.insertAdjacentHTML('beforeend', `
-        <div class="col" id="itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}">
-            <div class="row bienThe">
-                <div class="col">
-                    <small class="label-control">Kích Cỡ</small>
-                    <div class="colorProducts">Size ${KichCo}</div>
-                </div>
-                <div class="col">
-                    <small class="label-control">Màu Sắc</small>
-                    <div class="colorProducts1">{{ $MauSacCon->TenMauSac }}</div>
-                </div>
-                <input type="hidden" name="ThongTinBienThe[]" value="${KichCo}|${MauSac}">
-                <div class="col">
-                    <small class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
-                    <input type="text" class="form-control form-control-sm GiaBienThe" name="GiaBienThe[]" value="${Gia}" required>
-                </div>
+        let giaTienTruoc = "";
+        let soLuongTruoc = "";
+        if (soThuTuBienThe > 0) {
+            giaTienTruoc = document.querySelector(`#danhSachBienThe .bienThe:last-child .GiaBienThe`).value;
+            soLuongTruoc = document.querySelector(`#danhSachBienThe .bienThe:last-child .SoLuongBienThe`).value;
+        }
 
-                <div class="col">
-                    <small class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
-                    <input type="text" class="form-control form-control-sm SoLuongBienThe" name="SoLuongBienThe[]" value="0" required>
-                </div>
-
-                <div class="col">
-                    <small class="label-control">Hình Ảnh (<span class="text-danger">*</span>)</small>
-                    <input type="file" class="form-control form-control-sm HinhAnh" name="HinhAnh[${soThuTuBienThe}][]" multiple required>
-                </div>
-
-                <div class="col pt-2">
-                    <span class="badge bg-danger mt-4 w-100" onclick="xoaBienTheKichCo('itemNhapAllMauSac_{{ $MauSacCon->id }}_${KichCo}')"><i class="fas fa-trash"></i></span>
-                </div>
+        <?php
+        $isFirst = true;
+        foreach ($thongTinMauSac as $MauSacCon):
+        ?>
+            var checkForm = document.getElementById('itemNhapAllMauSac_<?= $MauSacCon->id ?>_' + KichCo);
+            if (!checkForm) {
+                form.insertAdjacentHTML('beforeend', `
+    <div class="col" id="itemNhapAllMauSac_<?= $MauSacCon->id ?>_${KichCo}">
+        <div class="row bienThe bienTheRow">
+            <div class="col">
+                <small class="label-control">Kích Cỡ</small>
+                <div class="colorProducts">Size ${KichCo}</div>
+            </div>
+            <div class="col">
+                <small class="label-control">Màu Sắc</small>
+                <div class="colorProducts1"><?= $MauSacCon->TenMauSac ?></div>
+            </div>
+            <input type="hidden" name="ThongTinBienThe[]" value="${KichCo}|<?= $MauSacCon->id ?>">
+            <div class="col">
+                <small class="label-control">Giá Tiền (<span class="text-danger">*</span>)</small>
+                <input type="text"
+                    class="form-control form-control-sm GiaBienThe"
+                    name="GiaBienThe[]"
+                    value="${giaTienTruoc}"
+                    required
+                    <?= $isFirst ? 'oninput="capNhatGiaTienChoCacDongKhac(this.value)"' : '' ?>>
+            </div>
+            <div class="col">
+                <small class="label-control">Số Lượng (<span class="text-danger">*</span>)</small>
+                <input type="text"
+                    class="form-control form-control-sm SoLuongBienThe"
+                    name="SoLuongBienThe[]"
+                    value="${soLuongTruoc}"
+                    required
+                    <?= $isFirst ? 'oninput="capNhatSoLuongChoCacDongKhac(this.value)"' : '' ?>>
+            </div>
+            <div class="col pt-2">
+                <span class="badge bg-danger mt-4 w-100"
+                    onclick="xoaBienTheKichCo('itemNhapAllMauSac_<?= $MauSacCon->id ?>_${KichCo}')">
+                    <i class="fas fa-trash"></i></span>
             </div>
         </div>
-        `);
-                    }
-                }
-        <?php endforeach;
-        endforeach; ?>
+    </div>
+    `);
+                <?php $isFirst = false; ?>
+            }
+        <?php endforeach; ?>
     }
-
 
     function viewFormBienThe() {
         var theLoaiSanPham = document.getElementById("theLoaiSanPham").value;
