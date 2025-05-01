@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apis;
 use Nette\Utils\Random;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -369,8 +370,8 @@ class clientController extends Controller
             }
 
             DB::table('chat_ho_tro')->where('MaHoTro', $request->input("trading"))->update([
-                    'status' => 1
-                ]);
+                'status' => 1
+            ]);
 
             DB::commit();
 
@@ -644,7 +645,8 @@ class clientController extends Controller
             $trading = $request->input("trading");
 
             DB::table("don_hang")->where('MaDonHang', $trading)->update([
-                "TrangThai" => "danhan"
+                "TrangThai" => "danhan",
+                "TrangThaiThanhToan" => "dathanhtoan"
             ]);
 
             DB::commit();
@@ -667,13 +669,13 @@ class clientController extends Controller
                 ])->get("https://api-merchant.payos.vn/v2/payment-requests/" . $row->paymentLinkId);
                 $result = $response->json();
 
-                if(time() >= $row->ThoiGianKetThuc) {
+                if (time() >= $row->ThoiGianKetThuc) {
                     DB::table("danh_sach_tao_qr")->where("id", $row->id)->update([
                         "TrangThai" => "thatbai"
                     ]);
                 }
 
-                if($result['data']['status'] == "PAID") {
+                if ($result['data']['status'] == "PAID") {
                     $nguoiMua = DB::table("users")->find($row->ID_User);
 
                     DB::table("danh_sach_tao_qr")->where("id", $row->id)->update([
@@ -698,8 +700,8 @@ class clientController extends Controller
 
                     return response()->json([
                         "status" => "success",
-                        "message" => "Bạn Đã Nạp Thành Công ₫".number_format($row->SoTienNap),
-                        "money" => number_format((Auth::user()->price ?? 0))."đ"
+                        "message" => "Bạn Đã Nạp Thành Công ₫" . number_format($row->SoTienNap),
+                        "money" => number_format((Auth::user()->price ?? 0)) . "đ"
                     ]);
                 }
             endforeach;
@@ -707,7 +709,192 @@ class clientController extends Controller
             return response()->json([
                 "status" => "error",
                 "message" => "Success",
-                "money" => number_format((Auth::user()->price ?? 0))."đ"
+                "money" => number_format((Auth::user()->price ?? 0)) . "đ"
+            ]);
+        } else if ($request->input("type") == "refund_order") {
+            if (!Auth::check()) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Vui Lòng Đăng Nhập Để Sử Dụng"
+                ]);
+            }
+
+            $userId = Auth::user()->ID_Guests ?? Auth::user()->id;
+            $trading = $request->input("trading");
+
+            if (!$trading) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Dữ Liệu Không Chính Xác, Vui Lòng Tải Lại Trang Và Thử Lại!"
+                ]);
+            }
+
+            $donHang = DB::table("don_hang")
+                ->where("ID_User", Auth::user()->id)
+                ->where("MaDonHang", $trading)
+                ->first();
+
+            if (!$donHang) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Đơn Hàng Không Tồn Tại?"
+                ]);
+            }
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Chuyển Hướng Đến Trang Hoàn Hàng",
+                "redirect" => route("hoan-hang.show", $donHang->MaDonHang)
+            ]);
+        } else if ($request->input("type") == "comfirm_refund_order") {
+
+            if (empty($request->input("product")) || count($request->input("product")) <= 0) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Vui Lòng Chọn Sản Phẩm Cần Hủy"
+                ]);
+            }
+
+            $donHang = DB::table("don_hang")->where("MaDonHang", $request->input("trading"))->first();
+
+            if (!$donHang) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Đơn Hàng Không Tồn Tại!"
+                ]);
+            }
+
+            if ($donHang->TrangThai == "hoanhang") {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Đơn Hàng Đã Được Hủy Rồi",
+                    "redirect" => route("lich-su-don-hang.index")
+                ]);
+            }
+
+            $createdAt = Carbon::parse($donHang->created_at);
+            $now = Carbon::now();
+            if ($createdAt->diffInDays($now) > 15) {
+                return response()->json([
+                    'status' => 'error',
+                    'msg' => 'Đơn Hàng Đã Quá Hạn 15 Ngày, Không Thể Hoàn Trả Hàng.'
+                ]);
+            }
+
+            $nguoiMua = DB::table("users")->find($donHang->ID_User);
+
+            if (!$nguoiMua) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Tài Khoản Không Tồn Tại!!!"
+                ]);
+            }
+
+            #cập nhật sản phẩm hủy
+            foreach ($request->input("product") as $row):
+                DB::table("san_pham_don_hang")
+                    ->where("MaDonHang", $donHang->MaDonHang)
+                    ->where("Id_SanPham", $row)->update([
+                        "TrangThai" => "hoanhang",
+                        "updated_at" => now()
+                    ]);
+            endforeach;
+
+            #lý do hoàn tiền
+            DB::table("don_hang")->where("MaDonHang", $request->input("trading"))->update([
+                "TrangThai" => "hoanhang",
+                "LyDoHuy" => $request->input("reason"),
+                "updated_at" => now()
+            ]);
+
+            #lưu hình ảnh
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $file) {
+                    if ($file->isValid()) {
+                        $path = $file->store('uploads/refundOrder', 'public');
+
+                        DB::table("hinh_anh_huy_don")->insert([
+                            "MaDonHang" => $donHang->MaDonHang,
+                            "DuongDan" => $path
+                        ]);
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Xác Nhận Hủy Đơn Thành Công!",
+                "redirect" => route("lich-su-don-hang.index")
+            ]);
+        } else if ($request->input("type") == "close_refund") {
+            $donHang = DB::table("don_hang")->where("MaDonHang", $request->input("trading"))->first();
+
+            if (!$donHang) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Đơn Hàng Không Tồn Tại!"
+                ]);
+            }
+
+            if ($donHang->TrangThai !== "hoanhang") {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Đơn Hàng Đã Được Xác Nhận Hoặc Không Tồn Tại!"
+                ]);
+            }
+
+            if ($donHang->TrangThai == "xacnhanhoanhang") {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Đơn Hàng Đã Bị Hủy Hoàn Trả / Hoàn Tiền Rồi!"
+                ]);
+            }
+
+            $nguoiMua = DB::table("users")->find($donHang->ID_User);
+
+            if (!$nguoiMua) {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Tài Khoản Không Tồn Tại!!!"
+                ]);
+            }
+
+            #cập nhật sản phẩm hủy
+            foreach (DB::table("san_pham_don_hang")->where("MaDonHang", $donHang->MaDonHang)->get() as $row):
+                DB::table("san_pham_don_hang")
+                    ->where("id", $row->id)
+                    ->update([
+                        "TrangThai" => null,
+                        "updated_at" => null
+                    ]);
+            endforeach;
+
+            #lý do hoàn tiền
+            DB::table("don_hang")->where("MaDonHang", $request->input("trading"))->update([
+                "TrangThai" => "danhan",
+                "LyDoHuy" => null,
+                "updated_at" => null,
+            ]);
+
+            $hinhANh = DB::table("hinh_anh_huy_don")->where("MaDonHang", $request->input("trading"))->first();
+
+            #xóa ảnh
+            if ($hinhANh) {
+                foreach (DB::table("hinh_anh_huy_don")->where("MaDonHang", $request->input("trading"))->get() as $file) {
+                    Storage::disk('public')->delete($file->DuongDan);
+
+                    DB::table('hinh_anh_huy_don')->where('id', $file->id)->delete();
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                "status" => "success",
+                "message" => "Xác Nhận Hủy Đơn Thành Công!",
+                "redirect" => route("lich-su-don-hang.index")
             ]);
         }
 

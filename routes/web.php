@@ -57,6 +57,7 @@ use App\Http\Controllers\clients\homeController as ClientsHomeController;
 use App\Http\Controllers\clients\supportController as ClientSupportController;
 use App\Http\Controllers\clients\SanPhamController as ClientsSanPhamController;
 use App\Http\Controllers\clients\DanhMucBaiVietController as ClientsDanhMucBaiVietController;
+use App\Http\Controllers\clients\HoanHangController;
 use App\Http\Controllers\clients\LienKetWebsiteController as ClientsLienKetWebsiteController;
 use App\Http\Controllers\clients\ViController;
 
@@ -147,6 +148,7 @@ Route::prefix('dia-chi-nhan-hang')->group(function () {
 });
 Route::resource('lich-su-don-hang', LichSuDonHangController::class);
 Route::resource('huy-don', ChiTietHuyDonController::class);
+Route::resource('hoan-hang', HoanHangController::class);
 Route::get('danh-muc/{code}', [DanhMucSanPhamController::class, 'show'])->name('danh-muc.show');
 
 

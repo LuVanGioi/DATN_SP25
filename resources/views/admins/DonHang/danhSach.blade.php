@@ -1,7 +1,7 @@
 @extends("admins.themes")
 
 @section("titleHead")
-    <title>Quản Lý Đơn Hàng - ADMIN</title>
+<title>Quản Lý Đơn Hàng - ADMIN</title>
 @endsection
 
 @section('main')
@@ -66,4 +66,5 @@
             </div>
         </div>
     </div>
-@endsection 
+</div>
+@endsection

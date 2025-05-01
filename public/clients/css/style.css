@@ -1341,7 +1341,7 @@ select {
     max-width: 300px;
 }
 
-.buy-now > .item {
+.buy-now>.item {
     background-color: #e5e5e5;
     border-radius: 3px;
     color: white;
@@ -1355,36 +1355,36 @@ select {
     transition: opacity 1s ease;
 }
 
-.buy-now > .item > .logo {
+.buy-now>.item>.logo {
     width: 50%;
     margin: 0px 5px;
 }
 
-.buy-now > .item > .logo > img {
+.buy-now>.item>.logo>img {
     width: 100%;
     border-radius: 3px;
 }
 
-.buy-now > .item > .info-buy {
+.buy-now>.item>.info-buy {
     width: 100%;
     margin: 0px 5px;
 }
 
-.buy-now > .item > .info-buy > span {
+.buy-now>.item>.info-buy>span {
     display: block;
 }
 
-.buy-now > .item > .info-buy > .info {
+.buy-now>.item>.info-buy>.info {
     font-size: 13.5px;
     color: black;
 }
 
-.buy-now > .item > .info-buy > .info > small {
+.buy-now>.item>.info-buy>.info>small {
     font-size: 11px;
     color: #007bff;
 }
 
-.buy-now > .item > .info-buy > .title {
+.buy-now>.item>.info-buy>.title {
     font-size: 14px;
     font-weight: bold;
     display: -webkit-box;
@@ -1396,7 +1396,7 @@ select {
     line-height: 1.4em;
 }
 
-.buy-now > .item > .info-buy > .time {
+.buy-now>.item>.info-buy>.time {
     font-size: 13px;
     color: rgb(91, 91, 91);
 }
@@ -1434,19 +1434,19 @@ select {
     text-align: center;
 }
 
-.wallet-DATN > .img {
+.wallet-DATN>.img {
     border-radius: 50%;
     margin: 5px 0px;
     text-align: center;
     overflow: hidden;
 }
 
-.wallet-DATN > .img > img {
+.wallet-DATN>.img>img {
     height: 40px;
     border-radius: 5px;
 }
 
-.wallet-DATN > span {
+.wallet-DATN>span {
     display: block;
     font-weight: bold;
     font-size: 16px;
@@ -1477,7 +1477,7 @@ select {
     align-items: center;
 }
 
-.info-hisoty-wallet > .img {
+.info-hisoty-wallet>.img {
     width: 5%;
     margin: 0px 5px;
     border-radius: 100%;
@@ -1485,51 +1485,51 @@ select {
     text-align: center;
 }
 
-.info-hisoty-wallet > .img.payment {
+.info-hisoty-wallet>.img.payment {
     background-color: #010660;
 }
 
-.info-hisoty-wallet > .img.withdraw {
+.info-hisoty-wallet>.img.withdraw {
     background-color: #0056b3;
 }
 
-.info-hisoty-wallet > .img.refund {
+.info-hisoty-wallet>.img.refund {
     background-color: #00b362;
 }
 
-.info-hisoty-wallet > .img.wallet {
+.info-hisoty-wallet>.img.wallet {
     background-color: #00b362;
 }
 
-.info-hisoty-wallet > .img > img {
+.info-hisoty-wallet>.img>img {
     width: 100%;
 }
 
-.info-hisoty-wallet > .info {
+.info-hisoty-wallet>.info {
     width: 100%;
     margin: 0px 5px;
 }
 
-.info-hisoty-wallet > .info > span {
+.info-hisoty-wallet>.info>span {
     display: block;
     color: rgb(78, 78, 78);
 }
 
-.info-hisoty-wallet > .info > .title {
+.info-hisoty-wallet>.info>.title {
     font-size: 16px;
     font-weight: bold;
 }
 
-.info-hisoty-wallet > .info > .time {
+.info-hisoty-wallet>.info>.time {
     color: #888;
 }
 
-.info-hisoty-wallet > .price {
+.info-hisoty-wallet>.price {
     width: 20%;
     text-align: end;
 }
 
-.info-hisoty-wallet > .price > span {
+.info-hisoty-wallet>.price>span {
     font-size: 18px;
 }
 
@@ -1541,13 +1541,13 @@ select {
     justify-content: space-between;
 }
 
-.list-tab-hisory-wallet > li {
+.list-tab-hisory-wallet>li {
     width: 100%;
     text-align: center;
     margin: 0px 5px;
 }
 
-.list-tab-hisory-wallet > li > a {
+.list-tab-hisory-wallet>li>a {
     border: 1px solid #888;
     padding: 0px 10px;
     font-size: 14px;
@@ -1559,21 +1559,85 @@ select {
     color: black;
 }
 
-.list-tab-hisory-wallet .active > a {
+.list-tab-hisory-wallet .active>a {
     color: #0056b3;
 }
 
-.list-tab-hisory-wallet .active > a {
+.list-tab-hisory-wallet .active>a {
     border-color: #0056b3;
 }
 
-.list-tab-hisory-wallet > li:hover {
+.list-tab-hisory-wallet>li:hover {
     color: #0056b3;
     border-color: #0056b3;
 }
 
-.bootstrap-select .selectpicker > .filter-option {
+.bootstrap-select .selectpicker>.filter-option {
     color: #737475 !important;
     font-weight: 500 !important;
 }
 
+.product-refund .active {
+    border: 2px solid #0056b3;
+}
+
+.product-refund .card {
+    cursor: pointer;
+}
+
+.upload-image-refund {
+    border: 2px solid #888;
+    cursor: pointer;
+    padding: 5px 10px;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.upload-image-refund > input {
+    display: none;
+}
+
+.upload-image-refund > i {
+    font-size: 16px;
+}
+
+.list-images {
+    display: flex;
+}
+
+.list-images > .item-image {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #888;
+    margin-right: 5px;
+}
+
+.list-images > .item-image > .del-image {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #232323;
+    color: white;
+    padding: 3px;
+    font-size: 10px;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.list-images > .item-image > img {
+    width: 100%;
+}
+
+.w-100 {
+    width: 100% !important;
+}

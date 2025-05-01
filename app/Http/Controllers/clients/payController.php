@@ -180,6 +180,15 @@ class payController extends Controller
 
         $selectedCartIds = session('selected_products', []);
 
+        if(Auth::check()) {
+            if(Auth::user()->role == "Admin") {
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Không Thể Xử Lý Mua Hàng, Bạn Phải Là Khách Hàng!!!"
+                ]);
+            }
+        }
+
         $sanPhamDaChon = DB::table("cart")
             ->join("san_pham", function ($join) {
                 $join->on("cart.ID_SanPham", "=", "san_pham.id")
