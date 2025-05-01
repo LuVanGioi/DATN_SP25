@@ -32,6 +32,9 @@ $("form[submit-ajax=true]").on("submit", function (e) {
         processData: false,
         contentType: false,
         dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         success: function (response) {
             if (response.status == "success") {
                 if (swal_success !== "none" && response.message) {

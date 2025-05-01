@@ -10,22 +10,6 @@ use App\Http\Requests\admins\BienTheSanPhamRequest;
 class BienTheSanPhamController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(BienTheSanPhamRequest $request)
@@ -41,35 +25,26 @@ class BienTheSanPhamController extends Controller
         $thongTinBienThes = $request->input('ThongTinBienThe', []);
         $giaBienThes = $request->input('GiaBienThe', []);
         $soLuongBienThes = $request->input('SoLuongBienThe', []);
-        $hinhAnhBienThes = $request->file('HinhAnh', []);
 
         foreach ($thongTinBienThes as $index => $thongTin) {
             [$kichCo, $idMauSac] = explode('|', $thongTin);
 
-            $idBienThe = DB::table('bien_the_san_pham')->insertGetId([
-                'KichCo' => $kichCo,
-                'ID_MauSac' => $idMauSac,
-                'ID_SanPham' => $sanPham->id,
-                'Gia' => $giaBienThes[$index],
-                'SoLuong' => $soLuongBienThes[$index],
-                'created_at' => now(),
-            ]);
+            $checkBienThe = DB::table('bien_the_san_pham')
+                ->where("ID_SanPham", $sanPham->id)
+                ->where("ID_MauSac", $idMauSac)
+                ->where("KichCo", $kichCo)->exists();
 
-            if (isset($hinhAnhBienThes[$index])) {
-                foreach ($hinhAnhBienThes[$index] as $HinhAnh) {
-                    $fileName = $fileName = $kichCo . '_' . $idMauSac . '_' . $sanPham->id . '_' . uniqid() . '.png';
-                    $up = $HinhAnh->storeAs("uploads/SanPham", $fileName, "public");
-
-                    DB::table('hinh_anh_san_pham')->insert([
-                        'DuongDan' => $up,
-                        'ID_SanPham' => $idBienThe,
-                        'created_at' => now(),
-                    ]);
-                }
+            if (!$checkBienThe) {
+                DB::table('bien_the_san_pham')->insert([
+                    'KichCo' => $kichCo,
+                    'ID_MauSac' => $idMauSac,
+                    'ID_SanPham' => $sanPham->id,
+                    'Gia' => $giaBienThes[$index],
+                    'SoLuong' => $soLuongBienThes[$index],
+                    'created_at' => now(),
+                ]);
             }
         }
-
-
 
         DB::commit();
 

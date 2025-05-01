@@ -22,13 +22,20 @@
 
         <div class="row product-single mt-2">
             <div class="col-md-6">
+                @if ($thongTinSanPham->Nhan)
                 <div class="badges">
                     <div class="{{ $thongTinSanPham->Nhan }}">{{ $thongTinSanPham->Nhan }}</div>
                 </div>
-
+                @endif
                 <div class="owl-carousel img-carousel">
-                    @if ($thongTinSanPham->TheLoai == "bienThe")
-                    @foreach ($khoAnhBienThe as $khoAnh)
+                    <div class="item">
+                        <a class="btn btn-theme btn-theme-transparent btn-zoom"
+                            href="{{ Storage::url($thongTinSanPham->HinhAnh) }}" data-gal="prettyPhoto"><i
+                                class="fa fa-plus"></i></a>
+                        <a href="{{ Storage::url($thongTinSanPham->HinhAnh) }}" data-gal="prettyPhoto"><img
+                                class="img-responsive" src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                    </div>
+                    @foreach ($khoAnhSanPham as $i => $khoAnh)
                     <div class="item">
                         <a class="btn btn-theme btn-theme-transparent btn-zoom"
                             href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><i
@@ -37,71 +44,50 @@
                                 class="img-responsive" src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
                     @endforeach
-                    @else
-                    @foreach ($khoAnhSanPham as $khoAnh)
-                    <div class="item">
-                        <a class="btn btn-theme btn-theme-transparent btn-zoom"
-                            href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><i
-                                class="fa fa-plus"></i></a>
-                        <a href="{{ Storage::url($khoAnh->DuongDan) }}" data-gal="prettyPhoto"><img
-                                class="img-responsive" src="{{ Storage::url($khoAnh->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
-                    </div>
-                    @endforeach
-                    @endif
                 </div>
 
                 <div class="row product-thumbnails" style="margin-top: -5px; padding-top: 0px;">
-                    @if ($thongTinSanPham->TheLoai == "bienThe")
-                    @foreach ($khoAnhBienThe as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
-                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
-                            <img src="{{ Storage::url($khoAnh1->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
+                        <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [0, 300]);">
+                            <img src="{{ Storage::url($thongTinSanPham->HinhAnh) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
-                    @endforeach
-                    @else
                     @foreach ($khoAnhSanPham as $index => $khoAnh1)
                     <div class="col-xs-2 col-sm-2 col-md-3">
                         <a href="#" onclick="jQuery('.img-carousel').trigger('to.owl.carousel', [<?= $index + 1 ?>, 300]);">
                             <img src="{{ Storage::url($khoAnh1->DuongDan) }}" alt="{{ $thongTinSanPham->TenSanPham }}"></a>
                     </div>
                     @endforeach
-                    @endif
                 </div>
             </div>
+            @php
+            $fullStars = floor($avgRating);
+            $halfStar = ($avgRating - $fullStars) >= 0.5;
+            @endphp
             <div class="col-md-6">
                 <h2 class="product-title">{{ $thongTinSanPham->TenSanPham }}</h2>
                 <div class="product-rating clearfix">
                     <div class="rating">
-                        <span class="fas fa-star text-warning"></span>
-                        <span class="fas fa-star text-warning"></span>
-                        <span class="fas fa-star text-warning"></span>
-                        <span class="fas fa-star text-warning"></span>
-                        <span class="fas fa-star text-warning"></span>
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <=$fullStars)
+                            <span class="fas fa-star text-warning"></span>
+                            @elseif ($halfStar && $i == $fullStars + 1)
+                            <span class="fas fa-star-half-stroke text-warning"></span>
+                            @else
+                            <span class="far fa-star text-warning"></span><s></s>
+                            @endif
+                            @endfor
                     </div>
-                    <a class="reviews">16 reviews</a>
+                    <a class="reviews">{{ number_format(DB::table("danh_gia")->where("id_san_pham", $thongTinSanPham->id)->count()) }} Đánh Giá</a>
                 </div>
                 <div class="product-availability">Danh Mục: <strong>{{ $danhMuc->TenDanhMucSanPham }}</strong></div>
                 <div class="product-availability">Thương Hiệu: <strong>{{ $thuongHieu->TenThuongHieu }}</strong></div>
                 <div class="product-availability">Chất Liệu: <strong>{{ $thongTinSanPham->ChatLieu }}</strong></div>
-                @if ($soLuongBienTheSanPham >= 1)
                 <div class="product-availability">Sản Phẩm Có Sẵn: <strong id="soLuongSanPham">{{ number_format($tongSoLuongBienThe->soLuongSanPhamBienTheAll) }}</strong></div>
-                @else
-                <div class="product-availability">Sản Phẩm Có Sẵn: <strong>{{ number_format($thongTinSanPham->SoLuong) }}</strong></div>
-                @endif
                 <hr class="page-divider small">
 
                 <div class="product-price">
-                    @if ($thongTinSanPham->TheLoai == "bienThe")
                     <span id="GiaTienSP">{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $thongTinSanPham->id)->where("Xoa", 0)->min("Gia")) }}</span>
-                    @else
-                    <span id="GiaTienSP">{{ number_format($thongTinSanPham->GiaSanPham) }}</span>
-                    @endif
                     đ
-                    @if ($thongTinSanPham->TheLoai == "thuong")
-                    @if ($thongTinSanPham->GiaKhuyenMai)
-                    - <del style="color:rgb(115, 115, 115)"><small>{{ number_format($thongTinSanPham->GiaKhuyenMai) }} đ</small></del>
-                    @endif
-                    @endif
                 </div>
                 <hr class="page-divider">
 
@@ -110,7 +96,6 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="action" id="actionField" value="">
 
-                    @if ($soLuongBienTheSanPham >= 1)
                     <div class="col-sm-6">
                         <div class="form-group selectpicker-wrapper">
                             <label for="exampleSelect1">Kích Cỡ</label>
@@ -131,7 +116,6 @@
                             </select>
                         </div>
                     </div>
-                    @endif
 
                     <div class="col-md-12">
                         <hr class="page-divider small">

@@ -83,6 +83,8 @@ use Illuminate\Support\Facades\Storage;
                                 @if ($item->TrangThai == "choxacnhan")
                                 <a href="{{route('huy-don.edit', $item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
                                 <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
+                                @elseif ($item->TrangThai == "danggiao")
+                                <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
                                 @elseif ($item->TrangThai == "dagiao")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
                                 <button class="btn btn-theme btn-donHang" onclick="xacNhanDon('{{ $item->MaDonHang }}')">Đã Nhận</button>
@@ -96,14 +98,13 @@ use Illuminate\Support\Facades\Storage;
                                 @elseif ($item->TrangThai == "hoanhang" || $item->TrangThai == "xacnhanhoanhang")
                                 <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
                                 <a class="btn btn-theme btn-donHang" href="{{ route("hoan-hang.edit", $item->MaDonHang) }}">Chi Tiết Hoàn Hàng</a>
-                                    @elseif($item->TrangThai == "thatbai")
-                                    <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
-                                    <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
-                                    @elseif($item->TrangThai == "huydon")
-                                    <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
-                                    <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
-                                    @endif
-
+                                @elseif($item->TrangThai == "thatbai")
+                                <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
+                                <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
+                                @elseif($item->TrangThai == "huydon")
+                                <button class="btn btn-theme btn-vip" onclick="buy_again('{{ $item->MaDonHang }}')">Mua Lại</button>
+                                <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
+                                @endif
                             </div>
                         </div>
                     </div>

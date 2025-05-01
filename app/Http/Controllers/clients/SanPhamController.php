@@ -63,7 +63,11 @@ class SanPhamController extends Controller
             ->selectRaw("SUM(SoLuong) as soLuongSanPhamBienTheAll")
             ->first();
 
-        return view("clients.SanPham.ChiTietSanPham", compact("thongTinSanPham", "khoAnhBienThe", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
+        $avgRating = DB::table('danh_gia')
+            ->where('id_san_pham', $thongTinSanPham->id)
+            ->avg('rating');
+
+        return view("clients.SanPham.ChiTietSanPham", compact("avgRating", "thongTinSanPham", "khoAnhBienThe", "thuongHieu", "khoAnhSanPham", "danhMuc", "allThuongHieu", "bienTheSanPham", "mauSacBienThe", "bienTheSanPham2", "tongSoLuongBienThe", "soLuongBienTheSanPham"));
     }
     public function timKiem(Request $request)
     {
