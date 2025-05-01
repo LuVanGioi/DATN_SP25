@@ -26,11 +26,11 @@ class MaGiamGiaRequest extends FormRequest
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:0',
             'value' => 'required|integer|min:0',
-            'min_value' => 'required|string',
-            'max_value' => 'required|string',
+            'min_value' => 'required|numeric',
+            'max_value' => 'required|numeric',
             'condition' => 'required|string|max:255',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|string|max:50',
         ];
     }
@@ -49,10 +49,15 @@ class MaGiamGiaRequest extends FormRequest
             'quantity.min' => 'Số lượng không được nhỏ hơn 0.',
             'value.required' => 'Vui lòng nhập giá trị.',
             'min_value.required' => 'Vui lòng nhập giá trị tối thiểu.',
+            'min_value.numeric' => 'Giá trị tối thiểu phải là một số.',
             'max_value.required' => 'Vui lòng nhập giá trị tối đa.',
+            'max_value.numeric' => 'Giá trị tối đa phải là một số.',
             'condition.required' => 'Vui lòng nhập điều kiện.',
             'start_date.required' => 'Vui lòng chọn ngày bắt đầu.',
+            'start_date.date' => 'Ngày bắt đầu không hợp lệ.',
             'end_date.required' => 'Vui lòng chọn ngày kết thúc.',
+            'end_date.date' => 'Ngày kết thúc không hợp lệ.',
+            'end_date.after_or_equal' => 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.',
             'status.required' => 'Vui lòng chọn trạng thái.',
         ];
     }
@@ -66,13 +71,11 @@ class MaGiamGiaRequest extends FormRequest
     protected function withValidator(Validator $validator)
     {
         $validator->after(function ($validator) {
-            $minValue = $this->min_value;
-            $maxValue = $this->max_value;
+            $startDate = $this->start_date;
+            $endDate = $this->end_date;
 
-            if (is_numeric($minValue) && is_numeric($maxValue)) {
-                if ($minValue >= $maxValue) {
-                    $validator->errors()->add('min_value', 'Giá trị tối thiểu phải nhỏ hơn giá trị tối đa.');
-                }
+            if (strtotime($startDate) > strtotime($endDate)) {
+                $validator->errors()->add('start_date', 'Ngày bắt đầu không thể lớn hơn ngày kết thúc.');
             }
         });
     }

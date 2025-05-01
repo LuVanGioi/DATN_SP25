@@ -62,9 +62,6 @@ class AuthController extends Controller
             'status' => "error",
             'message' => "Đăng Nhập Thất Bại Vui Lòng Kiểm Tra Lại!"
         ]);
-        // if(Auth::user()->role === "Admin"){
-        //     return redirect()->intended('/admin/thongKe');
-        // }
     }
     //Đăng ký
 
@@ -82,7 +79,7 @@ class AuthController extends Controller
         if (!$name) {
             return response()->json([
                 'status' => "error",
-                'message' => "Vui Lòng Nhập Email",
+                'message' => "Vui Lòng Nhập Họ Tên",
             ]);
         }
 
@@ -122,6 +119,7 @@ class AuthController extends Controller
             ]);
         }
 
+         
         $data = [
             "name" => $name,
             "email" => $email,
