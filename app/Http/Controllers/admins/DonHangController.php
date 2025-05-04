@@ -76,15 +76,25 @@ class DonHangController extends Controller
             abort(404);
         }
 
+        $tien = 0;
+
         if ($request->input("TrangThai") == "huydon" || $request->input("TrangThai") == "hoanhang") {
             if ($donhang->PhuongThucThanhToan == "Số Dư Ví" || $donhang->PhuongThucThanhToan == "Chuyển Khoản Ngân Hàng") {
+                foreach (DB::table("san_pham_don_hang")->where("MaDonHang", $id)->where("TrangThai", "hoanhang")->get() as $row) {
+                    $tien += $row->GiaTien;
+                }
+
                 DB::table('users')->where('id', $user_buy->id)->update([
                     'price' => $user_buy->price + $donhang->TongTien,
                 ]);
             }
         } else if ($request->input("TrangThai") == "xacnhanhoanhang") {
+            foreach (DB::table("san_pham_don_hang")->where("MaDonHang", $id)->where("TrangThai", "hoanhang")->get() as $row) {
+                $tien += $row->GiaTien;
+            }
+
             DB::table('users')->where('id', $user_buy->id)->update([
-                'price' => $user_buy->price + $donhang->TongTien,
+                'price' => $user_buy->price + $tien,
             ]);
         }
 

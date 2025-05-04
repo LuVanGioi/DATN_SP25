@@ -471,6 +471,8 @@
                                     <h5>CÀI ĐẶT GIAO DIỆN</h5>
                                 </div>
                                 <div class="card-body">
+                                    <input type="hidden" name="product_new_home" value="0">
+                                    <input type="hidden" name="product_sale_home" value="0">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <table class="mb-3 table table-bordered border table-striped table-hover">
@@ -486,28 +488,6 @@
                                                         <th colspan="2" class="text-center bg-dark">
                                                             SẢN PHẨM
                                                         </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="30%">
-                                                            Danh Mục Sản Phẩm Mới
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control" name="product_new_home">
-                                                                <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "categoris_product_new_home")->GiaTri == "1" ? "selected" : "" }}>ON</option>
-                                                                <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "categoris_product_new_home")->GiaTri == "0" ? "selected" : "" }}>OFF</option>
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="30%">
-                                                            Danh Mục Sản Phẩm Giảm Giá
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control" name="product_sale_home">
-                                                                <option value="1" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "categoris_product_sale_home")->GiaTri == "1" ? "selected" : "" }}>ON</option>
-                                                                <option value="0" {{ $cai_dat_giao_dien_website->firstWhere("Loai", "categoris_product_sale_home")->GiaTri == "0" ? "selected" : "" }}>OFF</option>
-                                                            </select>
-                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td width="30%">

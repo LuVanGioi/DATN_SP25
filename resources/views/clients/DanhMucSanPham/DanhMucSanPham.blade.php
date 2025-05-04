@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <div id="productList" class="row mt-4">
+                <div id="productList" class="row mt-4" style="display: flex; flex-wrap: wrap">
                     @foreach ($danhSach as $row)
                         @if($id == xoadau($row->TenDanhMucSanPham))
                             @php
@@ -101,7 +101,7 @@
                                 @php
                                     $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPham->id)->count();
                                 @endphp
-                                <div class="col-md-3 col-sm-3">
+                                <div class="col-md-3 col-sm-3 mb-1">
                                     <div class="thumbnail product-item">
                                         <div class="media">
                                             <a class="media-link" href="{{ route("san-pham.show", ($sanPham->DuongDan)) }}">
@@ -135,7 +135,7 @@
                 </div>
 
                 @if ($sanPhams->count() > 0)
-                <div class="pagination-wrapper">
+                <div class="pagination-wrapper text-center">
                     <ul class="pagination">
                         @if ($sanPhams->onFirstPage())
                         <li class="disabled"><a href="#"><i class="fa fa-angle-double-left"></i> Trước</a></li>

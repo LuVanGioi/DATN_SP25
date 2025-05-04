@@ -37,9 +37,38 @@
                     @endif
                     @endif
                 </div>
-                <h5 class="text-primary">Danh Sách Sản Phẩm</h5>
+                <h5 class="text-primary">Danh Sách Sản Phẩm {{ $donHang->TrangThaiDonHang == "hoanhang" || $donHang->TrangThaiDonHang == "xacnhanhoanhang" ? "Hoàn Hàng" : "" }}</h5>
                 <div class="row mt-3">
-                    @foreach ($sanPhamMua as $item)
+                    @php
+                    if($donHang->TrangThaiDonHang == "hoanhang" || $donHang->TrangThaiDonHang == "xacnhanhoanhang") {
+                    $listSPPPPP = DB::table('san_pham_don_hang')
+                    ->join('san_pham', 'san_pham_don_hang.Id_SanPham', '=', 'san_pham.id')
+                    ->where('san_pham_don_hang.MaDonHang', $id)
+                    ->where('san_pham_don_hang.TrangThai', "hoanhang")
+                    ->select(
+                    'san_pham_don_hang.Id_SanPham',
+                    'san_pham.TenSanPham',
+                    'san_pham.DuongDan',
+                    'san_pham.HinhAnh',
+                    'san_pham_don_hang.KichCo',
+                    'san_pham_don_hang.MauSac',
+                    DB::raw('SUM(san_pham_don_hang.SoLuong) as SoLuong'),
+                    DB::raw('SUM(san_pham_don_hang.GiaTien) as GiaTien')
+                    )
+                    ->groupBy(
+                    'san_pham_don_hang.Id_SanPham',
+                    'san_pham.TenSanPham',
+                    'san_pham.DuongDan',
+                    'san_pham.HinhAnh',
+                    'san_pham_don_hang.KichCo',
+                    'san_pham_don_hang.MauSac'
+                    )
+                    ->get();
+                    } else {
+                        $listSPPPPP = $sanPhamMua;
+                    }
+                    @endphp
+                    @foreach ($listSPPPPP as $item)
                     <div class="col-xxl-4 col-md-6">
                         <div class="prooduct-details-box">
                             <div class="media">
