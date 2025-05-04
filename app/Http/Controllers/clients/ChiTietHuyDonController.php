@@ -48,7 +48,7 @@ class ChiTietHuyDonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function store(Request $request)
     {
         if (!Auth::check()) {
             return response()->json([
@@ -60,7 +60,7 @@ class ChiTietHuyDonController extends Controller
         $userId = Auth::user()->id;
 
         $donHang = DB::table('don_hang')
-            ->where('MaDonHang', $id)
+            ->where('MaDonHang', $request->input("id"))
             ->where('ID_User', $userId)
             ->first();
 
@@ -70,11 +70,11 @@ class ChiTietHuyDonController extends Controller
                 "message" => "Không tìm thấy đơn hàng hoặc bạn không có quyền truy cập đơn hàng này"
             ]);
         }
-
-        if (!$request->input("ly_do_huy")) {
+        
+        if (empty($request->input("ly_do_huy"))) {
             return response()->json([
                 "status" => "error",
-                "message" => "Vui lòng nhập lý do hủy đơn"
+                "message" => "Vui lòng nhập lý do hủy đơn "
             ]);
         }
 
@@ -88,7 +88,7 @@ class ChiTietHuyDonController extends Controller
         DB::beginTransaction();
 
         $updateOrder = DB::table('don_hang')
-            ->where('MaDonHang', $id)
+            ->where('MaDonHang', $request->input("id"))
             ->update([
                 'TrangThai' => 'huydon',
                 'LyDoHuy' => $request->ly_do_huy
@@ -102,7 +102,7 @@ class ChiTietHuyDonController extends Controller
         }
 
         $sanPhamDonHang = DB::table('san_pham_don_hang')
-            ->where('MaDonHang', $id)
+            ->where('MaDonHang', $request->input("id"))
             ->get();
 
         foreach ($sanPhamDonHang as $item) {
@@ -140,7 +140,7 @@ class ChiTietHuyDonController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Hủy đơn hàng thành công",
-            "redirect" => route('lich-su-don-hang.show', $id)
+            "redirect" => route('lich-su-don-hang.show', $request->input("id"))
         ]);
     }
 }
