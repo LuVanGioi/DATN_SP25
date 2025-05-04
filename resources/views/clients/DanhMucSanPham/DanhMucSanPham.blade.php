@@ -34,19 +34,6 @@
                         </ul>
                     </div>
                 </div>
-
-                <div class="widget shop-categories">
-                    <h4 class="widget-title">Thương Hiệu</h4>
-                    <div class="widget-content">
-                        <ul>
-                            @foreach ($thuongHieu as $item)
-                            <li>
-                                <a href="/thuong-hieu/{{ xoadau($item->TenThuongHieu) }}">{{ $item->TenThuongHieu }}</a>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
             </aside>
 
             <div class="col-md-9 content" id="content">

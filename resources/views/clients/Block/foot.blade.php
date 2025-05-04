@@ -1,7 +1,7 @@
 <div class="footer-widgets">
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="widget">
                     <h4 class="widget-title">Về chúng tôi</h4>
                     <p>Chúng tôi tự hào mang đến những sản phẩm quần áo thể thao chất lượng, giúp bạn luôn
@@ -15,31 +15,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="widget">
-                    <h4 class="widget-title">Tin tức</h4>
-                    <p>Đăng ký nhận tin tức & khuyến mãi qua Email.</p>
-                    @if (session("success_support"))
-                    <div class="alert alert-success">
-                        {{ session('success_support') }}
-                    </div>
-                    @endif
-
-                    <form action="{{ route("emailForm") }}" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <input class="form-control" type="email" placeholder="Nhập Email nhận thông báo của bạn" name="email" value="{{ old("email") }}">
-                            @error("email")
-                            <p class="text-danger">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-theme btn-theme-transparent">Đăng ký</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="widget widget-categories">
                     <h4 class="widget-title">Liên kết</h4>
                     <ul>
@@ -49,7 +25,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="widget widget-categories">
                     <h4 class="widget-title">Thông tin liên hệ</h4>
                     <ul>
