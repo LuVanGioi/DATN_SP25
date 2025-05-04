@@ -83,6 +83,8 @@ use Illuminate\Support\Facades\Storage;
                                 @if ($item->TrangThai == "choxacnhan")
                                 <a href="{{route('huy-don.edit', $item->MaDonHang)}}" class="btn btn-theme btn-donHang">Hủy Đơn</a>
                                 <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
+                                @elseif ($item->TrangThai == "daxacnhan")
+                                <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
                                 @elseif ($item->TrangThai == "danggiao")
                                 <a href="{{ route("lich-su-don-hang.show", $item->MaDonHang) }}" class="btn btn-theme btn-donHang">Chi Tiết</a>
                                 @elseif ($item->TrangThai == "dagiao")

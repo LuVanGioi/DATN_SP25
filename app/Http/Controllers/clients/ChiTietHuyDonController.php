@@ -41,7 +41,7 @@ class ChiTietHuyDonController extends Controller
             ->selectRaw('san_pham.id as idSP, san_pham.*, san_pham_don_hang.*')
             ->get();
 
-            
+
         return view("clients.HuyDonHang.HuyDon", compact('donHangHuy', 'id'));
     }
 
@@ -70,7 +70,7 @@ class ChiTietHuyDonController extends Controller
                 "message" => "Không tìm thấy đơn hàng hoặc bạn không có quyền truy cập đơn hàng này"
             ]);
         }
-        
+
         if (empty($request->input("ly_do_huy"))) {
             return response()->json([
                 "status" => "error",
@@ -104,6 +104,14 @@ class ChiTietHuyDonController extends Controller
         $sanPhamDonHang = DB::table('san_pham_don_hang')
             ->where('MaDonHang', $request->input("id"))
             ->get();
+
+        if ($donHang->PhuongThucThanhToan == "Chuyển Khoản Ngân Hàng" || $donHang->PhuongThucThanhToan == "Số Dư Ví") {
+            $nguoiMua = DB::table("users")->find($donHang->ID_User);
+
+            DB::table("users")->where("id", $nguoiMua->id)->update([
+                "price" => $nguoiMua->price + $donHang->TongTien
+            ]);
+        }
 
         foreach ($sanPhamDonHang as $item) {
             $sanPham = DB::table('san_pham')

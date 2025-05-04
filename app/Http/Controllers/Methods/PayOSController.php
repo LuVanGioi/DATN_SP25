@@ -33,11 +33,14 @@ class PayOSController extends Controller
                 "TrangThaiThanhToan" => "dathanhtoan"
             ]);
 
-            $list_product = DB::table("san_pham_don_hang")->where("MaDonHang", $donHang->MaDonHang)->get();
+            $list_product = DB::table("san_pham_don_hang")
+            ->join("san_pham", "san_pham.id", "=", "san_pham_don_hang.Id_SanPham")
+            ->selectRaw("san_pham_don_hang.SoLuong as soLuongMua, san_pham_don_hang.*, san_pham.*")
+            ->where("MaDonHang", $donHang->MaDonHang)->get();
             $html_product = '<table border="1" cellpadding="5" cellspacing="0"><tr><th>Tên sản phẩm</th><th>Số lượng</th><th>Giá</th></tr>';
             foreach ($list_product as $sp) {
                 $tenSanPham = $sp->TenSanPham;
-                $soLuong = $sp->SoLuong;
+                $soLuong = $sp->soLuongMua;
                 $gia = number_format($sp->GiaTien) . 'đ';
                 $html_product .= "<tr><td>{$tenSanPham}</td><td>{$soLuong}</td><td>{$gia}</td></tr>";
             }

@@ -146,7 +146,7 @@
                                 <div class="col-md-2">
                                     <h4 class="block-title"><b>{{ $dichVuSP->TenDichVuSanPham }}</b></h4>
                                     <ul style="padding: 0px;">
-                                        @foreach (DB::table("danh_muc_san_pham")->where("Xoa", 0)->where("ID_DichVuSanPham", $dichVuSP->id)->orderByDesc("id")->limit(5)->get() as $danhMucSP)
+                                        @foreach (DB::table("danh_muc_san_pham")->where("Xoa", 0)->where("ID_DichVuSanPham", $dichVuSP->id)->orderByDesc("id")->limit(7)->get() as $danhMucSP)
                                         <li><a href="{{route('danh-muc.show', xoadau($danhMucSP->TenDanhMucSanPham))}}">{{ $danhMucSP->TenDanhMucSanPham }}</a></li>
                                         @endforeach
                                     </ul>

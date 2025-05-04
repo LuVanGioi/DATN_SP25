@@ -234,17 +234,18 @@
     </div>
 </section>
 
+@if (DB::table("san_pham")->where("ID_DanhMuc", $thongTinSanPham->ID_DanhMuc)->count() >= 2)
 <section class="page-section">
     <div class="container">
         <h2 class="section-title" style="font-size: 25px;padding: 20px 0px;"><span>Sản Phẩm Liên Quan</span></h2>
         <div class="featured-products-carousel">
             <div class="owl-carousel" id="featured-products-carousel">
-                @foreach ($danhSachSanPham as $i => $sanPhamKhac)
+                @foreach (DB::table("san_pham")->where("ID_DanhMuc", $thongTinSanPham->ID_DanhMuc)->limit(8)->get() as $i => $sanPhamKhac)
                 @php
                 $luotMua = DB::table("san_pham_don_hang")->where("Id_SanPham", $sanPhamKhac->id)->count();
                 @endphp
-                @if ($sanPhamKhac->DuongDan !== $thongTinSanPham->DuongDan && $i++ <= 10)
-                    <div class="thumbnail product-item">
+                @if ($sanPhamKhac->DuongDan !== $thongTinSanPham->DuongDan)
+                <div class="thumbnail product-item">
                     <div class="media">
                         <a class="media-link" href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">
                             <img src="{{ Storage::url($sanPhamKhac->HinhAnh) }}" alt="">
@@ -261,36 +262,20 @@
                             <a href="{{ route("san-pham.show", xoadau($sanPhamKhac->TenSanPham)) }}">{{ $sanPhamKhac->TenSanPham }}</a>
                         </h4>
                         <div class="price">
-                            <ins>{{ number_format($sanPhamKhac->GiaSanPham) }}đ</ins>
+                            <ins>₫{{ number_format(DB::table("bien_the_san_pham")->where("ID_SanPham", $sanPhamKhac->id)->where("Xoa", 0)->min("Gia")) }}</ins>
                             <span>Đã bán {{ soGon($luotMua) }}</span>
                         </div>
                     </div>
-            </div>
-            @endif
-            @endforeach
-        </div>
-    </div>
-    <hr class="page-divider half">
-    <a class="btn btn-theme btn-view-more-block" href="/" style="max-width: 100%;">Xem Thêm</a>
-    </div>
-</section>
-
-<section class="page-section">
-    <div class="container">
-        <h2 class="section-title"><span>THƯƠNG HIỆU</span></h2>
-        <div class="partners-carousel">
-            <div class="owl-carousel" id="partners">
-                @foreach ($allThuongHieu as $danhSachThuongHieu)
-                <div>
-                    <a href="/thuong-hieu/{{ xoadau($danhSachThuongHieu->TenThuongHieu) }}">
-                        <img src="{{ Storage::url($danhSachThuongHieu->HinhAnh) }}" alt="" height="90px">
-                    </a>
                 </div>
+                @endif
                 @endforeach
             </div>
         </div>
+        <hr class="page-divider half">
+        <a class="btn btn-theme btn-view-more-block" href="/danh-muc/{{ xoadau($danhMuc->TenDanhMucSanPham) }}" style="max-width: 100%;">Xem Thêm</a>
     </div>
 </section>
+@endif
 @endsection
 
 @section("js")
